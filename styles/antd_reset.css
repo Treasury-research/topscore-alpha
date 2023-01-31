@@ -1,0 +1,10 @@
+::-webkit-scrollbar {
+  display: none
+}
+.bestCard >div{
+  background: url("../statics/img/card_bg.svg") no-repeat center center;
+  background-size: cover;
+  width: 315px;
+  height: 138px;
+  margin-right: 40px;
+}
