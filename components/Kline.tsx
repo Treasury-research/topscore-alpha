@@ -1,171 +1,114 @@
 import { useEffect } from 'react';
 import * as echarts from 'echarts';
-import linData from './kLineData'
-
-const upColor = '#16B57F';
-const downColor = '#E45555';
-
-const splitData = (rawData: any) => {
-    let categoryData = [];
-    let values = [];
-    for (let i = 0; i < rawData.length; i++) {
-        categoryData.push(rawData[i][0]);
-        values.push(rawData[i].slice(1,5));
-    }
-    return {
-        categoryData: categoryData,
-        values: values
-    };
-}
 
 const ChartLine = (props: any) => {
 
     const { id = 'default-id', width = '100%', height = '100%' } = props;
     
-    let data = splitData(linData);
-    
     useEffect(() => {
         const option = {
-            animation: false,
-            legend: {
-              show:false,
-              bottom: 10,
-              left: 'center',
-              data: ['Dow-Jones index', 'MA5', 'MA10', 'MA20', 'MA30']
+          title: {
+            text: 'Stacked Area Chart'
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross',
+              label: {
+                backgroundColor: '#6a7985'
+              }
+            }
+          },
+          legend: {
+            data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
+          },
+          toolbox: {
+            show:false,
+            feature: {
+              saveAsImage: {}
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: [
+            {
+              type: 'category',
+              boundaryGap: false,
+              data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value'
+            }
+          ],
+          series: [
+            {
+              name: 'Email',
+              type: 'line',
+              stack: 'Total',
+              areaStyle: {},
+              emphasis: {
+                focus: 'series'
+              },
+              data: [120, 132, 101, 134, 90, 230, 210]
             },
-            tooltip: {
-              trigger: 'axis',
-              axisPointer: {
-                type: 'cross'
+            {
+              name: 'Union Ads',
+              type: 'line',
+              stack: 'Total',
+              areaStyle: {},
+              emphasis: {
+                focus: 'series'
               },
-              borderWidth: 1,
-              borderColor: '#ccc',
-              padding: 10,
-              textStyle: {
-                color: '#000'
-              },
+              data: [220, 182, 191, 234, 290, 330, 310]
             },
-            grid: [
-              {
-                left: '5%',
-                right: '80px',
-                top:'20',
-                bottom:'60'
+            {
+              name: 'Video Ads',
+              type: 'line',
+              stack: 'Total',
+              areaStyle: {},
+              emphasis: {
+                focus: 'series'
               },
-              {
-                left: '10%',
-                right: '8%',
-                top: '63%',
-                height: '16%'
-              }
-            ],
-            xAxis: [
-              {
-                type: 'category',
-                data: data.categoryData,
-                boundaryGap: false,
-                axisLine: { onZero: false,show: false },
-                splitLine: { show: false },
-                axisTick: { show: false },
-                min: 'dataMin',
-                max: 'dataMax',
-                axisPointer: {
-                  z: 100
-                },
-                axisLabel:{
-                    margin:40
-                }
+              data: [150, 232, 201, 154, 190, 330, 410]
+            },
+            {
+              name: 'Direct',
+              type: 'line',
+              stack: 'Total',
+              areaStyle: {},
+              emphasis: {
+                focus: 'series'
               },
-              {
-                type: 'category',
-                show:false,
-                gridIndex: 1,
-                data: data.categoryData,
-                boundaryGap: false,
-                axisLine: { onZero: false,show: false },
-                axisTick: { show: false },
-                splitLine: { show: false },
-                axisLabel: { show: false },
-                min: 'dataMin',
-                max: 'dataMax'
-              }
-            ],
-            yAxis: [
-              {
-                scale: true,
-                position: 'right',
-                splitArea: {
-                  show: false
-                },
-                splitLine: {
-                    show: false,
-                    lineStyle: {
-                      type: 'dotted',
-                      color: 'rgba(255, 255, 255,0.3)'
-                    }
-                  }
+              data: [320, 332, 301, 334, 390, 330, 320]
+            },
+            {
+              name: 'Search Engine',
+              type: 'line',
+              stack: 'Total',
+              label: {
+                show: true,
+                position: 'top'
               },
-              {
-                scale: true,
-                gridIndex: 1,
-                splitNumber: 2,
-                axisLabel: { show: false },
-                axisLine: { show: false },
-                axisTick: { show: false },
-                splitLine: { show: false }
-              }
-            ],
-            dataZoom: [
-              {
-                type: 'inside',
-                xAxisIndex: [0, 1],
-                start: 98,
-                end: 100
+              areaStyle: {},
+              emphasis: {
+                focus: 'series'
               },
-            ],
-            series: [
-              {
-                name: 'BTC',
-                type: 'candlestick',
-                data: data.values,
-                itemStyle: {
-                  color: upColor,
-                  color0: downColor,
-                  borderColor: undefined,
-                  borderColor0: undefined
-                },
-                tooltip: {
-                  formatter: function (param:any) {
-                    param = param[0];
-                    return [
-                      'Date: ' + param.name + '<hr size=1 style="margin: 3px 0">',
-                      'Open: ' + param.data[0] + '<br/>',
-                      'Close: ' + param.data[1] + '<br/>',
-                      'Lowest: ' + param.data[2] + '<br/>',
-                      'Highest: ' + param.data[3] + '<br/>'
-                    ].join('');
-                  }
-                }
-              }
-            ]
-          };
+              data: [820, 932, 901, 934, 1290, 1330, 1320]
+            }
+          ]
+        };
 
         const HTMLElement = document.getElementById(id) as HTMLElement;
 
         const chart = echarts.init(HTMLElement);
 
         chart.setOption(option);
-
-        chart.dispatchAction({
-            type: 'brush',
-            areas: [
-              {
-                brushType: 'lineX',
-                coordRange: ['2016-06-02', '2016-06-20'],
-                xAxisIndex: 0
-              }
-            ]
-          });
 
         window.addEventListener("resize", () => {
             if (chart) {

@@ -5,24 +5,6 @@ import moment from 'moment'
 
 const dys = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
-const rlData = [[
-    0, 1, 5
-],
-[
-    0, 2, 10
-],
-[
-    0, 3, 5
-],
-[
-    1, 1, 5
-],
-[
-    1, 3, 10
-],
-[
-    4, 18, 20
-]];
 let weekCount = 0;
 
 const rmodynamics = () => {
@@ -33,7 +15,7 @@ const rmodynamics = () => {
 
     const [week, setWeek] = useState<any>([]);
 
-    const [activeItems,setActiveItems] = useState<any>([]);
+    const [activeItems, setActiveItems] = useState<any>([]);
 
     useEffect(() => {
         getCurrentWeek()
@@ -42,8 +24,8 @@ const rmodynamics = () => {
     const getStaticData = () => {
         let rem = [[], [], [], [], [], [], []]
         for (let i = 0; i < 7; i++) {
-            for (let j = 0; j < 24; j++) {
-                rem[i].push(Math.round(Math.random()*10))
+            for (let j = 0; j < 52; j++) {
+                rem[i].push(Math.round(Math.random() * 10))
             }
         }
         setRemodyBaseData(rem);
@@ -58,15 +40,15 @@ const rmodynamics = () => {
         });
     };
 
-    const putActiveItems = (e:any) => {
+    const putActiveItems = (e: any) => {
         // let rs = activeItems.filter((t:any,i:number) => {
         //     return t[0] === e[0] && t[1] === e[1]
         // })
         // if(rs && rs.length ===0){
-            
+
         // }
         setActiveItems((prev: any) => {
-            return [...prev,e];
+            return [...prev, e];
         });
     }
 
@@ -90,11 +72,11 @@ const rmodynamics = () => {
         getCurrentWeek();
     }
 
-    const getBorderStyle = (e:any) => {
-        let rs = activeItems.filter((t:any,i:number) => {
+    const getBorderStyle = (e: any) => {
+        let rs = activeItems.filter((t: any, i: number) => {
             return t[0] === e[0] && t[1] === e[1]
         })
-        if(rs && rs.length !==0){
+        if (rs && rs.length !== 0) {
             return 'border-[1px] border-[#B4D2FF]'
         }
     }
@@ -102,69 +84,68 @@ const rmodynamics = () => {
     return (
         <div className="text-[#fff]">
             <div className="flex">
-                <div className="px-[30px] pb-[6px] pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px] cursor-pointer">Global</div>
-                <div className="px-[30px] pb-[6px] pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px] cursor-pointer">Personal</div>
+                <div className="px-[30px] pb-[6px] pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px] cursor-pointer">2022</div>
+                <div className="px-[30px] pb-[6px] pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px] cursor-pointer">2023</div>
             </div>
             <div className="flex bg-[#1A1A1A] p-5 w-full">
-                <div className="w-[780px]">
-                    <div className="text-[18px] mb-[20px]">Optima Post Time</div>
+                <div className="w-[860px] overflow-hidden mr-4">
+                    <div className="text-[18px] mb-[20px]">Overview</div>
+                    <div className="mb-4 mr-2 flex ml-[auto] w-[fit-content] items-center">
+                        <div className="text-[12px] ml-[-4px] mr-2">High</div>
+                        <div className="h-[16px] w-[45px] bg-[#F33C17]">
+
+                        </div>
+                        <div className="h-[16px] w-[45px] bg-[#CA3B32]">
+
+                        </div>
+                        <div className="h-[16px] w-[45px] bg-[#AF342F]">
+
+                        </div>
+                        <div className="h-[16px] w-[45px] bg-[#76312B]">
+
+                        </div>
+                        <div className="h-[16px] w-[45px] bg-[#4F2D2E]">
+
+                        </div>
+                        <div className="text-[12px] ml-[-4px] ml-2">Low</div>
+                    </div>
                     <div>
                         {
                             remodyBaseData.map((t: any, i: number) => (
-                                <div className="flex mb-[1px]" key={i}>
-                                    <div className="text-[12px] w-[40px] h-[30px] flex items-center">{dys[i]}</div>
+                                <div className="flex mb-[2px]" key={i}>
                                     {
                                         t.map((item: any, index: number) => (
-                                            <div key={index} onClick={() => putActiveItems([i,index])} className={`${getBorderStyle([i,index])} box-border h-[28px] w-[28px] bg-[#4F4F4F] mr-[2px] cursor-pointer ${item< 3 ? 'bg-[#4F4F4F]' : item >= 3 && item <=5 ? 'bg-[#4F2D2E]' : item > 5 && item <= 7 ? 'bg-[#76312B]' : item > 7 && item <= 8 ? 'bg-[#AF342F]' : item > 8 && item < 10 ? 'bg-[#CA3B32]' : 'bg-[#F33C17]'}`}></div>
+                                            <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] bg-[#4F4F4F] mr-[2px] cursor-pointer ${item < 3 ? 'bg-[#4F4F4F]' : item >= 3 && item <= 5 ? 'bg-[#4F2D2E]' : item > 5 && item <= 7 ? 'bg-[#76312B]' : item > 7 && item <= 8 ? 'bg-[#AF342F]' : item > 8 && item < 10 ? 'bg-[#CA3B32]' : 'bg-[#F33C17]'}`}></div>
                                         ))
                                     }
                                 </div>
                             ))
                         }
                     </div>
-                    <div className="text-[12px] w-[calc(100%-40px)] ml-[40px] mt-[10px]">
-                        <div className="w-[180px] float-left">0AM</div>
-                        <div className="w-[175px] float-left">6AM</div>
-                        <div className="w-[180px] float-left">12PM</div>
+                    {/* <div className="text-[12px] w-[calc(100%-40px)] ml-[40px] mt-[10px]">
+                        <div className="w-[185px] float-left">0AM</div>
+                        <div className="w-[180px] float-left">6AM</div>
+                        <div className="w-[190px] float-left">12PM</div>
                         <div className="float-left">18PM</div>
-                        <div className="float-right mr-4">24PM</div>
-                    </div>
+                        <div className="float-right">24PM</div>
+                    </div> */}
                 </div>
-                <div className="ml-5 mr-5">
-                    <div className="text-[12px] mt-[20px] ml-[-4px]">High</div>
-                    <div className="h-[45px] w-[16px] bg-[#F33C17] mt-[4px]">
-
-                    </div>
-                    <div className="h-[45px] w-[16px] bg-[#CA3B32]">
-
-                    </div>
-                    <div className="h-[45px] w-[16px] bg-[#AF342F]">
-
-                    </div>
-                    <div className="h-[45px] w-[16px] bg-[#76312B]">
-
-                    </div>
-                    <div className="h-[45px] w-[16px] bg-[#4F2D2E]">
-
-                    </div>
-                    <div className="text-[12px] mt-[4px] ml-[-4px]">Low</div>
-                </div>
-                <div className="w-[calc(100%-800px)]">
-                    <div className="flex min-w-50 max-w-100">
+                <div className="w-[calc(100%-860px)]">
+                    {/* <div className="flex">
                         <div className="h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer" onClick={getLastWeek}><LeftOutlined /></div>
-                        <div className="w-[calc(100%-100px)] mx-5 h-10 bg-[rgb(41,41,41)] flex items-center justify-center">
+                        <div className="w-[200px] mx-5 h-10 bg-[rgb(41,41,41)] flex items-center justify-center">
                             {
                                 week.length !== 0 &&
                                 <span>{week[0]}-{week[1]}</span>
                             }
                         </div>
                         <div className="h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer" onClick={getNextWeek}><RightOutlined /></div>
-                    </div>
-                    <div className="px-6 py-4 bg-[rgb(41,41,41)] mt-10">
+                    </div> */}
+                    <div className="px-6 py-2 bg-[rgb(41,41,41)] mt-11">
                         <div className="flex mb-2">
                             <div>
                                 <Checkbox onChange={(e: any) => onChange(e, 0)} checked={checked[0]}>
-                                    <span className="text-[#fff] text-[16px]">Post</span>
+                                    <span className="text-[#fff] text-[16px]">Publication</span>
                                 </Checkbox>
                             </div>
                             <div className="ml-[auto]">126</div>
@@ -172,7 +153,7 @@ const rmodynamics = () => {
                         <div className="flex mb-2">
                             <div>
                                 <Checkbox onChange={(e: any) => onChange(e, 1)} checked={checked[1]}>
-                                    <span className="text-[#fff] text-[16px]">Comment</span>
+                                    <span className="text-[#fff] text-[16px]">Post</span>
                                 </Checkbox>
                             </div>
                             <div className="ml-[auto]">126</div>
@@ -180,7 +161,7 @@ const rmodynamics = () => {
                         <div className="flex mb-2">
                             <div>
                                 <Checkbox onChange={(e: any) => onChange(e, 2)} checked={checked[2]}>
-                                    <span className="text-[#fff] text-[16px]">Mirror</span>
+                                    <span className="text-[#fff] text-[16px]">Comment</span>
                                 </Checkbox>
                             </div>
                             <div className="ml-[auto]">126</div>
@@ -188,15 +169,7 @@ const rmodynamics = () => {
                         <div className="flex mb-2">
                             <div>
                                 <Checkbox onChange={(e: any) => onChange(e, 3)} checked={checked[3]}>
-                                    <span className="text-[#fff] text-[16px]">Collect</span>
-                                </Checkbox>
-                            </div>
-                            <div className="ml-[auto]">126</div>
-                        </div>
-                        <div className="flex">
-                            <div>
-                                <Checkbox onChange={(e: any) => onChange(e, 4)} checked={checked[4]}>
-                                    <span className="text-[#fff] text-[16px]">Volume</span>
+                                    <span className="text-[#fff] text-[16px]">Mirror</span>
                                 </Checkbox>
                             </div>
                             <div className="ml-[auto]">126</div>
