@@ -3,11 +3,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Router, { useRouter } from "next/router";
 import Icon1 from '../statics/img/icon1.svg'
-import Icon2 from '../statics/img/icon2.svg'
 import Icon3 from '../statics/img/icon3.svg'
 import Icon4 from '../statics/img/Gallery.svg'
-import Icon5 from '../statics/img/icon5.svg'
-import Icon6 from '../statics/img/icon6.svg'
 import IconTop from '../statics/img/topIcon.png'
 import Soon from '../statics/img/Soon.svg'
 

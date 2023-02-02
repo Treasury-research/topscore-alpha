@@ -3,130 +3,174 @@ import * as echarts from 'echarts';
 
 const ChartLine = (props: any) => {
 
-    const { id = 'default-id', width = '100%', height = '100%' } = props;
-    
-    useEffect(() => {
-        const option = {
-          title: {
-            text: 'Stacked Area Chart'
-          },
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'cross',
-              label: {
-                backgroundColor: '#6a7985'
-              }
-            }
-          },
-          legend: {
-            data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
-          },
-          toolbox: {
-            show:false,
-            feature: {
-              saveAsImage: {}
-            }
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-          },
-          xAxis: [
-            {
-              type: 'category',
-              boundaryGap: false,
-              data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-            }
-          ],
-          yAxis: [
-            {
-              type: 'value'
-            }
-          ],
-          series: [
-            {
-              name: 'Email',
-              type: 'line',
-              stack: 'Total',
-              areaStyle: {},
-              emphasis: {
-                focus: 'series'
-              },
-              data: [120, 132, 101, 134, 90, 230, 210]
+  const { id = 'default-id', width = '100%', height = '100%', dates, dayType, lineData, commentSwitch, mirrorSwitch, postSwitch } = props;
+
+  const getSeriesData = (s: any, i: number) => {
+    let seriesObj = {
+      name: `Pub#${s[i]['pubId']}`,
+      type: 'line',
+      stack: 'Total',
+      label: {
+        show: false,
+        position: 'top'
+      },
+      areaStyle: {},
+      data: [],
+      showSymbol: false
+    }
+
+    for (let j = 0; j < lineData.length; j++) {
+      let flx: any[] = lineData[j].filter((t: any) => {
+        return t.pubId == s[i]['pubId']
+      })
+      if (flx.length == 0) {
+        seriesObj.data.push(null)
+      } else {
+        if (commentSwitch && !mirrorSwitch) {
+          seriesObj.data.push(flx[0]['commentByCount'])
+        }
+        if (!commentSwitch && mirrorSwitch) {
+          seriesObj.data.push(flx[0]['mirrorByCount'])
+        }
+        if (commentSwitch && mirrorSwitch) {
+          seriesObj.data.push(flx[0]['mirrorByCount'] + flx[0]['commentByCount'])
+        }
+        if (!commentSwitch && !mirrorSwitch) {
+          seriesObj.data.push(0)
+        }
+      }
+    }
+
+    return seriesObj;
+  }
+
+  useEffect(() => {
+    let legendData = [];
+    let seriesData = [];
+    if (lineData.length == 0) return;
+    const s = lineData[lineData.length - 1];
+    if (postSwitch) {
+      for (let i = 0; i < s.length; i++) {
+        if (s[i]['type'] === 'Post') {
+          legendData.push(`Pub#${s[i]['pubId']}`)
+          seriesData.push(getSeriesData(s, i))
+        }
+      }
+    } else {
+      for (let i = 0; i < s.length; i++) {
+        legendData.push(`Pub#${s[i]['pubId']}`)
+        seriesData.push(getSeriesData(s, i))
+      }
+    }
+
+    const option = {
+      tooltip: {
+        trigger: 'axis',
+        // formatter: () => {
+        //   return '<div>234234</div>'
+        // }
+      },
+      legend: {
+        icon: 'rect',
+        bottom: '0px',
+        left: '60px',
+        data: legendData,
+        textStyle: {
+          color: 'rgba(255,255,255,0.8)'
+        },
+        itemWidth: 16,
+        itemHeight: 16,
+        itemGap: 30
+      },
+      toolbox: {
+        show: false,
+        feature: {
+          saveAsImage: {}
+        }
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '16%',
+        containLabel: true
+      },
+      dataZoom: [
+        {
+          show: true,
+          brushSelect: false,
+          borderColor: 'rgba(255,255,255,0)',
+          start: 100 - (dayType +1)*7 / 30 * 100,
+          end: 100,
+          xAxisIndex: [0, 1],
+          top: '86%',
+        },
+        {
+          type: 'inside',
+          brushSelect: false,
+          borderColor: 'rgba(255,255,255,0)',
+          start: 100 - (dayType +1)*7 / 30 * 100,
+          end: 100,
+          xAxisIndex: [0, 1],
+          top: '86%',
+        }
+      ],
+      xAxis: [
+        {
+          type: 'category',
+          boundaryGap: false,
+          data: dates,
+          axisLabel: {
+            textStyle: {
+              color: 'rgba(255,255,255,0.8)',
+              fontSize: 14
             },
-            {
-              name: 'Union Ads',
-              type: 'line',
-              stack: 'Total',
-              areaStyle: {},
-              emphasis: {
-                focus: 'series'
-              },
-              data: [220, 182, 191, 234, 290, 330, 310]
-            },
-            {
-              name: 'Video Ads',
-              type: 'line',
-              stack: 'Total',
-              areaStyle: {},
-              emphasis: {
-                focus: 'series'
-              },
-              data: [150, 232, 201, 154, 190, 330, 410]
-            },
-            {
-              name: 'Direct',
-              type: 'line',
-              stack: 'Total',
-              areaStyle: {},
-              emphasis: {
-                focus: 'series'
-              },
-              data: [320, 332, 301, 334, 390, 330, 320]
-            },
-            {
-              name: 'Search Engine',
-              type: 'line',
-              stack: 'Total',
-              label: {
-                show: true,
-                position: 'top'
-              },
-              areaStyle: {},
-              emphasis: {
-                focus: 'series'
-              },
-              data: [820, 932, 901, 934, 1290, 1330, 1320]
+          }
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value',
+          splitLine: {
+            lineStyle: {
+              color: 'rgba(255,255,255,0.1)'
             }
-          ]
-        };
+          },
+          axisLabel: {
+            textStyle: {
+              color: 'rgba(255,255,255,0.8)',
+              fontSize: 14
+            },
+          }
+        }
+      ],
+      series: [...seriesData]
+    };
+    console.log(option)
+    // option.series = seriesData;
 
-        const HTMLElement = document.getElementById(id) as HTMLElement;
+    const HTMLElement = document.getElementById(id) as HTMLElement;
 
-        const chart = echarts.init(HTMLElement);
+    const chart = echarts.init(HTMLElement);
 
-        chart.setOption(option);
-
-        window.addEventListener("resize", () => {
-            if (chart) {
-                chart.resize()
-            }
-        })
-
-    });
-
-    useEffect(() => {
-        console.log(1)
+    chart.setOption({ ...option });
+    // console.log(chart)
+    window.addEventListener("resize", () => {
+      if (chart) {
+        chart.resize()
+      }
     })
 
-    return (
-        <div id={id} style={{ width: width, height: height }}>
+  });
 
-        </div>
-    );
+  useEffect(() => {
+    console.log(1)
+  })
+
+  return (
+    <div id={id} style={{ width: width, height: height }}>
+
+    </div>
+  );
 
 };
 
