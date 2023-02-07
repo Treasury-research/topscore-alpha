@@ -5,7 +5,7 @@ const projectId = INFURA_PROJECT_ID;
 const secret = INFURA_SECRET;
 
 if (!projectId || !secret) {
-  throw new Error("No infura key detected");
+  console.error("No infura key detected");
 }
 
 const client = create({

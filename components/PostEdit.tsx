@@ -21,20 +21,26 @@ const PostEdit = () => {
 
     const {account, connectWallet, signMessage, web3, sendTx} = useWeb3Context()
 
-    // const { create, error, isPending } = useCreatePost({ profile, upload });
-
     const [postContent, setPostContent] = useState<string>('')
 
-    // const doLogin = async () => {
-    //     const challenge = (await getChallenge(account || '')).challenge.text;
-    //     console.log('aaa', challenge)
-    //     const signature = await signMessage(challenge)
-    //     console.log('sig', signature)
-    // }
+    const doLogin = async () => {
+        const challenge = (await lensApi.getChallenge(account || '')).challenge.text;
+        const signature = await signMessage(challenge)
+        console.log('sig', signature)
+        const token = (await lensApi.getAccessToken(account, signature)).authenticate;
+        console.log('token', token)
+        sessionStorage.setItem('accessToken', token.accessToken);
+    }
 
-    // const getChallenge = async (address: string) => {
-    //     return lensApi.getChallenge(address)
-    // }
+    const doApiPost = async () => {
+        const res = await lensApi.post(47107, "https://hkxkrnbxl4zyr72hcihyp22zz3rzeuy2zsm6kfv6omhak4sskowq.arweave.net/Oq6otDdfM4j_RxIPh-tZzuOSUxrMmeUWvnMOBXJSU60", {
+            revertCollectModule: true
+          }, {
+            followerOnlyReferenceModule: false
+          })
+
+        console.log('aaaa', res)
+    }
 
     const doPost = async () => {
         if(!postContent){
@@ -43,8 +49,6 @@ const PostEdit = () => {
         }
 
         const contentURI = uploadIpfs(postContent);
-
-        console.log('aaaa', contentURI)
 
         const func = await lenshubContract.post({
             profileId: 47107,
@@ -70,12 +74,12 @@ const PostEdit = () => {
 
     return (
         <div className="bg-[#1A1A1A] p-5 mt-10 mb-10">
-            {!account && <button onClick={() => connectWallet()} className="flex items-center justify-center mb-4 bg-[#CE3900] px-4 py-1 cursor-pointer rounded-[4px]">
+            {account ? <button onClick={() => doLogin()} className="flex items-center justify-center mb-4 bg-[#CE3900] px-4 py-1 cursor-pointer rounded-[4px]">
+                Login
+            </button> : <button onClick={() => connectWallet()} className="flex items-center justify-center mb-4 bg-[#CE3900] px-4 py-1 cursor-pointer rounded-[4px]">
                 Connect Wallet
             </button> }
 
-            {/* <LoginButton /> */}
-           
             <TextArea value={postContent} onChange={e => setPostContent(e.target.value)} rows={4} placeholder="What’s happening?" />
             <div className="flex mt-4">
                 <div className="flex items-center justify-center">
@@ -115,7 +119,7 @@ const PostEdit = () => {
                         alt=""
                     />
                 </div>
-                <div onClick={() => doPost()} className="flex items-center justify-center ml-[auto] bg-[#CE3900] px-4 py-1 cursor-pointer rounded-[4px]">
+                <div onClick={() => doApiPost()} className="flex items-center justify-center ml-[auto] bg-[#CE3900] px-4 py-1 cursor-pointer rounded-[4px]">
                     <span>Post</span>
                 </div>
             </div>
