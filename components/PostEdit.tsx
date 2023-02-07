@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import { Input } from 'antd';
 import lensApi from "../api/lensApi";
+import { uploadIpfs } from "../api/ipfs";
 import config from "../config";
 const { TextArea } = Input;
 import useWeb3Context from '../hooks/useWeb3Context'
@@ -13,14 +14,7 @@ import P4 from '../statics/img/p4.png'
 import P5 from '../statics/img/p5.png'
 import P6 from '../statics/img/p6.png'
 import P7 from '../statics/img/p7.png'
-
-export const upload = (data: unknown): string => {
-    const serialized = JSON.stringify(data);
-    
-    const url = '' // upload serialized to a public location
-          
-    return url;
-  }
+import { toast } from "react-toastify";
 
 const PostEdit = () => {
     const lenshubContract = useLenshubContract();
@@ -42,7 +36,16 @@ const PostEdit = () => {
     //     return lensApi.getChallenge(address)
     // }
 
-    const doPost = async (content: string) => {
+    const doPost = async () => {
+        if(!postContent){
+            toast.error('No content to post yet')
+            return
+        }
+
+        const contentURI = uploadIpfs(postContent);
+
+        console.log('aaaa', contentURI)
+
         const func = await lenshubContract.post({
             profileId: 47107,
             contentURI: "https://hkxkrnbxl4zyr72hcihyp22zz3rzeuy2zsm6kfv6omhak4sskowq.arweave.net/Oq6otDdfM4j_RxIPh-tZzuOSUxrMmeUWvnMOBXJSU60",
@@ -112,7 +115,7 @@ const PostEdit = () => {
                         alt=""
                     />
                 </div>
-                <div onClick={() => doPost(postContent)} className="flex items-center justify-center ml-[auto] bg-[#CE3900] px-4 py-1 cursor-pointer rounded-[4px]">
+                <div onClick={() => doPost()} className="flex items-center justify-center ml-[auto] bg-[#CE3900] px-4 py-1 cursor-pointer rounded-[4px]">
                     <span>Post</span>
                 </div>
             </div>

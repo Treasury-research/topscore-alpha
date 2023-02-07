@@ -8,6 +8,10 @@ export const infuraId = "997ec38ed1ff4c818b45a09f14546530";
 
 export const zeroAddress = "0x0000000000000000000000000000000000000000";
 
+export const INFURA_PROJECT_ID = ''
+
+export const INFURA_SECRET = '';
+
 export default {
   ...envConf,
 };
