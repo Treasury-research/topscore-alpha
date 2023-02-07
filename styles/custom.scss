@@ -1,0 +1,468 @@
+.toscore-main {
+  width: 1000px;
+  margin: 0 auto;
+
+  >div:nth-child(1) {
+    overflow: hidden;
+    margin-top: calc((100vh - 610px) / 2);
+
+    >div:nth-child(1) {
+      float: left;
+    }
+
+    >div:nth-child(2) {
+      float: right;
+    }
+  }
+
+  .toscore-main-base-info {
+    overflow: hidden;
+
+    >div,
+    img {
+      float: left;
+    }
+
+    >div:nth-child(1) {
+      font-size: 16px;
+      font-weight: 600;
+      overflow: hidden;
+
+    }
+
+    >div:nth-child(2) {
+      color: rgba(255, 255, 255, .5);
+    }
+  }
+
+  .top-rador {
+    height: 500px;
+    width: 100%;
+    position: relative;
+
+    .generate {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      height: 300px;
+      width: 300px;
+      z-index: 100;
+      cursor: pointer;
+    }
+
+    >div:nth-child(1) {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 99;
+    }
+
+    .top-rador-info {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 9;
+
+      .rador-info {
+        overflow: hidden;
+        margin-top: 190px;
+
+        >div:nth-child(1) {
+          margin-left: 65px;
+          margin-right: 315px;
+        }
+
+        >div {
+          float: left;
+          overflow: hidden;
+
+          >div:nth-child(1) {
+            >div {
+              border-right: 1px solid rgba(255, 255, 255, .5);
+            }
+
+          }
+
+          >div {
+            float: left;
+            width: 140px;
+
+            >div {
+
+              margin-bottom: 30px;
+
+              >p {
+                text-align: center;
+              }
+
+              >p:nth-child(1) {
+                font-size: 20px;
+                font-family: "Jura";
+                font-weight: normal;
+                color: rgba(255, 255, 255, .9);
+              }
+
+              >p:nth-child(2) {
+                font-size: 14px;
+                color: rgba(255, 255, 255, .6);
+                font-family: 'Jura';
+              }
+            }
+
+            .diff-sty-info {
+              margin-top: -15px;
+
+              >p {
+                >span {
+                  text-align: center;
+                  font-size: 16px;
+                  font-family: "Jura";
+                  font-weight: normal;
+                  color: rgba(255, 255, 255, .9);
+                }
+
+                >span:nth-child(1) {
+                  margin-right: 10px;
+                }
+
+                >span:nth-child(2) {
+                  font-size: 12px;
+                  margin-right: 10px;
+                  color: rgba(255, 255, 255, .6);
+                }
+              }
+            }
+          }
+        }
+      }
+
+    }
+  }
+
+  .influence_curation {
+    display: flex;
+    font-family: "Exan";
+    margin-bottom: 300px;
+
+    .influence-default-text {
+      font-size: 20px;
+      margin-top: 60px;
+
+      >p:nth-child(1) {
+        margin-bottom: 10px;
+      }
+
+      >p:nth-child(2) {
+        text-indent: 200px;
+      }
+    }
+
+    .curation-default-text {
+      font-size: 20px;
+      margin-top: 60px;
+
+      >p {
+        margin-bottom: 10px;
+      }
+
+      >p:nth-child(2) {
+        text-indent: 420px;
+      }
+
+      >p:nth-child(3) {
+        text-indent: 520px;
+      }
+
+      >p:nth-child(4) {
+        text-indent: 620px;
+      }
+    }
+
+    .left-rador {
+      flex: 2;
+      height: 310px;
+    }
+
+    .right-text {
+      flex: 3;
+      padding-left: 40px;
+
+      p {
+        font-size: 20px;
+        font-family: "Exan";
+        font-weight: 500;
+        color: rgba(255, 255, 255, .8);
+        margin-bottom: 20px;
+
+        span {
+          background: rgba(255, 51, 0, 1);
+        }
+      }
+    }
+  }
+
+  .collect_pablication {
+    display: flex;
+    font-family: "Exan";
+
+    .collect-default-text {
+      font-size: 20px;
+      width: 100%;
+      margin-top: 60px;
+
+      >div {
+        width: calc(50% - 10px);
+        float: left;
+
+        >p {
+          margin-bottom: 10px;
+        }
+      }
+
+      >div:nth-child(1) {
+        margin-right: 20px;
+
+        >p {
+          text-align: right;
+        }
+      }
+
+      >div:nth-child(2) {
+        >p {
+          text-align: left;
+        }
+      }
+    }
+
+    .publication-default-text {
+      font-size: 20px;
+      margin-top: 60px;
+
+      >p {
+        margin-bottom: 10px;
+      }
+
+      >p:nth-child(2) {
+        text-indent: 400px;
+      }
+
+      >p:nth-child(3) {
+        text-indent: 600px;
+      }
+
+      >p:nth-child(4) {
+        text-indent: 600px;
+      }
+    }
+
+    .left-text {
+      flex: 3;
+
+      p {
+        font-size: 20px;
+        font-family: "Exan";
+        font-weight: 500;
+        color: rgba(255, 255, 255, .8);
+        margin-bottom: 20px;
+
+        span {
+          padding: 1px 3px;
+          background: rgba(255, 51, 0, 1);
+        }
+      }
+    }
+
+    .right-rador {
+      flex: 2.3;
+      height: 328px;
+    }
+  }
+
+  .space {
+    color: rgba(255, 255, 255, .9);
+
+    font-size: 20px;
+    font-family: 'Jura';
+    font-weight: normal;
+    color: #FFFFFF;
+  }
+
+  .net-head-img {
+    background-color: rgba(255, 51, 0, 1);
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    width: 50px;
+    margin-right: 10px;
+  }
+}
+
+.drop-menu {
+  cursor: pointer;
+  width: 100%;
+  padding: 4px 10px;
+}
+
+.ant-dropdown-menu {
+  background: #505050 !important;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.ant-drawer-content-wrapper {
+  width: 260px !important;
+  height: 600px;
+  top: 200px !important;
+}
+
+.ant-drawer-content {
+  background: none !important;
+}
+.right-del-info{
+  margin-top: 15px;
+    padding-top: 20px;
+}
+.sdf{
+  background: red;
+}
+
+.echart-icon{
+  background: url("../statics/img/topIcon.png") no-repeat center center;
+  height: 40px;
+  width: 40px;
+}
+
+.engage-head-left-icon{
+  background: url("../statics/img/follow.png") no-repeat center center;
+  background-size: cover;
+  height: 26px;
+  width: 26px;
+  margin-right: 4px;
+}
+
+.engage-head-fee-left-icon{
+  background: url("../statics/img/fee-left.png") no-repeat center center;
+  background-size: cover;
+  height: 26px;
+  width: 26px;
+  margin-right: 4px;
+}
+
+.engage-head-fee-score-icon{
+  background: url("../statics/img/score.png") no-repeat center center;
+  background-size: cover;
+  height: 26px;
+  width: 26px;
+  margin-right: 4px;
+}
+
+.engage-tooltip{
+  width: 400px;
+}
+
+.engage-head{
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(255, 255, 255, .1);
+}
+
+.engage-head-left{
+  display: flex;
+  justify-content: center;
+  align-items:center;
+}
+
+.engage-head-left-des{
+  font-size: 16px;
+  color: rgba(255, 255, 255, .8);
+}
+
+.engage-head-left-num{
+  font-size: 16px;
+  color: rgba(255, 255, 255, 1);
+}
+
+.engage-head-right{
+  margin-left: auto;
+  font-size: 16px;
+  color: rgba(255, 255, 255, .8);
+}
+
+.engage-items{
+  float: left;
+  width: 25%;
+  margin-top: 10px;
+}
+
+.engage-items-head{
+  display: flex;
+  align-items:center;
+}
+
+.engage-items-head-post-icon{
+  background: url("../statics/img/post-chart.png") no-repeat center center;
+  background-size: cover;
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
+}
+
+.engage-items-head-comment-icon{
+  background: url("../statics/img/commentT.png") no-repeat center center;
+  background-size: cover;
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
+}
+
+.engage-items-content{
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+.engage-collect-items-content{
+  display: flex;
+  margin-top: 10px;
+}
+
+.engage-items-comment-icon{
+  background: url("../statics/img/comment.png") no-repeat center center;
+  background-size: cover;
+  height: 16px;
+  width: 16px;
+  margin-right: 4px;
+}
+
+.engage-items-mirror-icon{
+  background: url("../statics/img/mirror.png") no-repeat center center;
+  background-size: cover;
+  height: 16px;
+  width: 16px;
+  margin-right: 4px;
+}
+
+.engage-items-noFee-icon{
+  background: url("../statics/img/noFee.png") no-repeat center center;
+  background-size: cover;
+  height: 16px;
+  width: 16px;
+  margin-right: 4px;
+}
+
+.engage-items-fee-icon{
+  background: url("../statics/img/fee.png") no-repeat center center;
+  background-size: cover;
+  height: 16px;
+  width: 16px;
+  margin-right: 4px;
+}
+
+.engage-items-comment-num{
+  margin-right: 10px;
+}

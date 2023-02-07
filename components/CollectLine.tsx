@@ -3,7 +3,7 @@ import * as echarts from 'echarts';
 
 const ChartLine = (props: any) => {
 
-  const { id = 'default-id', width = '100%', height = '100%', dates, dayType, lineData, commentSwitch, mirrorSwitch, postSwitch } = props;
+  const { id = 'default-id', width = '100%', height = '100%', dates, dayType, lineData,postSwitch } = props;
 
   const getSeriesData = (s: any, i: number) => {
     let seriesObj = {
@@ -20,27 +20,15 @@ const ChartLine = (props: any) => {
     }
 
     for (let j = 0; j < lineData.length; j++) {
-      let flx: any[] = lineData[j].filter((t: any) => {
+      let flx = lineData[j].filter((t: any) => {
         return t.pubId == s[i]['pubId']
       })
       if (flx.length == 0) {
         seriesObj.data.push(null)
       } else {
-        if (commentSwitch && !mirrorSwitch) {
-          seriesObj.data.push(flx[0]['commentByCount'])
-        }
-        if (!commentSwitch && mirrorSwitch) {
-          seriesObj.data.push(flx[0]['mirrorByCount'])
-        }
-        if (commentSwitch && mirrorSwitch) {
-          seriesObj.data.push(flx[0]['mirrorByCount'] + flx[0]['commentByCount'])
-        }
-        if (!commentSwitch && !mirrorSwitch) {
-          seriesObj.data.push(0)
-        }
+        seriesObj.data.push(flx[0]['collectByCount'])
       }
     }
-
     return seriesObj;
   }
 
