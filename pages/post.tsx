@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Navbar from '../components/Navbar'
 import Rmodynamics from '../components/Rmodynamics'
+import lensApi from "../api/lensApi";
 import { BellOutlined, UserOutlined } from '@ant-design/icons';
 import Creation from '../components/Creation'
 import Dashboard from '../components/Dashboard'
@@ -10,6 +11,8 @@ const tabs = ['Creation', 'DashBoard']
 const Post = () => {
 
   const [activeTab, setActiveTab] = useState(0);
+
+
 
   return (
     <div className="w-full h-full bg-[#000] flex">
