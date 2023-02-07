@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { Checkbox } from 'antd';
+import api from "../api";
 import moment from 'moment'
 
 const dys = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -12,6 +13,8 @@ const rmodynamics = () => {
     const [remodyBaseData, setRemodyBaseData] = useState<any>([]);
 
     const [checked, setChecked] = useState([false, false, false, false, false]);
+
+    const [activeYear, setActiveYear] = useState('2022')
 
     const [week, setWeek] = useState<any>([]);
 
@@ -80,6 +83,23 @@ const rmodynamics = () => {
             return 'border-[1px] border-[#B4D2FF]'
         }
     }
+
+    const getHeatmapData = async () =>{
+        // profile id 稍晚点会放到 store 里
+        const testProfileId = 1
+        const res = await api.get(`/publication/${testProfileId}`, {
+            params:{
+                profileId: testProfileId,
+                year: activeYear,
+                type: "All",
+            }
+        })
+        console.log('heatmap data', res)
+    }
+
+    useEffect(()=>{
+        getHeatmapData();
+    }, [])
 
     return (
         <div className="text-[#fff]">

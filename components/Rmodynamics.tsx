@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import api from "../api";
 import { Checkbox } from 'antd';
 import moment from 'moment'
 
@@ -98,6 +99,38 @@ const rmodynamics = () => {
             return 'border-[1px] border-[#B4D2FF]'
         }
     }
+
+    const getGlobalHeatmapData = async () =>{
+        const defaultYear = '2023'
+        const defaultHours = '00'
+        const res = await api.get(`/thermal-map/global`, {
+            params:{
+                from: `${defaultYear}0101${defaultHours}`,
+                to: `${defaultYear}0101${defaultHours}`,
+            }
+        })
+        console.log('global heatmap data', res)
+    }
+
+    const getHeatmapData = async () =>{
+        const testProfileId = 1
+        const defaultYear = '2023'
+        const defaultHours = '00'
+
+        const res = await api.get(`/thermal-map/personal/${testProfileId}`, {
+            params:{
+                profileId: testProfileId,
+                from: `${defaultYear}0101${defaultHours}`,
+                to: `${defaultYear}0101${defaultHours}`,
+            }
+        })
+        console.log('heatmap data', res)
+    }
+
+    useEffect(()=>{
+        getHeatmapData();
+        getGlobalHeatmapData()
+    }, [])
 
     return (
         <div className="text-[#fff]">
