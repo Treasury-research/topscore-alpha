@@ -21,7 +21,12 @@ const client = create({
 });
 
 export const uploadIpfs = async <T>(data: T) => {
-  const result = client.add(JSON.stringify(data));
+  const result = await client.add(JSON.stringify(data));
   console.log("upload result", result);
   return result;
 };
+
+
+export const formatToIpfs = (hash: string) => {
+    return `ipfs://${hash}`
+}

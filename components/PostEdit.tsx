@@ -1,7 +1,8 @@
 import React, {useState} from "react";
 import { Input } from 'antd';
 import lensApi from "../api/lensApi";
-import { uploadIpfs } from "../api/ipfs";
+import { uploadIpfs, formatToIpfs } from "../api/ipfs";
+import { createPostMetadata } from "../api/post";
 import config from "../config";
 const { TextArea } = Input;
 import useWeb3Context from '../hooks/useWeb3Context'
@@ -30,16 +31,104 @@ const PostEdit = () => {
         const token = (await lensApi.getAccessToken(account, signature)).authenticate;
         console.log('token', token)
         sessionStorage.setItem('accessToken', token.accessToken);
+        lensApi.setToken(token.accessToken);
     }
 
     const doApiPost = async () => {
-        const res = await lensApi.post(47107, "https://hkxkrnbxl4zyr72hcihyp22zz3rzeuy2zsm6kfv6omhak4sskowq.arweave.net/Oq6otDdfM4j_RxIPh-tZzuOSUxrMmeUWvnMOBXJSU60", {
+        if(!postContent){
+            toast.error('No content to post yet')
+            return
+        }
+        
+        const metadataContent = createPostMetadata(postContent, 'attend.lens')
+
+        const ipfsRaw = await uploadIpfs(metadataContent);
+
+        const contentURI = formatToIpfs(ipfsRaw.path)
+
+
+        const res = (await lensApi.post(47107, contentURI, {
             revertCollectModule: true
           }, {
             followerOnlyReferenceModule: false
+          })).createPostTypedData
+
+          console.log('typedData', account, JSON.stringify(res.typedData))
+   
+          const msgParams = JSON.stringify({
+            "types": {
+                "PostWithSig": [
+                    {
+                        "name": "profileId",
+                        "type": "uint256",
+                        "__typename": "EIP712TypedDataField"
+                    },
+                    {
+                        "name": "contentURI",
+                        "type": "string",
+                        "__typename": "EIP712TypedDataField"
+                    },
+                    {
+                        "name": "collectModule",
+                        "type": "address",
+                        "__typename": "EIP712TypedDataField"
+                    },
+                    {
+                        "name": "collectModuleInitData",
+                        "type": "bytes",
+                        "__typename": "EIP712TypedDataField"
+                    },
+                    {
+                        "name": "referenceModule",
+                        "type": "address",
+                        "__typename": "EIP712TypedDataField"
+                    },
+                    {
+                        "name": "referenceModuleInitData",
+                        "type": "bytes",
+                        "__typename": "EIP712TypedDataField"
+                    },
+                    {
+                        "name": "nonce",
+                        "type": "uint256",
+                        "__typename": "EIP712TypedDataField"
+                    },
+                    {
+                        "name": "deadline",
+                        "type": "uint256",
+                        "__typename": "EIP712TypedDataField"
+                    }
+                ],
+                "__typename": "CreatePostEIP712TypedDataTypes"
+            },
+            "domain": {
+                "name": "Lens Protocol Profiles",
+                "chainId": 137,
+                "version": "1",
+                "verifyingContract": "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d",
+                "__typename": "EIP712TypedDataDomain"
+            },
+            "value": {
+                "nonce": 0,
+                "deadline": 1675769982,
+                "profileId": "0xb803",
+                "contentURI": "https://arweave.net/zL4krdqP7IrPBmfK-owUN566zmTp5UF78pHsx9mXPwg",
+                "collectModule": "0xa31FF85E840ED117E172BC9Ad89E55128A999205",
+                "collectModuleInitData": "0x",
+                "referenceModule": "0x0000000000000000000000000000000000000000",
+                "referenceModuleInitData": "0x",
+                "__typename": "CreatePostEIP712TypedDataValue"
+            },
+            "__typename": "CreatePostEIP712TypedData"
+        })
+  
+          const signRes = await web3.currentProvider.sendAsync({
+            method: "eth_signTypedData_v4",
+            params: [account, JSON.stringify(msgParams)],
+            from: account,
           })
 
-        console.log('aaaa', res)
+        console.log('aaaa', res, signRes)
     }
 
     const doPost = async () => {
@@ -48,11 +137,15 @@ const PostEdit = () => {
             return
         }
 
-        const contentURI = uploadIpfs(postContent);
+        const metadataContent = createPostMetadata(postContent, 'attend.lens')
+
+        const ipfsRaw = await uploadIpfs(metadataContent);
+
+        const contentURI = formatToIpfs(ipfsRaw.path)
 
         const func = await lenshubContract.post({
             profileId: 47107,
-            contentURI: "https://hkxkrnbxl4zyr72hcihyp22zz3rzeuy2zsm6kfv6omhak4sskowq.arweave.net/Oq6otDdfM4j_RxIPh-tZzuOSUxrMmeUWvnMOBXJSU60",
+            contentURI,
             collectModule: config.contracts.FreeCollectModule,
             collectModuleInitData: web3.eth.abi.encodeParameters(["bool"], [true]),
             referenceModule: config.zeroAddress,
