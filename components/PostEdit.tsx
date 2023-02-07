@@ -44,12 +44,12 @@ const PostEdit = () => {
 
     const doPost = async (content: string) => {
         const func = await lenshubContract.post({
-            profileId: '1',
+            profileId: 47107,
             contentURI: "https://hkxkrnbxl4zyr72hcihyp22zz3rzeuy2zsm6kfv6omhak4sskowq.arweave.net/Oq6otDdfM4j_RxIPh-tZzuOSUxrMmeUWvnMOBXJSU60",
             collectModule: config.contracts.FreeCollectModule,
             collectModuleInitData: web3.eth.abi.encodeParameters(["bool"], [true]),
             referenceModule: config.zeroAddress,
-            referenceModuleInitdata: []
+            referenceModuleInitData: web3.eth.abi.encodeParameters([], [])
         })
 
         console.log('fff', func)

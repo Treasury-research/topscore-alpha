@@ -118,8 +118,6 @@ export const Web3ContextProvider = ({ children }) => {
     // gas price is necessary for matic
     const gasPrice = Number(await web3.eth.getGasPrice());
 
-    console.log("gas", gasLimit, gasPrice, account);
-
     if (!isNaN(gasLimit)) {
       return func
         .send({

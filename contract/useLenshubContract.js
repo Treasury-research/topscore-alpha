@@ -1,7 +1,6 @@
 import config from "../config";
 import useErc721Contract from "./useErc721Contract";
 import useWeb3Context from "hooks/useWeb3Context";
-import abi from 'ethereumjs-abi';
 import useContract from "hooks/useContract";
 import LenshubAbi from "./abi/Lenshub.json";
 export default function useLenshubContract() {
@@ -29,14 +28,7 @@ export default function useLenshubContract() {
     },
 
     async post(params) {
-      // const initData = abi.rawEncode(
-      //   ["uint256", "string", "address", "bytes", "address", "bytes"],
-      //   [1, "https://hkxkrnbxl4zyr72hcihyp22zz3rzeuy2zsm6kfv6omhak4sskowq.arweave.net/Oq6otDdfM4j_RxIPh-tZzuOSUxrMmeUWvnMOBXJSU60", config.contracts.FreeCollectModule, web3.eth.abi.encodeParameters(["bool"], [true]), config.zeroAddress, []]
-      // );
-    
-      const initData = web3.eth.abi.encodeParameters(["uint256", "string", "address", "bytes", "address", "bytes"], Object.values(params));
-      console.log("foo", initData);
-      const func = contract.methods.post([1, "https://hkxkrnbxl4zyr72hcihyp22zz3rzeuy2zsm6kfv6omhak4sskowq.arweave.net/Oq6otDdfM4j_RxIPh-tZzuOSUxrMmeUWvnMOBXJSU60", config.contracts.FreeCollectModule, web3.eth.abi.encodeParameters(["bool"], [true]), config.zeroAddress, []]);
+      const func = contract.methods.post(params);
       return sendTx(func);
     },
   };
