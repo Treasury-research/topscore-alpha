@@ -46,7 +46,7 @@ const Navbar = () => {
                     <div key={i} className={`${router.pathname.includes(t.toLocaleLowerCase()) ? 'bg-[rgb(46,35,28)] text-[rgba(255,255,255,0.9)]' : 'text-[rgba(255,255,255,0.5)]'} text-[#fff] h-14 flex items-center cursor-pointer hover:bg-[rgb(46,35,28)] w-[160px]`} onClick={() => setActiveTab(i)}>
                         {
                             t === 'Post' || t === 'Profile' || t === 'NFT' ? (
-                                <Link href={`${t.toLocaleLowerCase() === 'profile' ? '/profile/0x09c85610154a276a71eb8a887e73c16072029b20' : `/${t.toLocaleLowerCase()}`}`}>
+                                <Link className="w-full h-full flex items-center" href={`${t.toLocaleLowerCase() === 'profile' ? '/profile/0x09c85610154a276a71eb8a887e73c16072029b20' : `/${t.toLocaleLowerCase()}`}`}>
                                     <div className="flex">
                                         <Image
                                             className="mr-1 ml-5"

@@ -12,6 +12,8 @@ import api from "../../api";
 import ImgGenerate from "../../statics/img/generate-button.gif";
 import ImgHoverGenerate from "../../statics/img/hover-generate-button.gif";
 import Image from 'next/image'
+import { useRecoilState } from 'recoil';
+import { currenProfile } from '../../store/state'
 
 const defaultPageLimit = 6;
 
@@ -40,9 +42,6 @@ const Post = () => {
   const [handlesList, setHandlesList] = useState<any>([]);
   const [loadingHandlesList, setLoadingHandlesList] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<any>({});
-  const [influence, setInfluence] = useState<any>({});
-  const [curation, setCuration] = useState<any>({});
-  const [collection, setCollection] = useState<any>({});
   const [currentProfile, setCurrentProfile] = useState<any>({});
   const [activeHandleIndex, setActiveHandleIndex] = useState<number>(0);
   const [activeRankIndex, setActiveRankIndex] = useState<number>(0);
@@ -51,10 +50,10 @@ const Post = () => {
   const [rankInfo, setRankInfo] = useState<any>({});
   const [isSelf, setIsSelf] = useState<boolean>(false);
   const [showRadorGif, setShowRadorGif] = useState(false);
-  const [downloadModalVisible, setDownloadModalVisible] = useState(false);
   const [openScoreDropdown, setOpenScoreDropdown] = useState(false);
   const [openLensDropdown, setOpenLensDropdown] = useState(false);
   const [radarDetailScore, setRadarDetailScore] = useState<any>({});
+  const [currenProfileBase, setCurrenProfileBase] = useRecoilState<any>(currenProfile);
 
   const router = useRouter();
 
@@ -80,6 +79,7 @@ const Post = () => {
       setHandlesList(res.data);
       if (res.data.length === 0) {
         setCurrentProfile({});
+        setCurrenProfileBase({});
       }
     } finally {
       setLoadingHandlesList(false);
@@ -92,11 +92,19 @@ const Post = () => {
       ...prev,
       ...res.data,
     }));
+    setCurrenProfileBase((prev: any) => ({
+      ...prev,
+      ...res.data,
+    }));
   };
 
   const getPublication = async (profileId: string) => {
     const res: any = await api.get(`/lens/publication/${profileId}`);
     setUserInfo((prev: any) => ({
+      ...prev,
+      ...res.data,
+    }));
+    setCurrenProfileBase((prev: any) => ({
       ...prev,
       ...res.data,
     }));
@@ -252,6 +260,7 @@ const Post = () => {
     router.push(`/profile/${address}?queryProfileId=${profile.profileId}`);
 
     setCurrentProfile(profile);
+    setCurrenProfileBase(profile);
   }, [activeHandleIndex, handlesList]);
 
   useEffect(() => {
