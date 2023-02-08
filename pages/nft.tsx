@@ -51,8 +51,7 @@ const nft = () => {
     let rdata = [{
       id: '234',
       is_open: 0
-    },
-      , {
+    }, {
       id: '234',
       is_open: 0
     },
@@ -88,11 +87,12 @@ const nft = () => {
       id: '234',
       is_open: 0
     }]
-    setTotal(res2.data.length);
+    setTotal(rdata.length);
     let newList: any = [];
     for (var i = 0; i < rdata.length; i += 4) {
       newList.push(rdata.slice(i, i + 4));
     }
+    console.log(newList)
     setNftList(newList);
   };
 
@@ -129,6 +129,7 @@ const nft = () => {
             </div>
 
             <div className="open-pic mb-[100px]">
+              
               <div className="carou-con">
                 <Carousel dotPosition={'right'} className="rainbow-carou" autoplay>
                   {
@@ -171,11 +172,11 @@ const nft = () => {
                     ))
                   }
                 </Carousel>
+                {
+                  total !== 0 &&
+                  <div className="my-[20px] text-center">Total:{total}</div>
+                }
               </div>
-              {
-                total !== 0 &&
-                <div className="pic-total">Total:{total}</div>
-              }
               <Modal
                 className="openPicModal"
                 open={isShowPic}

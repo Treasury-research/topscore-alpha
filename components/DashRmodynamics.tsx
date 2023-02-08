@@ -6,6 +6,8 @@ import moment from 'moment'
 
 const dys = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
+const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
 let weekCount = 0;
 
 let maxRemoData: any = [0, 0, 0, 0, 0]
@@ -241,6 +243,13 @@ const rmodynamics = () => {
                                                     ))
                                                 }
                                             </div>
+                                        ))
+                                    }
+                                </div>
+                                <div className="flex">
+                                    {
+                                        month.map((t: any, i: number) => (
+                                            <div key={i} className="flex-1 text-[12px] flex justify-center">{t}</div>
                                         ))
                                     }
                                 </div>
