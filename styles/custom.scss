@@ -361,7 +361,7 @@
 }
 
 .engage-tooltip{
-  width: 400px;
+  width: 500px;
 }
 
 .engage-head{
@@ -608,28 +608,47 @@
   font-size: 34px;
   color: rgba(255, 255, 255, .8);
   font-family: 'Jura';
-  width: 1200px;
+  width: 1000px;
   margin: 100px auto;
   margin-top: 100px;
   margin-bottom: 100px;
 
   .character-rank{
     position: absolute;
-    top: -14px;
-    left: 350px;
+    top: -18px;
+    left: 298px;
   }
   .character-lens{
     position: absolute;
-    top: 116px;
-    left: 377px;
-    width: 387px;
+    top: 93px;
+    left: 315px;
+    width: 317px;
     text-align: center;
   }
   .character-score{
     position: absolute;
-    bottom: 40px;
-    left: 368px;
+    bottom: 30px;
+    left: 320px;
   }
+
+  .character-no-share-rank{
+    position: absolute;
+    top: -18px;
+    left: 298px;
+  }
+  .character-no-share-lens{
+    position: absolute;
+    top: 93px;
+    left: 315px;
+    width: 317px;
+    text-align: center;
+  }
+  .character-no-share-score{
+    position: absolute;
+    bottom: -15px;
+    left: 320px;
+  }
+
   .clear-btn-group{
     position: absolute;
     right: 294px;
@@ -691,4 +710,11 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
+}
+.pub-items{
+  flex-grow:1;
+  flex-basis:20%;
+  p{
+    word-break: break-word
+  }
 }

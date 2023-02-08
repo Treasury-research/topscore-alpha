@@ -53,7 +53,6 @@ const Dashboard = () => {
             </div>
             <DashRmodynamics></DashRmodynamics>
             <DashLinemics></DashLinemics>
-            <PubCard></PubCard>
         </div>
     )
 }

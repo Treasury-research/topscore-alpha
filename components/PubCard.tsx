@@ -1,112 +1,136 @@
 
+import { useEffect, useState } from 'react';
+import api from "../api";
 import Image from 'next/image'
-import IconPost from '../statics/img/post-chart.png'
-import Icon1 from '../statics/img/card-comment.png'
-import Iconer from '../statics/img/card2.png'
+import Icon1 from '../statics/img/pubIcon/commentBig.svg'
+import IconNum1 from '../statics/img/pubIcon/commentSmall.svg'
+import IconNum2 from '../statics/img/pubIcon/mirror.png'
+import IconNum3 from '../statics/img/pubIcon/like.svg'
 
-const PubCard = () => {
+const PubCard = (props: any) => {
+  const [pubData, setPubData] = useState([]);
+
+  const { lineData } = props;
+
+  useEffect(() => {
+    if (lineData.length > 0) {
+      let legendData = [];
+      if (lineData.length == 0) return;
+      const s = lineData[lineData.length - 1];
+      for (let i = 0; i < s.length; i++) {
+        legendData.push(`${s[i]['pubId']}`)
+      }
+      if(legendData.length > 0){
+        getPubs([legendData])
+      }else{
+        setPubData([])
+      }
+    }
+  }, [lineData])
+
+  const getPubs = async (ids: any) => {
+    const res = await api.get(`/lens/pubByLatest?profileId=12&pubIds=${ids.join(',')}`);
+    if (res.data) {
+      let newList: any = [];
+      for (var i = 0; i < res.data.length; i += 3) {
+        newList.push(res.data.slice(i, i + 3));
+      }
+      const data = DivideArrayEquallyInto4Parts(res.data)
+      setPubData([...data])
+    }
+  };
+
+  const DivideArrayEquallyInto4Parts = (s: any) => {
+    if (s.length >= 4) {
+      let arr1, arr2, arr3, arr4;
+      arr1 = s.slice(0, Math.round(s.length / 4));
+      arr2 = s.slice(Math.round(s.length / 4), Math.round(s.length / 4) * 2);
+      arr3 = s.slice(Math.round(s.length / 4) * 2, Math.round(s.length / 4) * 3);
+      arr4 = s.slice(Math.round(s.length / 4) * 3);
+      return [arr1, arr2, arr3, arr4];
+    } else if (s.length == 3) {
+      return [[s[0]], [s[1]], [s[2]]];
+    }
+    else if (s.length == 2) {
+      return [[s[0]], [s[1]]];
+    }
+    else if (s.length == 1) {
+      return [[s[0]]];
+    } else {
+      return []
+    }
+  }
+
   return (
     <div className="w-full bg-[#000] text-[#fff] p-5 my-10">
-      <div className="overflow-hidden">
-        <div className='w-[240px] bg-[#1A1A1A] px-4 py-3 rounded-[4px] float-left mr-5'>
-          <div className='flex'>
-            <div className='text-[rgba(255,255,255,0.9)]'>Pub #_num_</div>
-            <div className='ml-[auto]'>
-              <Image
-                className="mr-1"
-                src={IconPost}
-                alt=""
-              />
-            </div>
-          </div>
-          <div className='text-[#6C747D] text-[14px] my-[10px]'>2h</div>
-          <div className='text-[rgba(255,255,255,0.8)] text-[14px]'>
-            Keep in mind that you'll only see insights for content you've posted since you converted to a business or creator account. You can also tap the drop-down at the top of the screen to choose if you want to view insights for your selected preset or custom timeframe within the past 90 days.
-          </div>
-          <div className='flex items-center'>
-            <Image
-              className="mr-1"
-              src={Icon1}
-              alt=""
-            />
-            <span>133</span>
-          </div>
-        </div>
+      <div className="flex flex-row overflow-hidden">
+        {
+          pubData.map((t: any, i: number) => (
+            <div key={i} className={`flex flex-col ${i === 3 ? 'mr-[0px]' : 'mr-[20px]'} pub-items`}>
+              {
+                t.map((tem: any, index: number) => (
+                  <div key={index} className='bg-[#1A1A1A] py-[20px] px-[20px] rounded-[4px] relative my-[20px]'>
+                    <div className='flex'>
+                      <div className='text-[rgba(255,255,255,0.9)]'>Pub #{tem.pubId}</div>
+                      <div className={` ml-[auto] rounded-[4px] h-[24px] w-[24px] ${tem.type === 'Post' ? 'bg-[#575BFF]' : 'bg-[#9D3611]'}`}>
+                        {
+                          tem.type === 'Post' &&
+                          <div>e</div>
+                          // <Image
+                          //   className="mr-1"
+                          //   src={Icon1}
+                          //   alt=""
+                          // />
+                        }
+                        {
+                          tem.type === 'Comment' &&
+                          <Image
+                            className="mr-1"
+                            src={Icon1}
+                            alt=""
+                          />
+                        }
 
-        <div className='w-[240px] bg-[#1A1A1A] px-4 py-3 rounded-[4px]  float-left mr-5'>
-          <div className='flex'>
-            <div className='text-[rgba(255,255,255,0.9)]'>Pub #_num_</div>
-            <div className='ml-[auto]'>
-              <Image
-                className="mr-1"
-                src={IconPost}
-                alt=""
-              />
-            </div>
-          </div>
-          <div className='text-[#6C747D] text-[14px] my-[10px]'>2h</div>
-          <div className='text-[rgba(255,255,255,0.8)] text-[14px]'>
-            Keep in mind that you'll only see insights for content you've posted since you converted to a business or creator account. You can also tap the drop-down at the top of the screen to choose if you want to view insights for your selected preset or custom timeframe within the past 90 days.
-          </div>
-          <div className='flex items-center'>
-            <Image
-              className="mr-1"
-              src={Icon1}
-              alt=""
-            />
-            <span>133</span>
-          </div>
-        </div>
+                      </div>
+                    </div>
+                    <div className='text-[#6C747D] text-[14px] my-[10px]'>2h</div>
+                    <p className='text-[rgba(255,255,255,0.7)] text-[14px]'>
+                      {tem.content}
+                    </p>
+                    <div className='flex items-center mt-[20px]'>
+                      <div className='flex items-center mr-[20px]'>
+                        <Image
+                          className="mr-1"
+                          src={IconNum1}
+                          alt=""
+                        />
+                        <span className='text-[14px]'>{tem.commentByCount}</span>
+                      </div>
 
-        <div className='w-[240px] bg-[#1A1A1A] px-4 py-3 rounded-[4px] float-left mr-5'>
-          <div className='flex'>
-            <div className='text-[rgba(255,255,255,0.9)]'>Pub #_num_</div>
-            <div className='ml-[auto]'>
-              <Image
-                className="mr-1"
-                src={IconPost}
-                alt=""
-              />
-            </div>
-          </div>
-          <div className='text-[#6C747D] text-[14px] my-[10px]'>2h</div>
-          <div className='text-[rgba(255,255,255,0.8)] text-[14px]'>
-            Keep in mind that you'll only see insights for content you've posted since you converted to a business or creator account. You can also tap the drop-down at the top of the screen to choose if you want to view insights for your selected preset or custom timeframe within the past 90 days.
-          </div>
-          <div className='flex items-center'>
-            <Image
-              className="mr-1"
-              src={Icon1}
-              alt=""
-            />
-            <span>133</span>
-          </div>
-        </div>
+                      <div className='flex items-center mr-[20px]'>
+                        <Image
+                          className="mr-1"
+                          src={IconNum2}
+                          alt=""
+                        />
+                        <span className='text-[14px]'>{tem.mirrorByCount}</span>
+                      </div>
 
-        <div className='w-[240px] bg-[#1A1A1A] px-4 py-3 rounded-[4px] float-left mr-5'>
-          <div className='flex'>
-            <div className='text-[rgba(255,255,255,0.9)]'>Pub #_num_</div>
-            <div className='ml-[auto]'>
-              <Image
-                className="mr-1"
-                src={IconPost}
-                alt=""
-              />
+                      <div className='flex items-center mr-[20px]'>
+                        <Image
+                          className="mr-1"
+                          src={IconNum3}
+                          alt=""
+                        />
+                        <span className='text-[14px]'>{tem.collectByCount}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              }
             </div>
-          </div>
-          <div className='text-[#6C747D] text-[14px] my-[10px]'>2h</div>
-          <div className='text-[rgba(255,255,255,0.8)] text-[14px]'>
-            Keep in mind that you'll only see insights for content you've posted since you converted to a business or creator account. You can also tap the drop-down at the top of the screen to choose if you want to view insights for your selected preset or custom timeframe within the past 90 days.
-          </div>
-          <div className='flex items-center'>
-            <Image
-              className="mr-1"
-              src={Icon1}
-              alt=""
-            />
-            <span>133</span>
-          </div>
-        </div>
+          ))
+        }
       </div>
     </div>
   )

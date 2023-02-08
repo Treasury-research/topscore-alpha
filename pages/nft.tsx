@@ -48,51 +48,50 @@ const nft = () => {
         ids: res.join(','),
       },
     });
-    let rdata = [{
-      id: '234',
-      is_open: 0
-    }, {
-      id: '234',
-      is_open: 0
-    },
-    {
-      id: '234',
-      is_open: 0
-    },
-    {
-      id: '234',
-      is_open: 0
-    },
-    {
-      id: '234',
-      is_open: 0
-    },
-    {
-      id: '234',
-      is_open: 0
-    },
-    {
-      id: '234',
-      is_open: 0
-    },
-    {
-      id: '234',
-      is_open: 0
-    },
-    {
-      id: '234',
-      is_open: 0
-    },
-    {
-      id: '234',
-      is_open: 0
-    }]
-    setTotal(rdata.length);
+    // let rdata = [{
+    //   id: '234',
+    //   is_open: 0
+    // }, {
+    //   id: '234',
+    //   is_open: 0
+    // },
+    // {
+    //   id: '234',
+    //   is_open: 0
+    // },
+    // {
+    //   id: '234',
+    //   is_open: 0
+    // },
+    // {
+    //   id: '234',
+    //   is_open: 0
+    // },
+    // {
+    //   id: '234',
+    //   is_open: 0
+    // },
+    // {
+    //   id: '234',
+    //   is_open: 0
+    // },
+    // {
+    //   id: '234',
+    //   is_open: 0
+    // },
+    // {
+    //   id: '234',
+    //   is_open: 0
+    // },
+    // {
+    //   id: '234',
+    //   is_open: 0
+    // }]
+    setTotal(res2.length);
     let newList: any = [];
-    for (var i = 0; i < rdata.length; i += 4) {
-      newList.push(rdata.slice(i, i + 4));
+    for (var i = 0; i < res2.length; i += 4) {
+      newList.push(res2.slice(i, i + 4));
     }
-    console.log(newList)
     setNftList(newList);
   };
 

@@ -2,6 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+	font-family: "Exan";
+	font-weight: 500;
+	src: url("../accests/font/EXAN/Exan-Regular.ttf");
+}
+
+@font-face {
+	font-family: "Jura";
+	font-weight: 400;
+	src: url("../accests/font/JURA/Jura-Regular.ttf");
+}
+
+@font-face {
+	font-family: "Jura";
+	font-weight: 500;
+	src: url("../accests/font/JURA/Jura-Bold.ttf");
+}
+
+@font-face {
+	font-family: "Eur";
+	font-weight: 500;
+	src: url("../accests/font/EUR/EurostileBold.ttf");
+}
+
+@font-face {
+	font-family: "EurBlack";
+	font-weight: 500;
+	src: url("../accests/font/EURBLACK/EurostileExtendedBlack.ttf");
+}
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;

@@ -22,15 +22,38 @@ import Counselor from "../../statics/img/dark-character/Counselor.png";
 import Musician from "../../statics/img/dark-character/Musician.png";
 import Motivator from "../../statics/img/dark-character/Motivator.png";
 import Demonstrator from "../../statics/img/dark-character/Demonstrator.png";
+
+import MastermindP from "../../statics/img/character-noShare/Mastermind.png";
+import PioneerP from "../../statics/img/character-noShare/Pioneer.png";
+import ArtistP from "../../statics/img/character-noShare/Artist.png";
+import ConductorP from "../../statics/img/character-noShare/Conductor.png";
+import ActorP from "../../statics/img/character-noShare/Actor.png";
+import AntiquerP from "../../statics/img/character-noShare/Antiquer.png";
+import SpyP from "../../statics/img/character-noShare/Spy.png";
+import MagicianP from "../../statics/img/character-noShare/Magician.png";
+import HealerP from "../../statics/img/character-noShare/Healer.png";
+import VolcanologistP from "../../statics/img/character-noShare/Volcanologist.png";
+import PhotographerP from "../../statics/img/character-noShare/Photographer.png";
+import DesignerP from "../../statics/img/character-noShare/Designer.png";
+import ArchitectP from "../../statics/img/character-noShare/Architect.png";
+import EngineerP from "../../statics/img/character-noShare/Engineer.png";
+import PromotorP from "../../statics/img/character-noShare/Promotor.png";
+import SupervisorP from "../../statics/img/character-noShare/Supervisor.png";
+import MobilizerP from "../../statics/img/character-noShare/Mobilizer.png";
+import CounselorP from "../../statics/img/character-noShare/Counselor.png";
+import MusicianP from "../../statics/img/character-noShare/Musician.png";
+import MotivatorP from "../../statics/img/character-noShare/Motivator.png";
+import DemonstratorP from "../../statics/img/character-noShare/Demonstrator.png";
+
 import IconLenster from "../../statics/img/g5.svg";
 import { TwitterOutlined } from "@ant-design/icons";
 import useWeb3Context from "../../hooks/useWeb3Context";
 import { useRouter } from "next/router";
 import { useRecoilState } from 'recoil';
-import { currentProfileState } from '../../store/state'
+import { currentProfileState, profileListState } from '../../store/state'
 import BN from "bignumber.js";
 
-const background = {
+const haveSharePic = {
     Mastermind: Mastermind,
     Pioneer: Pioneer,
     Artist: Artist,
@@ -54,7 +77,29 @@ const background = {
     Demonstrator: Demonstrator,
 }
 
-
+const noSharePic = {
+    Mastermind: MastermindP,
+    Pioneer: PioneerP,
+    Artist: ArtistP,
+    Conductor: ConductorP,
+    Actor: ActorP,
+    Antiquer: AntiquerP,
+    Spy: SpyP,
+    Magician: MagicianP,
+    Healer: HealerP,
+    Volcanologist: VolcanologistP,
+    Photographer: PhotographerP,
+    Designer: DesignerP,
+    Architect: ArchitectP,
+    Engineer: EngineerP,
+    Promotor: PromotorP,
+    Supervisor: SupervisorP,
+    Mobilizer: MobilizerP,
+    Counselor: CounselorP,
+    Musician: MusicianP,
+    Motivator: MotivatorP,
+    Demonstrator: DemonstratorP,
+}
 
 const Character = (props: any) => {
 
@@ -64,16 +109,14 @@ const Character = (props: any) => {
 
     const { account } = useWeb3Context();
 
-    const [isSelf, setIsSelf] = useState<boolean>(false);
-
-    const router = useRouter();
-
-    const { address, queryProfileId } = router.query;
-
     const [currentProfileBase, setCurrenProfileBase] = useRecoilState<any>(currentProfileState);
 
-    const getRadar = async () => {
-        const res: any = await api.get(`/lens/scores/${currentProfileBase.profileId}`);
+    const [profileList, setProfileList] = useRecoilState(profileListState);
+
+    const [showShareBtn, setShowShareBtn] = useState(true);
+
+    const getRadar = async (profileId: string) => {
+        const res: any = await api.get(`/lens/scores/${profileId}`);
         console.log(res)
         let arr = [
             { type: 'influReda', score: res.data.influReda * 1.05 },
@@ -84,12 +127,17 @@ const Character = (props: any) => {
             { type: 'curationReda', score: res.data.curationReda * 1.1 },
         ];
         arr.sort((a: any, b: any) => { return b.score - a.score })
-        const img = getImg(arr);
-        setImgUrl(img)
+        const str = getImg(arr);
+        console.log(str)
+        if (profileId === '101548') {
+            setImgUrl(noSharePic[str])
+        } else {
+            setImgUrl(haveSharePic[str])
+        }
     };
 
-    const getIndicators = async () => {
-        const res: any = await api.get(`/lens/indicators/${currentProfileBase.profileId}`);
+    const getIndicators = async (profileId: string) => {
+        const res: any = await api.get(`/lens/indicators/${profileId}`);
         setUserInfo((prev: any) => ({
             ...prev,
             ...res.data,
@@ -106,18 +154,15 @@ const Character = (props: any) => {
 
     useEffect(() => {
         if (currentProfileBase && currentProfileBase.profileId) {
-            getRadar();
-            getIndicators();
+            getRadar(currentProfileBase.profileId);
+            getIndicators(currentProfileBase.profileId);
+            setShowShareBtn(true);
+        } else {
+            getRadar('101548');
+            getIndicators('101548');
+            setShowShareBtn(false);
         }
     }, [currentProfileBase]);
-
-    useEffect(() => {
-        if (!address || !account) {
-            return;
-        }
-
-        setIsSelf(address === account);
-    }, [address, account]);
 
     const shareUrl = `https://topscore.staging.knn3.xyz/user/${account}?queryProfileId=${currentProfileBase ? currentProfileBase.profileId : ''}`
 
@@ -125,108 +170,108 @@ const Character = (props: any) => {
         if (arr[0].score - arr[1].score > 1.6) {
             switch (arr[0].type) {
                 case 'curationReda': //灰色
-                    return background['Mastermind'];
+                    return 'Mastermind';
                 case 'campaignReda': //蓝色
-                    return background['Pioneer'];
+                    return 'Pioneer';
                 case 'creationReda': //紫色
-                    return background['Artist'];
+                    return 'Artist';
                 case 'influReda': // 红色
-                    return background['Conductor'];
+                    return 'Conductor';
                 case 'engagementReda': // 橘色
-                    return background['Actor'];
+                    return 'Actor';
                 case 'collectReda': //绿色
-                    return background['Antiquer'];
+                    return 'Antiquer';
             }
         } else {
             if (
                 (arr[0].type === 'collectReda' && arr[1].type === 'curationReda') ||
                 (arr[0].type === 'curationReda' && arr[1].type === 'collectReda')
             ) {
-                return background['Spy'];
+                return 'Spy';
             }
             if (
                 (arr[0].type === 'creationReda' && arr[1].type === 'curationReda') ||
                 (arr[0].type === 'curationReda' && arr[1].type === 'creationReda')
             ) {
-                return background['Magician'];
+                return 'Magician';
             }
             if (
                 (arr[0].type === 'creationReda' && arr[1].type === 'collectReda') ||
                 (arr[0].type === 'collectReda' && arr[1].type === 'creationReda')
             ) {
-                return background['Healer'];
+                return 'Healer';
             }
             if (
                 (arr[0].type === 'engagementReda' && arr[1].type === 'curationReda') ||
                 (arr[0].type === 'curationReda' && arr[1].type === 'engagementReda')
             ) {
-                return background['Volcanologist'];
+                return 'Volcanologist';
             }
             if (
                 (arr[0].type === 'engagementReda' && arr[1].type === 'collectReda') ||
                 (arr[0].type === 'collectReda' && arr[1].type === 'engagementReda')
             ) {
-                return background['Photographer'];
+                return 'Photographer';
             }
             if (
                 (arr[0].type === 'engagementReda' && arr[1].type === 'creationReda') ||
                 (arr[0].type === 'creationReda' && arr[1].type === 'engagementReda')
             ) {
-                return background['Designer'];
+                return 'Designer';
             }
             if (
                 (arr[0].type === 'campaignReda' && arr[1].type === 'curationReda') ||
                 (arr[0].type === 'curationReda' && arr[1].type === 'campaignReda')
             ) {
-                return background['Architect'];
+                return 'Architect';
             }
             if (
                 (arr[0].type === 'campaignReda' && arr[1].type === 'collectReda') ||
                 (arr[0].type === 'collectReda' && arr[1].type === 'campaignReda')
             ) {
-                return background['Engineer'];
+                return 'Engineer';
             }
             if (
                 (arr[0].type === 'campaignReda' && arr[1].type === 'creationReda') ||
                 (arr[0].type === 'creationReda' && arr[1].type === 'campaignReda')
             ) {
-                return background['Promotor'];
+                return 'Promotor';
             }
             if (
                 (arr[0].type === 'campaignReda' && arr[1].type === 'engagementReda') ||
                 (arr[0].type === 'engagementReda' && arr[1].type === 'campaignReda')
             ) {
-                return background['Supervisor'];
+                return 'Supervisor';
             }
             if (
                 (arr[0].type === 'influReda' && arr[1].type === 'curationReda') ||
                 (arr[0].type === 'curationReda' && arr[1].type === 'influReda')
             ) {
-                return background['Mobilizer'];
+                return 'Mobilizer';
             }
             if (
                 (arr[0].type === 'influReda' && arr[1].type === 'collectReda') ||
                 (arr[0].type === 'collectReda' && arr[1].type === 'influReda')
             ) {
-                return background['Counselor'];
+                return 'Counselor';
             }
             if (
                 (arr[0].type === 'influReda' && arr[1].type === 'creationReda') ||
                 (arr[0].type === 'creationReda' && arr[1].type === 'influReda')
             ) {
-                return background['Musician'];
+                return 'Musician';
             }
             if (
                 (arr[0].type === 'influReda' && arr[1].type === 'campaignReda') ||
                 (arr[0].type === 'campaignReda' && arr[1].type === 'influReda')
             ) {
-                return background['Motivator'];
+                return 'Motivator';
             }
             if (
                 (arr[0].type === 'influReda' && arr[1].type === 'engagementReda') ||
                 (arr[0].type === 'engagementReda' && arr[1].type === 'influReda')
             ) {
-                return background['Demonstrator'];
+                return 'Demonstrator';
             }
         }
     }
@@ -260,12 +305,25 @@ const Character = (props: any) => {
             {
                 imgUrl &&
                 <>
-                    <Image src={imgUrl} alt=""/>
-                    <div className="character-rank">{userInfo.rank}</div>
-                    <div className="character-lens">{currentProfileBase.handle}</div>
-                    <div className="character-score">{new BN(userInfo.score).toFixed(2)}</div>
+                    <Image src={imgUrl} alt="" />
                     {
-                        isSelf && account ?
+                        showShareBtn &&
+                        <>
+                            <div className="character-rank">{userInfo.rank}</div>
+                            <div className="character-lens">{currentProfileBase?.handle}</div>
+                            <div className="character-score">{new BN(userInfo.score).toFixed(2)}</div>
+                        </>
+                    }
+                    {
+                        !showShareBtn &&
+                        <>
+                            <div className="character-no-share-rank">{userInfo.rank}</div>
+                            <div className="character-no-share-lens">{currentProfileBase?.handle}</div>
+                            <div className="character-no-share-score">{new BN(userInfo.score).toFixed(2)}</div>
+                        </>
+                    }
+                    {
+                        showShareBtn && account ?
                             (<div className="char-share-btnGroup">
                                 <div>
                                     <LensterShareButton
@@ -287,12 +345,11 @@ const Character = (props: any) => {
                                 </div>
                             </div>) :
                             (
-                                <div className="clear-btn-group"></div>
+                                <></>
                             )
                     }
                 </>
             }
-
         </div>
     );
 };

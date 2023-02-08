@@ -3,9 +3,10 @@ import * as echarts from 'echarts';
 const Icon1 = '../statics/img/p1.png'
 import Image from 'next/image'
 import { BellOutlined, UserOutlined } from '@ant-design/icons';
-const lineColor = ['#FFB9A7', '#A8B7FF', '#8AB2C7', '#A1C3BE', '#DAB0FF', '#DFB798', '#B9ECFF', '#DD6666', '#CDB6FF', '#BEFFC0']
 
-const areaColor = ['#FF3300', '#3B5CFF', '#4A8073', '#135B55', '#7766FF', '#8D503A', '#00B8FF', '#951B1B', '#6219FF', '#00B005']
+const lineColor = ['#830000', '#001FB9', '#009589', '#C70011', '#007EB8', '#932D00', '#4400D0', '#9A0040', '#00DEA8', '#FFD891']
+
+const areaColor = ['#FF3300', '#3B5CFF', '#A1C3BE', '#F95D6A', '#003F5C', '#FF7C43', '#665191', '#D45087', '#4A8073', '#FFA600']
 
 const ChartLine = (props: any) => {
 
@@ -22,7 +23,7 @@ const ChartLine = (props: any) => {
         position: 'top'
       },
       areaStyle: {
-        opacity: 0.5,
+        opacity: 0.6,
         color: '#fff'
       },
       itemStyle: {
@@ -225,7 +226,7 @@ const ChartLine = (props: any) => {
       },
       grid: {
         left: '3%',
-        right: '10%',
+        right: '3%',
         bottom: '16%',
         containLabel: true
       },
@@ -265,14 +266,17 @@ const ChartLine = (props: any) => {
       yAxis: [
         {
           type: 'value',
-          
+          scale:true,
           splitLine: {
             lineStyle: {
               color: 'rgba(255,255,255,0.1)'
             }
           },
           max: function(value:any) {//取最大值向上取整为最大刻度
-            return  Math.ceil(value.max) * 2
+            return Math.ceil(value.max) * 1
+          },
+          min: function(value:any) {//取最大值向上取整为最大刻度
+            return value.min
           },
           axisLabel: {
             textStyle: {
@@ -283,6 +287,12 @@ const ChartLine = (props: any) => {
         }, {
           type: 'value',
           position: 'right',
+          max: function(value:any) {//取最大值向上取整为最大刻度
+            return value.max
+          },
+          min: function(value:any) {//取最大值向上取整为最大刻度
+            return value.min
+          },
           splitLine: {
             lineStyle: {
               color: 'rgba(255,255,255,0.1)'

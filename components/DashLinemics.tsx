@@ -4,7 +4,7 @@ import { Checkbox, Switch, Spin } from 'antd';
 import dayjs from 'dayjs';
 import api from "../api";
 import EngageLine from './EngageLine'
-import CollectLine from './CollectLine'
+import PubCard from './PubCard'
 
 const tabs = ['Engagement', 'Top Engaged', 'Collections & Fee', 'Top Collected']
 
@@ -30,7 +30,7 @@ const rmodynamics = () => {
     const [lindData, setLindData] = useState([])
 
     const [sigleData, setSigleData] = useState([])
-    
+
     const [commentSwitch, setCommentSwitch] = useState(true)
 
     const [mirrorSwitch, setMirrorSwitch] = useState(true)
@@ -38,7 +38,7 @@ const rmodynamics = () => {
     const [postSwitch, setPostSwitch] = useState(false)
 
     const [chargeSwitch, setChargeSwitch] = useState(false)
-    
+
     const [isShowEchart, setIsShowEchart] = useState(false)
 
     const getEngageLineData = async () => {
@@ -57,11 +57,11 @@ const rmodynamics = () => {
             resData = res.data;
         }
         let newDates: any = []
-        if(resData.length !== 0){
+        if (resData.length !== 0) {
             resData.map((t: any) => {
                 newDates.push(t.day)
             })
-        }else if(resAmountData.length !== 0){
+        } else if (resAmountData.length !== 0) {
             resAmountData.map((t: any) => {
                 newDates.push(t.day)
             })
@@ -83,9 +83,9 @@ const rmodynamics = () => {
                 }
                 for (let j = 0; j < resAmountData.length; j++) {
                     if (resAmountData[j]['day'] === dates[i]) {
-                        if(activeTab === 0 || activeTab === 1){
+                        if (activeTab === 0 || activeTab === 1) {
                             h.push(resAmountData[j]['followCount'])
-                        }else{
+                        } else {
                             h.push(Number(resAmountData[j]['amount']).toFixed(2))
                         }
                     }
@@ -93,6 +93,7 @@ const rmodynamics = () => {
                 s.push(b)
             }
             setLindData(s)
+            console.log(s)
             setSigleData(h)
         }
         setTimeout(() => {
@@ -102,77 +103,80 @@ const rmodynamics = () => {
 
     useEffect(() => {
         getEngageLineData()
-    }, [activeTab,chargeSwitch])
+    }, [activeTab, chargeSwitch])
 
     return (
-        <div className="text-[#fff] bg-[#1A1A1A] p-5 my-10">
-            <div className="flex">
+        <>
+            <div className="text-[#fff] bg-[#1A1A1A] p-5 my-10">
                 <div className="flex">
+                    <div className="flex">
+                        {
+                            tabs.map((t: any, i: number) =>
+                                <div key={i} onClick={() => setActiveTab(i)} className={`mr-4 box-border rounded-[20px] border-[1px] border-[#fff] w-[190px] h-[40px] flex items-center justify-center text-[14px] cursor-pointer ${activeTab == i ? 'bg-[rgb(206,57,0)] border-[0px]' : 'bg-[#000]'}`}>
+                                    {t}
+                                </div>
+                            )
+                        }
+                    </div>
+                    <div className="ml-[auto] h-12 bg-[rgb(41,41,41)] flex items-center justify-center pl-2">
+                        {
+                            tabs1.map((t: any, i: number) =>
+                                <div key={i} onClick={() => setActiveTab1(i)} className={`h-8 mr-2 flex items-center justify-center w-[60px] rounded-[4px] cursor-pointer ${activeTab1 == i ? 'bg-[rgb(206,57,0)]' : ''}`}>{t}</div>
+                            )
+                        }
+                    </div>
+                </div>
+                <div className="flex mt-4">
+                    <div className="text-[20px]">{lineDes[activeTab]}</div>
                     {
-                        tabs.map((t: any, i: number) =>
-                            <div key={i} onClick={() => setActiveTab(i)} className={`mr-4 box-border rounded-[20px] border-[1px] border-[#fff] w-[190px] h-[40px] flex items-center justify-center text-[14px] cursor-pointer ${activeTab == i ? 'bg-[rgb(206,57,0)] border-[0px]' : 'bg-[#000]'}`}>
-                                {t}
+                        (activeTab === 0 || activeTab === 1) &&
+                        <div className="ml-[auto] flex">
+                            <div className="flex items-center justify-center mr-4">
+                                <span className="mr-2">Comments (by)</span>
+                                <Switch defaultChecked onChange={setCommentSwitch} checked={commentSwitch} size="small" />
+                            </div>
+                            <div className="flex items-center justify-center">
+                                <span className="mr-2">Mirrors (by)</span>
+                                <Switch defaultChecked onChange={setMirrorSwitch} checked={mirrorSwitch} size="small" />
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div className="h-[500px] relative">
+                    {
+                        isShowEchart ? (
+                            <EngageLine
+                                id={'line_1'}
+                                dates={dates}
+                                lineData={lindData}
+                                commentSwitch={commentSwitch}
+                                mirrorSwitch={mirrorSwitch}
+                                postSwitch={postSwitch}
+                                dayType={activeTab1}
+                                type={activeTab}
+                                sigleData={sigleData}
+                            />) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                                <Spin size="large" />
                             </div>
                         )
                     }
-                </div>
-                <div className="ml-[auto] h-12 bg-[rgb(41,41,41)] flex items-center justify-center pl-2">
-                    {
-                        tabs1.map((t: any, i: number) =>
-                            <div key={i} onClick={() => setActiveTab1(i)} className={`h-8 mr-2 flex items-center justify-center w-[60px] rounded-[4px] cursor-pointer ${activeTab1 == i ? 'bg-[rgb(206,57,0)]' : ''}`}>{t}</div>
-                        )
-                    }
-                </div>
-            </div>
-            <div className="flex mt-4">
-                <div className="text-[20px]">{lineDes[activeTab]}</div>
-                {
-                    (activeTab === 0 || activeTab === 1) &&
-                    <div className="ml-[auto] flex">
-                        <div className="flex items-center justify-center mr-4">
-                            <span className="mr-2">Comments (by)</span>
-                            <Switch defaultChecked onChange={setCommentSwitch} checked={commentSwitch} size="small" />
-                        </div>
-                        <div className="flex items-center justify-center">
-                            <span className="mr-2">Mirrors (by)</span>
-                            <Switch defaultChecked onChange={setMirrorSwitch} checked={mirrorSwitch} size="small" />
-                        </div>
+                    <div className="absolute flex items-center justify-center mr-4 right-0 bottom-0">
+                        <span className="mr-2">Post Only</span>
+                        <Switch defaultChecked onChange={setPostSwitch} checked={postSwitch} size="small" />
                     </div>
-                }
-            </div>
-            <div className="h-[500px] relative">
-                {
-                    isShowEchart ? (
-                        <EngageLine
-                            id={'line_1'}
-                            dates={dates}
-                            lineData={lindData}
-                            commentSwitch={commentSwitch}
-                            mirrorSwitch={mirrorSwitch}
-                            postSwitch={postSwitch}
-                            dayType={activeTab1}
-                            type={activeTab}
-                            sigleData={sigleData}
-                        />) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                            <Spin size="large" />
+                    {
+                        (activeTab == 2 || activeTab == 3) &&
+                        <div className="absolute flex items-center justify-center mr-4 right-[120px] bottom-0">
+                            <span className="mr-2">Charged Only</span>
+                            <Switch defaultChecked onChange={setChargeSwitch} checked={chargeSwitch} size="small" />
                         </div>
-                    )
-                }
-                <div className="absolute flex items-center justify-center mr-4 right-0 bottom-0">
-                    <span className="mr-2">Post Only</span>
-                    <Switch defaultChecked onChange={setPostSwitch} checked={postSwitch} size="small" />
+                    }
+
                 </div>
-                {
-                    (activeTab == 2 || activeTab == 3) &&
-                    <div className="absolute flex items-center justify-center mr-4 right-[120px] bottom-0">
-                    <span className="mr-2">Charged Only</span>
-                    <Switch defaultChecked onChange={setChargeSwitch} checked={chargeSwitch} size="small" />
-                </div>
-                }
-                
             </div>
-        </div>
+            <PubCard lineData={lindData}></PubCard>
+        </>
     )
 }
 
