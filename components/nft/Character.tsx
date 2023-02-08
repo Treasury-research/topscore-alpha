@@ -27,7 +27,7 @@ import { TwitterOutlined } from "@ant-design/icons";
 import useWeb3Context from "../../hooks/useWeb3Context";
 import { useRouter } from "next/router";
 import { useRecoilState } from 'recoil';
-import { currentProfile } from '../../store/state'
+import { currentProfileState } from '../../store/state'
 import BN from "bignumber.js";
 
 const background = {
@@ -70,11 +70,10 @@ const Character = (props: any) => {
 
     const { address, queryProfileId } = router.query;
 
-    const [currentProfileBase, setCurrenProfileBase] = useRecoilState<any>(currentProfile);
+    const [currentProfileBase, setCurrenProfileBase] = useRecoilState<any>(currentProfileState);
 
     const getRadar = async () => {
-        console.log(props.profileId)
-        const res: any = await api.get(`/lens/scores/${props.profileId}`);
+        const res: any = await api.get(`/lens/scores/${currentProfileBase.profileId}`);
         console.log(res)
         let arr = [
             { type: 'influReda', score: res.data.influReda * 1.05 },
@@ -97,8 +96,16 @@ const Character = (props: any) => {
         }));
     };
 
+    const getPublication = async (profileId: string) => {
+        const res: any = await api.get(`/lens/publication/${profileId}`);
+        setUserInfo((prev: any) => ({
+            ...prev,
+            ...res.data,
+        }));
+    };
+
     useEffect(() => {
-        if (currentProfileBase.profileId) {
+        if (currentProfileBase && currentProfileBase.profileId) {
             getRadar();
             getIndicators();
         }
@@ -112,7 +119,7 @@ const Character = (props: any) => {
         setIsSelf(address === account);
     }, [address, account]);
 
-    const shareUrl = `https://topscore.staging.knn3.xyz/user/${account}?queryProfileId=${currentProfileBase.profileId}`
+    const shareUrl = `https://topscore.staging.knn3.xyz/user/${account}?queryProfileId=${currentProfileBase ? currentProfileBase.profileId : ''}`
 
     const getImg = (arr: any) => {
         if (arr[0].score - arr[1].score > 1.6) {
@@ -254,9 +261,9 @@ const Character = (props: any) => {
                 imgUrl &&
                 <>
                     <Image src={imgUrl} alt=""/>
-                    <div className="character-rank">{currentProfileBase.rank}</div>
+                    <div className="character-rank">{userInfo.rank}</div>
                     <div className="character-lens">{currentProfileBase.handle}</div>
-                    <div className="character-score">{new BN(currentProfileBase.score).toFixed(2)}</div>
+                    <div className="character-score">{new BN(userInfo.score).toFixed(2)}</div>
                     {
                         isSelf && account ?
                             (<div className="char-share-btnGroup">

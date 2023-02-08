@@ -13,7 +13,7 @@ import ImgGenerate from "../../statics/img/generate-button.gif";
 import ImgHoverGenerate from "../../statics/img/hover-generate-button.gif";
 import Image from 'next/image'
 import { useRecoilState } from 'recoil';
-import { currentProfile } from '../../store/state'
+import { currentProfileState } from '../../store/state'
 
 const defaultPageLimit = 6;
 
@@ -38,7 +38,7 @@ export async function getServerSideProps(context: any) {
 const Post = () => {
 
   const { account, connectWallet } = useWeb3Context();
-  const [showList, setShowList] = useState(false);
+  const [showList, setShowList] = useState(true);
   const [handlesList, setHandlesList] = useState<any>([]);
   const [loadingHandlesList, setLoadingHandlesList] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<any>({});
@@ -53,7 +53,7 @@ const Post = () => {
   const [openScoreDropdown, setOpenScoreDropdown] = useState(false);
   const [openLensDropdown, setOpenLensDropdown] = useState(false);
   const [radarDetailScore, setRadarDetailScore] = useState<any>({});
-  const [currentProfileBase, setCurrenProfileBase] = useRecoilState<any>(currentProfile);
+  const [currentProfileBase, setCurrenProfileBase] = useRecoilState<any>(currentProfileState);
 
   const router = useRouter();
 
@@ -79,7 +79,6 @@ const Post = () => {
       setHandlesList(res.data);
       if (res.data.length === 0) {
         setCurrentProfile({});
-        setCurrenProfileBase({});
       }
     } finally {
       setLoadingHandlesList(false);
@@ -92,19 +91,11 @@ const Post = () => {
       ...prev,
       ...res.data,
     }));
-    setCurrenProfileBase((prev: any) => ({
-      ...prev,
-      ...res.data,
-    }));
   };
 
   const getPublication = async (profileId: string) => {
     const res: any = await api.get(`/lens/publication/${profileId}`);
     setUserInfo((prev: any) => ({
-      ...prev,
-      ...res.data,
-    }));
-    setCurrenProfileBase((prev: any) => ({
       ...prev,
       ...res.data,
     }));
@@ -260,19 +251,17 @@ const Post = () => {
     router.push(`/profile/${address}?queryProfileId=${profile.profileId}`);
 
     setCurrentProfile(profile);
-    setCurrenProfileBase(profile);
+    // setCurrenProfileBase(profile);
   }, [activeHandleIndex, handlesList]);
 
   useEffect(() => {
     const { profileId } = currentProfile;
-    console.log(currentProfile)
     if (!profileId) {
       return;
     }
 
     getUserInfo(profileId);
   }, [currentProfile]);
-
 
   return (
     <div className="w-full h-full bg-[#000] flex">
@@ -311,7 +300,6 @@ const Post = () => {
                             >
                               {t.handle}
                             </div>
-
                           ))}
                         </Menu>
                       }

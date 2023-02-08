@@ -28,7 +28,7 @@ const ConnectBtn = () => {
 
   const changeProfile = (profileId: number) => {
     // 如果在 profile 页面，把 profile 也切换掉。
-    if(true){
+    if(router.pathname === "/profile/[address]"){
         router.push(`/profile/${account}?queryProfileId=${profileId}`);
     }
   };
@@ -42,8 +42,17 @@ const ConnectBtn = () => {
   const getLensHandle = async () => {
     const res: any = await api.get(`/lens/handles/${account}`);
     setProfileList(res.data);
-    setCurrentProfile(res.data[0])
+    if(res.data.length === 0) {
+      getKnn3Lens()
+    }else{
+      setCurrentProfile(res.data[0])
+    }
   };
+
+  const getKnn3Lens = async () => {
+    const res: any = await api.get(`/lens/handles/0x09c85610154a276a71eb8a887e73c16072029b20`);
+    setCurrentProfile(res.data[0])
+  }
 
   const goProfile = () => {
     if (profileList.length > 0) {

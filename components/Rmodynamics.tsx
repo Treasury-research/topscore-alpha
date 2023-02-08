@@ -118,8 +118,6 @@ const rmodynamics = () => {
                 rem[week - 1][Number(t.timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), t.timePeriod];
             }
         })
-        console.log(rem)
-        console.log(maxRemoData)
         setRemodyBaseData(rem)
         setTotalAmount(totalAmount)
         setLoading(false);
@@ -197,10 +195,6 @@ const rmodynamics = () => {
         }else if (lv * 4 <= totalMount) {
             return 'bg-[#F33C17]'
         }
-        
-        
-        
-        
     }
 
     const getContent = (e: any) => {
