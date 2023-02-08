@@ -2,7 +2,7 @@ import "../styles/globals.css";
 import "../styles/custom.scss";
 import { Web3ContextProvider } from "../context/Web3Context";
 import { ToastContainer } from "react-toastify";
-import "../styles/antd_reset.css";
+import "../styles/antd_reset.scss";
 import type { AppProps } from "next/app";
 import { RecoilRoot } from 'recoil'
 // import { configureChains, createClient, WagmiConfig } from "wagmi";

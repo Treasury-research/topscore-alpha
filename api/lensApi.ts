@@ -2,9 +2,9 @@ import { gql, GraphQLClient } from "graphql-request";
 import { lensURL } from "../config";
 
 const client = new GraphQLClient(lensURL, {
-  headers:{
-    'x-access-token': sessionStorage.getItem('accessToken')
-  }
+  // headers:{
+  //   'x-access-token': sessionStorage.getItem('accessToken')
+  // }
 });
 
 export const getChallenge = async (address: string) => {

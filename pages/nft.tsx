@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Navbar from '../components/Navbar'
+import { CloseOutlined } from "@ant-design/icons";
 import api from "../api";
 import Image from 'next/image'
 import ConnectBtn from '../components/ConnectBtn'
@@ -21,6 +22,7 @@ const nft = () => {
   const [nftList, setNftList] = useState([]);
 
   const [isShowPic, setIsShowPic] = useState(false);
+  const [isShow, setIsShow] = useState(false);
 
   const [total, setTotal] = useState(0);
 
@@ -107,6 +109,7 @@ const nft = () => {
       return;
     }
     getAllNfts();
+    setIsShow(true)
   }, [account]);
 
   return (
@@ -122,7 +125,7 @@ const nft = () => {
               alt=""
             />
           </div>
-          
+
           <div className="open-pic mb-[100px]">
             <div className="carou-con">
               <Carousel dotPosition={'right'} className="rainbow-carou" autoplay>
@@ -146,7 +149,7 @@ const nft = () => {
                               </div>
                               <div className="pic-open-btn">
                                 <div className="arrow">
-                                  <Image src={ImgToRight} alt=""/>
+                                  <Image src={ImgToRight} alt="" />
                                 </div>
                                 <div
                                   className="reveal"
@@ -155,7 +158,7 @@ const nft = () => {
                                   REVEAL
                                 </div>
                                 <div className="arrow">
-                                  <Image src={ImgToLeft} alt=""/>
+                                  <Image src={ImgToLeft} alt="" />
                                 </div>
                               </div>
                             </div>
@@ -172,20 +175,24 @@ const nft = () => {
               <div className="pic-total">Total:{total}</div>
             }
             <Modal
-            className="openPicModal"
-            open={isShowPic}
-            onOk={handleOk}
-            onCancel={handleCancel}
-          >
-            <div>
-              <div className="open-imgTitle">
-                <Image src={ImgWhole} alt=""/>
+              className="openPicModal"
+              open={isShowPic}
+              onOk={handleOk}
+              onCancel={handleCancel}
+            >
+              <div>
+                <div onClick={() => handleCancel()} className='absolute right-[23px] bg-[#1F1F1F] h-[40px] w-[40px] flex justify-center items-center border-[1px] border-[#4A4A4A] top-[0px] cursor-pointer'>
+                  <CloseOutlined className='text-[20px]' />
+                </div>
+                <div className="open-imgTitle">
+                  <Image src={ImgWhole} alt="" />
+
+                </div>
+                <div className="open-imgResult">
+                  <img src={activeNftDetail.token_uri} alt="" />
+                </div>
               </div>
-              <div className="open-imgResult">
-                <img src={activeNftDetail.token_uri} alt=""/>
-              </div>
-            </div>
-          </Modal>
+            </Modal>
           </div>
           <div className='flex'>
             <Image
@@ -197,6 +204,21 @@ const nft = () => {
           <div>
             <Character />
           </div>
+          {/* {
+            isShow &&
+            <div className="open-pic-video">
+
+              <video
+                loop
+                autoPlay
+                muted
+                src="./../statics/vedio_rainbow.mp4"
+              >
+              </video>
+
+
+            </div>
+          } */}
         </div>
       </div>
     </div>
