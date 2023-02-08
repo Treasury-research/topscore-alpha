@@ -105,7 +105,7 @@ const rmodynamics = () => {
     }, [activeTab,chargeSwitch])
 
     return (
-        <div className="text-[#fff] bg-[#1A1A1A] p-5 mt-10">
+        <div className="text-[#fff] bg-[#1A1A1A] p-5 my-10">
             <div className="flex">
                 <div className="flex">
                     {

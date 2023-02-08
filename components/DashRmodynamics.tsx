@@ -42,7 +42,7 @@ const rmodynamics = () => {
             return [...prev];
         });
     };
-
+ 
     const putActiveItems = (e: any) => {
         // let rs = activeItems.filter((t:any,i:number) => {
         //     return t[0] === e[0] && t[1] === e[1]
