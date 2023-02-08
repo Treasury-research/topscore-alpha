@@ -1,8 +1,10 @@
 import "../styles/globals.css";
+import "../styles/custom.scss";
 import { Web3ContextProvider } from "../context/Web3Context";
 import { ToastContainer } from "react-toastify";
-import "../styles/antd_reset.css";
+import "../styles/antd_reset.scss";
 import type { AppProps } from "next/app";
+import { RecoilRoot } from 'recoil'
 // import { configureChains, createClient, WagmiConfig } from "wagmi";
 // import { mainnet, polygon } from "wagmi/chains";
 // import { publicProvider } from "wagmi/providers/public";
@@ -29,9 +31,11 @@ import type { AppProps } from "next/app";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <Web3ContextProvider>
-      <Component {...pageProps} />
-      <ToastContainer position="top-right" />ƒ
-    </Web3ContextProvider>
+    <RecoilRoot>
+      <Web3ContextProvider>
+        <Component {...pageProps} />
+        <ToastContainer position="top-right" />ƒ
+      </Web3ContextProvider>
+    </RecoilRoot>
   );
 }

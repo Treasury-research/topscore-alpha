@@ -103,6 +103,7 @@ body {
 #__next{
   height: 100%;
   width: 100%;
+  overflow: hidden;
 }
 
 a {
@@ -114,4 +115,16 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+.drop-wrapper{
+	color: #fff;
+	font-family: "Jura";
+	font-weight: 400;
+	background: #505050;
+	box-shadow: rgba(0,0,0,.5) 0 2px 4px;
+}
+
+.web3modal-modal-lightbox{
+  z-index: 9999 !important;
 }

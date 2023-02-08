@@ -4,7 +4,7 @@ import BestCard from './BestCard'
 import PostEdit from './PostEdit'
 const Creation = () => {
     return (
-        <div className="h-[calc(100vh-110px)] overflow-y-auto">
+        <div className="h-[calc(100vh-170px)] overflow-y-auto">
             <PostEdit></PostEdit>
             <Rmodynamics></Rmodynamics>
             <div className="mt-10 text-[18px] mb-4">Best days and times to publish</div>

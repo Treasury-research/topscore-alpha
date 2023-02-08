@@ -5,6 +5,7 @@ import lensApi from "../api/lensApi";
 import { BellOutlined, UserOutlined } from '@ant-design/icons';
 import Creation from '../components/Creation'
 import Dashboard from '../components/Dashboard'
+import ConnectBtn from '../components/ConnectBtn'
 
 const tabs = ['Creation', 'DashBoard']
 
@@ -18,6 +19,7 @@ const Post = () => {
     <div className="w-full h-full bg-[#000] flex">
       <Navbar />
       <div className='p-5 w-full text-[#fff]'>
+        <ConnectBtn />
         <div className='flex mt-4 mb-10'>
           <div className='flex'>
             {
@@ -26,12 +28,12 @@ const Post = () => {
               ))
             }
           </div>
-          <div className='ml-[auto] flex'>
+          {/* <div className='ml-[auto] flex'>
             <div><BellOutlined className="text-[24px] mr-10" /></div>
             <div>
               <UserOutlined className="text-[24px]" />
             </div>
-          </div>
+          </div> */}
         </div>
         {
           activeTab === 0 &&

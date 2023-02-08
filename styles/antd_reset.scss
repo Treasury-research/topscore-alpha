@@ -1,0 +1,131 @@
+::-webkit-scrollbar {
+  display: none
+}
+
+.bestCard>div {
+  background: url("../statics/img/card_bg.svg") no-repeat center center;
+  background-size: cover;
+  width: 315px;
+  height: 138px;
+  margin-right: 40px;
+}
+
+.ant-input {
+  background: #000;
+  border: none;
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.ant-input:focus {
+  box-shadow: none !important;
+}
+
+::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.ant-popover-arrow::before {
+  background: #292929 !important;
+}
+
+.ant-popover-inner {
+  background: #292929 !important;
+}
+
+.ant-popover-inner-content {
+  color: #fff !important;
+}
+
+.ant-modal-content {
+  background: #292929 !important;
+}
+
+.ant-modal-header {
+  display: none !important;
+}
+
+.ant-modal-close {
+  display: none !important;
+}
+
+.ant-modal-footer {
+  display: none !important;
+}
+
+.ant-modal-body {
+  color: #fff;
+}
+
+.default-input {
+  border: 1px solid #4A4A4A !important;
+  background: none !important;
+}
+
+.ant-select-selector {
+  border: 1px solid #4A4A4A !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+.ant-select-arrow {
+  color: #fff !important;
+}
+
+.ant-select-selection-item {
+  margin-right: 60px;
+  color: #fff !important;
+}
+
+.ant-select-selector:hover {
+  border: 1px solid #4A4A4A !important;
+  box-shadow: none !important;
+}
+
+.ant-input-number {
+  background: none !important;
+  border: 1px solid #4A4A4A !important;
+  color: #fff !important;
+}
+
+.ant-input-number-handler-wrap {
+  background: none !important;
+}
+
+.anticon {
+  border: none !important;
+  color: #fff !important;
+}
+
+.ant-input-number-group-addon {
+  border: 1px solid #4A4A4A !important;
+  color: #fff !important;
+}
+
+.ant-input-number-input-wrap {
+  color: #fff !important;
+}
+
+.ant-input-number-input {
+  color: #fff !important;
+}
+
+.ant-switch-checked .ant-switch-inner {
+  background: #CE3900 !important;
+  ;
+}
+
+.ant-switch-checked .ant-switch-handle::before {
+  background: #fff !important;
+  ;
+}
+
+
+.ant-switch-inner {
+  background: #fff !important;
+  ;
+}
+
+.ant-switch-handle::before {
+  background: #CE3900 !important;
+  ;
+}
