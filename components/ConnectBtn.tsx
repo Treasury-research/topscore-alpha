@@ -42,6 +42,7 @@ const ConnectBtn = () => {
   const getLensHandle = async () => {
     const res: any = await api.get(`/lens/handles/${account}`);
     setProfileList(res.data);
+    setCurrentProfile(res.data[0])
   };
 
   const goProfile = () => {
