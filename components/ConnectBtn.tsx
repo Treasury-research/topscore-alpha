@@ -23,6 +23,16 @@ const ConnectBtn = () => {
     getLensHandle();
   }, [account]);
 
+  useEffect(()=>{
+  }, [currentProfile])
+
+  const changeProfile = (profileId: number) => {
+    // 如果在 profile 页面，把 profile 也切换掉。
+    if(true){
+        router.push(`/profile/${account}?queryProfileId=${profileId}`);
+    }
+  };
+
   useEffect(() => {
     if (router.pathname === "/profile/[address]") {
       goProfile();
@@ -99,7 +109,7 @@ const ConnectBtn = () => {
                   className="drop-menu"
                   key={i}
                   onClick={() => {
-                    //   setActiveHandleIndex(i);
+                    changeProfile(t.profileId);
                     setCurrentProfile(t);
                   }}
                 >
