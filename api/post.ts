@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export const createPostMetadata = (content: string, profileName: string) => {
   return {
-    version: "2.0.0",
+    version: "1.0.0",
     mainContentFocus: "TEXT_ONLY",
     metadata_id: uuidv4(),
     content,

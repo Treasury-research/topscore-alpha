@@ -27,7 +27,7 @@ import { TwitterOutlined } from "@ant-design/icons";
 import useWeb3Context from "../../hooks/useWeb3Context";
 import { useRouter } from "next/router";
 import { useRecoilState } from 'recoil';
-import { currenProfile } from '../../store/state'
+import { currentProfile } from '../../store/state'
 import BN from "bignumber.js";
 
 const background = {
@@ -70,7 +70,7 @@ const Character = (props: any) => {
 
     const { address, queryProfileId } = router.query;
 
-    const [currenProfileBase, setCurrenProfileBase] = useRecoilState<any>(currenProfile);
+    const [currentProfileBase, setCurrenProfileBase] = useRecoilState<any>(currentProfile);
 
     const getRadar = async () => {
         console.log(props.profileId)
@@ -90,7 +90,7 @@ const Character = (props: any) => {
     };
 
     const getIndicators = async () => {
-        const res: any = await api.get(`/lens/indicators/${currenProfileBase.profileId}`);
+        const res: any = await api.get(`/lens/indicators/${currentProfileBase.profileId}`);
         setUserInfo((prev: any) => ({
             ...prev,
             ...res.data,
@@ -98,11 +98,11 @@ const Character = (props: any) => {
     };
 
     useEffect(() => {
-        if (currenProfileBase.profileId) {
+        if (currentProfileBase.profileId) {
             getRadar();
             getIndicators();
         }
-    }, [currenProfileBase]);
+    }, [currentProfileBase]);
 
     useEffect(() => {
         if (!address || !account) {
@@ -112,7 +112,7 @@ const Character = (props: any) => {
         setIsSelf(address === account);
     }, [address, account]);
 
-    const shareUrl = `https://topscore.staging.knn3.xyz/user/${account}?queryProfileId=${currenProfileBase.profileId}`
+    const shareUrl = `https://topscore.staging.knn3.xyz/user/${account}?queryProfileId=${currentProfileBase.profileId}`
 
     const getImg = (arr: any) => {
         if (arr[0].score - arr[1].score > 1.6) {
@@ -254,16 +254,16 @@ const Character = (props: any) => {
                 imgUrl &&
                 <>
                     <Image src={imgUrl} alt=""/>
-                    <div className="character-rank">{currenProfileBase.rank}</div>
-                    <div className="character-lens">{currenProfileBase.handle}</div>
-                    <div className="character-score">{new BN(currenProfileBase.score).toFixed(2)}</div>
+                    <div className="character-rank">{currentProfileBase.rank}</div>
+                    <div className="character-lens">{currentProfileBase.handle}</div>
+                    <div className="character-score">{new BN(currentProfileBase.score).toFixed(2)}</div>
                     {
                         isSelf && account ?
                             (<div className="char-share-btnGroup">
                                 <div>
                                     <LensterShareButton
                                         title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：@KNN3Network #Lens`}
-                                        url={`https://topscore.knn3.xyz/user/${account}/${currenProfileBase.profileId}`}
+                                        url={`https://topscore.knn3.xyz/user/${account}/${currentProfileBase.profileId}`}
                                         hashtags="@knn3_network #Lens"
                                     >
                                         <Image src={IconLenster} alt="" />

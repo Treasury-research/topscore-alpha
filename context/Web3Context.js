@@ -2,6 +2,7 @@ import { useState, createContext, useCallback, useEffect } from "react";
 import { toast } from "react-toastify";
 import Web3 from "web3";
 import config from "../config";
+import {ethers} from 'ethers'
 import { LoadingOutlined } from "@ant-design/icons";
 import useWeb3Modal from "../hooks/useWeb3Modal";
 
@@ -13,6 +14,7 @@ const actionMapping = [
 
 export const Web3Context = createContext({
   web3: null,
+  signer: null,
   chainId: null,
   networkId: null,
   blockNumber: null,
@@ -31,6 +33,7 @@ export const Web3Context = createContext({
 export const Web3ContextProvider = ({ children }) => {
   const web3Modal = useWeb3Modal();
   const [web3, setWeb3] = useState("");
+  const [signer, setSigner] = useState("");
   const [account, setAccount] = useState("");
   const [chainId, setChainId] = useState("");
   const [networkId, setnetworkId] = useState("");
@@ -60,6 +63,13 @@ export const Web3ContextProvider = ({ children }) => {
       // get account, use this variable to detech if user is connected
       const accounts = await web3Raw.eth.getAccounts();
       setAccount(accounts[0]);
+
+      // get signer object
+      const ethersProvider = new ethers.providers.Web3Provider(provider);
+
+      const signerRaw = ethersProvider.getSigner();
+
+      setSigner(signerRaw)
 
       // get network id
       setnetworkId(await web3Raw.eth.net.getId());
@@ -187,6 +197,7 @@ export const Web3ContextProvider = ({ children }) => {
     <Web3Context.Provider
       value={{
         web3,
+        signer,
         chainId,
         networkId,
         account,

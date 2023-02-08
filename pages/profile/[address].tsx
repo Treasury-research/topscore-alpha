@@ -13,7 +13,7 @@ import ImgGenerate from "../../statics/img/generate-button.gif";
 import ImgHoverGenerate from "../../statics/img/hover-generate-button.gif";
 import Image from 'next/image'
 import { useRecoilState } from 'recoil';
-import { currenProfile } from '../../store/state'
+import { currentProfile } from '../../store/state'
 
 const defaultPageLimit = 6;
 
@@ -53,7 +53,7 @@ const Post = () => {
   const [openScoreDropdown, setOpenScoreDropdown] = useState(false);
   const [openLensDropdown, setOpenLensDropdown] = useState(false);
   const [radarDetailScore, setRadarDetailScore] = useState<any>({});
-  const [currenProfileBase, setCurrenProfileBase] = useRecoilState<any>(currenProfile);
+  const [currentProfileBase, setCurrenProfileBase] = useRecoilState<any>(currentProfile);
 
   const router = useRouter();
 
