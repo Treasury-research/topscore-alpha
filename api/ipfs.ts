@@ -30,3 +30,8 @@ export const uploadIpfs = async <T>(data: T) => {
 export const formatToIpfs = (hash: string) => {
     return `ipfs://${hash}`
 }
+
+export const formatToHttps = (hash: string) => {
+  return `https://ipfs.io/ipfs/${hash}`
+}
+
