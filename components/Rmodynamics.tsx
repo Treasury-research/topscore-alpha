@@ -101,12 +101,10 @@ const rmodynamics = () => {
     }
 
     const getGlobalHeatmapData = async () =>{
-        const defaultYear = '2023'
-        const defaultHours = '00'
         const res = await api.get(`/thermal-map/global`, {
             params:{
-                from: `${defaultYear}0101${defaultHours}`,
-                to: `${defaultYear}0101${defaultHours}`,
+                from: `2023010100`,
+                to: `2023030100`,
             }
         })
         console.log('global heatmap data', res)
@@ -114,14 +112,11 @@ const rmodynamics = () => {
 
     const getHeatmapData = async () =>{
         const testProfileId = 1
-        const defaultYear = '2023'
-        const defaultHours = '00'
-
         const res = await api.get(`/thermal-map/personal/${testProfileId}`, {
             params:{
                 profileId: testProfileId,
-                from: `${defaultYear}0101${defaultHours}`,
-                to: `${defaultYear}0101${defaultHours}`,
+                from: `2023010100`,
+                to: `2023030100`,
             }
         })
         console.log('heatmap data', res)

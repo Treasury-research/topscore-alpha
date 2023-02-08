@@ -91,7 +91,7 @@ const rmodynamics = () => {
             params:{
                 profileId: testProfileId,
                 year: activeYear,
-                type: "All",
+                type: "Post,Mirror,Comment",
             }
         })
         console.log('heatmap data', res)
