@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DashRmodynamics from './DashRmodynamics'
 import DashLinemics from './DashLinemics'
+import PubCard from './PubCard'
 import api from "../api";
 
 import { LeftOutlined, RightOutlined, LoadingOutlined } from '@ant-design/icons';
@@ -30,7 +31,7 @@ const Dashboard = () => {
     }, [])
   
     return (
-        <div className="text-[#fff] w-full h-[calc(100vh-110px)] overflow-y-auto">
+        <div className="text-[#fff] w-full h-[calc(100vh-160px)] overflow-y-auto">
             <div className="flex mb-10">
                 {(loadingScores || !scores.now)? <LoadingOutlined className="text-2xl block mx-auto my-4" /> : <>
                     <div className="w-[300px] p-4 bg-[#1A1A1A] text-[rgba(255,255,255,0.5)] mr-10">
@@ -52,6 +53,7 @@ const Dashboard = () => {
             </div>
             <DashRmodynamics></DashRmodynamics>
             <DashLinemics></DashLinemics>
+            <PubCard></PubCard>
         </div>
     )
 }
