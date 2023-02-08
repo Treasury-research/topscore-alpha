@@ -24,7 +24,10 @@ const rlData = [[
 [
     4, 18, 20
 ]];
+
 let weekCount = 0;
+
+const tabs = ['Global','Personal'];
 
 const rmodynamics = () => {
 
@@ -35,6 +38,10 @@ const rmodynamics = () => {
     const [week, setWeek] = useState<any>([]);
 
     const [activeItems,setActiveItems] = useState<any>([]);
+
+    const [activeTab,setActiveTab] = useState<any>(0);
+
+    const [currentDate,setCurrentDate] = useState<any>([]);
 
     useEffect(() => {
         getCurrentWeek()
@@ -75,8 +82,10 @@ const rmodynamics = () => {
         let weekOfDay = parseInt(moment().format('E'));//计算今天是这周第几天
         let last_monday = moment().startOf('day').subtract(weekOfDay + 7 * weekCount - 1, 'days').toDate();//周一日期
         let last_sunday = moment().startOf('day').subtract(weekOfDay + 7 * (weekCount - 1), 'days').toDate();//周日日期
-        console.log([moment(last_monday).format('MM/DD'), moment(last_sunday).format('MM/DD')])
+        // console.log([moment(last_monday).format('MM/DD'), moment(last_sunday).format('MM/DD')])
         setWeek([moment(last_monday).format('MM/DD'), moment(last_sunday).format('MM/DD')])
+        setCurrentDate([`20${moment(last_monday).format('YYMMDD')}`,`20${moment(last_sunday).format('YYMMDD')}`])
+        console.log([`20${moment(last_monday).format('YYMMDD')}`,`20${moment(last_sunday).format('YYMMDD')}`])
         setActiveItems([]);
         getStaticData();
     }
@@ -99,6 +108,7 @@ const rmodynamics = () => {
             return 'border-[1px] border-[#B4D2FF]'
         }
     }
+
 
     const getGlobalHeatmapData = async () =>{
         const defaultYear = '2023'
@@ -130,13 +140,18 @@ const rmodynamics = () => {
     useEffect(()=>{
         getHeatmapData();
         getGlobalHeatmapData()
-    }, [])
+    }, [currentDate])
 
     return (
         <div className="text-[#fff]">
             <div className="flex">
-                <div className="px-[30px] pb-[6px] pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px] cursor-pointer">Global</div>
-                <div className="px-[30px] pb-[6px] pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px] cursor-pointer">Personal</div>
+                {
+                    tabs.map((t:any,i:number) => (
+                        <div onClick={() => setActiveTab(i)} key={i} className={`px-[30px] pb-[6px] cursor-pointer ${activeTab === i ? 'pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px]' : 'pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px]'}`}>{t}</div>
+                    ))
+                }
+                {/* <div className="px-[30px] pb-[6px] pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px] cursor-pointer">Global</div>
+                <div className="px-[30px] pb-[6px] pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px] cursor-pointer">Personal</div> */}
             </div>
             <div className="flex bg-[#1A1A1A] p-5 w-full">
                 <div className="w-[780px]">

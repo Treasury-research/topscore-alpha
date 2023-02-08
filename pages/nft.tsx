@@ -14,6 +14,7 @@ import { Modal, Carousel } from "antd";
 import useWeb3Context from "../hooks/useWeb3Context";
 import config from "../config";
 import useErc721Contract from "../contract/useErc721Contract";
+// import VideoSource from "/public/vedio_rainbow.mp4"
 
 const nft = () => {
 
@@ -115,111 +116,108 @@ const nft = () => {
   return (
     <div className="w-full h-full bg-[#000] flex">
       <Navbar />
-      <div className='p-5 w-full text-[#fff]'>
+      <div className='p-5 w-full text-[#fff] relative'>
         <ConnectBtn />
-        <div className='h-[calc(100vh-70px)] overflow-y-auto'>
-          <div className='flex'>
-            <Image
-              className='mx-[auto]'
-              src={Bg1}
-              alt=""
-            />
-          </div>
+        <div className='h-[calc(100vh-70px)] overflow-y-auto relative'>
+          <div className="absolute top-0 w-full left-0 h-full z-20">
+            <div className='flex'>
+              <Image
+                className='mx-[auto]'
+                src={Bg1}
+                alt=""
+              />
+            </div>
 
-          <div className="open-pic mb-[100px]">
-            <div className="carou-con">
-              <Carousel dotPosition={'right'} className="rainbow-carou" autoplay>
-                {
-                  nftList.map((t: any, i: number) => (
-                    <div>
-                      <div className="pic-con">
-                        {t.map((item: any) =>
-                          item.is_open === 1 ? (
-                            <div className="pic-item">
-                              <img src={item.token_uri} />
-                              <div className="pic-open-btn">
-                                <div className="reveal">#{item.id}</div>
-                              </div>
-                            </div>
-                          ) : (
-                            <div className="pic-item">
-                              <div className="pic-open-item">
-                                <div className="text-top">YOUR 2022 WRAPPED ON LENS</div>
-                                <div className="text-bot">MYSTERY BOH</div>
-                              </div>
-                              <div className="pic-open-btn">
-                                <div className="arrow">
-                                  <Image src={ImgToRight} alt="" />
-                                </div>
-                                <div
-                                  className="reveal"
-                                  onClick={() => doOpenBox(item.id)}
-                                >
-                                  REVEAL
-                                </div>
-                                <div className="arrow">
-                                  <Image src={ImgToLeft} alt="" />
+            <div className="open-pic mb-[100px]">
+              <div className="carou-con">
+                <Carousel dotPosition={'right'} className="rainbow-carou" autoplay>
+                  {
+                    nftList.map((t: any, i: number) => (
+                      <div>
+                        <div className="pic-con">
+                          {t.map((item: any) =>
+                            item.is_open === 1 ? (
+                              <div className="pic-item">
+                                <img src={item.token_uri} />
+                                <div className="pic-open-btn">
+                                  <div className="reveal">#{item.id}</div>
                                 </div>
                               </div>
-                            </div>
-                          )
-                        )}
+                            ) : (
+                              <div className="pic-item">
+                                <div className="pic-open-item">
+                                  <div className="text-top">YOUR 2022 WRAPPED ON LENS</div>
+                                  <div className="text-bot">MYSTERY BOH</div>
+                                </div>
+                                <div className="pic-open-btn">
+                                  <div className="arrow">
+                                    <Image src={ImgToRight} alt="" />
+                                  </div>
+                                  <div
+                                    className="reveal"
+                                    onClick={() => doOpenBox(item.id)}
+                                  >
+                                    REVEAL
+                                  </div>
+                                  <div className="arrow">
+                                    <Image src={ImgToLeft} alt="" />
+                                  </div>
+                                </div>
+                              </div>
+                            )
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))
-                }
-              </Carousel>
-            </div>
-            {
-              total !== 0 &&
-              <div className="pic-total">Total:{total}</div>
-            }
-            <Modal
-              className="openPicModal"
-              open={isShowPic}
-              onOk={handleOk}
-              onCancel={handleCancel}
-            >
-              <div>
-                <div onClick={() => handleCancel()} className='absolute right-[23px] bg-[#1F1F1F] h-[40px] w-[40px] flex justify-center items-center border-[1px] border-[#4A4A4A] top-[0px] cursor-pointer'>
-                  <CloseOutlined className='text-[20px]' />
-                </div>
-                <div className="open-imgTitle">
-                  <Image src={ImgWhole} alt="" />
-
-                </div>
-                <div className="open-imgResult">
-                  <img src={activeNftDetail.token_uri} alt="" />
-                </div>
+                    ))
+                  }
+                </Carousel>
               </div>
-            </Modal>
-          </div>
-          <div className='flex'>
-            <Image
-              className='mx-[auto]'
-              src={Bg2}
-              alt=""
-            />
-          </div>
-          <div>
-            <Character />
-          </div>
-          {/* {
-            isShow &&
-            <div className="open-pic-video">
-
-              <video
-                loop
-                autoPlay
-                muted
-                src="./../statics/vedio_rainbow.mp4"
+              {
+                total !== 0 &&
+                <div className="pic-total">Total:{total}</div>
+              }
+              <Modal
+                className="openPicModal"
+                open={isShowPic}
+                onOk={handleOk}
+                onCancel={handleCancel}
               >
-              </video>
+                <div>
+                  <div onClick={() => handleCancel()} className='absolute right-[23px] bg-[#1F1F1F] h-[40px] w-[40px] flex justify-center items-center border-[1px] border-[#4A4A4A] top-[0px] cursor-pointer'>
+                    <CloseOutlined className='text-[20px]' />
+                  </div>
+                  <div className="open-imgTitle">
+                    <Image src={ImgWhole} alt="" />
 
-
+                  </div>
+                  <div className="open-imgResult">
+                    <img src={activeNftDetail.token_uri} alt="" />
+                  </div>
+                </div>
+              </Modal>
             </div>
-          } */}
+            <div className='flex'>
+              <Image
+                className='mx-[auto]'
+                src={Bg2}
+                alt=""
+              />
+            </div>
+            <div>
+              <Character />
+            </div>
+          </div>
+          
         </div>
+        <div className="absolute top-[60px] w-full left-0 h-full opacity-[0.3] z-10 charvideo">
+            <video
+              loop
+              autoPlay
+              muted
+              src="/vedio_rainbow.mp4"
+            >
+            </video>
+          </div>
       </div>
     </div>
   )
