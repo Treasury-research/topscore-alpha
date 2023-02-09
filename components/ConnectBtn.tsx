@@ -106,8 +106,7 @@ const ConnectBtn = () => {
       if(res.data){
         setKnn3TokenValid(true);
       }else{
-        // doKnn3Refresh();
-        // setIsTokenValid(true)
+        doKnn3Refresh();
       }
     }
   };
@@ -175,7 +174,7 @@ const ConnectBtn = () => {
         </button>
       )}
 
-      {account && profileList.length > 0 && !isTokenValid && (
+      {account && profileList.length > 0 && !knn3TokenValid && (
         <button
           onClick={() => doLogin()}
           className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]"
