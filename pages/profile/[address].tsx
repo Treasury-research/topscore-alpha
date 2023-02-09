@@ -283,7 +283,8 @@ const Post = () => {
                 )}
                 <div>
                   <div>
-                    <Dropdown
+                    <span className="space">{currentProfile.name || currentProfile.handle}</span>
+                    {/* <Dropdown
                       open={openLensDropdown}
                       onOpenChange={(e: any) => setOpenLensDropdown(e)}
                       overlay={
@@ -310,7 +311,7 @@ const Post = () => {
                           <DownOutlined />
                         </Space>
                       </a>
-                    </Dropdown>
+                    </Dropdown> */}
                   </div>
                   <div>@{currentProfile.handle}</div>
                 </div>
