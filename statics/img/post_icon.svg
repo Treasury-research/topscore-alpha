@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Post icon</title>
+    <g id="SF-Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Text-Formatting" transform="translate(-666.000000, -62.000000)">
+            <g id="Post-icon" transform="translate(666.000000, 62.000000)">
+                <g id="Group-14" transform="translate(6.784068, 6.769431)" fill="#FFFFFF" fill-rule="nonzero">
+                    <path d="M7.97161151,1.05391399 L8.73284882,0.292676676 C9.10839257,-0.0727172335 9.53468546,-0.103166724 9.87977969,0.241927521 L10.1335255,0.495673296 C10.4786197,0.840767541 10.4684698,1.27721027 10.0929261,1.65275401 L9.33168884,2.41399133 L7.97161151,1.05391399 Z" id="pencil.circle.fill"></path>
+                    <path d="M0.511485842,10.3105597 C0.217140752,10.4120581 -0.107653843,10.1278628 0.0344437971,9.80306813 L0.612984152,8.40239152 L7.33217217,1.68320351 L8.6922495,3.04328084 L1.96291166,9.76246883 L0.511485842,10.3105597 Z" id="pencil.circle.fill"></path>
+                </g>
+                <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

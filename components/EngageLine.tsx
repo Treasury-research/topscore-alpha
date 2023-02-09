@@ -10,14 +10,17 @@ const areaColor = ['#FF3300', '#3B5CFF', '#A1C3BE', '#F95D6A', '#003F5C', '#FF7C
 
 const ChartLine = (props: any) => {
 
-  const { id = 'default-id', width = '100%', height = '100%', dates, dayType, lineData, commentSwitch, mirrorSwitch, postSwitch, type,sigleData } = props;
-
+  const { id = 'default-id', width = '100%', height = '100%', dates, dayType, lineData, commentSwitch, mirrorSwitch, postSwitch, type, sigleData } = props;
+  console.log(lineData)
   const getSeriesData = (s: any, i: number) => {
-    let seriesObj = {
+    let seriesObj:any = {
       name: `Pub#${s[i]['pubId']}`,
       type: 'line',
       stack: 'Total',
       yAxisIndex: 0,
+      emphasis: {
+        focus: 'series'
+      },
       label: {
         show: false,
         position: 'top'
@@ -37,43 +40,93 @@ const ChartLine = (props: any) => {
     }
 
     for (let j = 0; j < lineData.length; j++) {
+
       let flx = lineData[j].filter((t: any) => {
         return t.pubId == s[i]['pubId']
       })
+
+      let flxPre:any = []
+
+      if (j !== 0) {
+        flxPre = lineData[j - 1].filter((t: any) => {
+          return t.pubId == s[i]['pubId']
+        })
+      }
+
+      if(flxPre.length == 0){
+        if (type === 0 || type === 1) {
+          flxPre = [{
+            commentByCount:0,
+            mirrorByCount:0
+          }]
+        }else{
+          flxPre = [{
+            collectByCount:0,
+          }]
+        }
+      }
+
       seriesObj.itemStyle.color = lineColor[i];
       seriesObj.areaStyle.color = areaColor[i];
-      if (flx.length == 0) {
-        seriesObj.data.push(null)
-      } else {
-        if (type === 0 || type === 1) {
-          if (commentSwitch && !mirrorSwitch) {
+      if ((type === 0 || type === 1) && j !== 0) {
+        if (commentSwitch && !mirrorSwitch) {
+          if (flx.length == 0) {
             seriesObj.data.push({
-              name: `${type}_${flx[0]['type']}_comment_${flx[0]['commentByCount']}`,
-              value: flx[0]['commentByCount'] || 0
+              name: `${type}_${s[i]['type']}_comment_0`,
+              value: 0
+            })
+          } else {
+            seriesObj.data.push({
+              name: `${type}_${flx[0]['type']}_comment_${flx[0]['commentByCount'] - flxPre[0]['commentByCount']}`,
+              value: flx[0]['commentByCount'] - flxPre[0]['commentByCount'] || 0
             })
           }
-          if (!commentSwitch && mirrorSwitch) {
-            // seriesObj.data.push(flx[0]['mirrorByCount'])
+        }
+        if (!commentSwitch && mirrorSwitch) {
+          if (flx.length == 0) {
             seriesObj.data.push({
-              name: `${type}_${flx[0]['type']}_mirror_${flx[0]['mirrorByCount']}`,
-              value: flx[0]['mirrorByCount'] || 0
+              name: `${type}_${s[i]['type']}_mirror_0`,
+              value: 0
+            })
+          } else {
+            seriesObj.data.push({
+              name: `${type}_${flx[0]['type']}_mirror_${flx[0]['mirrorByCount'] - flxPre[0]['mirrorByCount']}`,
+              value: flx[0]['mirrorByCount'] - flxPre[0]['mirrorByCount'] || 0
             })
           }
-          if (commentSwitch && mirrorSwitch) {
+        }
+        if (commentSwitch && mirrorSwitch) {
+          if (flx.length == 0) {
             seriesObj.data.push({
-              name: `${type}_${flx[0]['type']}_total_${flx[0]['commentByCount']}_${flx[0]['mirrorByCount']}`,
-              value: (flx[0]['commentByCount'] + flx[0]['mirrorByCount']) || 0
+              name: `${type}_${s[i]['type']}_total_0_0`,
+              value: 0
             })
-            // seriesObj.data.push(flx[0]['mirrorByCount'] + flx[0]['commentByCount'])
+          } else {
+            seriesObj.data.push({
+              name: `${type}_${flx[0]['type']}_total_${flx[0]['commentByCount'] - flxPre[0]['commentByCount']}_${flx[0]['mirrorByCount'] - flxPre[0]['mirrorByCount']}`,
+              value: ((flx[0]['commentByCount'] + flx[0]['mirrorByCount']) - (flxPre[0]['commentByCount'] + flxPre[0]['mirrorByCount'])) || 0
+            })
           }
-          if (!commentSwitch && !mirrorSwitch) {
-            seriesObj.data.push(0)
-          }
-        } else {
+        }
+        if (!commentSwitch && !mirrorSwitch) {
           seriesObj.data.push({
-            name: `${type}_${flx[0]['type']}_${flx[0]['isFee']}_${flx[0]['collectByCount']}`,
-            value: flx[0]['collectByCount'] || 0
+            name: `${type}_total_total_0_0}`,
+            value: 0
           })
+        }
+      } else {
+        if(j !== 0){
+          if (flx.length == 0) {
+            seriesObj.data.push({
+              name: `${type}_${s[i]['type']}_${s[i]['isFee']}_0_0`,
+              value: 0
+            })
+          } else {
+            seriesObj.data.push({
+              name: `${type}_${flx[0]['type']}_${flx[0]['isFee']}_${flx[0]['collectByCount'] - flxPre[0]['collectByCount']}`,
+              value: flx[0]['collectByCount'] - flxPre[0]['collectByCount'] || 0
+            })
+          }
         }
       }
     }
@@ -85,17 +138,19 @@ const ChartLine = (props: any) => {
     let seriesData = [];
     if (lineData.length == 0) return;
     const s = lineData[lineData.length - 1];
+    console.log(s);
+    console.log(lineData);
     if (postSwitch) {
       for (let i = 0; i < s.length; i++) {
         if (s[i]['type'] === 'Post') {
-          legendData.push(`Pub#${s[i]['pubId']}`)
-          seriesData.push(getSeriesData(s, i))
+            legendData.push(`Pub#${s[i]['pubId']}`)
+            seriesData.push(getSeriesData(s, i))
         }
       }
     } else {
       for (let i = 0; i < s.length; i++) {
-        legendData.push(`Pub#${s[i]['pubId']}`)
-        seriesData.push(getSeriesData(s, i))
+          legendData.push(`Pub#${s[i]['pubId']}`)
+          seriesData.push(getSeriesData(s, i))
       }
     }
     seriesData.push({
@@ -112,11 +167,16 @@ const ChartLine = (props: any) => {
       lineStyle: {
         width: 2
       },
-      smooth:true,
+      smooth: true,
       data: sigleData,
       showSymbol: false
     })
-
+    let dy:any = [];
+    dates.forEach((t:any,i:any) => {
+      if(i !== 0){
+        dy.push(t)
+      }
+    })
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -163,7 +223,7 @@ const ChartLine = (props: any) => {
             htmlDate = `<div class="engage-head-right-date">${v.axisValue}</div>`
           })
 
-          let t = params.filter((h:any) => {
+          let t = params.filter((h: any) => {
             return h.seriesName === 'amount'
           })
 
@@ -210,6 +270,9 @@ const ChartLine = (props: any) => {
         icon: 'rect',
         bottom: '0px',
         left: '60px',
+        emplasis: {
+          focus: 'self'
+        },
         data: legendData,
         textStyle: {
           color: 'rgba(255,255,255,0.8)'
@@ -235,7 +298,7 @@ const ChartLine = (props: any) => {
           show: true,
           brushSelect: false,
           borderColor: 'rgba(255,255,255,0)',
-          start: 100 - (dayType + 1) * 7 / 30 * 100,
+          start: 0,
           end: 100,
           xAxisIndex: [0, 1],
           top: '86%',
@@ -244,7 +307,7 @@ const ChartLine = (props: any) => {
           type: 'inside',
           brushSelect: false,
           borderColor: 'rgba(255,255,255,0)',
-          start: 100 - (dayType + 1) * 7 / 30 * 100,
+          start: 0,
           end: 100,
           xAxisIndex: [0, 1],
           top: '86%',
@@ -254,7 +317,7 @@ const ChartLine = (props: any) => {
         {
           type: 'category',
           boundaryGap: false,
-          data: dates,
+          data: dy,
           axisLabel: {
             textStyle: {
               color: 'rgba(255,255,255,0.8)',
@@ -263,19 +326,22 @@ const ChartLine = (props: any) => {
           }
         }
       ],
+      emplasis: {
+        focus: 'self'
+      },
       yAxis: [
         {
           type: 'value',
-          scale:true,
+          scale: true,
           splitLine: {
             lineStyle: {
               color: 'rgba(255,255,255,0.1)'
             }
           },
-          max: function(value:any) {//取最大值向上取整为最大刻度
+          max: function (value: any) {//取最大值向上取整为最大刻度
             return Math.ceil(value.max) * 1
           },
-          min: function(value:any) {//取最大值向上取整为最大刻度
+          min: function (value: any) {//取最大值向上取整为最大刻度
             return value.min
           },
           axisLabel: {
@@ -287,10 +353,10 @@ const ChartLine = (props: any) => {
         }, {
           type: 'value',
           position: 'right',
-          max: function(value:any) {//取最大值向上取整为最大刻度
+          max: function (value: any) {//取最大值向上取整为最大刻度
             return value.max
           },
-          min: function(value:any) {//取最大值向上取整为最大刻度
+          min: function (value: any) {//取最大值向上取整为最大刻度
             return value.min
           },
           splitLine: {
@@ -304,7 +370,7 @@ const ChartLine = (props: any) => {
               fontSize: 14
             },
           }
-      }
+        }
       ],
       series: [...seriesData]
     };
