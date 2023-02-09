@@ -3,7 +3,6 @@ import { Modal, Switch, Input, Select, InputNumber } from 'antd';
 import Image from 'next/image'
 import P4 from '../../statics/img/p4.png'
 import { CloseOutlined, ClusterOutlined, SwapOutlined, DeploymentUnitOutlined, FieldTimeOutlined, UsergroupAddOutlined } from "@ant-design/icons";
-
 const CollectModal = (props: any) => {
 
     const [isSwitch, setIsSwitch] = useState([false, false, false, false])

@@ -128,7 +128,7 @@ const Character = (props: any) => {
         ];
         arr.sort((a: any, b: any) => { return b.score - a.score })
         const str = getImg(arr);
-        console.log(str)
+        console.log(str);
         if (profileId === '101548') {
             setImgUrl(noSharePic[str])
         } else {
@@ -156,10 +156,12 @@ const Character = (props: any) => {
         if (currentProfileBase && currentProfileBase.profileId) {
             getRadar(currentProfileBase.profileId);
             getIndicators(currentProfileBase.profileId);
+            //getPublication(currentProfileBase.profileId);
             setShowShareBtn(true);
         } else {
             getRadar('101548');
             getIndicators('101548');
+           // getPublication('101548');
             setShowShareBtn(false);
         }
     }, [currentProfileBase]);
@@ -303,14 +305,14 @@ const Character = (props: any) => {
     return (
         <div className="char-pic-default">
             {
-                imgUrl &&
-                <>
+                account && imgUrl &&
+                <div className="h-[800px]">
                     <Image src={imgUrl} alt="" />
                     {
                         showShareBtn &&
                         <>
                             <div className="character-rank">{userInfo.rank}</div>
-                            <div className="character-lens">{currentProfileBase?.handle}</div>
+                            <div className="character-lens">{currentProfileBase ? currentProfileBase.handle : 'knn3_network.lens'}</div>
                             <div className="character-score">{new BN(userInfo.score).toFixed(2)}</div>
                         </>
                     }
@@ -318,7 +320,7 @@ const Character = (props: any) => {
                         !showShareBtn &&
                         <>
                             <div className="character-no-share-rank">{userInfo.rank}</div>
-                            <div className="character-no-share-lens">{currentProfileBase?.handle}</div>
+                            <div className="character-no-share-lens">{currentProfileBase ? currentProfileBase.handle : 'knn3_network.lens'}</div>
                             <div className="character-no-share-score">{new BN(userInfo.score).toFixed(2)}</div>
                         </>
                     }
@@ -328,7 +330,7 @@ const Character = (props: any) => {
                                 <div>
                                     <LensterShareButton
                                         title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：@KNN3Network #Lens`}
-                                        url={`https://topscore.knn3.xyz/user/${account}/${currentProfileBase.profileId}`}
+                                        url={`https://topscore.knn3.xyz/user/${account}/${currentProfileBase ? currentProfileBase.profileId : ''}`}
                                         hashtags="@knn3_network #Lens"
                                     >
                                         <Image src={IconLenster} alt="" />
@@ -348,7 +350,7 @@ const Character = (props: any) => {
                                 <></>
                             )
                     }
-                </>
+                </div>
             }
         </div>
     );

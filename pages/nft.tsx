@@ -87,12 +87,15 @@ const nft = () => {
     //   id: '234',
     //   is_open: 0
     // }]
-    setTotal(res2.length);
-    let newList: any = [];
-    for (var i = 0; i < res2.length; i += 4) {
-      newList.push(res2.slice(i, i + 4));
+    if (res2.length > 0) {
+      setTotal(res2.length);
+      let newList: any = [];
+      for (var i = 0; i < res2.length; i += 4) {
+        newList.push(res2.slice(i, i + 4));
+      }
+      setNftList(newList);
     }
-    setNftList(newList);
+
   };
 
   const doOpenBox = async (id: number) => {
@@ -128,7 +131,7 @@ const nft = () => {
             </div>
 
             <div className="open-pic mb-[100px]">
-              
+
               <div className="carou-con">
                 <Carousel dotPosition={'right'} className="rainbow-carou" autoplay>
                   {
@@ -207,17 +210,17 @@ const nft = () => {
               <Character />
             </div>
           </div>
-          
+
         </div>
         <div className="absolute top-[60px] w-full left-0 h-full opacity-[0.3] z-10 charvideo">
-            <video
-              loop
-              autoPlay
-              muted
-              src="/vedio_rainbow.mp4"
-            >
-            </video>
-          </div>
+          <video
+            loop
+            autoPlay
+            muted
+            src="/vedio_rainbow.mp4"
+          >
+          </video>
+        </div>
       </div>
     </div>
   )

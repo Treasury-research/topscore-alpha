@@ -8,11 +8,15 @@ import lensApi from "../api/lensApi";
 import { message, Dropdown, Menu } from "antd";
 import { useRouter } from "next/router";
 import api from "../api";
+import LoginConnect from './connect/LoginConnect'
+import SignLens from './connect/SignLens'
+import ChangeProfile from './connect/ChangeProfile'
 
 const ConnectBtn = () => {
   const router = useRouter();
   const { account, connectWallet, chainId, signMessage } = useWeb3Context();
   const [profileList, setProfileList] = useRecoilState(profileListState);
+  const [showModal, setShowModal] = useState([false, false, false]);
   const [currentProfile, setCurrentProfile] =
     useRecoilState<any>(currentProfileState);
 
@@ -23,13 +27,13 @@ const ConnectBtn = () => {
     getLensHandle();
   }, [account]);
 
-  useEffect(()=>{
+  useEffect(() => {
   }, [currentProfile])
 
   const changeProfile = (profileId: number) => {
     // 如果在 profile 页面，把 profile 也切换掉。
-    if(router.pathname === "/profile/[address]"){
-        router.push(`/profile/${account}?queryProfileId=${profileId}`);
+    if (router.pathname === "/profile/[address]") {
+      router.push(`/profile/${account}?queryProfileId=${profileId}`);
     }
   };
 
@@ -55,7 +59,7 @@ const ConnectBtn = () => {
   };
 
   const doKnn3Login = async (message: string, signature: string) => {
-    const res = await api.post('/auth/login',{
+    const res = await api.post('/auth/login', {
       message,
       signature,
     })
@@ -78,6 +82,13 @@ const ConnectBtn = () => {
     lensApi.setToken(token.accessToken);
   };
 
+  const handleShowModal = (show: boolean, i: number) => {
+    setShowModal((pre) => {
+      pre[i] = show;
+      return [...pre];
+    });
+  };
+  
   return (
     <div className="w-full h-10 flex gap-3 justify-end ">
       {account ? (
@@ -137,6 +148,12 @@ const ConnectBtn = () => {
           </button>
         </Dropdown>
       )}
+
+      {showModal[0] && (<LoginConnect onCancel={() => handleShowModal(false, 0)} />)}
+
+      {showModal[1] && (<SignLens onCancel={() => handleShowModal(false, 1)} />)}
+
+      {showModal[2] && (<ChangeProfile onCancel={() => handleShowModal(false, 2)} />)}
     </div>
   );
 };

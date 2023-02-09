@@ -627,8 +627,8 @@
   }
   .character-score{
     position: absolute;
-    bottom: 30px;
-    left: 320px;
+    top: 551px;
+    left: 308px;
   }
 
   .character-no-share-rank{
@@ -645,8 +645,8 @@
   }
   .character-no-share-score{
     position: absolute;
-    bottom: -15px;
-    left: 320px;
+    top: 553px;
+    left: 307px;
   }
 
   .clear-btn-group{
@@ -660,8 +660,8 @@
   .char-share-btnGroup{
     overflow: hidden;
     position: absolute;
-    right: 308px;
-    bottom: -18px;
+    right: 237px;
+    top: 610px;
     >div {
       float: left;
       height: 40px;
