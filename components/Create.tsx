@@ -14,7 +14,7 @@ const Create = () => {
     const [loadingScores, setLoadingScores] = useState<boolean>(false);
 
     // get this from global store
-    const testProfileId = '47107'
+    const testProfileId = '5'
 
     const getScores = async () => {
         setLoadingScores(true)
@@ -30,6 +30,7 @@ const Create = () => {
     useEffect(() => {
         getScores();
     }, [])
+    
     return (
         <>
             <div className="absolute top-[20px] text-[24px]">Create</div>

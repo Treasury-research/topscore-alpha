@@ -13,7 +13,7 @@ const Dashboard = () => {
     const [loadingScores, setLoadingScores] = useState<boolean>(false);
 
     // get this from global store
-    const testProfileId = '47107'
+    const testProfileId = '5'
 
     const getScores = async () => {
         setLoadingScores(true)

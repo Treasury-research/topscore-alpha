@@ -14,11 +14,15 @@ let maxRemoData: any = [0, 0, 0, 0, 0]
 
 const tabs = ['2023', '2022'];
 
+const testProfileId = '5'
+
 const rmodynamics = () => {
 
     const [remodyBaseData, setRemodyBaseData] = useState<any>([]);
 
-    const [checked, setChecked] = useState([false, false, false, false, false]);
+    const [checkedPub, setcheckedPub] = useState(true);
+
+    const [checked, setChecked] = useState([true, true, true]);
 
     const [activeYear, setActiveYear] = useState('2022')
 
@@ -32,13 +36,40 @@ const rmodynamics = () => {
 
     const [activeItems, setActiveItems] = useState<any>([]);
 
+    const [postTotal, setPostTotal] = useState(0);
+
+    const [commentTotal, setCommentTotal] = useState(0);
+
+    const [mirrorTotal, setMirrorTotal] = useState(0);
+
     useEffect(() => {
         getCurrentWeek()
+
     }, [])
 
     useEffect(() => {
         getGlobalHeatmapData();
+        getTotalPostData()
+        getTotalCommentData()
+        getTotalMirrorData()
     }, [activeTab])
+
+    useEffect(() => {
+        if (checked[0] && checked[1] && checked[2]) {
+            setcheckedPub(true)
+        } else if (!checked[0] && !checked[1] && !checked[2]) {
+            setcheckedPub(false)
+        }
+        getGlobalHeatmapData();
+    }, [checked])
+
+    useEffect(() => {
+        if (checkedPub) {
+            setChecked([true, true, true])
+        } else {
+            setChecked([false, false, false])
+        }
+    }, [checkedPub])
 
     const getYearWeek = (a: any, b: any, c: any) => {
         /*  
@@ -53,14 +84,69 @@ const rmodynamics = () => {
         return Math.ceil((d + ((date2.getDay() + 1) - 1)) / 7);
     };
 
-    const getGlobalHeatmapData = async () => {
-        setLoading(true);
-        const testProfileId = '47107'
+    const getTotalPostData = async () => {
+        let total = 0;
         const res = await api.get(`/publication/${testProfileId}`, {
             params: {
                 profileId: testProfileId,
                 year: activeTab === 0 ? '2023' : '2022',
-                type: "Post,Mirror,Comment",
+                type: 'Post',
+            }
+        })
+        res.data.forEach((t: any) => {
+            total += t.count
+        })
+        setPostTotal(total)
+    }
+
+    const getTotalCommentData = async () => {
+        let total = 0;
+        const res = await api.get(`/publication/${testProfileId}`, {
+            params: {
+                profileId: testProfileId,
+                year: activeTab === 0 ? '2023' : '2022',
+                type: 'Comment',
+            }
+        })
+        res.data.forEach((t: any) => {
+            total += t.count
+        })
+        setCommentTotal(total)
+    }
+
+    const getTotalMirrorData = async () => {
+        let total = 0;
+        const res = await api.get(`/publication/${testProfileId}`, {
+            params: {
+                profileId: testProfileId,
+                year: activeTab === 0 ? '2023' : '2022',
+                type: 'Mirror',
+            }
+        })
+        res.data.forEach((t: any) => {
+            total += t.count
+        })
+        setMirrorTotal(total)
+    }
+
+    const getGlobalHeatmapData = async () => {
+        setLoading(true);
+        let types = ['Post', 'Mirror', 'Comment'];
+        let str = "";
+        checked.forEach((t: any, i: number) => {
+            if (t) {
+                if (str) {
+                    str += `,${types[i]}`
+                } else {
+                    str += types[i]
+                }
+            }
+        })
+        const res = await api.get(`/publication/${testProfileId}`, {
+            params: {
+                profileId: testProfileId,
+                year: activeTab === 0 ? '2023' : '2022',
+                type: str,
             }
         })
 
@@ -70,7 +156,34 @@ const rmodynamics = () => {
                 rem[i].push(null)
             }
         }
-
+        if (activeTab === 1) {
+            rem[0].push(null)
+            rem[1].push(null)
+            rem[2].push(null)
+            rem[3].push(null)
+            rem[4].push(null)
+            rem[5].push(null)
+            rem[0][0] = 'hidden'
+            rem[1][0] = 'hidden'
+            rem[2][0] = 'hidden'
+            rem[3][0] = 'hidden'
+            rem[4][0] = 'hidden'
+        }
+        if (activeTab === 0) {
+            rem[0].push(null)
+            rem[1].push(null)
+            rem[2].push(null)
+            rem[3].push(null)
+            rem[4].push(null)
+            rem[5].push(null)
+            rem[6].push(null)
+            rem[0][0] = 'hidden'
+            rem[1][0] = 'hidden'
+            rem[2][0] = 'hidden'
+            rem[3][0] = 'hidden'
+            rem[4][0] = 'hidden'
+            rem[5][0] = 'hidden'
+        }
         maxRemoData = 0
 
         res.data.forEach((t: any) => {
@@ -79,15 +192,29 @@ const rmodynamics = () => {
             // console.log(t.date, t.date.slice(5, 7))
             console.log('date', getYearWeek(t.date.split('-')[0], t.date.split('-')[1], t.date.split('-')[2]))
             const numMonth = getYearWeek(t.date.split('-')[0], t.date.split('-')[1], t.date.split('-')[2]) // 本年第几周
-            if (numMonth > 52 || numMonth < 1) return false;
+            // if (numMonth > 52 || numMonth < 1) return false;
             if (t.count > maxRemoData) {
                 maxRemoData = t.count
             }
-            if (week == 0) {
-                rem[6][numMonth - 1] = [t.count, t.date];
+            // if (week == 0) {
+            //     rem[6][numMonth] = [t.count, t.date];
+            // } else {
+            //     rem[week][numMonth] = [t.count, t.date];
+            // }
+            if (activeTab === 0) {
+                if (week == 0) {
+                    rem[6][numMonth] = [t.count, t.date];
+                } else {
+                    rem[week - 1][numMonth] = [t.count, t.date];
+                }
             } else {
-                rem[week - 1][numMonth - 1] = [t.count, t.date];
+                if (week == 0) {
+                    rem[6][numMonth - 1] = [t.count, t.date];
+                } else {
+                    rem[week - 1][numMonth - 1] = [t.count, t.date];
+                }
             }
+
         })
         console.log(rem)
         setRemodyBaseData(rem)
@@ -143,8 +270,8 @@ const rmodynamics = () => {
     }
 
     const getItemStyle = (e: any) => {
-        console.log(e)
-        console.log('max', maxRemoData)
+        // console.log(e)
+        // console.log('max', maxRemoData)
         if (!e || (!e[0] && e[0] !== 0)) return 'bg-[#4F4F4F]'
         let lv = maxRemoData / 5;
         if (e[0] < lv) {
@@ -162,29 +289,12 @@ const rmodynamics = () => {
         }
     }
 
-    const getHeatmapData = async () => {
-        // profile id 稍晚点会放到 store 里
-        const testProfileId = 1
-        const res = await api.get(`/publication/${testProfileId}`, {
-            params: {
-                profileId: testProfileId,
-                year: activeYear,
-                type: "Post,Mirror,Comment",
-            }
-        })
-        console.log('heatmap data', res)
-    }
-
-    // useEffect(() => {
-    //     getHeatmapData();
-    // }, [])
-
     const getContent = (e: any) => {
         if (!e || (!e[0] && e[0] !== 0)) return ''
         return (
             <div>
                 <p className="text-[18px] font-[600]">{e[1] || '--'}</p>
-                <p>Mount：{e[0]}</p>
+                <p>Count：{e[0]}</p>
             </div>
         )
     };
@@ -234,9 +344,9 @@ const rmodynamics = () => {
                                                     t.map((item: any, index: number) => (
                                                         (!item || (!item[0] && item[0] !== 0)) ?
                                                             (
-                                                                <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
+                                                                <div key={index} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
                                                             ) : (<Popover placement="bottom" content={() => getContent(item)}>
-                                                                <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
+                                                                <div key={index} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
                                                             </Popover>)
                                                         // <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
                                                     ))
@@ -252,13 +362,6 @@ const rmodynamics = () => {
                                         ))
                                     }
                                 </div>
-                                {/* <div className="text-[12px] w-[calc(100%-40px)] ml-[40px] mt-[10px]">
-                        <div className="w-[185px] float-left">0AM</div>
-                        <div className="w-[180px] float-left">6AM</div>
-                        <div className="w-[190px] float-left">12PM</div>
-                        <div className="float-left">18PM</div>
-                        <div className="float-right">24PM</div>
-                    </div> */}
                             </div>
                             <div className="w-[calc(100%-860px)]">
                                 {/* <div className="flex">
@@ -274,35 +377,35 @@ const rmodynamics = () => {
                                 <div className="px-6 py-2 bg-[rgb(41,41,41)] mt-11">
                                     <div className="flex mb-2">
                                         <div>
-                                            <Checkbox onChange={(e: any) => onChange(e, 0)} checked={checked[0]}>
+                                            <Checkbox onChange={(e: any) => setcheckedPub(e.target.checked)} checked={checkedPub}>
                                                 <span className="text-[#fff] text-[16px]">Publication</span>
                                             </Checkbox>
                                         </div>
-                                        <div className="ml-[auto]">126</div>
+                                        <div className="ml-[auto]">{postTotal + commentTotal + mirrorTotal}</div>
                                     </div>
-                                    <div className="flex mb-2">
+                                    <div className="flex mb-2 ml-[20px]">
                                         <div>
-                                            <Checkbox onChange={(e: any) => onChange(e, 1)} checked={checked[1]}>
+                                            <Checkbox onChange={(e: any) => onChange(e, 0)} checked={checked[0]}>
                                                 <span className="text-[#fff] text-[16px]">Post</span>
                                             </Checkbox>
                                         </div>
-                                        <div className="ml-[auto]">126</div>
+                                        <div className="ml-[auto]">{postTotal}</div>
                                     </div>
-                                    <div className="flex mb-2">
+                                    <div className="flex mb-2 ml-[20px]">
                                         <div>
-                                            <Checkbox onChange={(e: any) => onChange(e, 2)} checked={checked[2]}>
+                                            <Checkbox onChange={(e: any) => onChange(e, 1)} checked={checked[1]}>
                                                 <span className="text-[#fff] text-[16px]">Comment</span>
                                             </Checkbox>
                                         </div>
-                                        <div className="ml-[auto]">126</div>
+                                        <div className="ml-[auto]">{commentTotal}</div>
                                     </div>
-                                    <div className="flex mb-2">
+                                    <div className="flex mb-2 ml-[20px]">
                                         <div>
-                                            <Checkbox onChange={(e: any) => onChange(e, 3)} checked={checked[3]}>
+                                            <Checkbox onChange={(e: any) => onChange(e, 2)} checked={checked[2]}>
                                                 <span className="text-[#fff] text-[16px]">Mirror</span>
                                             </Checkbox>
                                         </div>
-                                        <div className="ml-[auto]">126</div>
+                                        <div className="ml-[auto]">{mirrorTotal}</div>
                                     </div>
                                 </div>
                             </div>

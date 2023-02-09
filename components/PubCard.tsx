@@ -29,7 +29,7 @@ const PubCard = (props: any) => {
   }, [lineData])
 
   const getPubs = async (ids: any) => {
-    const res = await api.get(`/lens/pubByLatest?profileId=12&pubIds=${ids.join(',')}`);
+    const res = await api.get(`/lens/pubByLatest?profileId=5&pubIds=${ids.join(',')}`);
     if (res.data) {
       let newList: any = [];
       for (var i = 0; i < res.data.length; i += 3) {

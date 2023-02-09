@@ -19,7 +19,7 @@ const rmodynamics = () => {
 
     const [remodyBaseData, setRemodyBaseData] = useState<any>([]);
 
-    const [checked, setChecked] = useState([false, false, false, false, false]);
+    const [checked, setChecked] = useState([true, true, true, true, true]);
 
     const [week, setWeek] = useState<any>([]);
 
@@ -46,7 +46,7 @@ const rmodynamics = () => {
     }, [currentDate, activeTab])
 
     useEffect(() => {
-        setChecked([false, false, false, false, false])
+        setChecked([true, true, true, true, true])
     }, [activeTab])
 
     useEffect(() => {
@@ -69,7 +69,7 @@ const rmodynamics = () => {
                 }
             })
         } else {
-            res = await api.get(`/thermal-map/personal/47107`, {
+            res = await api.get(`/thermal-map/personal/5`, {
                 params: {
                     from: `${currentDate[0]}00`,
                     to: `${currentDate[1]}23`,
@@ -172,14 +172,7 @@ const rmodynamics = () => {
     }
 
     const getItemStyle = (e: any) => {
-//         T1:D13005
-// T2:A32A0A
-// T3:75240F
-// T4:471F14
-// T5:311C17
-
-// null:232323
-        if (!e || !checked.includes(true)) return 'bg-[#4F4F4F]'
+        if (!e || !checked.includes(true)) return 'bg-[#232323]'
         let maxMount = 0;
         let totalMount = 0;
         checked.forEach((t: any, i: number) => {
@@ -188,21 +181,18 @@ const rmodynamics = () => {
                 totalMount += e[i]
             }
         })
-        debugger
         console.log(maxMount)
         let lv = maxMount / 5;
         if (totalMount < lv) {
-            return 'bg-[#4F2D2E]'
+            return 'bg-[#D13005]'
         }else if (lv <= totalMount && totalMount < lv * 2) {
-            return 'bg-[#76312B]'
+            return 'bg-[#A32A0A]'
         }else if (lv * 2 <= totalMount && totalMount < lv * 3) {
-            return 'bg-[#AF342F]'
+            return 'bg-[#75240F]'
         }else if (lv * 3 <= totalMount && totalMount < lv * 4) {
-            return 'bg-[#CA3B32]'
-        }else if (lv * 3 <= totalMount && totalMount < lv * 4) {
-            return 'bg-[#CA3B32]'
+            return 'bg-[#471F14]'
         }else if (lv * 4 <= totalMount) {
-            return 'bg-[#F33C17]'
+            return 'bg-[#311C17]'
         }
     }
 
@@ -241,7 +231,7 @@ const rmodynamics = () => {
                         <LoadingOutlined className="text-2xl block mx-auto my-[130px]" />
                         : <>
                             <div className="w-[780px]">
-                                <div className="text-[18px] mb-[20px]">Optima Post Time</div>
+                                <div className="text-[18px] mb-[30px] mt-[10px]">Optima Post Time</div>
                                 <div>
                                     {
                                         remodyBaseData.map((t: any, i: number) => (
@@ -263,7 +253,7 @@ const rmodynamics = () => {
                                         ))
                                     }
                                 </div>
-                                <div className="text-[12px] w-[calc(100%-40px)] ml-[40px] mt-[10px]">
+                                <div className="text-[12px] w-[calc(100%-40px)] ml-[40px]">
                                     <div className="w-[180px] float-left">0AM</div>
                                     <div className="w-[175px] float-left">6AM</div>
                                     <div className="w-[180px] float-left">12PM</div>
@@ -271,26 +261,26 @@ const rmodynamics = () => {
                                     <div className="float-right mr-0">24PM</div>
                                 </div>
                             </div>
-                            <div className="ml-5 mr-5">
+                            <div className="ml-5 mr-5 mt-[14px]">
                                 <div className="text-[12px] mt-[20px] ml-[-4px]">High</div>
-                                <div className="h-[45px] w-[16px] bg-[#F33C17] mt-[4px]">
+                                <div className="h-[45px] w-[16px] bg-[#311C17] mt-[4px]">
 
                                 </div>
-                                <div className="h-[45px] w-[16px] bg-[#CA3B32]">
+                                <div className="h-[45px] w-[16px] bg-[#471F14]">
 
                                 </div>
-                                <div className="h-[45px] w-[16px] bg-[#AF342F]">
+                                <div className="h-[45px] w-[16px] bg-[#75240F]">
 
                                 </div>
-                                <div className="h-[45px] w-[16px] bg-[#76312B]">
+                                <div className="h-[45px] w-[16px] bg-[#A32A0A]">
 
                                 </div>
-                                <div className="h-[45px] w-[16px] bg-[#4F2D2E]">
+                                <div className="h-[45px] w-[16px] bg-[#D13005]">
 
                                 </div>
                                 <div className="text-[12px] mt-[4px] ml-[-4px]">Low</div>
                             </div>
-                            <div className="w-[calc(100%-800px)]">
+                            <div className="w-[calc(100%-800px)] mt-[10px]">
                                 <div className="flex min-w-50 max-w-100">
                                     <div className="h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer" onClick={getLastWeek}><LeftOutlined /></div>
                                     <div className="w-[calc(100%-100px)] mx-5 h-10 bg-[rgb(41,41,41)] flex items-center justify-center">
@@ -316,7 +306,7 @@ const rmodynamics = () => {
                                     <div className="flex mb-2">
                                         <div>
                                             <Checkbox onChange={(e: any) => onChange(e, 1)} checked={checked[1]}>
-                                                <span className="text-[#fff] text-[16px]">Comment</span>
+                                                <span className="text-[#fff] text-[16px]">Comment {activeTab == 1 ? '(by)' : ''}</span>
                                             </Checkbox>
                                         </div>
                                         <div className="ml-[auto]">{new BN(totalAmount.commentCount).toFormat()}</div>
@@ -324,7 +314,7 @@ const rmodynamics = () => {
                                     <div className="flex mb-2">
                                         <div>
                                             <Checkbox onChange={(e: any) => onChange(e, 2)} checked={checked[2]}>
-                                                <span className="text-[#fff] text-[16px]">Mirror</span>
+                                                <span className="text-[#fff] text-[16px]">Mirror {activeTab == 1 ? '(by)' : ''}</span>
                                             </Checkbox>
                                         </div>
                                         <div className="ml-[auto]">{new BN(totalAmount.mirrorCount).toFormat()}</div>
@@ -332,7 +322,7 @@ const rmodynamics = () => {
                                     <div className="flex mb-2">
                                         <div>
                                             <Checkbox onChange={(e: any) => onChange(e, 3)} checked={checked[3]}>
-                                                <span className="text-[#fff] text-[16px]">Collect</span>
+                                                <span className="text-[#fff] text-[16px]">Collect {activeTab == 1 ? '(by)' : ''}</span>
                                             </Checkbox>
                                         </div>
                                         <div className="ml-[auto]">{new BN(totalAmount.collectCount).toFormat()}</div>

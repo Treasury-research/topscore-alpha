@@ -46,13 +46,13 @@ const rmodynamics = () => {
         const mdy = dayjs(new Date().getTime() - 30 * 24 * 60 * 60 * 1000).format('YYYYMMDD') // 30天前的日期
         const ndy = dayjs(new Date()).format('YYYYMMDD') // 当前日期
         if (activeTab === 0 || activeTab === 1) {
-            const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=47107&category=${activeTab + 1}&type=Post,Comment`);
-            const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=47107`);
+            const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=5&category=${activeTab + 1}&type=Post,Comment`);
+            const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=5`);
             resData = res.data;
             resAmountData = res1.data;
         } else {
-            const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=47107&category=${activeTab - 1}&type=Post,Comment&isFee=${chargeSwitch ? 1 : ''}`);
-            const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=47107`);
+            const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=5&category=${activeTab - 1}&type=Post,Comment&isFee=${chargeSwitch ? 1 : ''}`);
+            const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=5`);
             resAmountData = res1.data;
             resData = res.data;
         }
