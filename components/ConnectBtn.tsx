@@ -30,12 +30,6 @@ const ConnectBtn = () => {
   useEffect(() => {
   }, [currentProfile])
 
-  const changeProfile = (profileId: number) => {
-    // 如果在 profile 页面，把 profile 也切换掉。
-    if (router.pathname === "/profile/[address]") {
-      router.push(`/profile/${account}?queryProfileId=${profileId}`);
-    }
-  };
 
   useEffect(() => {
     if (router.pathname === "/profile/[address]") {
@@ -71,7 +65,6 @@ const ConnectBtn = () => {
     const challenge = (await lensApi.getChallenge(account || "")).challenge
       .text;
     const signature = await signMessage(challenge);
-    console.log("sig", signature);
 
     await doKnn3Login(challenge, signature)
 
@@ -105,7 +98,7 @@ const ConnectBtn = () => {
               content={
                 <div>
                   <div className="text-[14px]">Logged in as</div>
-                  <div className="text-[#CE3900] border-b-[1px] pb-[4px] border-[#4A4A4A] font-[600] text-[16px]">@knn3_network</div>
+                  <div className="text-[#CE3900] border-b-[1px] pb-[4px] border-[#4A4A4A] font-[600] text-[16px]">@{currentProfile.handle}</div>
                   <div>
                     <div onClick={() => handleShowModal(true, 2)} className="cursor-pointer my-[10px] flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]">
                       Switch Profile
@@ -126,14 +119,16 @@ const ConnectBtn = () => {
         </>
       ) : (
         <button
-          onClick={() => connectWallet()}
+          onClick={() => {
+            connectWallet();
+          }}
           className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]"
         >
           Connect Wallet
         </button>
       )}
 
-      {account && (
+      {account && profileList.length > 0 && (
         <button
           onClick={() => doLogin()}
           className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]"
@@ -142,7 +137,7 @@ const ConnectBtn = () => {
         </button>
       )}
 
-      {profileList.length > 0 && currentProfile && (
+      {/* {profileList.length > 0 && currentProfile && (
         <Dropdown
           overlay={
             <Menu>
@@ -165,7 +160,7 @@ const ConnectBtn = () => {
             {currentProfile.handle}
           </button>
         </Dropdown>
-      )}
+      )} */}
 
       {showModal[0] && (<LoginConnect onCancel={() => handleShowModal(false, 0)} />)}
 

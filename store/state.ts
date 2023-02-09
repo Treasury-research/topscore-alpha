@@ -1,13 +1,17 @@
-import { atom } from 'recoil'
+import { atom } from "recoil";
 
 export const currentProfileState = atom({
-  key: 'currentProfile',
-  default: { 
-    url: ""
+  key: "currentProfile",
+  default: {
+    address: "",
+    handle: "",
+    imageURI: "",
+    metadata: "",
+    profileId: "",
   },
-})
+});
 
 export const profileListState = atom({
-  key: 'profileList',
-  default:[]
-})
+  key: "profileList",
+  default: [],
+});
