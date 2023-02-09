@@ -8,7 +8,7 @@ const Post = () => {
   return (
     <div className="w-full h-full bg-[#000] flex">
       <Navbar />
-      <div className='p-5 w-full text-[#fff]'>
+      <div className='p-5 w-full text-[#fff] relative'>
         <ConnectBtn />
         <Create></Create>
       </div>
