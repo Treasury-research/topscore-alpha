@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { LeftOutlined, RightOutlined, LoadingOutlined } from '@ant-design/icons';
 import api from "../api";
 import { Checkbox, Popover } from 'antd';
+import { currentProfileState } from "../store/state";
+import { useRecoilValue } from "recoil";
 import moment from 'moment'
 import BN from "bignumber.js";
 
@@ -30,6 +32,8 @@ const rmodynamics = () => {
     const [totalAmount, setTotalAmount] = useState<any>({});
 
     const [loading, setLoading] = useState<boolean>(false);
+
+    const currentProfile = useRecoilValue<any>(currentProfileState)
 
     useEffect(() => {
         getCurrentWeek()
@@ -65,8 +69,7 @@ const rmodynamics = () => {
                 }
             })
         } else {
-            let testProfileId = 1;
-            res = await api.get(`/thermal-map/personal/${testProfileId}`, {
+            res = await api.get(`/thermal-map/personal/${currentProfile.profileId}`, {
                 params: {
                     from: `${currentDate[0]}00`,
                     to: `${currentDate[1]}23`,

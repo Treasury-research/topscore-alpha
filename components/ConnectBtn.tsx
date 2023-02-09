@@ -54,11 +54,23 @@ const ConnectBtn = () => {
     }
   };
 
+  const doKnn3Login = async (message: string, signature: string) => {
+    const res = await api.post('/auth/login',{
+      message,
+      signature,
+    })
+    sessionStorage.setItem("knn3Token", res.data.accessToken);
+    api.defaults.headers.authorization = `Bearer ${res.data.accessToken}`
+  }
+
   const doLogin = async () => {
     const challenge = (await lensApi.getChallenge(account || "")).challenge
       .text;
     const signature = await signMessage(challenge);
     console.log("sig", signature);
+
+    await doKnn3Login(challenge, signature)
+
     const token = (await lensApi.getAccessToken(account, signature))
       .authenticate;
     console.log("token", token);
