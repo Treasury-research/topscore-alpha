@@ -175,7 +175,6 @@ const PubCard = (props: any) => {
             </div>
           )
       }
-
     </div>
   )
 }

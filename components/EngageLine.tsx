@@ -1,8 +1,5 @@
 import { useEffect } from 'react';
 import * as echarts from 'echarts';
-const Icon1 = '../statics/img/p1.png'
-import Image from 'next/image'
-import { BellOutlined, UserOutlined } from '@ant-design/icons';
 
 const lineColor = ['#830000', '#001FB9', '#009589', '#C70011', '#007EB8', '#932D00', '#4400D0', '#9A0040', '#00DEA8', '#FFD891']
 
@@ -186,7 +183,6 @@ const ChartLine = (props: any) => {
           let htmlCon = ``
           let htmlDate = ``
           params.forEach((v: any) => {
-
             if (!v.name || v.seriesName === 'amount') return false;
             if (type == 0 || type == 1) {
               htmlCon += `<div class="engage-items">

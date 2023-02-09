@@ -19,8 +19,6 @@ import Soon from '../statics/img/Soon.svg'
 
 const headerTabs = ['Profile', 'Create', 'Gallery', 'Circle', 'NFT']
 
-const rightTabs = ['Lite', 'Pro']
-
 const imgSelectUrl = [IconSelect1, IconSelect2, IconSelect3, IconSelect4, IconSelect5]
 
 const imgNoSelectUrl = [IconNoSelect1, IconNoSelect2, IconNoSelect3, IconNoSelect4, IconNoSelect5]

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { LeftOutlined, RightOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Checkbox, Popover } from 'antd';
 import api from "../api";
-import moment from 'moment'
-
-const dys = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+import moment from 'moment';
+import { currentProfileState } from "../store/state";
+import { useRecoilState } from "recoil";
 
 const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -24,13 +24,9 @@ const rmodynamics = () => {
 
     const [checked, setChecked] = useState([true, true, true]);
 
-    const [activeYear, setActiveYear] = useState('2022')
-
     const [week, setWeek] = useState<any>([]);
 
     const [activeTab, setActiveTab] = useState<any>(0);
-
-    const [currentDate, setCurrentDate] = useState<any>([]);
 
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -42,17 +38,20 @@ const rmodynamics = () => {
 
     const [mirrorTotal, setMirrorTotal] = useState(0);
 
+    const [currentProfile] = useRecoilState<any>(currentProfileState);
+
     useEffect(() => {
         getCurrentWeek()
-
     }, [])
 
     useEffect(() => {
-        getGlobalHeatmapData();
-        getTotalPostData()
-        getTotalCommentData()
-        getTotalMirrorData()
-    }, [activeTab])
+        if (currentProfile && currentProfile.profileId) {
+            getGlobalHeatmapData();
+            getTotalPostData()
+            getTotalCommentData()
+            getTotalMirrorData()
+        }
+    }, [activeTab, currentProfile])
 
     useEffect(() => {
         if (checked[0] && checked[1] && checked[2]) {
@@ -60,8 +59,10 @@ const rmodynamics = () => {
         } else if (!checked[0] && !checked[1] && !checked[2]) {
             setcheckedPub(false)
         }
-        getGlobalHeatmapData();
-    }, [checked])
+        if (currentProfile && currentProfile.profileId) {
+            getGlobalHeatmapData();
+        }
+    }, [checked,currentProfile])
 
     useEffect(() => {
         if (checkedPub) {
@@ -72,12 +73,6 @@ const rmodynamics = () => {
     }, [checkedPub])
 
     const getYearWeek = (a: any, b: any, c: any) => {
-        /*  
-        date1是当前日期  
-        date2是当年第一天  
-        d是当前日期是今年第多少天  
-        用d + 当前年的第一天的周差距的和在除以7就是本年第几周  
-        */
         var date1 = new Date(a, parseInt(b) - 1, c),
             date2 = new Date(a, 0, 1),
             d = Math.round((date1.valueOf() - date2.valueOf()) / 86400000);
@@ -86,9 +81,9 @@ const rmodynamics = () => {
 
     const getTotalPostData = async () => {
         let total = 0;
-        const res = await api.get(`/publication/${testProfileId}`, {
+        const res = await api.get(`/publication/${currentProfile.profileId}`, {
             params: {
-                profileId: testProfileId,
+                profileId: currentProfile.profileId,
                 year: activeTab === 0 ? '2023' : '2022',
                 type: 'Post',
             }
@@ -101,9 +96,9 @@ const rmodynamics = () => {
 
     const getTotalCommentData = async () => {
         let total = 0;
-        const res = await api.get(`/publication/${testProfileId}`, {
+        const res = await api.get(`/publication/${currentProfile.profileId}`, {
             params: {
-                profileId: testProfileId,
+                profileId: currentProfile.profileId,
                 year: activeTab === 0 ? '2023' : '2022',
                 type: 'Comment',
             }
@@ -116,9 +111,9 @@ const rmodynamics = () => {
 
     const getTotalMirrorData = async () => {
         let total = 0;
-        const res = await api.get(`/publication/${testProfileId}`, {
+        const res = await api.get(`/publication/${currentProfile.profileId}`, {
             params: {
-                profileId: testProfileId,
+                profileId: currentProfile.profileId,
                 year: activeTab === 0 ? '2023' : '2022',
                 type: 'Mirror',
             }
@@ -142,9 +137,9 @@ const rmodynamics = () => {
                 }
             }
         })
-        const res = await api.get(`/publication/${testProfileId}`, {
+        const res = await api.get(`/publication/${currentProfile.profileId}`, {
             params: {
-                profileId: testProfileId,
+                profileId: currentProfile.profileId,
                 year: activeTab === 0 ? '2023' : '2022',
                 type: str,
             }
@@ -189,18 +184,11 @@ const rmodynamics = () => {
         res.data.forEach((t: any) => {
             let week = moment(t.date).weekday()
             let month = Number(t.date.slice(6, 8))
-            // console.log(t.date, t.date.slice(5, 7))
             console.log('date', getYearWeek(t.date.split('-')[0], t.date.split('-')[1], t.date.split('-')[2]))
             const numMonth = getYearWeek(t.date.split('-')[0], t.date.split('-')[1], t.date.split('-')[2]) // 本年第几周
-            // if (numMonth > 52 || numMonth < 1) return false;
             if (t.count > maxRemoData) {
                 maxRemoData = t.count
             }
-            // if (week == 0) {
-            //     rem[6][numMonth] = [t.count, t.date];
-            // } else {
-            //     rem[week][numMonth] = [t.count, t.date];
-            // }
             if (activeTab === 0) {
                 if (week == 0) {
                     rem[6][numMonth] = [t.count, t.date];
@@ -228,18 +216,6 @@ const rmodynamics = () => {
         });
     };
 
-    const putActiveItems = (e: any) => {
-        // let rs = activeItems.filter((t:any,i:number) => {
-        //     return t[0] === e[0] && t[1] === e[1]
-        // })
-        // if(rs && rs.length ===0){
-
-        // }
-        setActiveItems((prev: any) => {
-            return [...prev, e];
-        });
-    }
-
     const getCurrentWeek = () => {
         let weekOfDay = parseInt(moment().format('E'));//计算今天是这周第几天
         let last_monday = moment().startOf('day').subtract(weekOfDay + 7 * weekCount - 1, 'days').toDate();//周一日期
@@ -247,17 +223,13 @@ const rmodynamics = () => {
         console.log([moment(last_monday).format('MM/DD'), moment(last_sunday).format('MM/DD')])
         setWeek([moment(last_monday).format('MM/DD'), moment(last_sunday).format('MM/DD')])
         setActiveItems([]);
-        // getStaticData();
-    }
-
-    const getNextWeek = () => {
-        weekCount--;
-        getCurrentWeek();
-    }
-
-    const getLastWeek = () => {
-        weekCount++;
-        getCurrentWeek();
+        let rem: any = [[], [], [], [], [], [], []]
+        for (let i = 0; i < 7; i++) {
+            for (let j = 0; j < 52; j++) {
+                rem[i].push(null)
+            }
+        }
+        setRemodyBaseData(rem)
     }
 
     const getBorderStyle = (e: any) => {
@@ -270,8 +242,6 @@ const rmodynamics = () => {
     }
 
     const getItemStyle = (e: any) => {
-        // console.log(e)
-        // console.log('max', maxRemoData)
         if (!e || (!e[0] && e[0] !== 0)) return 'bg-[#4F4F4F]'
         let lv = maxRemoData / 5;
         if (e[0] < lv) {
@@ -307,8 +277,6 @@ const rmodynamics = () => {
                         <div onClick={() => setActiveTab(i)} key={i} className={`px-[30px] pb-[6px] cursor-pointer ${activeTab === i ? 'pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px]' : 'pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px]'}`}>{t}</div>
                     ))
                 }
-                {/* <div className="px-[30px] pb-[6px] pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px] cursor-pointer">2022</div>
-                <div className="px-[30px] pb-[6px] pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px] cursor-pointer">2023</div> */}
             </div>
             <div className="flex bg-[#1A1A1A] p-5 w-full">
                 {
@@ -364,16 +332,6 @@ const rmodynamics = () => {
                                 </div>
                             </div>
                             <div className="w-[calc(100%-860px)]">
-                                {/* <div className="flex">
-                        <div className="h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer" onClick={getLastWeek}><LeftOutlined /></div>
-                        <div className="w-[200px] mx-5 h-10 bg-[rgb(41,41,41)] flex items-center justify-center">
-                            {
-                                week.length !== 0 &&
-                                <span>{week[0]}-{week[1]}</span>
-                            }
-                        </div>
-                        <div className="h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer" onClick={getNextWeek}><RightOutlined /></div>
-                    </div> */}
                                 <div className="px-6 py-2 bg-[rgb(41,41,41)] mt-11">
                                     <div className="flex mb-2">
                                         <div>

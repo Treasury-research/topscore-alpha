@@ -6,21 +6,22 @@ import api from "../api";
 import Image from 'next/image'
 import IconUp from '../statics/img/up.svg'
 import IconDown from '../statics/img/down.svg'
-
-import { LeftOutlined, RightOutlined, LoadingOutlined } from '@ant-design/icons';
+import { currentProfileState } from "../store/state";
+import { useRecoilState } from "recoil";
+import { LoadingOutlined } from '@ant-design/icons';
 
 const Create = () => {
     const [scores, setScores] = useState<any>({});
     const [loadingScores, setLoadingScores] = useState<boolean>(false);
+    const [currentProfile] = useRecoilState<any>(currentProfileState);
 
     // get this from global store
-    const testProfileId = '5'
 
     const getScores = async () => {
         setLoadingScores(true)
-        const res = await api.get(`/publication/score/${testProfileId}`, {
+        const res = await api.get(`/publication/score/${currentProfile.profileId}`, {
             params: {
-                profileId: testProfileId
+                profileId: currentProfile.profileId
             }
         })
         setScores(res.data);
@@ -28,9 +29,11 @@ const Create = () => {
     }
 
     useEffect(() => {
-        getScores();
-    }, [])
-    
+        if (currentProfile && currentProfile.profileId) {
+            getScores();
+        }
+    }, [currentProfile]);
+
     return (
         <>
             <div className="absolute top-[20px] text-[24px]">Create</div>

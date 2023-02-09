@@ -3,7 +3,7 @@ import { LeftOutlined, RightOutlined, LoadingOutlined } from '@ant-design/icons'
 import api from "../api";
 import { Checkbox, Popover } from 'antd';
 import { currentProfileState } from "../store/state";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import moment from 'moment'
 import BN from "bignumber.js";
 
@@ -33,7 +33,7 @@ const rmodynamics = () => {
 
     const [loading, setLoading] = useState<boolean>(false);
 
-    const currentProfile = useRecoilValue<any>(currentProfileState)
+    const [currentProfile] = useRecoilState<any>(currentProfileState);
 
     useEffect(() => {
         getCurrentWeek()
@@ -41,9 +41,11 @@ const rmodynamics = () => {
 
     useEffect(() => {
         if (currentDate.length !== 0) {
-            getGlobalHeatmapData();
+            if (currentProfile && currentProfile.profileId) {
+                getGlobalHeatmapData();
+            }
         }
-    }, [currentDate, activeTab])
+    }, [currentDate, activeTab,currentProfile])
 
     useEffect(() => {
         setChecked([true, true, true, true, true])
@@ -69,7 +71,7 @@ const rmodynamics = () => {
                 }
             })
         } else {
-            res = await api.get(`/thermal-map/personal/5`, {
+            res = await api.get(`/thermal-map/personal/${currentProfile.profileId}`, {
                 params: {
                     from: `${currentDate[0]}00`,
                     to: `${currentDate[1]}23`,
@@ -92,7 +94,7 @@ const rmodynamics = () => {
         maxRemoData = [0, 0, 0, 0, 0]
         res.data.forEach((t: any) => {
             let week = moment(t.timePeriod.toString().slice(0, 8)).weekday()
-            if(activeTab === 0){
+            if (activeTab === 0) {
                 totalAmount.postCount += t.postCount;
             }
             totalAmount.commentCount += t.commentCount;
@@ -135,6 +137,13 @@ const rmodynamics = () => {
         setCurrentDate([`20${moment(last_monday).format('YYMMDD')}`, `20${moment(last_sunday).format('YYMMDD')}`])
         console.log([`20${moment(last_monday).format('YYMMDD')}`, `20${moment(last_sunday).format('YYMMDD')}`])
         setActiveItems([]);
+        let rem: any = [[], [], [], [], [], [], []]
+        for (let i = 0; i < 7; i++) {
+            for (let j = 0; j < 24; j++) {
+                rem[i].push(null)
+            }
+        }
+        setRemodyBaseData(rem)
     }
 
     const onChange = (e: any, i: number) => {
@@ -185,13 +194,13 @@ const rmodynamics = () => {
         let lv = maxMount / 5;
         if (totalMount < lv) {
             return 'bg-[#D13005]'
-        }else if (lv <= totalMount && totalMount < lv * 2) {
+        } else if (lv <= totalMount && totalMount < lv * 2) {
             return 'bg-[#A32A0A]'
-        }else if (lv * 2 <= totalMount && totalMount < lv * 3) {
+        } else if (lv * 2 <= totalMount && totalMount < lv * 3) {
             return 'bg-[#75240F]'
-        }else if (lv * 3 <= totalMount && totalMount < lv * 4) {
+        } else if (lv * 3 <= totalMount && totalMount < lv * 4) {
             return 'bg-[#471F14]'
-        }else if (lv * 4 <= totalMount) {
+        } else if (lv * 4 <= totalMount) {
             return 'bg-[#311C17]'
         }
     }
@@ -208,7 +217,7 @@ const rmodynamics = () => {
         return (
             <div>
                 <p className="text-[18px] font-[600]">{e[5] ? strDate.slice(0, 4) + '/' + strDate.slice(4, 6) + '/' + strDate.slice(6, 8) : ''}</p>
-                <p>Amount：{totalMount}</p>
+                <p>Count：{totalMount.toFixed(2)}</p>
             </div>
         )
     };

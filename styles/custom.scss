@@ -362,6 +362,7 @@
 
 .engage-tooltip{
   width: 600px;
+  padding: 10px;
 }
 
 .engage-head{
@@ -398,6 +399,7 @@
   float: left;
   width: 25%;
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .engage-items-head{
@@ -419,6 +421,10 @@
   height: 20px;
   width: 20px;
   margin-right: 10px;
+}
+
+.engage-items-head-pubName,.engage-items-comment-num,.engage-items-mirror-num{
+  color: rgba(255, 255, 255, .8);
 }
 
 .engage-items-content{

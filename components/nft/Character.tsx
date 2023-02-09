@@ -109,9 +109,7 @@ const Character = (props: any) => {
 
     const { account } = useWeb3Context();
 
-    const [currentProfileBase, setCurrenProfileBase] = useRecoilState<any>(currentProfileState);
-
-    const [profileList, setProfileList] = useRecoilState(profileListState);
+    const [currentProfile] = useRecoilState<any>(currentProfileState);
 
     const [showShareBtn, setShowShareBtn] = useState(true);
 
@@ -153,10 +151,10 @@ const Character = (props: any) => {
     };
 
     useEffect(() => {
-        if (currentProfileBase && currentProfileBase.profileId) {
-            getRadar(currentProfileBase.profileId);
-            getIndicators(currentProfileBase.profileId);
-            //getPublication(currentProfileBase.profileId);
+        if (currentProfile && currentProfile.profileId) {
+            getRadar(currentProfile.profileId);
+            getIndicators(currentProfile.profileId);
+            //getPublication(currentProfile.profileId);
             setShowShareBtn(true);
         } else {
             getRadar('101548');
@@ -164,9 +162,9 @@ const Character = (props: any) => {
             // getPublication('101548');
             setShowShareBtn(false);
         }
-    }, [currentProfileBase]);
+    }, [currentProfile]);
 
-    const shareUrl = `https://topscore.staging.knn3.xyz/user/${account}?queryProfileId=${currentProfileBase ? currentProfileBase.profileId : ''}`
+    const shareUrl = `https://topscore.staging.knn3.xyz/user/${account}?queryProfileId=${currentProfile ? currentProfile.profileId : ''}`
 
     const getImg = (arr: any) => {
         if (arr[0].score - arr[1].score > 1.6) {
@@ -309,7 +307,7 @@ const Character = (props: any) => {
                 <div className="h-[800px]">
                     <Image src={imgUrl} alt="" />
                     <div className="character-rank">{userInfo.rank}</div>
-                    <div className="character-lens">{currentProfileBase ? currentProfileBase.handle : 'knn3_network.lens'}</div>
+                    <div className="character-lens">{currentProfile ? currentProfile.handle : 'knn3_network.lens'}</div>
                     <div className="character-score">{new BN(userInfo.score).toFixed(2)}</div>
                     {
                         showShareBtn && account ?
@@ -317,7 +315,7 @@ const Character = (props: any) => {
                                 <div>
                                     <LensterShareButton
                                         title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：@KNN3Network #Lens`}
-                                        url={`https://topscore.knn3.xyz/user/${account}/${currentProfileBase ? currentProfileBase.profileId : ''}`}
+                                        url={`https://topscore.knn3.xyz/user/${account}/${currentProfile ? currentProfile.profileId : ''}`}
                                         hashtags="@knn3_network #Lens"
                                     >
                                         <Image src={IconLenster} alt="" />
