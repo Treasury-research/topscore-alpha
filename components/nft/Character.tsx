@@ -161,7 +161,7 @@ const Character = (props: any) => {
         } else {
             getRadar('101548');
             getIndicators('101548');
-           // getPublication('101548');
+            // getPublication('101548');
             setShowShareBtn(false);
         }
     }, [currentProfileBase]);
@@ -308,22 +308,9 @@ const Character = (props: any) => {
                 account && imgUrl &&
                 <div className="h-[800px]">
                     <Image src={imgUrl} alt="" />
-                    {
-                        showShareBtn &&
-                        <>
-                            <div className="character-rank">{userInfo.rank}</div>
-                            <div className="character-lens">{currentProfileBase ? currentProfileBase.handle : 'knn3_network.lens'}</div>
-                            <div className="character-score">{new BN(userInfo.score).toFixed(2)}</div>
-                        </>
-                    }
-                    {
-                        !showShareBtn &&
-                        <>
-                            <div className="character-no-share-rank">{userInfo.rank}</div>
-                            <div className="character-no-share-lens">{currentProfileBase ? currentProfileBase.handle : 'knn3_network.lens'}</div>
-                            <div className="character-no-share-score">{new BN(userInfo.score).toFixed(2)}</div>
-                        </>
-                    }
+                    <div className="character-rank">{userInfo.rank}</div>
+                    <div className="character-lens">{currentProfileBase ? currentProfileBase.handle : 'knn3_network.lens'}</div>
+                    <div className="character-score">{new BN(userInfo.score).toFixed(2)}</div>
                     {
                         showShareBtn && account ?
                             (<div className="char-share-btnGroup">
