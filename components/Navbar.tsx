@@ -17,7 +17,7 @@ import IconNoSelect5 from '../statics/img/noselect/Icon5.svg'
 import IconTop from '../statics/img/topIcon.png'
 import Soon from '../statics/img/Soon.svg'
 
-const headerTabs = ['Profile', 'Post', 'Gallery', 'Circle', 'NFT']
+const headerTabs = ['Profile', 'Create', 'Gallery', 'Circle', 'NFT']
 
 const rightTabs = ['Lite', 'Pro']
 
@@ -45,7 +45,7 @@ const Navbar = () => {
                 headerTabs.map((t: string, i: number) => (
                     <div key={i} className={`${router.pathname.includes(t.toLocaleLowerCase()) ? 'bg-[rgb(46,35,28)] text-[rgba(255,255,255,0.9)]' : 'text-[rgba(255,255,255,0.5)]'} text-[#fff] h-14 flex items-center cursor-pointer hover:bg-[rgb(46,35,28)] w-[160px]`} onClick={() => setActiveTab(i)}>
                         {
-                            t === 'Post' || t === 'Profile' || t === 'NFT' ? (
+                            t === 'Create' || t === 'Profile' || t === 'NFT' ? (
                                 <Link className="w-full h-full flex items-center" href={`${t.toLocaleLowerCase() === 'profile' ? '/profile/0x09c85610154a276a71eb8a887e73c16072029b20' : `/${t.toLocaleLowerCase()}`}`}>
                                     <div className="flex">
                                         <Image

@@ -69,7 +69,7 @@ const rmodynamics = () => {
                 }
             })
         } else {
-            res = await api.get(`/thermal-map/personal/${currentProfile.profileId}`, {
+            res = await api.get(`/thermal-map/personal/47107`, {
                 params: {
                     from: `${currentDate[0]}00`,
                     to: `${currentDate[1]}23`,
@@ -172,7 +172,13 @@ const rmodynamics = () => {
     }
 
     const getItemStyle = (e: any) => {
-        
+//         T1:D13005
+// T2:A32A0A
+// T3:75240F
+// T4:471F14
+// T5:311C17
+
+// null:232323
         if (!e || !checked.includes(true)) return 'bg-[#4F4F4F]'
         let maxMount = 0;
         let totalMount = 0;
@@ -218,7 +224,7 @@ const rmodynamics = () => {
     };
 
     return (
-        <div className="text-[#fff]">
+        <div className="text-[#fff] mb-10">
             <div className="flex">
                 {
                     tabs.map((t: any, i: number) => (

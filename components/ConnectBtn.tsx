@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { currentProfileState, profileListState } from "../store/state";
 import useWeb3Context from "../hooks/useWeb3Context";
 import lensApi from "../api/lensApi";
-import { message, Dropdown, Menu } from "antd";
+import { message, Dropdown, Menu, Popover } from "antd";
 import { useRouter } from "next/router";
 import api from "../api";
 import LoginConnect from './connect/LoginConnect'
@@ -88,7 +88,7 @@ const ConnectBtn = () => {
       return [...pre];
     });
   };
-  
+
   return (
     <div className="w-full h-10 flex gap-3 justify-end ">
       {account ? (
@@ -101,9 +101,27 @@ const ConnectBtn = () => {
               Switch to polygon
             </button>
           ) : (
-            <button className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]">
-              {shortenAddr(account)}
-            </button>
+            <Popover
+              content={
+                <div>
+                  <div className="text-[14px]">Logged in as</div>
+                  <div className="text-[#CE3900] border-b-[1px] pb-[4px] border-[#4A4A4A] font-[600] text-[16px]">@knn3_network</div>
+                  <div>
+                    <div onClick={() => handleShowModal(true, 2)} className="cursor-pointer my-[10px] flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]">
+                      Switch Profile
+                    </div>
+                    <div className="cursor-pointer flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]">
+                      Logout
+                    </div>
+                  </div>
+                </div>
+              }
+              placement="bottom"
+            >
+              <button className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]">
+                {shortenAddr(account)}
+              </button>
+            </Popover>
           )}
         </>
       ) : (

@@ -55,7 +55,7 @@ const rmodynamics = () => {
 
     const getGlobalHeatmapData = async () => {
         setLoading(true);
-        const testProfileId = 1
+        const testProfileId = '47107'
         const res = await api.get(`/publication/${testProfileId}`, {
             params: {
                 profileId: testProfileId,
@@ -63,7 +63,6 @@ const rmodynamics = () => {
                 type: "Post,Mirror,Comment",
             }
         })
-        console.log(getYearWeek('2023', '01', '01'))
 
         let rem: any = [[], [], [], [], [], [], []]
         for (let i = 0; i < 7; i++) {

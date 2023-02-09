@@ -6,6 +6,7 @@ import { BellOutlined, UserOutlined } from '@ant-design/icons';
 import Creation from '../components/Creation'
 import Dashboard from '../components/Dashboard'
 import ConnectBtn from '../components/ConnectBtn'
+import Create from '../components/Create'
 
 const tabs = ['Creation', 'DashBoard']
 
@@ -20,7 +21,7 @@ const Post = () => {
       <Navbar />
       <div className='p-5 w-full text-[#fff]'>
         <ConnectBtn />
-        <div className='flex mt-4 mb-10'>
+        {/* <div className='flex mt-4 mb-10'>
           <div className='flex'>
             {
               tabs.map((t: any, i: number) => (
@@ -28,12 +29,6 @@ const Post = () => {
               ))
             }
           </div>
-          {/* <div className='ml-[auto] flex'>
-            <div><BellOutlined className="text-[24px] mr-10" /></div>
-            <div>
-              <UserOutlined className="text-[24px]" />
-            </div>
-          </div> */}
         </div>
         {
           activeTab === 0 &&
@@ -42,7 +37,8 @@ const Post = () => {
         {
           activeTab === 1 &&
           <Dashboard></Dashboard>
-        }
+        } */}
+        <Create></Create>
       </div>
     </div>
   )
