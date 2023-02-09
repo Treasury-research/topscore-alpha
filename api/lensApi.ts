@@ -3,7 +3,7 @@ import { lensURL } from "../config";
 
 const client = new GraphQLClient(lensURL, {
   // headers:{
-  //   'x-access-token': typeof window !== 'undefined' ? sessionStorage.getItem('accessToken') : ''
+  //   'x-access-token': typeof window !== 'undefined' ? localStorage.getItem('accessToken') : ''
   // }
 });
 

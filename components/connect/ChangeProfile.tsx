@@ -14,7 +14,6 @@ const ChangeProfile = (props: any) => {
     const profileList = useRecoilValue(profileListState);
     const { account } = useWeb3Context();
     const [currentProfile, setCurrentProfile] = useRecoilState(currentProfileState);
-    const [actTag, setActTag] = useState<any>();
     const router = useRouter();
 
     const afterChangeProfile = (profileId: number) => {

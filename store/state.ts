@@ -15,3 +15,9 @@ export const profileListState = atom({
   key: "profileList",
   default: [],
 });
+
+
+export const knn3TokenValidState = atom({
+  key: 'knn3TokenValid',
+  default: false,
+})

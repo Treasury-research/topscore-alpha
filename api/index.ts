@@ -6,10 +6,10 @@ const api = axios.create({
   baseURL,
 });
 
-const knn3Token = typeof window !== 'undefined' && sessionStorage.getItem('knn3Token')
+const knn3Token = typeof window !== 'undefined' && localStorage.getItem('knn3Token')
 
 if(knn3Token){
-  api.defaults.headers.authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRyZXNzIjoiMHgwYThlYTRkOGUzZTA2OGM2YjZhNDM1OGQ2ZjA2OGJiMDRhZDA0ZGRmIiwicHJvZmlsZUlkcyI6WzQ3MTMwLDU0NjEzLDkxNjEzLDQ3MTI3LDQ3MTA3XSwibGVuc1Byb2ZpbGVORlQiOnRydWUsImxlbnNSYWluYm93TkZUIjp0cnVlLCJpYXQiOjE2NzU5MDc3NTIsImV4cCI6MTY3NTkyNTc1Mn0.suDgxvAis62G-BlXWtnydmbCv5TdAawLGR9aSLl1t2U`
+  api.defaults.headers.authorization = `Bearer ${knn3Token}`
 }
 
 api.interceptors.response.use((res) => {

@@ -2,19 +2,20 @@ import React, { useState, useEffect } from "react";
 import config from "../config";
 import { shortenAddr, switchChain } from "../lib/tool";
 import { useRecoilState } from "recoil";
-import { currentProfileState, profileListState } from "../store/state";
+import { currentProfileState, profileListState, knn3TokenValidState } from "../store/state";
 import useWeb3Context from "../hooks/useWeb3Context";
 import lensApi from "../api/lensApi";
-import { message, Dropdown, Menu, Popover } from "antd";
+import { message, Popover } from "antd";
 import { useRouter } from "next/router";
 import api from "../api";
-import LoginConnect from './connect/LoginConnect'
-import SignLens from './connect/SignLens'
-import ChangeProfile from './connect/ChangeProfile'
+import LoginConnect from "./connect/LoginConnect";
+import SignLens from "./connect/SignLens";
+import ChangeProfile from "./connect/ChangeProfile";
 
 const ConnectBtn = () => {
   const router = useRouter();
   const { account, connectWallet, chainId, signMessage } = useWeb3Context();
+  const [knn3TokenValid, setKnn3TokenValid] = useRecoilState(knn3TokenValidState);
   const [profileList, setProfileList] = useRecoilState(profileListState);
   const [showModal, setShowModal] = useState([false, false, false]);
   const [currentProfile, setCurrentProfile] =
@@ -28,10 +29,6 @@ const ConnectBtn = () => {
   }, [account]);
 
   useEffect(() => {
-  }, [currentProfile])
-
-
-  useEffect(() => {
     if (router.pathname === "/profile/[address]") {
       goProfile();
     }
@@ -40,7 +37,7 @@ const ConnectBtn = () => {
   const getLensHandle = async () => {
     const res: any = await api.get(`/lens/handles/${account}`);
     setProfileList(res.data);
-    setCurrentProfile(res.data[0])
+    setCurrentProfile(res.data[0]);
   };
 
   const goProfile = () => {
@@ -53,25 +50,26 @@ const ConnectBtn = () => {
   };
 
   const doKnn3Login = async (message: string, signature: string) => {
-    const res = await api.post('/auth/login', {
+    const res = await api.post("/auth/login", {
       message,
       signature,
-    })
-    sessionStorage.setItem("knn3Token", res.data.accessToken);
-    api.defaults.headers.authorization = `Bearer ${res.data.accessToken}`
-  }
+    });
+    localStorage.setItem("knn3Token", res.data.accessToken);
+    localStorage.setItem("knn3RefreshToken", res.data.refreshToken);
+    api.defaults.headers.authorization = `Bearer ${res.data.accessToken}`;
+  };
 
   const doLogin = async () => {
     const challenge = (await lensApi.getChallenge(account || "")).challenge
       .text;
     const signature = await signMessage(challenge);
 
-    await doKnn3Login(challenge, signature)
+    await doKnn3Login(challenge, signature);
 
     const token = (await lensApi.getAccessToken(account, signature))
       .authenticate;
     console.log("token", token);
-    sessionStorage.setItem("accessToken", token.accessToken);
+    localStorage.setItem("accessToken", token.accessToken);
     lensApi.setToken(token.accessToken);
   };
 
@@ -81,6 +79,50 @@ const ConnectBtn = () => {
       return [...pre];
     });
   };
+
+  const doKnn3Refresh = async () => {
+    const knn3RefreshToken = localStorage.getItem('knn3RefreshToken')
+
+    if(!knn3RefreshToken){
+      setKnn3TokenValid(false);
+      return
+    }
+    const res = await api.post('/auth/refresh',{
+      refreshToken: knn3RefreshToken,
+    });
+  
+    localStorage.setItem("knn3Token", res.data.accessToken);
+    localStorage.setItem("knn3RefreshToken", res.data.refreshToken);
+    api.defaults.headers.authorization = `Bearer ${res.data.accessToken}`;
+  }
+
+  const checkKnn3Token = async () => {
+    const token = localStorage.getItem("knn3Token");
+    if (token) {
+      const res = await api.post("/auth/verify", {
+        accessToken: token,
+      });
+      // if token not valid
+      if(res.data){
+        setKnn3TokenValid(true);
+      }else{
+        // doKnn3Refresh();
+        // setIsTokenValid(true)
+      }
+    }
+  };
+
+  useEffect(() => {
+    checkKnn3Token();
+    const intervalId = setInterval(() => {
+      checkKnn3Token();
+    }, 6000 || 3 * 60 * 1000);
+
+    return () => {
+      clearInterval(intervalId)
+    }
+
+  }, []);
 
   return (
     <div className="w-full h-10 flex gap-3 justify-end ">
@@ -98,9 +140,14 @@ const ConnectBtn = () => {
               content={
                 <div>
                   <div className="text-[14px]">Logged in as</div>
-                  <div className="text-[#CE3900] border-b-[1px] pb-[4px] border-[#4A4A4A] font-[600] text-[16px]">@{currentProfile.handle}</div>
+                  <div className="text-[#CE3900] border-b-[1px] pb-[4px] border-[#4A4A4A] font-[600] text-[16px]">
+                    @{currentProfile.handle}
+                  </div>
                   <div>
-                    <div onClick={() => handleShowModal(true, 2)} className="cursor-pointer my-[10px] flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]">
+                    <div
+                      onClick={() => handleShowModal(true, 2)}
+                      className="cursor-pointer my-[10px] flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]"
+                    >
                       Switch Profile
                     </div>
                     <div className="cursor-pointer flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]">
@@ -128,7 +175,7 @@ const ConnectBtn = () => {
         </button>
       )}
 
-      {account && profileList.length > 0 && (
+      {account && profileList.length > 0 && !isTokenValid && (
         <button
           onClick={() => doLogin()}
           className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]"
@@ -162,11 +209,15 @@ const ConnectBtn = () => {
         </Dropdown>
       )} */}
 
-      {showModal[0] && (<LoginConnect onCancel={() => handleShowModal(false, 0)} />)}
+      {showModal[0] && (
+        <LoginConnect onCancel={() => handleShowModal(false, 0)} />
+      )}
 
-      {showModal[1] && (<SignLens onCancel={() => handleShowModal(false, 1)} />)}
+      {showModal[1] && <SignLens onCancel={() => handleShowModal(false, 1)} />}
 
-      {showModal[2] && (<ChangeProfile onCancel={() => handleShowModal(false, 2)} />)}
+      {showModal[2] && (
+        <ChangeProfile onCancel={() => handleShowModal(false, 2)} />
+      )}
     </div>
   );
 };
