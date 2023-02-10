@@ -44,7 +44,7 @@
     "video-react": "^0.16.0",
     "wagmi": "^0.11.4",
     "web-vitals": "^2.1.4",
-    "web3": "^1.8.2",
+    "web3": "1.7.4",
     "web3modal": "^1.9.12"
   },
   "devDependencies": {
