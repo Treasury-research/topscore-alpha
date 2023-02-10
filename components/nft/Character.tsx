@@ -307,7 +307,7 @@ const Character = (props: any) => {
                 <div className="h-[800px]">
                     <Image src={imgUrl} alt="" />
                     <div className="character-rank">{userInfo.rank}</div>
-                    <div className="character-lens">{currentProfile ? currentProfile.handle : 'knn3_network.lens'}</div>
+                    <div className="character-lens">{currentProfile && currentProfile.handle ? currentProfile.handle : 'knn3_network.lens'}</div>
                     <div className="character-score">{new BN(userInfo.score).toFixed(2)}</div>
                     {
                         showShareBtn && account ?
