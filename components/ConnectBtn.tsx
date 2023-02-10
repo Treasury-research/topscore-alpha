@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import config from "../config";
 import { shortenAddr, switchChain } from "../lib/tool";
 import { useRecoilState } from "recoil";
-import { currentProfileState, profileListState, knn3TokenValidState } from "../store/state";
+import { currentProfileState, profileListState, loadingProfileListState, knn3TokenValidState } from "../store/state";
 import useWeb3Context from "../hooks/useWeb3Context";
 import lensApi from "../api/lensApi";
 import { message, Popover } from "antd";
@@ -17,6 +17,7 @@ const ConnectBtn = () => {
   const { account, connectWallet, chainId, signMessage } = useWeb3Context();
   const [knn3TokenValid, setKnn3TokenValid] = useRecoilState(knn3TokenValidState);
   const [profileList, setProfileList] = useRecoilState(profileListState);
+  const [loadingProfileList, setLoadingProfileList] = useRecoilState(loadingProfileListState)
   const [showModal, setShowModal] = useState([false, false, false]);
   const [currentProfile, setCurrentProfile] =
     useRecoilState<any>(currentProfileState);
@@ -35,11 +36,13 @@ const ConnectBtn = () => {
   }, [profileList]);
 
   const getLensHandle = async () => {
+    setLoadingProfileList(true)
     const res: any = await api.get(`/lens/handles/${account}`);
     setProfileList(res.data);
     if(res.data.length > 0){
       setCurrentProfile(res.data[0]);
     }
+    setLoadingProfileList(false);
   };
 
   const goProfile = () => {
