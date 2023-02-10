@@ -87,11 +87,11 @@ const nft = () => {
     //   id: '234',
     //   is_open: 0
     // }]
-    if (res2.length > 0) {
-      setTotal(res2.length);
+    if (res2.data.length > 0) {
+      setTotal(res2.data.length);
       let newList: any = [];
-      for (var i = 0; i < res2.length; i += 4) {
-        newList.push(res2.slice(i, i + 4));
+      for (var i = 0; i < res2.data.length; i += 4) {
+        newList.push(res2.data.slice(i, i + 4));
       }
       setNftList(newList);
     }
