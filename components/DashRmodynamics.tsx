@@ -62,7 +62,7 @@ const rmodynamics = () => {
         if (currentProfile && currentProfile.profileId) {
             getGlobalHeatmapData();
         }
-    }, [checked,currentProfile])
+    }, [checked, currentProfile])
 
     useEffect(() => {
         if (checkedPub) {
@@ -279,11 +279,12 @@ const rmodynamics = () => {
                 }
             </div>
             <div className="flex bg-[#1A1A1A] p-5 w-full">
-                {
-                    loading ?
-                        <LoadingOutlined className="text-2xl block mx-auto my-[80px]" />
-                        : <>
-                            <div className="w-[860px] overflow-hidden mr-4">
+
+                <div className="w-[860px] overflow-hidden mr-4">
+                    {
+                        loading ?
+                            <LoadingOutlined className="text-2xl block mx-auto my-[80px]" />
+                            : <>
                                 <div className="text-[18px] mb-[20px]">Overview</div>
                                 <div className="mb-4 mr-2 flex ml-[auto] w-[fit-content] items-center">
                                     <div className="text-[12px] ml-[-4px] mr-2">High</div>
@@ -330,46 +331,45 @@ const rmodynamics = () => {
                                         ))
                                     }
                                 </div>
+                            </>
+                    }
+                </div>
+                <div className="w-[calc(100%-860px)]">
+                    <div className="px-6 py-2 bg-[rgb(41,41,41)] mt-11">
+                        <div className="flex mb-2">
+                            <div>
+                                <Checkbox onChange={(e: any) => setcheckedPub(e.target.checked)} checked={checkedPub}>
+                                    <span className="text-[#fff] text-[16px]">Publication</span>
+                                </Checkbox>
                             </div>
-                            <div className="w-[calc(100%-860px)]">
-                                <div className="px-6 py-2 bg-[rgb(41,41,41)] mt-11">
-                                    <div className="flex mb-2">
-                                        <div>
-                                            <Checkbox onChange={(e: any) => setcheckedPub(e.target.checked)} checked={checkedPub}>
-                                                <span className="text-[#fff] text-[16px]">Publication</span>
-                                            </Checkbox>
-                                        </div>
-                                        <div className="ml-[auto]">{postTotal + commentTotal + mirrorTotal}</div>
-                                    </div>
-                                    <div className="flex mb-2 ml-[20px]">
-                                        <div>
-                                            <Checkbox onChange={(e: any) => onChange(e, 0)} checked={checked[0]}>
-                                                <span className="text-[#fff] text-[16px]">Post</span>
-                                            </Checkbox>
-                                        </div>
-                                        <div className="ml-[auto]">{postTotal}</div>
-                                    </div>
-                                    <div className="flex mb-2 ml-[20px]">
-                                        <div>
-                                            <Checkbox onChange={(e: any) => onChange(e, 1)} checked={checked[1]}>
-                                                <span className="text-[#fff] text-[16px]">Comment</span>
-                                            </Checkbox>
-                                        </div>
-                                        <div className="ml-[auto]">{commentTotal}</div>
-                                    </div>
-                                    <div className="flex mb-2 ml-[20px]">
-                                        <div>
-                                            <Checkbox onChange={(e: any) => onChange(e, 2)} checked={checked[2]}>
-                                                <span className="text-[#fff] text-[16px]">Mirror</span>
-                                            </Checkbox>
-                                        </div>
-                                        <div className="ml-[auto]">{mirrorTotal}</div>
-                                    </div>
-                                </div>
+                            <div className="ml-[auto]">{postTotal + commentTotal + mirrorTotal}</div>
+                        </div>
+                        <div className="flex mb-2 ml-[20px]">
+                            <div>
+                                <Checkbox onChange={(e: any) => onChange(e, 0)} checked={checked[0]}>
+                                    <span className="text-[#fff] text-[16px]">Post</span>
+                                </Checkbox>
                             </div>
-                        </>
-                }
-
+                            <div className="ml-[auto]">{postTotal}</div>
+                        </div>
+                        <div className="flex mb-2 ml-[20px]">
+                            <div>
+                                <Checkbox onChange={(e: any) => onChange(e, 1)} checked={checked[1]}>
+                                    <span className="text-[#fff] text-[16px]">Comment</span>
+                                </Checkbox>
+                            </div>
+                            <div className="ml-[auto]">{commentTotal}</div>
+                        </div>
+                        <div className="flex mb-2 ml-[20px]">
+                            <div>
+                                <Checkbox onChange={(e: any) => onChange(e, 2)} checked={checked[2]}>
+                                    <span className="text-[#fff] text-[16px]">Mirror</span>
+                                </Checkbox>
+                            </div>
+                            <div className="ml-[auto]">{mirrorTotal}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     )

@@ -106,10 +106,6 @@ const ChartLine = (props: any) => {
             if (param.targetType == "axisName") {
                 props.showList(param.name)
             }
-
-            if (param.seriesType && param.seriesType == "radar") {
-                props.showList('Overall')
-            }
         })
         chart.setOption(option);
         window.addEventListener("resize", () => {

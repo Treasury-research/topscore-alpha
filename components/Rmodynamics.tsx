@@ -45,7 +45,7 @@ const rmodynamics = () => {
                 getGlobalHeatmapData();
             }
         }
-    }, [currentDate, activeTab,currentProfile])
+    }, [currentDate, activeTab, currentProfile])
 
     useEffect(() => {
         setChecked([true, true, true, true, true])
@@ -235,11 +235,11 @@ const rmodynamics = () => {
             </div>
 
             <div className="flex bg-[#1A1A1A] p-5 w-full">
-                {
-                    loading ?
-                        <LoadingOutlined className="text-2xl block mx-auto my-[130px]" />
-                        : <>
-                            <div className="w-[780px]">
+                <div className="w-[780px]">
+                    {
+                        loading ?
+                            <LoadingOutlined className="text-2xl block mx-auto my-[130px]" />
+                            : <>
                                 <div className="text-[18px] mb-[30px] mt-[10px]">Optima Post Time</div>
                                 <div>
                                     {
@@ -269,86 +269,86 @@ const rmodynamics = () => {
                                     <div className="float-left">18PM</div>
                                     <div className="float-right mr-0">24PM</div>
                                 </div>
+                            </>
+                    }
+
+                </div>
+                <div className="ml-5 mr-5 mt-[14px]">
+                    <div className="text-[12px] mt-[20px] ml-[-4px]">High</div>
+                    <div className="h-[45px] w-[16px] bg-[#311C17] mt-[4px]">
+
+                    </div>
+                    <div className="h-[45px] w-[16px] bg-[#471F14]">
+
+                    </div>
+                    <div className="h-[45px] w-[16px] bg-[#75240F]">
+
+                    </div>
+                    <div className="h-[45px] w-[16px] bg-[#A32A0A]">
+
+                    </div>
+                    <div className="h-[45px] w-[16px] bg-[#D13005]">
+
+                    </div>
+                    <div className="text-[12px] mt-[4px] ml-[-4px]">Low</div>
+                </div>
+                <div className="w-[calc(100%-800px)] mt-[10px]">
+                    <div className="flex min-w-50 max-w-100">
+                        <div className="h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer" onClick={getLastWeek}><LeftOutlined /></div>
+                        <div className="w-[calc(100%-100px)] mx-5 h-10 bg-[rgb(41,41,41)] flex items-center justify-center">
+                            {
+                                week.length !== 0 &&
+                                <span>{week[0]}-{week[1]}</span>
+                            }
+                        </div>
+                        <div className="h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer" onClick={getNextWeek}><RightOutlined /></div>
+                    </div>
+                    <div className="px-6 py-4 bg-[rgb(41,41,41)] mt-10">
+                        {
+                            activeTab == 0 &&
+                            <div className="flex mb-2">
+                                <div>
+                                    <Checkbox onChange={(e: any) => onChange(e, 0)} checked={checked[0]}>
+                                        <span className="text-[#fff] text-[16px]">Post</span>
+                                    </Checkbox>
+                                </div>
+                                <div className="ml-[auto]">{new BN(totalAmount.postCount).toFormat()}</div>
                             </div>
-                            <div className="ml-5 mr-5 mt-[14px]">
-                                <div className="text-[12px] mt-[20px] ml-[-4px]">High</div>
-                                <div className="h-[45px] w-[16px] bg-[#311C17] mt-[4px]">
-
-                                </div>
-                                <div className="h-[45px] w-[16px] bg-[#471F14]">
-
-                                </div>
-                                <div className="h-[45px] w-[16px] bg-[#75240F]">
-
-                                </div>
-                                <div className="h-[45px] w-[16px] bg-[#A32A0A]">
-
-                                </div>
-                                <div className="h-[45px] w-[16px] bg-[#D13005]">
-
-                                </div>
-                                <div className="text-[12px] mt-[4px] ml-[-4px]">Low</div>
+                        }
+                        <div className="flex mb-2">
+                            <div>
+                                <Checkbox onChange={(e: any) => onChange(e, 1)} checked={checked[1]}>
+                                    <span className="text-[#fff] text-[16px]">Comment {activeTab == 1 ? '(by)' : ''}</span>
+                                </Checkbox>
                             </div>
-                            <div className="w-[calc(100%-800px)] mt-[10px]">
-                                <div className="flex min-w-50 max-w-100">
-                                    <div className="h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer" onClick={getLastWeek}><LeftOutlined /></div>
-                                    <div className="w-[calc(100%-100px)] mx-5 h-10 bg-[rgb(41,41,41)] flex items-center justify-center">
-                                        {
-                                            week.length !== 0 &&
-                                            <span>{week[0]}-{week[1]}</span>
-                                        }
-                                    </div>
-                                    <div className="h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer" onClick={getNextWeek}><RightOutlined /></div>
-                                </div>
-                                <div className="px-6 py-4 bg-[rgb(41,41,41)] mt-10">
-                                    {
-                                        activeTab == 0 &&
-                                        <div className="flex mb-2">
-                                            <div>
-                                                <Checkbox onChange={(e: any) => onChange(e, 0)} checked={checked[0]}>
-                                                    <span className="text-[#fff] text-[16px]">Post</span>
-                                                </Checkbox>
-                                            </div>
-                                            <div className="ml-[auto]">{new BN(totalAmount.postCount).toFormat()}</div>
-                                        </div>
-                                    }
-                                    <div className="flex mb-2">
-                                        <div>
-                                            <Checkbox onChange={(e: any) => onChange(e, 1)} checked={checked[1]}>
-                                                <span className="text-[#fff] text-[16px]">Comment {activeTab == 1 ? '(by)' : ''}</span>
-                                            </Checkbox>
-                                        </div>
-                                        <div className="ml-[auto]">{new BN(totalAmount.commentCount).toFormat()}</div>
-                                    </div>
-                                    <div className="flex mb-2">
-                                        <div>
-                                            <Checkbox onChange={(e: any) => onChange(e, 2)} checked={checked[2]}>
-                                                <span className="text-[#fff] text-[16px]">Mirror {activeTab == 1 ? '(by)' : ''}</span>
-                                            </Checkbox>
-                                        </div>
-                                        <div className="ml-[auto]">{new BN(totalAmount.mirrorCount).toFormat()}</div>
-                                    </div>
-                                    <div className="flex mb-2">
-                                        <div>
-                                            <Checkbox onChange={(e: any) => onChange(e, 3)} checked={checked[3]}>
-                                                <span className="text-[#fff] text-[16px]">Collect {activeTab == 1 ? '(by)' : ''}</span>
-                                            </Checkbox>
-                                        </div>
-                                        <div className="ml-[auto]">{new BN(totalAmount.collectCount).toFormat()}</div>
-                                    </div>
-                                    <div className="flex">
-                                        <div>
-                                            <Checkbox onChange={(e: any) => onChange(e, 4)} checked={checked[4]}>
-                                                <span className="text-[#fff] text-[16px]">Volume</span>
-                                            </Checkbox>
-                                        </div>
-                                        <div className="ml-[auto]">{Number(totalAmount.collectFee).toFixed()}</div>
-                                    </div>
-                                </div>
+                            <div className="ml-[auto]">{new BN(totalAmount.commentCount).toFormat()}</div>
+                        </div>
+                        <div className="flex mb-2">
+                            <div>
+                                <Checkbox onChange={(e: any) => onChange(e, 2)} checked={checked[2]}>
+                                    <span className="text-[#fff] text-[16px]">Mirror {activeTab == 1 ? '(by)' : ''}</span>
+                                </Checkbox>
                             </div>
-                        </>
-                }
-
+                            <div className="ml-[auto]">{new BN(totalAmount.mirrorCount).toFormat()}</div>
+                        </div>
+                        <div className="flex mb-2">
+                            <div>
+                                <Checkbox onChange={(e: any) => onChange(e, 3)} checked={checked[3]}>
+                                    <span className="text-[#fff] text-[16px]">Collect {activeTab == 1 ? '(by)' : ''}</span>
+                                </Checkbox>
+                            </div>
+                            <div className="ml-[auto]">{new BN(totalAmount.collectCount).toFormat()}</div>
+                        </div>
+                        <div className="flex">
+                            <div>
+                                <Checkbox onChange={(e: any) => onChange(e, 4)} checked={checked[4]}>
+                                    <span className="text-[#fff] text-[16px]">Volume</span>
+                                </Checkbox>
+                            </div>
+                            <div className="ml-[auto]">{Number(totalAmount.collectFee).toFixed()}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     )

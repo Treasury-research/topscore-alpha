@@ -16,6 +16,8 @@ import IconNoSelect5 from '../statics/img/noselect/Icon5.svg'
 
 import IconTop from '../statics/img/topIcon.png'
 import Soon from '../statics/img/Soon.svg'
+import { currentProfileState } from "../store/state";
+import { useRecoilState } from "recoil";
 
 const headerTabs = ['Profile', 'Create', 'Gallery', 'Circle', 'NFT']
 
@@ -29,6 +31,16 @@ const Navbar = () => {
 
     const [activeTab, setActiveTab] = useState(0);
 
+    const [currentProfile] = useRecoilState<any>(currentProfileState);
+
+    const getAddress = (item:any) => {
+        if(item === 'Profile'){
+            return `/${item.toLocaleLowerCase()}/${currentProfile.address ? currentProfile.address : '0x09c85610154a276a71eb8a887e73c16072029b20'}`
+        }else{
+            return `/${item.toLocaleLowerCase()}`
+        }    
+    }
+    
     return (
         <div className='h-full leading-20 pl-6 pr-6 pt-10 bg-[#1A1A1A]'>
             <div className="flex items-center mb-10 ml-[-10px]">
@@ -44,7 +56,7 @@ const Navbar = () => {
                     <div key={i} className={`${router.pathname.includes(t.toLocaleLowerCase()) ? 'bg-[rgb(46,35,28)] text-[rgba(255,255,255,0.9)]' : 'text-[rgba(255,255,255,0.5)]'} text-[#fff] h-14 flex items-center cursor-pointer hover:bg-[rgb(46,35,28)] w-[160px]`} onClick={() => setActiveTab(i)}>
                         {
                             t === 'Create' || t === 'Profile' || t === 'NFT' ? (
-                                <Link className="w-full h-full flex items-center" href={`${t.toLocaleLowerCase() === 'profile' ? '/profile/0x09c85610154a276a71eb8a887e73c16072029b20' : `/${t.toLocaleLowerCase()}`}`}>
+                                <Link className="w-full h-full flex items-center" href={getAddress(t)}>
                                     <div className="flex">
                                         <Image
                                             className="mr-1 ml-5"
