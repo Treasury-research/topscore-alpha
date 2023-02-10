@@ -6,6 +6,7 @@ import BN from "bignumber.js";
 import { formatIPFS } from "../../lib/tool";
 import useWeb3Context from "../../hooks/useWeb3Context";
 import ConnectBtn from '../../components/ConnectBtn'
+import lensApi from "../../api/lensApi";
 import Radar from '../../components/profile/Radar'
 import Router, { useRouter } from "next/router";
 import api from "../../api";
@@ -72,18 +73,12 @@ const Post = () => {
     setShowList(false);
   };
 
-  // const getLensHandle = async () => {
-  //   setLoadingHandlesList(true);
-  //   try {
-  //     const res: any = await api.get(`/lens/handles/${address}`);
-  //     setHandlesList(res.data);
-  //     if (res.data.length === 0) {
-  //       setCurrentProfile({});
-  //     }
-  //   } finally {
-  //     setLoadingHandlesList(false);
-  //   }
-  // };
+  const getProfileByHandle = async (handle: string) => {
+    console.log('h is', handle)
+    const res = await lensApi.getProfileByHandle(handle);
+    console.log('profile info', res)
+  }
+
 
   const getIndicators = async (profileId: string) => {
     const res: any = await api.get(`/lens/indicators/${profileId}`);
@@ -218,6 +213,13 @@ const Post = () => {
 
     setIsSelf(address === account);
   }, [address, account]);
+
+  useEffect(()=>{
+    if(!currentProfile || !account){
+      return
+    }
+    getProfileByHandle(currentProfile.handle)
+  }, [currentProfile])
 
   const changeProfile = (profileId: number) => {
     router.push(`/profile/${address}?queryProfileId=${profileId}`);

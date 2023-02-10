@@ -23,6 +23,95 @@ export const getChallenge = async (address: string) => {
   return await client.request(query);
 };
 
+export const getProfileByHandle = async (handle: string) => {
+  const query = gql`
+    query Profile {
+        profile(request: { handle: "${handle}" }) {
+          id
+          name
+          bio
+          attributes {
+            displayType
+            traitType
+            key
+            value
+          }
+          followNftAddress
+          metadata
+          isDefault
+          picture {
+            ... on NftImage {
+              contractAddress
+              tokenId
+              uri
+              verified
+            }
+            ... on MediaSet {
+              original {
+                url
+                mimeType
+              }
+            }
+            __typename
+          }
+          handle
+          coverPicture {
+            ... on NftImage {
+              contractAddress
+              tokenId
+              uri
+              verified
+            }
+            ... on MediaSet {
+              original {
+                url
+                mimeType
+              }
+            }
+            __typename
+          }
+          ownedBy
+          dispatcher {
+            address
+            canUseRelay
+          }
+          stats {
+            totalFollowers
+            totalFollowing
+            totalPosts
+            totalComments
+            totalMirrors
+            totalPublications
+            totalCollects
+          }
+          followModule {
+            ... on FeeFollowModuleSettings {
+              type
+              amount {
+                asset {
+                  symbol
+                  name
+                  decimals
+                  address
+                }
+                value
+              }
+              recipient
+            }
+            ... on ProfileFollowModuleSettings {
+              type
+            }
+            ... on RevertFollowModuleSettings {
+              type
+            }
+          }
+        }
+      }
+    `;
+
+  return (await client.request(query)).profile;
+};
+
 export const getAccessToken = async (address: string, signature: string) => {
   const query = gql`
   mutation Authenticate {
@@ -93,4 +182,5 @@ export default {
   getChallenge,
   getAccessToken,
   post,
+  getProfileByHandle,
 };
