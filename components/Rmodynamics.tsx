@@ -42,6 +42,7 @@ const rmodynamics = () => {
     useEffect(() => {
         if (currentDate.length !== 0) {
             if (currentProfile && currentProfile.profileId) {
+                setRemodyBaseData([]);
                 getGlobalHeatmapData();
             }
         }
@@ -92,6 +93,10 @@ const rmodynamics = () => {
             }
         }
         maxRemoData = [0, 0, 0, 0, 0]
+        if(!res || !res.data){
+            setLoading(false);
+            return false;
+        } 
         res.data.forEach((t: any) => {
             let week = moment(t.timePeriod.toString().slice(0, 8)).weekday()
             if (activeTab === 0) {

@@ -16,8 +16,6 @@ import Image from 'next/image'
 import { useRecoilState } from 'recoil';
 import { currentProfileState } from '../../store/state'
 
-const defaultPageLimit = 6;
-
 const typeList = [
   "Influence",
   "Campaign",
@@ -27,34 +25,26 @@ const typeList = [
   "Curation",
 ];
 
-export async function getServerSideProps(context: any) {
-  return {
-    props: {
-      pId: context.query.queryProfileId || null
-    }
-  }
+const defaultKnn3Profile = {
+  address: "0x09c85610154a276a71eb8a887e73c16072029b20",
+  handle: "knn3_network.lens",
+  profileId: "5",
+  name:"KNN3 Network Official"
 }
-
 
 const Post = () => {
 
   const { account, connectWallet } = useWeb3Context();
   const [showList, setShowList] = useState(false);
-  const [handlesList, setHandlesList] = useState<any>([]);
-  const [loadingHandlesList, setLoadingHandlesList] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<any>({});
-  const [currentProfile, setCurrentProfile] = useState<any>({});
-  const [activeHandleIndex, setActiveHandleIndex] = useState<number>(0);
+  const [currentProfile, setCurrentProfile] = useRecoilState<any>(currentProfileState);
   const [activeRankIndex, setActiveRankIndex] = useState<number>(0);
-  const [pub, setPub] = useState<any>({});
   const [canLoadAvatar, setCanLoadAvatar] = useState<boolean>(true);
   const [rankInfo, setRankInfo] = useState<any>({});
-  const [isSelf, setIsSelf] = useState<boolean>(false);
+  const [imageURI,setImageURI] = useState<any>("");
   const [showRadorGif, setShowRadorGif] = useState(false);
   const [openScoreDropdown, setOpenScoreDropdown] = useState(false);
-  const [openLensDropdown, setOpenLensDropdown] = useState(false);
   const [radarDetailScore, setRadarDetailScore] = useState<any>({});
-  const [currentProfileBase, setCurrenProfileBase] = useRecoilState<any>(currentProfileState);
 
   const router = useRouter();
 
@@ -76,6 +66,9 @@ const Post = () => {
   const getProfileByHandle = async (handle: string) => {
     console.log('h is', handle)
     const res = await lensApi.getProfileByHandle(handle);
+    if(res && res.picture && res.picture.original && res.picture.original.url){
+      setImageURI(res.picture.original.url)
+    }
     console.log('profile info', res)
   }
 
@@ -102,46 +95,46 @@ const Post = () => {
   };
 
   const getItemScore = () => {
-    if(radarDetailScore && JSON.stringify(radarDetailScore) !== '{}'){
-      if(activeRankIndex == 0){
+    if (radarDetailScore && JSON.stringify(radarDetailScore) !== '{}') {
+      if (activeRankIndex == 0) {
         return radarDetailScore.influScore
       }
-      if(activeRankIndex == 1){
+      if (activeRankIndex == 1) {
         return radarDetailScore.campaignScore
       }
-      if(activeRankIndex == 2){
+      if (activeRankIndex == 2) {
         return radarDetailScore.engagementScore
       }
-      if(activeRankIndex == 3){
+      if (activeRankIndex == 3) {
         return radarDetailScore.creationScore
       }
-      if(activeRankIndex == 4){
+      if (activeRankIndex == 4) {
         return radarDetailScore.collectionScore
       }
-      if(activeRankIndex == 5){
+      if (activeRankIndex == 5) {
         return radarDetailScore.curationScore
       }
     }
   };
 
   const getItemRank = () => {
-    if(radarDetailScore && JSON.stringify(radarDetailScore) !== '{}'){
-      if(activeRankIndex == 0){
+    if (radarDetailScore && JSON.stringify(radarDetailScore) !== '{}') {
+      if (activeRankIndex == 0) {
         return radarDetailScore.influRank
       }
-      if(activeRankIndex == 1){
+      if (activeRankIndex == 1) {
         return radarDetailScore.campaignRank
       }
-      if(activeRankIndex == 2){
+      if (activeRankIndex == 2) {
         return radarDetailScore.engagementRank
       }
-      if(activeRankIndex == 3){
+      if (activeRankIndex == 3) {
         return radarDetailScore.creationRank
       }
-      if(activeRankIndex == 4){
+      if (activeRankIndex == 4) {
         return radarDetailScore.collectionRank
       }
-      if(activeRankIndex == 5){
+      if (activeRankIndex == 5) {
         return radarDetailScore.curationRank
       }
     }
@@ -180,15 +173,9 @@ const Post = () => {
     }));
   };
 
-  const getPub = async (profileId: string) => {
-    const res: any = await api.get(`/lens/topPub/${profileId}`);
-    setPub(res.data);
-  };
-
   const getUserInfo = async (profileId: string) => {
     getRankInfo(profileId);
     getIndicators(profileId);
-    getPub(profileId);
     getPublication(profileId);
     getDetailScores(profileId);
   };
@@ -198,72 +185,22 @@ const Post = () => {
     setShowList(true);
   };
 
-  // useEffect(() => {
-  //   console.log("addr change", address);
-  //   if (!address) {
-  //     return;
-  //   }
-  //   getLensHandle();
-  // }, [address]);
-
   useEffect(() => {
-    if (!address || !account) {
-      return;
+    if (currentProfile.handle) {
+      getProfileByHandle(currentProfile.handle)
+    } else {
+      getProfileByHandle(defaultKnn3Profile.handle)
     }
-
-    setIsSelf(address === account);
-  }, [address, account]);
-
-  useEffect(()=>{
-    if(!currentProfile || !account){
-      return
-    }
-    getProfileByHandle(currentProfile.handle)
   }, [currentProfile])
 
-  const changeProfile = (profileId: number) => {
-    router.push(`/profile/${address}?queryProfileId=${profileId}`);
-    // location.href = `/user/${address}?queryProfileId=${profileId}`
-  };
-
   useEffect(() => {
-    if (!handlesList || handlesList.length === 0) {
-      return;
-    }
-
-    if (
-      queryProfileId &&
-      handlesList[activeHandleIndex].profileId !== Number(queryProfileId)
-    ) {
-      // setActiveHandleIndex(
-      //   handlesList.findIndex(
-      //     (item: any) => item.profileId === Number(queryProfileId)
-      //   )
-      // );
-    } else {
-      console.log("trig 2");
-
-      // router.push(
-      //   `/user/${address}?queryProfileId=${handlesList[activeHandleIndex].profileId}`
-      // );
-    }
-
-    const profile = handlesList[activeHandleIndex];
-
-    router.push(`/profile/${address}?queryProfileId=${profile.profileId}`);
-
-    setCurrentProfile(profile);
-    // setCurrenProfileBase(profile);
-  }, [activeHandleIndex, handlesList]);
-
-  useEffect(() => {
-    const { profileId } = currentProfileBase;
+    const { profileId } = currentProfile;
     if (!profileId) {
-      getUserInfo('101548');
-    }else{
+      getUserInfo(defaultKnn3Profile.profileId);
+    } else {
       getUserInfo(profileId);
     }
-  }, [currentProfileBase]);
+  }, [currentProfile]);
 
   return (
     <div className="w-full h-full bg-[#000] flex">
@@ -272,23 +209,23 @@ const Post = () => {
         <ConnectBtn />
         <div className="toscore-main">
           <div>
-              <div className="toscore-main-base-info">
-                {currentProfileBase.imageURI && canLoadAvatar ? (
-                  <img
-                    className="net-head-img"
-                    onError={() => setCanLoadAvatar(false)}
-                    src={formatIPFS(currentProfileBase.imageURI)}
-                  />
-                ) : (
-                  <div className="net-head-img">K</div>
-                )}
+            <div className="toscore-main-base-info">
+              {imageURI && canLoadAvatar ? (
+                <img
+                  className="net-head-img"
+                  onError={() => setCanLoadAvatar(false)}
+                  src={formatIPFS(imageURI)}
+                />
+              ) : (
+                <div className="net-head-img">K</div>
+              )}
+              <div>
                 <div>
-                  <div>
-                    <span className="space">{(currentProfileBase.name || currentProfileBase.handle) ? (currentProfileBase.name || currentProfileBase.handle) : 'KNN3 Network Official'}</span>
-                  </div>
-                  <div>@{currentProfileBase.handle ? currentProfileBase.handle : 'knn3_network.lens'}</div>
+                  <span className="space">{(currentProfile.name || currentProfile.handle) ? (currentProfile.name || currentProfile.handle) : defaultKnn3Profile.name}</span>
                 </div>
+                <div>@{currentProfile.handle ? currentProfile.handle : defaultKnn3Profile.handle}</div>
               </div>
+            </div>
           </div>
 
           <div className="top-rador">
@@ -325,22 +262,22 @@ const Post = () => {
               <div className="rador-info">
                 <div>
                   <div>
-                  <div>
-                      <p>{new BN(userInfo.following).toFormat()}</p>
+                    <div>
+                      <p>{new BN(userInfo.following || 0).toFormat()}</p>
                       <p>Following</p>
                     </div>
                     <div>
-                      <p>{new BN(userInfo.collect).toFormat()}</p>
+                      <p>{new BN(userInfo.collect || 0).toFormat()}</p>
                       <p>Collections</p>
                     </div>
                   </div>
                   <div>
-                  <div>
-                      <p>{new BN(userInfo.follower).toFormat()}</p>
+                    <div>
+                      <p>{new BN(userInfo.follower || 0).toFormat()}</p>
                       <p>Followers</p>
                     </div>
                     <div>
-                      <p>{new BN(userInfo.collectBy).toFormat()}</p>
+                      <p>{new BN(userInfo.collectBy || 0).toFormat()}</p>
                       <p>Collected</p>
                     </div>
                   </div>
@@ -348,7 +285,7 @@ const Post = () => {
                 <div className="right-del-info">
                   <div>
                     <div>
-                      <p>{new BN(userInfo.publication).toFormat()}</p>
+                      <p>{new BN(userInfo.publication || 0).toFormat()}</p>
                       <p>Publications</p>
                     </div>
                   </div>
@@ -359,15 +296,15 @@ const Post = () => {
                     </div> */}
                     <div className="diff-sty-info">
                       <p>
-                        <span>{new BN(userInfo.post).toFormat()}</span>
+                        <span>{new BN(userInfo.post || 0).toFormat()}</span>
                         <span>Posts</span>
                       </p>
                       <p>
-                        <span>{new BN(userInfo.comment).toFormat()}</span>
+                        <span>{new BN(userInfo.comment || 0).toFormat()}</span>
                         <span>Comments</span>
                       </p>
                       <p>
-                        <span>{new BN(userInfo.mirror).toFormat()}</span>
+                        <span>{new BN(userInfo.mirror || 0).toFormat()}</span>
                         <span>Mirrors</span>
                       </p>
                     </div>

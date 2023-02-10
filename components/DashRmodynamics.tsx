@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { LeftOutlined, RightOutlined, LoadingOutlined } from '@ant-design/icons';
-import { Checkbox, Popover } from 'antd';
+import { Checkbox, Popover, message } from 'antd';
 import api from "../api";
 import moment from 'moment';
 import { currentProfileState } from "../store/state";
@@ -88,6 +88,7 @@ const rmodynamics = () => {
                 type: 'Post',
             }
         })
+        if(!res || !res.data) return false;
         res.data.forEach((t: any) => {
             total += t.count
         })
@@ -103,6 +104,7 @@ const rmodynamics = () => {
                 type: 'Comment',
             }
         })
+        if(!res || !res.data) return false;
         res.data.forEach((t: any) => {
             total += t.count
         })
@@ -118,6 +120,7 @@ const rmodynamics = () => {
                 type: 'Mirror',
             }
         })
+        if(!res || !res.data) return false;
         res.data.forEach((t: any) => {
             total += t.count
         })
@@ -144,7 +147,10 @@ const rmodynamics = () => {
                 type: str,
             }
         })
-
+        if(!res || !res.data){
+            setLoading(false);
+            return false;
+        }
         let rem: any = [[], [], [], [], [], [], []]
         for (let i = 0; i < 7; i++) {
             for (let j = 0; j < 52; j++) {

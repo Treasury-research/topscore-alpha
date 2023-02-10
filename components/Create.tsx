@@ -45,7 +45,9 @@ const Create = () => {
                 profileId: currentProfile.profileId
             }
         })
-        setScores(res.data);
+        if(res && res.data){
+            setScores(res.data);
+        }
         setLoadingScores(false)
     }
 

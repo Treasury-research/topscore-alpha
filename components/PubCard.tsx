@@ -37,6 +37,7 @@ const PubCard = (props: any) => {
 
   const getPubs = async (ids: any) => {
     const res = await api.get(`/lens/pubByLatest?profileId=5&pubIds=${ids.join(',')}`);
+    setLoading(false)
     if (res.data) {
       let newList: any = [];
       for (var i = 0; i < res.data.length; i += 3) {
@@ -44,7 +45,6 @@ const PubCard = (props: any) => {
       }
       const data:any = DivideArrayEquallyInto4Parts(res.data)
       setPubData(data)
-      setLoading(false)
     }
   };
 

@@ -55,11 +55,19 @@ const rmodynamics = () => {
         if (activeTab === 0 || activeTab === 1) {
             const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${activeTab + 1}&type=Post,Comment`);
             const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
+            if(!res || !res.data || !res1 || !res1.data){
+                setLoading(false);
+                return false;
+            }
             resData = res.data;
             resAmountData = res1.data;
         } else {
             const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${activeTab - 1}&type=Post,Comment&isFee=${chargeSwitch ? 1 : ''}`);
             const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
+            if(!res || !res.data || !res1 || !res1.data){
+                setLoading(false);
+                return false;
+            }
             resAmountData = res1.data;
             resData = res.data;
         }
