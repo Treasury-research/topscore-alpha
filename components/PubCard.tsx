@@ -93,7 +93,7 @@ const PubCard = (props: any) => {
                   <div key={i} className={`flex flex-col ${i === 3 ? 'mr-[0px]' : 'mr-[20px]'} pub-items`}>
                     {
                       t.map((tem: any, index: number) => (
-                        <div key={index} className='bg-[#1A1A1A] py-[20px] px-[20px] rounded-[4px] relative my-[20px]'>
+                        <div key={index} className='bg-[#1A1A1A] py-[20px] px-[20px] rounded-[4px] relative my-[10px]'>
                           <div className='flex'>
                             <div className='text-[rgba(255,255,255,0.9)]'>Pub #{tem.pubId}</div>
                             <div className={`cursor-pointer ml-[auto] rounded-[4px] h-[24px] w-[24px] ${tem.type === 'Post' ? 'bg-[#575BFF]' : 'bg-[#9D3611]'}`} onClick={() => toLesnter(tem)}>
