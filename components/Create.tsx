@@ -13,7 +13,7 @@ import useErc721Contract from "../contract/useErc721Contract";
 import config from "../config";
 import { LoadingOutlined } from '@ant-design/icons';
 import useWeb3Context from "../hooks/useWeb3Context";
-import { currentProfileState, profileListState, knn3TokenValidState, loadingProfileListState } from "../store/state";
+import { currentProfileState, profileListState, loadingProfileListState } from "../store/state";
 
 const Create = () => {
     const [scores, setScores] = useState<any>({

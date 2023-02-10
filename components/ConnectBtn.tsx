@@ -89,12 +89,13 @@ const ConnectBtn = () => {
     const knn3RefreshToken = localStorage.getItem('knn3RefreshToken')
 
     if(!knn3RefreshToken){
-      setKnn3TokenValid(false);
       return
     }
     const res = await api.post('/auth/refresh',{
       refreshToken: knn3RefreshToken,
     });
+
+    setKnn3TokenValid(true);
   
     localStorage.setItem("knn3Token", res.data.accessToken);
     localStorage.setItem("knn3RefreshToken", res.data.refreshToken);
@@ -111,6 +112,7 @@ const ConnectBtn = () => {
       if(res.data){
         setKnn3TokenValid(true);
       }else{
+        setKnn3TokenValid(false);
         doKnn3Refresh();
       }
     }
@@ -120,7 +122,7 @@ const ConnectBtn = () => {
     checkKnn3Token();
     const intervalId = setInterval(() => {
       checkKnn3Token();
-    }, 6000 || 3 * 60 * 1000);
+    }, 50 * 1000);
 
     return () => {
       clearInterval(intervalId)
