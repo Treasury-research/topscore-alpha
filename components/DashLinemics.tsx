@@ -66,7 +66,9 @@ const rmodynamics = () => {
         let newDates: any = []
         if (resData.length !== 0) {
             resData.map((t: any) => {
-                newDates.push(t.day)
+                if(!newDates.includes(t.day)){
+                    newDates.push(t.day)
+                }
             })
         } else if (resAmountData.length !== 0) {
             resAmountData.map((t: any) => {
@@ -76,7 +78,7 @@ const rmodynamics = () => {
         setTimeout(() => {
             setLoading(false)
         }, 1000)
-        setDates([...new Set(newDates)])
+        setDates([...newDates])
     }
 
     useEffect(() => {

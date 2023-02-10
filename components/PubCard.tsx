@@ -14,7 +14,7 @@ import { ethers } from 'ethers'
 import moment from 'moment'
 
 const PubCard = (props: any) => {
-  const [pubData, setPubData] = useState([]);
+  const [pubData, setPubData] = useState<any>([]);
   const { lineData } = props;
   const [loading, setLoading] = useState(false);
 
@@ -42,8 +42,8 @@ const PubCard = (props: any) => {
       for (var i = 0; i < res.data.length; i += 3) {
         newList.push(res.data.slice(i, i + 3));
       }
-      const data = DivideArrayEquallyInto4Parts(res.data)
-      setPubData([...data])
+      const data:any = DivideArrayEquallyInto4Parts(res.data)
+      setPubData(data)
       setLoading(false)
     }
   };
@@ -76,8 +76,8 @@ const PubCard = (props: any) => {
   }
 
   const getHours = (t: any) => {
-    const diff = new Date().getTime() - t.timestamp * 1000
-    const h = parseInt(diff / (1000 * 60 * 60));
+    let diff = new Date().getTime() - t.timestamp * 1000
+    const h = Math.floor(diff / (1000 * 60 * 60));
     return h
   }
 

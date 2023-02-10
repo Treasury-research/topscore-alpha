@@ -75,9 +75,10 @@ const haveSharePic = {
     Musician: Musician,
     Motivator: Motivator,
     Demonstrator: Demonstrator,
+    NoImg:''
 }
 
-const noSharePic = {
+const noSharePic:any = {
     Mastermind: MastermindP,
     Pioneer: PioneerP,
     Artist: ArtistP,
@@ -99,6 +100,7 @@ const noSharePic = {
     Musician: MusicianP,
     Motivator: MotivatorP,
     Demonstrator: DemonstratorP,
+    NoImg:''
 }
 
 const Character = (props: any) => {
@@ -126,11 +128,10 @@ const Character = (props: any) => {
         ];
         arr.sort((a: any, b: any) => { return b.score - a.score })
         const str = getImg(arr);
-        console.log(str);
         if (profileId === '101548') {
-            setImgUrl(noSharePic[str])
+            setImgUrl(noSharePic[str || 'NoImg'])
         } else {
-            setImgUrl(haveSharePic[str])
+            setImgUrl(haveSharePic[str || 'NoImg'])
         }
     };
 
