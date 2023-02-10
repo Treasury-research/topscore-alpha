@@ -272,18 +272,18 @@ const Post = () => {
           <div>
             {handlesList && handlesList.length > 0 ? (
               <div className="toscore-main-base-info">
-                {currentProfile.imageURI && canLoadAvatar ? (
+                {currentProfileBase.imageURI && canLoadAvatar ? (
                   <img
                     className="net-head-img"
                     onError={() => setCanLoadAvatar(false)}
-                    src={formatIPFS(currentProfile.imageURI)}
+                    src={formatIPFS(currentProfileBase.imageURI)}
                   />
                 ) : (
                   <div className="net-head-img">K</div>
                 )}
                 <div>
                   <div>
-                    <span className="space">{currentProfile.name || currentProfile.handle}</span>
+                    <span className="space">{currentProfileBase.name || currentProfileBase.handle}</span>
                     {/* <Dropdown
                       open={openLensDropdown}
                       onOpenChange={(e: any) => setOpenLensDropdown(e)}
@@ -313,7 +313,7 @@ const Post = () => {
                       </a>
                     </Dropdown> */}
                   </div>
-                  <div>@{currentProfile.handle}</div>
+                  <div>@{currentProfileBase.handle}</div>
                 </div>
               </div>
             ) : loadingHandlesList ? (
