@@ -29,7 +29,7 @@ import ArtistP from "../../statics/img/character-noShare/Artist.png";
 import ConductorP from "../../statics/img/character-noShare/Conductor.png";
 import ActorP from "../../statics/img/character-noShare/Actor.png";
 import AntiquerP from "../../statics/img/character-noShare/Antiquer.png";
-import SpyP from "../../statics/img/character-noShare/Spy.png";
+import SpyP from "../../statics/img/character-noShare/SPY.png";
 import MagicianP from "../../statics/img/character-noShare/Magician.png";
 import HealerP from "../../statics/img/character-noShare/Healer.png";
 import VolcanologistP from "../../statics/img/character-noShare/Volcanologist.png";
