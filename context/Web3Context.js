@@ -2,7 +2,10 @@ import { useState, createContext, useCallback, useEffect } from "react";
 import { toast } from "react-toastify";
 import Web3 from "web3";
 import config from "../config";
-import {ethers} from 'ethers'
+import { ethers } from "ethers";
+import { knn3TokenValidState } from "../store/state";
+import api from "../api";
+import { useRecoilState } from "recoil";
 import { LoadingOutlined } from "@ant-design/icons";
 import useWeb3Modal from "../hooks/useWeb3Modal";
 
@@ -38,6 +41,8 @@ export const Web3ContextProvider = ({ children }) => {
   const [chainId, setChainId] = useState("");
   const [networkId, setnetworkId] = useState("");
   const [blockNumber, setBlockNumber] = useState("");
+  const [knn3TokenValid, setKnn3TokenValid] =
+    useRecoilState(knn3TokenValidState);
 
   const listenProvider = (provider) => {
     provider.on("close", () => {
@@ -45,6 +50,10 @@ export const Web3ContextProvider = ({ children }) => {
     });
     provider.on("accountsChanged", async (accounts) => {
       setAccount(accounts[0]);
+      localStorage.removeItem("knn3Token");
+      localStorage.removeItem("knn3RefreshToken");
+      api.defaults.headers.authorization = "";
+      setKnn3TokenValid(false);
     });
     provider.on("chainChanged", (chainId) => {
       setChainId(parseInt(chainId, 16));
@@ -69,7 +78,7 @@ export const Web3ContextProvider = ({ children }) => {
 
       const signerRaw = ethersProvider.getSigner();
 
-      setSigner(signerRaw)
+      setSigner(signerRaw);
 
       // get network id
       setnetworkId(await web3Raw.eth.net.getId());
@@ -99,6 +108,12 @@ export const Web3ContextProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [web3Modal]);
 
+  useEffect(() => {
+    if (web3Modal && web3Modal.cachedProvider) {
+      connectWallet();
+    }
+  }, [web3Modal]);
+
   const estimateGas = async (func, value = 0) => {
     try {
       const gas = await func.estimateGas({
@@ -107,7 +122,7 @@ export const Web3ContextProvider = ({ children }) => {
       });
       return Math.floor(gas * 1.5);
     } catch (error) {
-      console.log('eee', error)
+      console.log("eee", error);
       const objStartIndex = error.message.indexOf("{");
       const obj = JSON.parse(error.message.slice(objStartIndex));
       toast.error(obj.message);

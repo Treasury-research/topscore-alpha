@@ -62,6 +62,7 @@ const ConnectBtn = () => {
     localStorage.setItem("knn3Token", res.data.accessToken);
     localStorage.setItem("knn3RefreshToken", res.data.refreshToken);
     api.defaults.headers.authorization = `Bearer ${res.data.accessToken}`;
+    setKnn3TokenValid(true)
   };
 
   const doLogin = async () => {
