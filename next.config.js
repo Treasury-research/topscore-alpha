@@ -9,7 +9,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/profile',
+        destination: '/profile/0x09c85610154a276a71eb8a887e73c16072029b20',
         permanent: true,
       }
     ]
