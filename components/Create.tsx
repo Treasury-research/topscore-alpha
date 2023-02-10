@@ -61,7 +61,6 @@ const Create = () => {
     }
 
     useEffect(() => {
-        debugger
         if (!account) {
             return;
         }

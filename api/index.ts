@@ -19,6 +19,9 @@ api.interceptors.response.use((res) => {
     message.error(res.data.message);
     return null;
   }
+}, error => {
+  const errObj = error.response.data
+  console.log('error status code', errObj.statusCode)
 });
 
 export default api;
