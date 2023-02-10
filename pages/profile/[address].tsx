@@ -72,18 +72,18 @@ const Post = () => {
     setShowList(false);
   };
 
-  const getLensHandle = async () => {
-    setLoadingHandlesList(true);
-    try {
-      const res: any = await api.get(`/lens/handles/${address}`);
-      setHandlesList(res.data);
-      if (res.data.length === 0) {
-        setCurrentProfile({});
-      }
-    } finally {
-      setLoadingHandlesList(false);
-    }
-  };
+  // const getLensHandle = async () => {
+  //   setLoadingHandlesList(true);
+  //   try {
+  //     const res: any = await api.get(`/lens/handles/${address}`);
+  //     setHandlesList(res.data);
+  //     if (res.data.length === 0) {
+  //       setCurrentProfile({});
+  //     }
+  //   } finally {
+  //     setLoadingHandlesList(false);
+  //   }
+  // };
 
   const getIndicators = async (profileId: string) => {
     const res: any = await api.get(`/lens/indicators/${profileId}`);
@@ -203,13 +203,13 @@ const Post = () => {
     setShowList(true);
   };
 
-  useEffect(() => {
-    console.log("addr change", address);
-    if (!address) {
-      return;
-    }
-    getLensHandle();
-  }, [address]);
+  // useEffect(() => {
+  //   console.log("addr change", address);
+  //   if (!address) {
+  //     return;
+  //   }
+  //   getLensHandle();
+  // }, [address]);
 
   useEffect(() => {
     if (!address || !account) {
@@ -255,13 +255,13 @@ const Post = () => {
   }, [activeHandleIndex, handlesList]);
 
   useEffect(() => {
-    const { profileId } = currentProfile;
+    const { profileId } = currentProfileBase;
     if (!profileId) {
-      return;
+      getUserInfo('101548');
+    }else{
+      getUserInfo(profileId);
     }
-
-    getUserInfo(profileId);
-  }, [currentProfile]);
+  }, [currentProfileBase]);
 
   return (
     <div className="w-full h-full bg-[#000] flex">
@@ -270,7 +270,6 @@ const Post = () => {
         <ConnectBtn />
         <div className="toscore-main">
           <div>
-            {handlesList && handlesList.length > 0 ? (
               <div className="toscore-main-base-info">
                 {currentProfileBase.imageURI && canLoadAvatar ? (
                   <img
@@ -283,44 +282,11 @@ const Post = () => {
                 )}
                 <div>
                   <div>
-                    <span className="space">{currentProfileBase.name || currentProfileBase.handle}</span>
-                    {/* <Dropdown
-                      open={openLensDropdown}
-                      onOpenChange={(e: any) => setOpenLensDropdown(e)}
-                      overlay={
-                        <Menu>
-                          {handlesList.map((t: any, i: number) => (
-                            <div
-                              className="drop-menu"
-                              key={i}
-                              onClick={() => {
-                                setActiveHandleIndex(i);
-                                changeProfile(t.profileId);
-                                setOpenLensDropdown(false);
-                              }}
-                            >
-                              {t.handle}
-                            </div>
-                          ))}
-                        </Menu>
-                      }
-                    >
-                      <a onClick={(e) => e.preventDefault()}>
-                        <Space className="space">
-                          {currentProfile.name || currentProfile.handle}
-                          <DownOutlined />
-                        </Space>
-                      </a>
-                    </Dropdown> */}
+                    <span className="space">{(currentProfileBase.name || currentProfileBase.handle) ? (currentProfileBase.name || currentProfileBase.handle) : 'KNN3 Network Official'}</span>
                   </div>
-                  <div>@{currentProfileBase.handle}</div>
+                  <div>@{currentProfileBase.handle ? currentProfileBase.handle : 'knn3_network.lens'}</div>
                 </div>
               </div>
-            ) : loadingHandlesList ? (
-              <div className="empty-hint"> Loading...</div>
-            ) : (
-              <div className="empty-hint"> You don't have any profile yet.</div>
-            )}
           </div>
 
           <div className="top-rador">
