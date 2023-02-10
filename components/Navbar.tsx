@@ -5,14 +5,14 @@ import Router, { useRouter } from "next/router";
 import IconSelect1 from '../statics/img/select/icon1.svg'
 import IconSelect2 from '../statics/img/select/icon2.svg'
 import IconSelect3 from '../statics/img/select/icon3.svg'
-import IconSelect4 from '../statics/img/select/Icon4.svg'
-import IconSelect5 from '../statics/img/select/Icon6.svg'
+import IconSelect4 from '../statics/img/select/icon4.svg'
+import IconSelect5 from '../statics/img/select/icon6.svg'
 
 import IconNoSelect1 from '../statics/img/noselect/icon1.svg'
 import IconNoSelect2 from '../statics/img/noselect/icon2.svg'
 import IconNoSelect3 from '../statics/img/noselect/icon3.svg'
-import IconNoSelect4 from '../statics/img/noselect/Icon4.svg'
-import IconNoSelect5 from '../statics/img/noselect/Icon5.svg'
+import IconNoSelect4 from '../statics/img/noselect/icon4.svg'
+import IconNoSelect5 from '../statics/img/noselect/icon5.svg'
 
 import IconTop from '../statics/img/topIcon.png'
 import Soon from '../statics/img/Soon.svg'
