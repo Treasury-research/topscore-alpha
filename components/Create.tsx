@@ -13,7 +13,7 @@ import useErc721Contract from "../contract/useErc721Contract";
 import config from "../config";
 import { LoadingOutlined } from '@ant-design/icons';
 import useWeb3Context from "../hooks/useWeb3Context";
-import { currentProfileState, profileListState, knn3TokenValidState } from "../store/state";
+import { currentProfileState, profileListState, knn3TokenValidState, loadingProfileListState } from "../store/state";
 
 const Create = () => {
     const [scores, setScores] = useState<any>({
@@ -30,8 +30,10 @@ const Create = () => {
     });
     const [loadingScores, setLoadingScores] = useState<boolean>(false);
     const [currentProfile] = useRecoilState<any>(currentProfileState);
+    const [loadingProfileList] = useRecoilState<any>(loadingProfileListState)
     const [profileList,] = useRecoilState(profileListState);
     const { account, connectWallet } = useWeb3Context();
+    const [loadingNftBalance, setLoadingNftBalance] = useState(true)
     const [nftList, setNftList] = useState<any>([]);
     const erc721Contract = useErc721Contract();
     // get this from global store
@@ -48,6 +50,7 @@ const Create = () => {
     }
 
     const getAllNfts = async () => {
+        setLoadingNftBalance(true)
         const res = await erc721Contract.getAll(config.contracts.nft);
         // check if claimed
         const res2: any = await api.get("/v1/nft/query_ids", {
@@ -58,6 +61,7 @@ const Create = () => {
         if (res2.data.length > 0) {
             setNftList(res2);
         }
+        setLoadingNftBalance(false);
     }
 
     useEffect(() => {
@@ -77,12 +81,12 @@ const Create = () => {
         <>
             <div className="absolute top-[20px] text-[24px]">Create</div>
             {
-                (profileList.length === 0 || nftList.length == 0) && account &&
+                !loadingProfileList && !loadingNftBalance && (profileList.length === 0 || nftList.length == 0) && account &&
                 <div className="permission-modal">
                     <div className="permission-modal-content py-[16px] pl-[12px] pr-[20px] rounded-[10px]">
                         <div className="flex">
                             <Image
-                                className="mr-1 h-[fit-content] mr-[10px]"
+                                className="h-[fit-content] mr-[10px]"
                                 src={IconError}
                                 alt=""
                             />
