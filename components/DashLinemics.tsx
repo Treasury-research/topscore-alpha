@@ -76,7 +76,7 @@ const rmodynamics = () => {
         setTimeout(() => {
             setLoading(false)
         }, 1000)
-        setDates([...new Set(newDates)])
+        setDates(new Set(newDates))
     }
 
     useEffect(() => {

@@ -55,7 +55,7 @@ const Create = () => {
                 ids: res.join(','),
             },
         })
-        if (res2.length > 0) {
+        if (res2.data.length > 0) {
             setNftList(res2);
         }
     }

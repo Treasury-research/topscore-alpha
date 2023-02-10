@@ -124,7 +124,7 @@ const ChartLine = (props: any) => {
             <div id={id} style={{ width: width, height: height, zIndex: '99' }}>
 
             </div>
-            <Image src={radorImg} alt="" style={{ position: "absolute",heigth:"400px",width:"360px", zIndex: '9', height: "80%", left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }} />
+            <Image src={radorImg} alt="" style={{ position: "absolute", height: "400px", width: "360px", zIndex: '9', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }} />
         </div>
     );
 };
