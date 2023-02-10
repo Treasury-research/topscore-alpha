@@ -38,7 +38,7 @@ export async function getServerSideProps(context: any) {
 const Post = () => {
 
   const { account, connectWallet } = useWeb3Context();
-  const [showList, setShowList] = useState(true);
+  const [showList, setShowList] = useState(false);
   const [handlesList, setHandlesList] = useState<any>([]);
   const [loadingHandlesList, setLoadingHandlesList] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<any>({});
