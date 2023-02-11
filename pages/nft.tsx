@@ -4,6 +4,7 @@ import { CloseOutlined } from "@ant-design/icons";
 import api from "../api";
 import Image from 'next/image'
 import ConnectBtn from '../components/ConnectBtn'
+import { useRecoilState } from "recoil";
 import Character from '../components/nft/Character'
 import Bg1 from '../statics/img/bg_text1.gif'
 import Bg2 from '../statics/img/bg_2text.gif'
@@ -11,14 +12,18 @@ import ImgToRight from "../statics/img/toRight.png";
 import ImgToLeft from "../statics/img/toLeft.png";
 import ImgWhole from "../statics/img/whole-top.png";
 import { Modal, Carousel } from "antd";
+import { knn3TokenValidState } from '../store/state'
 import useWeb3Context from "../hooks/useWeb3Context";
 import config from "../config";
 import useErc721Contract from "../contract/useErc721Contract";
+import { toast } from "react-toastify";
 // import VideoSource from "/public/vedio_rainbow.mp4"
 
 const nft = () => {
 
-  const { account, connectWallet } = useWeb3Context();
+  const { account, connectWallet, doLogin, } = useWeb3Context();
+
+  const [knn3TokenValid, setKnn3TokenValid] = useRecoilState(knn3TokenValidState);
 
   const [nftList, setNftList] = useState([]);
 
@@ -48,45 +53,7 @@ const nft = () => {
         ids: res.join(','),
       },
     });
-    // let rdata = [{
-    //   id: '234',
-    //   is_open: 0
-    // }, {
-    //   id: '234',
-    //   is_open: 0
-    // },
-    // {
-    //   id: '234',
-    //   is_open: 0
-    // },
-    // {
-    //   id: '234',
-    //   is_open: 0
-    // },
-    // {
-    //   id: '234',
-    //   is_open: 0
-    // },
-    // {
-    //   id: '234',
-    //   is_open: 0
-    // },
-    // {
-    //   id: '234',
-    //   is_open: 0
-    // },
-    // {
-    //   id: '234',
-    //   is_open: 0
-    // },
-    // {
-    //   id: '234',
-    //   is_open: 0
-    // },
-    // {
-    //   id: '234',
-    //   is_open: 0
-    // }]
+
     if (res2.data.length > 0) {
       setTotal(res2.data.length);
       let newList: any = [];
@@ -99,6 +66,10 @@ const nft = () => {
   };
 
   const doOpenBox = async (id: number) => {
+      if(!knn3TokenValid){
+      toast.error('Please login to reveal');
+      return
+    }
     const res = await api.post(`/v1/nft/open/${id}`);
     if (res.data) {
       console.log("open success");
@@ -139,7 +110,7 @@ const nft = () => {
                       <div>
                         <div className="pic-con">
                           {t.map((item: any) =>
-                            item.is_open === 1 ? (
+                            item.is_open === 0 ? (
                               <div className="pic-item">
                                 <img src={item.token_uri} />
                                 <div className="pic-open-btn">
@@ -156,12 +127,17 @@ const nft = () => {
                                   <div className="arrow">
                                     <Image src={ImgToRight} alt="" />
                                   </div>
-                                  <div
+                                  {knn3TokenValid ? <div
                                     className="reveal"
                                     onClick={() => doOpenBox(item.id)}
                                   >
                                     REVEAL
-                                  </div>
+                                  </div>: <div
+                                    className="reveal"
+                                    onClick={() => doLogin()}
+                                  >
+                                    Login
+                                  </div>}
                                   <div className="arrow">
                                     <Image src={ImgToLeft} alt="" />
                                   </div>

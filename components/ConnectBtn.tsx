@@ -4,7 +4,6 @@ import { shortenAddr, switchChain } from "../lib/tool";
 import { useRecoilState } from "recoil";
 import { currentProfileState, profileListState, loadingProfileListState, knn3TokenValidState } from "../store/state";
 import useWeb3Context from "../hooks/useWeb3Context";
-import lensApi from "../api/lensApi";
 import { message, Popover } from "antd";
 import { useRouter } from "next/router";
 import api from "../api";
@@ -14,7 +13,7 @@ import ChangeProfile from "./connect/ChangeProfile";
 
 const ConnectBtn = () => {
   const router = useRouter();
-  const { account, connectWallet, chainId, signMessage } = useWeb3Context();
+  const { account, connectWallet, chainId, doLogin } = useWeb3Context();
   const [knn3TokenValid, setKnn3TokenValid] = useRecoilState(knn3TokenValidState);
   const [profileList, setProfileList] = useRecoilState(profileListState);
   const [loadingProfileList, setLoadingProfileList] = useRecoilState(loadingProfileListState)
@@ -52,31 +51,6 @@ const ConnectBtn = () => {
       message.info("You must have a Lens Protocol Profile");
       router.push(`/profile/0x09c85610154a276a71eb8a887e73c16072029b20`);
     }
-  };
-
-  const doKnn3Login = async (message: string, signature: string) => {
-    const res = await api.post("/auth/login", {
-      message,
-      signature,
-    });
-    localStorage.setItem("knn3Token", res.data.accessToken);
-    localStorage.setItem("knn3RefreshToken", res.data.refreshToken);
-    api.defaults.headers.authorization = `Bearer ${res.data.accessToken}`;
-    setKnn3TokenValid(true)
-  };
-
-  const doLogin = async () => {
-    const challenge = (await lensApi.getChallenge(account || "")).challenge
-      .text;
-    const signature = await signMessage(challenge);
-
-    await doKnn3Login(challenge, signature);
-
-    const token = (await lensApi.getAccessToken(account, signature))
-      .authenticate;
-    console.log("token", token);
-    localStorage.setItem("accessToken", token.accessToken);
-    lensApi.setToken(token.accessToken);
   };
 
   const handleShowModal = (show: boolean, i: number) => {

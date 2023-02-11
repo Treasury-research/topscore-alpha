@@ -3,8 +3,9 @@ import { toast } from "react-toastify";
 import Web3 from "web3";
 import config from "../config";
 import { ethers } from "ethers";
-import { knn3TokenValidState } from "../store/state";
+import lensApi from "../api/lensApi";
 import api from "../api";
+import { knn3TokenValidState } from "../store/state";
 import { useRecoilState } from "recoil";
 import { LoadingOutlined } from "@ant-design/icons";
 import useWeb3Modal from "../hooks/useWeb3Modal";
@@ -31,6 +32,7 @@ export const Web3Context = createContext({
     return "";
   },
   sendTx: async () => {},
+  doLogin: async () => {}
 });
 
 export const Web3ContextProvider = ({ children }) => {
@@ -129,6 +131,31 @@ export const Web3ContextProvider = ({ children }) => {
     }
   };
 
+  const doKnn3Login = async (message, signature) => {
+    const res = await api.post("/auth/login", {
+      message,
+      signature,
+    });
+    localStorage.setItem("knn3Token", res.data.accessToken);
+    localStorage.setItem("knn3RefreshToken", res.data.refreshToken);
+    api.defaults.headers.authorization = `Bearer ${res.data.accessToken}`;
+    setKnn3TokenValid(true)
+  };
+
+  const doLogin = async () => {
+    const challenge = (await lensApi.getChallenge(account || "")).challenge
+      .text;
+    const signature = await signMessage(challenge);
+
+    await doKnn3Login(challenge, signature);
+
+    const token = (await lensApi.getAccessToken(account, signature))
+      .authenticate;
+    console.log("token", token);
+    localStorage.setItem("accessToken", token.accessToken);
+    lensApi.setToken(token.accessToken);
+  };
+
   /**
    *
    * @param {*} func , required
@@ -222,6 +249,7 @@ export const Web3ContextProvider = ({ children }) => {
         estimateGas,
         sendTx,
         signMessage,
+        doLogin,
       }}
     >
       {children}
