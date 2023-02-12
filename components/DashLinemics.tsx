@@ -112,7 +112,6 @@ const rmodynamics = () => {
                 s.push(b)
             }
             setLindData(s)
-            console.log(s)
             setSigleData(h)
         }
     }, [dates, postSwitch])

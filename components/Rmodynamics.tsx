@@ -36,20 +36,20 @@ const rmodynamics = () => {
     const [currentProfile] = useRecoilState<any>(currentProfileState);
 
     useEffect(() => {
-        getCurrentWeek()
-    }, [])
-
-    useEffect(() => {
         if (currentDate.length !== 0) {
             if (currentProfile && currentProfile.profileId) {
-                setRemodyBaseData([]);
                 getGlobalHeatmapData();
             }
         }
     }, [currentDate, activeTab, currentProfile])
 
     useEffect(() => {
+        getCurrentWeek()
+    }, [])
+
+    useEffect(() => {
         setChecked([true, true, true, true, true])
+        setActiveItems([])
     }, [activeTab])
 
     useEffect(() => {
@@ -93,10 +93,11 @@ const rmodynamics = () => {
             }
         }
         maxRemoData = [0, 0, 0, 0, 0]
-        if(!res || !res.data){
-            setLoading(false);
+        setLoading(false);
+        if (!res || !res.data) {
+            setRemodyBaseData(rem)
             return false;
-        } 
+        }
         res.data.forEach((t: any) => {
             let week = moment(t.timePeriod.toString().slice(0, 8)).weekday()
             if (activeTab === 0) {
@@ -128,6 +129,7 @@ const rmodynamics = () => {
                 rem[week - 1][Number(t.timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), t.timePeriod];
             }
         })
+        console.log(rem)
         setRemodyBaseData(rem)
         setTotalAmount(totalAmount)
         setLoading(false);
@@ -161,19 +163,35 @@ const rmodynamics = () => {
     };
 
     const putActiveItems = (e: any) => {
+        let isHasItems = false;
+        let items = [...activeItems]
+        items.forEach((t: any, i: number) => {
+            if (t[0] === e[0] && t[1] === e[1]) {
+                items.splice(i, 1)
+                isHasItems = true
+            }
+        })
         setActiveItems((prev: any) => {
-            return [...prev, e];
+            if (!isHasItems) {
+                return [...prev, e]
+            } else {
+                return [...items]
+            }
         });
     }
 
     const getNextWeek = () => {
-        weekCount--;
-        getCurrentWeek();
+        if (weekCount >= 1) {
+            weekCount--;
+            getCurrentWeek();
+        }
     }
 
     const getLastWeek = () => {
-        weekCount++;
-        getCurrentWeek();
+        if (weekCount <= 3) {
+            weekCount++;
+            getCurrentWeek();
+        }
     }
 
     const getBorderStyle = (e: any) => {
@@ -222,7 +240,29 @@ const rmodynamics = () => {
         return (
             <div>
                 <p className="text-[18px] font-[600]">{e[5] ? strDate.slice(0, 4) + '/' + strDate.slice(4, 6) + '/' + strDate.slice(6, 8) : ''}</p>
-                <p>Count：{totalMount.toFixed(2)}</p>
+                {/* <p>Count：{totalMount.toFixed(2)}</p> */}
+                <div>
+                    {
+                        checked[0] && activeTab === 0 &&
+                        <div>Post：{e[0]}</div>
+                    }
+                    {
+                        checked[1] &&
+                        <div>Comment：{e[1]}</div>
+                    }
+                    {
+                        checked[2] &&
+                        <div>Mirror：{e[2]}</div>
+                    }
+                    {
+                        checked[3] &&
+                        <div>Collect：{e[3]}</div>
+                    }
+                    {
+                        checked[4] &&
+                        <div>Volume：{e[4].toFixed(2)}</div>
+                    }
+                </div>
             </div>
         )
     };
@@ -299,16 +339,16 @@ const rmodynamics = () => {
                 </div>
                 <div className="w-[calc(100%-800px)] mt-[10px]">
                     <div className="flex min-w-50 max-w-100">
-                        <div className="h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer" onClick={getLastWeek}><LeftOutlined /></div>
+                        <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer ${weekCount == 4 ? 'cursor-[not-allowed]' : ''}`} onClick={getLastWeek}><LeftOutlined /></div>
                         <div className="w-[calc(100%-100px)] mx-5 h-10 bg-[rgb(41,41,41)] flex items-center justify-center">
                             {
                                 week.length !== 0 &&
                                 <span>{week[0]}-{week[1]}</span>
                             }
                         </div>
-                        <div className="h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer" onClick={getNextWeek}><RightOutlined /></div>
+                        <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer ${weekCount == 0 ? 'cursor-[not-allowed]' : ''}`} onClick={getNextWeek}><RightOutlined /></div>
                     </div>
-                    <div className="px-6 py-4 bg-[rgb(41,41,41)] mt-10">
+                    <div className="px-6 py-4 bg-[rgb(41,41,41)] mt-10 rounded-[10px]">
                         {
                             activeTab == 0 &&
                             <div className="flex mb-2">

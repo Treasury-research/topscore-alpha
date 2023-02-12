@@ -129,3 +129,11 @@
   background: #CE3900 !important;
   ;
 }
+
+.ant-checkbox-inner {
+  background-color: #CE3900 !important;
+  border-color: #CE3900 !important;
+}
+.ant-checkbox-checked:after{
+  border: none !important;
+}

@@ -8,6 +8,8 @@ import { useRecoilState } from "recoil";
 
 const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
+const dys = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
 let weekCount = 0;
 
 let maxRemoData: any = [0, 0, 0, 0, 0]
@@ -15,6 +17,12 @@ let maxRemoData: any = [0, 0, 0, 0, 0]
 const tabs = ['2023', '2022'];
 
 const testProfileId = '5'
+
+let resPost = []
+
+let resComment = []
+
+let resMirror = []
 
 const rmodynamics = () => {
 
@@ -88,10 +96,11 @@ const rmodynamics = () => {
                 type: 'Post',
             }
         })
-        if(!res || !res.data) return false;
+        if (!res || !res.data) return false;
         res.data.forEach((t: any) => {
             total += t.count
         })
+        resPost = res.data;
         setPostTotal(total)
     }
 
@@ -104,10 +113,11 @@ const rmodynamics = () => {
                 type: 'Comment',
             }
         })
-        if(!res || !res.data) return false;
+        if (!res || !res.data) return false;
         res.data.forEach((t: any) => {
             total += t.count
         })
+        resComment = res.data;
         setCommentTotal(total)
     }
 
@@ -120,10 +130,11 @@ const rmodynamics = () => {
                 type: 'Mirror',
             }
         })
-        if(!res || !res.data) return false;
+        if (!res || !res.data) return false;
         res.data.forEach((t: any) => {
             total += t.count
         })
+        resMirror = res.data;
         setMirrorTotal(total)
     }
 
@@ -147,7 +158,7 @@ const rmodynamics = () => {
                 type: str,
             }
         })
-        if(!res || !res.data){
+        if (!res || !res.data) {
             setLoading(false);
             return false;
         }
@@ -265,10 +276,32 @@ const rmodynamics = () => {
 
     const getContent = (e: any) => {
         if (!e || (!e[0] && e[0] !== 0)) return ''
+        let filterResPost = resPost.filter((t: any) => {
+            return t.date === e[1]
+        })
+        let filterResComment = resComment.filter((t: any) => {
+            return t.date === e[1]
+        })
+        let filterResMirror = resMirror.filter((t: any) => {
+            return t.date === e[1]
+        })
         return (
             <div>
                 <p className="text-[18px] font-[600]">{e[1] || '--'}</p>
-                <p>Count：{e[0]}</p>
+                <div>
+                    {
+                        checked[0] && filterResPost.length > 0 &&
+                        <div>Post：{filterResPost[0]['count']}</div>
+                    }
+                    {
+                        checked[1] && filterResComment.length > 0 &&
+                        <div>Comment：{filterResComment[0]['count']}</div>
+                    }
+                    {
+                        checked[2] && filterResMirror.length > 0 &&
+                        <div>Mirror：{filterResMirror[0]['count']}</div>
+                    }
+                </div>
             </div>
         )
     };
@@ -284,13 +317,13 @@ const rmodynamics = () => {
             </div>
             <div className="flex bg-[#1A1A1A] p-5 w-full">
 
-                <div className="w-[860px] overflow-hidden mr-4">
+                <div className="w-[920px] overflow-hidden mr-4">
                     {
                         loading ?
                             <LoadingOutlined className="text-2xl block mx-auto my-[80px]" />
                             : <>
                                 <div className="text-[18px] mb-[20px]">Overview</div>
-                                <div className="mb-4 mr-2 flex ml-[auto] w-[fit-content] items-center">
+                                <div className="mb-4 mr-8 flex ml-[auto] w-[fit-content] items-center">
                                     <div className="text-[12px] ml-[-4px] mr-2">Low</div>
                                     <div className="h-[16px] w-[45px] bg-[#D13005]">
 
@@ -313,9 +346,10 @@ const rmodynamics = () => {
                                     {
                                         remodyBaseData.map((t: any, i: number) => (
                                             <div className="flex mb-[2px]" key={i}>
+                                                <div className="text-[10px] w-[40px] h-[14px] flex items-center">{dys[i]}</div>
                                                 {
                                                     t.map((item: any, index: number) => (
-                                                        (!item || (!item[0] && item[0] !== 0)) ?
+                                                        (!item || (!item[0] && item[0] !== 0) || item === 'hidden') ?
                                                             (
                                                                 <div key={index} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
                                                             ) : (<Popover placement="bottom" content={() => getContent(item)}>
@@ -338,7 +372,7 @@ const rmodynamics = () => {
                             </>
                     }
                 </div>
-                <div className="w-[calc(100%-860px)]">
+                <div className="w-[calc(100%-940px)]">
                     <div className="px-6 py-4 pb-2 rounded-[10px] bg-[rgb(41,41,41)] mt-9">
                         <div className="flex mb-2">
                             <div>
