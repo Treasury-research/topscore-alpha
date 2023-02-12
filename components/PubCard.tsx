@@ -32,6 +32,8 @@ const PubCard = (props: any) => {
       } else {
         setPubData([])
       }
+    }else{
+      setLoading(false)
     }
   }, [lineData])
 

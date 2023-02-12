@@ -45,11 +45,11 @@ const Navbar = () => {
         <div className='h-full leading-20 pl-6 pr-6 pt-10 bg-[#1A1A1A]'>
             <div className="flex items-center mb-10 ml-[-10px]">
                 <Image
-                    className="mr-1"
+                    className="mr-1 h-8 w-8"
                     src={IconTop}
                     alt=""
                 />
-                <div className="text-[rgba(255,255,255,0.8)]">TOPSCORE<span className="text-[12px] text-[#CE3900]">ALPHA</span></div>
+                <div className="text-[rgba(255,255,255,0.8)] flex items-center">TOPSCORE<span className="text-[12px] text-[#CE3900] ml-2">ALPHA</span></div>
             </div>
             {
                 headerTabs.map((t: string, i: number) => (

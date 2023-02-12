@@ -645,13 +645,13 @@
 
   .character-rank {
     position: absolute;
-    top: -18px;
+    top: -14px;
     left: 298px;
   }
 
   .character-lens {
     position: absolute;
-    top: 93px;
+    top: 95px;
     left: 315px;
     width: 317px;
     text-align: center;
@@ -659,7 +659,7 @@
 
   .character-score {
     position: absolute;
-    top: 551px;
+    top: 557px;
     left: 308px;
   }
 
@@ -775,6 +775,10 @@
   top: calc(50% - 60px);
   background: #292929;
   transform: translate(-50%, -50%);
+}
+
+.twitter-icon svg{
+  color: #26a7de;
 }
 
 // permission-modal-content absolute left-[50%] top-[40%] z-100 text-[#fff] bg-[#292929] w-[500px] translate-[-50%,-50%]

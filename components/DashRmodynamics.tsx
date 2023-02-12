@@ -248,20 +248,18 @@ const rmodynamics = () => {
     }
 
     const getItemStyle = (e: any) => {
-        if (!e || (!e[0] && e[0] !== 0)) return 'bg-[#4F4F4F]'
+        if (!e || (!e[0] && e[0] !== 0)) return 'bg-[#232323]'
         let lv = maxRemoData / 5;
         if (e[0] < lv) {
-            return 'bg-[#4F2D2E]'
+            return 'bg-[#D13005]'
         } else if (lv <= e[0] && e[0] < lv * 2) {
-            return 'bg-[#76312B]'
+            return 'bg-[#A32A0A]'
         } else if (lv * 2 <= e[0] && e[0] < lv * 3) {
-            return 'bg-[#AF342F]'
+            return 'bg-[#75240F]'
         } else if (lv * 3 <= e[0] && e[0] < lv * 4) {
-            return 'bg-[#CA3B32]'
-        } else if (lv * 3 <= e[0] && e[0] < lv * 4) {
-            return 'bg-[#CA3B32]'
+            return 'bg-[#471F14]'
         } else if (lv * 4 <= e[0]) {
-            return 'bg-[#F33C17]'
+            return 'bg-[#311C17]'
         }
     }
 
@@ -293,23 +291,23 @@ const rmodynamics = () => {
                             : <>
                                 <div className="text-[18px] mb-[20px]">Overview</div>
                                 <div className="mb-4 mr-2 flex ml-[auto] w-[fit-content] items-center">
-                                    <div className="text-[12px] ml-[-4px] mr-2">High</div>
-                                    <div className="h-[16px] w-[45px] bg-[#F33C17]">
+                                    <div className="text-[12px] ml-[-4px] mr-2">Low</div>
+                                    <div className="h-[16px] w-[45px] bg-[#D13005]">
 
                                     </div>
-                                    <div className="h-[16px] w-[45px] bg-[#CA3B32]">
+                                    <div className="h-[16px] w-[45px] bg-[#A32A0A]">
 
                                     </div>
-                                    <div className="h-[16px] w-[45px] bg-[#AF342F]">
+                                    <div className="h-[16px] w-[45px] bg-[#75240F]">
 
                                     </div>
-                                    <div className="h-[16px] w-[45px] bg-[#76312B]">
+                                    <div className="h-[16px] w-[45px] bg-[#471F14]">
 
                                     </div>
-                                    <div className="h-[16px] w-[45px] bg-[#4F2D2E]">
+                                    <div className="h-[16px] w-[45px] bg-[#311C17]">
 
                                     </div>
-                                    <div className="text-[12px] ml-[-4px] ml-2">Low</div>
+                                    <div className="text-[12px] ml-2 ml-2">High</div>
                                 </div>
                                 <div>
                                     {
@@ -341,7 +339,7 @@ const rmodynamics = () => {
                     }
                 </div>
                 <div className="w-[calc(100%-860px)]">
-                    <div className="px-6 py-2 bg-[rgb(41,41,41)] mt-11">
+                    <div className="px-6 py-4 pb-2 rounded-[10px] bg-[rgb(41,41,41)] mt-9">
                         <div className="flex mb-2">
                             <div>
                                 <Checkbox onChange={(e: any) => setcheckedPub(e.target.checked)} checked={checkedPub}>

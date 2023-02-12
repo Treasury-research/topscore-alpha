@@ -117,7 +117,7 @@ const Character = (props: any) => {
 
     const getRadar = async (profileId: string) => {
         const res: any = await api.get(`/lens/scores/${profileId}`);
-        console.log(res)
+        if(!res || !res.data) return false;
         let arr = [
             { type: 'influReda', score: res.data.influReda * 1.05 },
             { type: 'campaignReda', score: res.data.campaignReda * 1.09 },
@@ -137,18 +137,22 @@ const Character = (props: any) => {
 
     const getIndicators = async (profileId: string) => {
         const res: any = await api.get(`/lens/indicators/${profileId}`);
-        setUserInfo((prev: any) => ({
-            ...prev,
-            ...res.data,
-        }));
+        if(res && res.data){
+            setUserInfo((prev: any) => ({
+                ...prev,
+                ...res.data,
+            }));
+        }
     };
 
     const getPublication = async (profileId: string) => {
         const res: any = await api.get(`/lens/publication/${profileId}`);
-        setUserInfo((prev: any) => ({
-            ...prev,
-            ...res.data,
-        }));
+        if(res && res.data){
+            setUserInfo((prev: any) => ({
+                ...prev,
+                ...res.data,
+            }));
+        }
     };
 
     useEffect(() => {
@@ -307,9 +311,9 @@ const Character = (props: any) => {
                 account && imgUrl &&
                 <div className="h-[800px]">
                     <Image src={imgUrl} alt="" />
-                    <div className="character-rank">{userInfo.rank}</div>
-                    <div className="character-lens">{currentProfile && currentProfile.handle ? currentProfile.handle : 'knn3_network.lens'}</div>
-                    <div className="character-score">{new BN(userInfo.score).toFixed(2)}</div>
+                    <div className="character-rank text-[30px]">{userInfo.rank}</div>
+                    <div className="character-lens text-[30px]">{currentProfile && currentProfile.handle ? currentProfile.handle : 'knn3_network.lens'}</div>
+                    <div className="character-score text-[30px]">{new BN(userInfo.score).toFixed(2)}</div>
                     {
                         showShareBtn && account ?
                             (<div className="char-share-btnGroup">
@@ -328,7 +332,7 @@ const Character = (props: any) => {
                                         hashtags={["@KNN3Network #Lens"]}
                                         title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：@knn3_network #Lens`}
                                     >
-                                        <TwitterOutlined className="twitter-icon" />
+                                        <TwitterOutlined className="twitter-icon" style={{ color: '#26a7de' }}/>
                                     </TwitterShareButton2>
                                 </div>
                             </div>) :

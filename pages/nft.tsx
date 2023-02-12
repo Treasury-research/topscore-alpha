@@ -34,6 +34,8 @@ const nft = () => {
 
   const [activeNftDetail, setActiveNftDetail] = useState<any>({});
 
+  const [videoUrl, setVideoUrl] = useState<any>('');
+
   const erc721Contract = useErc721Contract();
 
   const handleOk = () => {
@@ -66,7 +68,7 @@ const nft = () => {
   };
 
   const doOpenBox = async (id: number) => {
-      if(!knn3TokenValid){
+    if (!knn3TokenValid) {
       toast.error('Please login to reveal');
       return
     }
@@ -85,6 +87,12 @@ const nft = () => {
     getAllNfts();
     setIsShow(true)
   }, [account]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setVideoUrl('/vedio_rainbow.mp4')
+    }, 1500)
+  }, []);
 
   return (
     <div className="w-full h-full bg-[#000] flex">
@@ -132,7 +140,7 @@ const nft = () => {
                                     onClick={() => doOpenBox(item.id)}
                                   >
                                     REVEAL
-                                  </div>: <div
+                                  </div> : <div
                                     className="reveal"
                                     onClick={() => doLogin()}
                                   >
@@ -189,13 +197,16 @@ const nft = () => {
 
         </div>
         <div className="absolute top-[60px] w-full left-0 h-full opacity-[0.3] z-10 charvideo">
-          <video
-            loop
-            autoPlay
-            muted
-            src="/vedio_rainbow.mp4"
-          >
-          </video>
+          {
+            videoUrl &&
+            <video
+              loop
+              autoPlay
+              muted
+              src={videoUrl}
+            >
+            </video>
+          }
         </div>
       </div>
     </div>

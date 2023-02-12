@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Navbar from '../../components/Navbar'
 import { DownOutlined, CloseOutlined } from "@ant-design/icons";
-import { Dropdown, Space, Menu, Drawer } from "antd";
+import { Dropdown, Space, Menu, Drawer, message } from "antd";
 import BN from "bignumber.js";
 import { formatIPFS } from "../../lib/tool";
 import useWeb3Context from "../../hooks/useWeb3Context";
@@ -14,7 +14,7 @@ import ImgGenerate from "../../statics/img/generate-button.gif";
 import ImgHoverGenerate from "../../statics/img/hover-generate-button.gif";
 import Image from 'next/image'
 import { useRecoilState } from 'recoil';
-import { currentProfileState } from '../../store/state'
+import { currentProfileState, profileListState } from '../../store/state'
 
 const typeList = [
   "Influence",
@@ -29,7 +29,7 @@ const defaultKnn3Profile = {
   address: "0x09c85610154a276a71eb8a887e73c16072029b20",
   handle: "knn3_network.lens",
   profileId: "5",
-  name:"KNN3 Network Official"
+  name: "KNN3 Network Official"
 }
 
 const Post = () => {
@@ -41,10 +41,11 @@ const Post = () => {
   const [activeRankIndex, setActiveRankIndex] = useState<number>(0);
   const [canLoadAvatar, setCanLoadAvatar] = useState<boolean>(true);
   const [rankInfo, setRankInfo] = useState<any>({});
-  const [imageURI,setImageURI] = useState<any>("");
+  const [imageURI, setImageURI] = useState<any>("");
   const [showRadorGif, setShowRadorGif] = useState(false);
   const [openScoreDropdown, setOpenScoreDropdown] = useState(false);
   const [radarDetailScore, setRadarDetailScore] = useState<any>({});
+  const [profileList,] = useRecoilState(profileListState);
 
   const router = useRouter();
 
@@ -66,7 +67,7 @@ const Post = () => {
   const getProfileByHandle = async (handle: string) => {
     console.log('h is', handle)
     const res = await lensApi.getProfileByHandle(handle);
-    if(res && res.picture && res.picture.original && res.picture.original.url){
+    if (res && res.picture && res.picture.original && res.picture.original.url) {
       setImageURI(res.picture.original.url)
     }
     console.log('profile info', res)
@@ -75,23 +76,30 @@ const Post = () => {
 
   const getIndicators = async (profileId: string) => {
     const res: any = await api.get(`/lens/indicators/${profileId}`);
-    setUserInfo((prev: any) => ({
-      ...prev,
-      ...res.data,
-    }));
+    if (res && res.data) {
+      setUserInfo((prev: any) => ({
+        ...prev,
+        ...res.data,
+      }));
+    }
+
   };
 
   const getPublication = async (profileId: string) => {
     const res: any = await api.get(`/lens/publication/${profileId}`);
-    setUserInfo((prev: any) => ({
-      ...prev,
-      ...res.data,
-    }));
+    if (res && res.data) {
+      setUserInfo((prev: any) => ({
+        ...prev,
+        ...res.data,
+      }));
+    }
   };
 
   const getDetailScores = async (profileId: string) => {
     const res: any = await api.get(`/lens/scores/${profileId}`);
-    setRadarDetailScore(res.data);
+    if (res && res.data) {
+      setRadarDetailScore(res.data);
+    }
   };
 
   const getItemScore = () => {
@@ -167,10 +175,12 @@ const Post = () => {
 
   const getRankInfo = async (profileId: string) => {
     const res: any = await api.get(`/lens/scores/${profileId}`);
-    setRankInfo((prev: any) => ({
-      ...prev,
-      ...res.data,
-    }));
+    if (res && res.data) {
+      setRankInfo((prev: any) => ({
+        ...prev,
+        ...res.data,
+      }));
+    }
   };
 
   const getUserInfo = async (profileId: string) => {
@@ -186,21 +196,26 @@ const Post = () => {
   };
 
   useEffect(() => {
-    if (currentProfile.handle) {
-      getProfileByHandle(currentProfile.handle)
-    } else {
-      getProfileByHandle(defaultKnn3Profile.handle)
-    }
-  }, [currentProfile])
-
-  useEffect(() => {
     const { profileId } = currentProfile;
     if (!profileId) {
       getUserInfo(defaultKnn3Profile.profileId);
     } else {
       getUserInfo(profileId);
     }
+    if (currentProfile.handle) {
+      getProfileByHandle(currentProfile.handle)
+    } else {
+      getProfileByHandle(defaultKnn3Profile.handle)
+    }
   }, [currentProfile]);
+
+  useEffect(() => {
+    if (account) {
+      if (profileList.length == 0) {
+        message.info("You must have a Lens Protocol Profile");
+      }
+    }
+  }, [profileList, account]);
 
   return (
     <div className="w-full h-full bg-[#000] flex">

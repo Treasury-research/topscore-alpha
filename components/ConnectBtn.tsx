@@ -48,7 +48,6 @@ const ConnectBtn = () => {
     if (profileList.length > 0) {
       router.push(`/profile/${account}`);
     } else {
-      message.info("You must have a Lens Protocol Profile");
       router.push(`/profile/0x09c85610154a276a71eb8a887e73c16072029b20`);
     }
   };
