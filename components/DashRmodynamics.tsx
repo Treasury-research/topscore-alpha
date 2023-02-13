@@ -242,7 +242,7 @@ const rmodynamics = () => {
         });
     };
 
-    const onChangePub = (e: any, i: number) => {
+    const onChangePub = (e: any) => {
         if(!e.target.checked){
             return false
         }
