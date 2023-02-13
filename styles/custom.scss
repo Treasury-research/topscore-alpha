@@ -363,7 +363,8 @@
 }
 
 .engage-tooltip {
-  width: 600px;
+  max-width: 600px;
+  width: fit-content;
   padding: 10px;
 }
 
@@ -399,7 +400,7 @@
 
 .engage-items {
   float: left;
-  width: 25%;
+  width: 140px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
