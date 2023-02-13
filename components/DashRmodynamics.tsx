@@ -262,15 +262,15 @@ const rmodynamics = () => {
         if (!e || (!e[0] && e[0] !== 0)) return 'bg-[#232323]'
         let lv = maxRemoData / 5;
         if (e[0] < lv) {
-            return 'bg-[#D13005]'
+            return 'bg-[#311C17]'
         } else if (lv <= e[0] && e[0] < lv * 2) {
-            return 'bg-[#A32A0A]'
+            return 'bg-[#471F14]'
         } else if (lv * 2 <= e[0] && e[0] < lv * 3) {
             return 'bg-[#75240F]'
         } else if (lv * 3 <= e[0] && e[0] < lv * 4) {
-            return 'bg-[#471F14]'
+            return 'bg-[#A32A0A]'
         } else if (lv * 4 <= e[0]) {
-            return 'bg-[#311C17]'
+            return 'bg-[#D13005]'
         }
     }
 
@@ -325,19 +325,19 @@ const rmodynamics = () => {
                                 <div className="text-[18px] mb-[20px]">Overview</div>
                                 <div className="mb-4 mr-8 flex ml-[auto] w-[fit-content] items-center">
                                     <div className="text-[12px] ml-[-4px] mr-2">Low</div>
-                                    <div className="h-[16px] w-[45px] bg-[#D13005]">
-
-                                    </div>
-                                    <div className="h-[16px] w-[45px] bg-[#A32A0A]">
-
-                                    </div>
-                                    <div className="h-[16px] w-[45px] bg-[#75240F]">
+                                    <div className="h-[16px] w-[45px] bg-[#311C17]">
 
                                     </div>
                                     <div className="h-[16px] w-[45px] bg-[#471F14]">
 
                                     </div>
-                                    <div className="h-[16px] w-[45px] bg-[#311C17]">
+                                    <div className="h-[16px] w-[45px] bg-[#75240F]">
+
+                                    </div>
+                                    <div className="h-[16px] w-[45px] bg-[#A32A0A]">
+
+                                    </div>
+                                    <div className="h-[16px] w-[45px] bg-[#D13005]">
 
                                     </div>
                                     <div className="text-[12px] ml-2 ml-2">High</div>
