@@ -14,10 +14,10 @@ const tabs = ['Engagement', 'Top Engaged', 'Collections & Fee', 'Top Collected']
 const tabs1 = ['7D', '14D', '21D', '28D']
 
 const lineDes = [
-    'Daily cumulative engagements of your latest pubs',
-    'Daily cumulative engagements of your top engaged pubs in 28D',
-    'Daily cumulative collections of your latest pubs',
-    'Daily cumulative collections of your top collected pubs in 28D'
+    'Daily engagements of your latest pubs',
+    'Daily engagements of your top engaged pubs in 28D',
+    'Daily collections of your latest pubs',
+    'Daily collections of your top collected pubs in 28D'
 ]
 let resData: any = [];
 

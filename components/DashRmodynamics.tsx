@@ -75,8 +75,6 @@ const rmodynamics = () => {
     useEffect(() => {
         if (checkedPub) {
             setChecked([true, true, true])
-        } else {
-            setChecked([false, false, false])
         }
     }, [checkedPub])
 
@@ -227,10 +225,28 @@ const rmodynamics = () => {
     }
 
     const onChange = (e: any, i: number) => {
+        if(!e.target.checked){
+            if(i === 0 && !checked[1] && !checked[2]){
+                return false
+            }
+            if(i === 1 && !checked[0] && !checked[2]){
+                return false
+            }
+            if(i === 2 && !checked[0] && !checked[1]){
+                return false
+            }
+        }
         setChecked((prev: any) => {
             prev[i] = e.target.checked;
             return [...prev];
         });
+    };
+
+    const onChangePub = (e: any, i: number) => {
+        if(!e.target.checked){
+            return false
+        }
+        setcheckedPub(e.target.checked)
     };
 
     const getCurrentWeek = () => {
@@ -376,9 +392,21 @@ const rmodynamics = () => {
                     <div className="px-6 py-4 pb-2 rounded-[10px] bg-[rgb(41,41,41)] mt-9">
                         <div className="flex mb-2">
                             <div>
-                                <Checkbox onChange={(e: any) => setcheckedPub(e.target.checked)} checked={checkedPub}>
-                                    <span className="text-[#fff] text-[16px]">Publication</span>
-                                </Checkbox>
+                                {
+                                    (!checked[0] || !checked[1] || !checked[2]) &&
+                                    <div className="flex items-center h-[25px] mt-[2px]">
+                                        <div onClick={() => setChecked([true, true, true])} className="h-4 w-4 bg-[#CE3900] flex items-center justify-center rounded-[4px] mr-2 text-[18px] cursor-pointer text-[600]">-</div>
+                                        <div className="text-[#fff] text-[15px]">Publication</div>
+                                    </div>
+                                }
+                                {
+                                    checked[0] && checked[1] && checked[2] &&
+                                    <div className="flex items-center h-[25px]">
+                                        <Checkbox onChange={(e: any) => onChangePub(e)} checked={checkedPub}>
+                                            <span className="text-[#fff] text-[16px]">Publication</span>
+                                        </Checkbox>
+                                    </div>
+                                }
                             </div>
                             <div className="ml-[auto]">{postTotal + commentTotal + mirrorTotal}</div>
                         </div>
