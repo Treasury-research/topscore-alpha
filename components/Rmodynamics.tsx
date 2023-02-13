@@ -395,7 +395,7 @@ const rmodynamics = () => {
                             </div>
                             <div className="ml-[auto] flex items-center">
                                 <Image
-                                    className="mr-1 h-8 w-8 mr-2"
+                                    className="mr-1 h-5 w-5 mr-2"
                                     src={IconVolume}
                                     alt=""
                                 /><span>{Number(totalAmount.collectFee).toFixed()}
