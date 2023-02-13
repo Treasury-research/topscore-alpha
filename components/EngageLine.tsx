@@ -298,16 +298,22 @@ const ChartLine = (props: any) => {
           end: 100,
           xAxisIndex: [0, 1],
           top: '86%',
+          zoomOnMouseWheel:false,
+          moveOnMouseMove :false,
+          preventDefaultMouseMove:true
         },
-        {
-          type: 'inside',
-          brushSelect: false,
-          borderColor: 'rgba(255,255,255,0)',
-          start: 0,
-          end: 100,
-          xAxisIndex: [0, 1],
-          top: '86%',
-        }
+        // {
+        //   type: 'inside',
+        //   brushSelect: false,
+        //   borderColor: 'rgba(255,255,255,0)',
+        //   start: 0,
+        //   end: 100,
+        //   xAxisIndex: [0, 1],
+        //   top: '86%',
+        //   zoomOnMouseWheel:false,
+        //   moveOnMouseMove :false,
+        //   preventDefaultMouseMove:true
+        // }
       ],
       xAxis: [
         {
