@@ -639,7 +639,7 @@
   margin-top: 100px;
   margin-bottom: 100px;
 
-  img{
+  img {
     image-rendering: -webkit-optimize-contrast;
   }
 
@@ -777,8 +777,38 @@
   transform: translate(-50%, -50%);
 }
 
-.twitter-icon svg{
+.twitter-icon svg {
   color: #26a7de;
+}
+
+.nft-right-des,
+.nft-left-des {
+  min-width: 1000px;
+  width: 86%;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "Jura";
+  font-weight: normal;
+  color: rgba(255, 255, 255, .8);
+  font-size: 18px;
+}
+
+.nft-left-des {
+  p {
+    text-align: left;
+    line-height: 30px;
+  }
+}
+
+.nft-right-des {
+  p {
+    text-align: right;
+    line-height: 30px;
+  }
+}
+
+.slick-track{
+  height: 300px !important;
 }
 
 // permission-modal-content absolute left-[50%] top-[40%] z-100 text-[#fff] bg-[#292929] w-[500px] translate-[-50%,-50%]

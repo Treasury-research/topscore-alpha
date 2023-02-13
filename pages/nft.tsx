@@ -55,7 +55,6 @@ const nft = () => {
         ids: res.join(','),
       },
     });
-
     if (res2.data.length > 0) {
       setTotal(res2.data.length);
       let newList: any = [];
@@ -101,68 +100,80 @@ const nft = () => {
         <ConnectBtn />
         <div className='h-[calc(100vh-70px)] overflow-y-auto relative'>
           <div className="absolute top-0 w-full left-0 h-full z-20">
-            <div className='flex'>
-              <Image
+            <div className="nft-left-des mb-[60px]">
+              <p>At dawn, the warm, amber light shines and all things come to life.</p>
+              <p>A crystal prism sits on the windowsill, refracting the light into a spectrum of colors.</p>
+              <p>Rainbows dance across the wall, a seven-hued display of light and shadow.</p>
+              {/* <Image
                 className='mx-[auto]'
                 src={Bg1}
                 alt=""
-              />
+              /> */}
             </div>
-
+            <div className="nft-right-des">
+              <p>But one strange, golden ray slices through the prism, creating a crevice in its facade.</p>
+              <p>A joyful breeze rushes into the room, and K, a mysterious new life form, is born in silence.</p>
+              <p>Droplets of water playfully roll around K, as it explores its new surroundings.</p>
+            </div>
             <div className="open-pic mb-[100px]">
+              {
+                total !== 0 &&
+                <div className="my-[20px] text-center w-[fit-content] mb-[-50px]">Total:{total}</div>
+              }
+              {
+                nftList.length > 0 &&
+                <>
+                  <div className="carou-con">
+                    <Carousel dotPosition={'right'} className="rainbow-carou" autoplay>
+                      {
+                        nftList.map((t: any, i: number) => (
+                          <div>
+                            <div className="pic-con">
+                              {t.map((item: any) =>
+                                item.is_open === 0 ? (
+                                  <div className="pic-item">
+                                    <img src={item.token_uri} />
+                                    <div className="pic-open-btn">
+                                      <div className="reveal">#{item.id}</div>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="pic-item">
+                                    <div className="pic-open-item">
+                                      <div className="text-top">YOUR 2022 WRAPPED ON LENS</div>
+                                      <div className="text-bot">MYSTERY BOH</div>
+                                    </div>
+                                    <div className="pic-open-btn">
+                                      <div className="arrow">
+                                        <Image src={ImgToRight} alt="" />
+                                      </div>
+                                      {knn3TokenValid ? <div
+                                        className="reveal"
+                                        onClick={() => doOpenBox(item.id)}
+                                      >
+                                        REVEAL
+                                      </div> : <div
+                                        className="reveal"
+                                        onClick={() => doLogin()}
+                                      >
+                                        Login
+                                      </div>}
+                                      <div className="arrow">
+                                        <Image src={ImgToLeft} alt="" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        ))
+                      }
+                    </Carousel>
 
-              <div className="carou-con">
-                <Carousel dotPosition={'right'} className="rainbow-carou" autoplay>
-                  {
-                    nftList.map((t: any, i: number) => (
-                      <div>
-                        <div className="pic-con">
-                          {t.map((item: any) =>
-                            item.is_open === 0 ? (
-                              <div className="pic-item">
-                                <img src={item.token_uri} />
-                                <div className="pic-open-btn">
-                                  <div className="reveal">#{item.id}</div>
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="pic-item">
-                                <div className="pic-open-item">
-                                  <div className="text-top">YOUR 2022 WRAPPED ON LENS</div>
-                                  <div className="text-bot">MYSTERY BOH</div>
-                                </div>
-                                <div className="pic-open-btn">
-                                  <div className="arrow">
-                                    <Image src={ImgToRight} alt="" />
-                                  </div>
-                                  {knn3TokenValid ? <div
-                                    className="reveal"
-                                    onClick={() => doOpenBox(item.id)}
-                                  >
-                                    REVEAL
-                                  </div> : <div
-                                    className="reveal"
-                                    onClick={() => doLogin()}
-                                  >
-                                    Login
-                                  </div>}
-                                  <div className="arrow">
-                                    <Image src={ImgToLeft} alt="" />
-                                  </div>
-                                </div>
-                              </div>
-                            )
-                          )}
-                        </div>
-                      </div>
-                    ))
-                  }
-                </Carousel>
-                {
-                  total !== 0 &&
-                  <div className="my-[20px] text-center">Total:{total}</div>
-                }
-              </div>
+                  </div>
+                </>
+              }
               <Modal
                 className="openPicModal"
                 open={isShowPic}
@@ -175,7 +186,6 @@ const nft = () => {
                   </div>
                   <div className="open-imgTitle">
                     <Image src={ImgWhole} alt="" />
-
                   </div>
                   <div className="open-imgResult">
                     <img src={activeNftDetail.token_uri} alt="" />
@@ -183,12 +193,25 @@ const nft = () => {
                 </div>
               </Modal>
             </div>
-            <div className='flex'>
-              <Image
-                className='mx-[auto]'
-                src={Bg2}
-                alt=""
-              />
+            <div className="nft-right-des mb-[60px]">
+              <p>Glimmering faintly in the air, a spark of light</p>
+              <p>Digital entanglements beneath K's skin reflecting different shades</p>
+              <p>These fragments of words come from the Lens</p>
+              <p>Entwined, braided and combined with one another</p>
+              <p>Forming six distinct entities</p>
+              <p>And evolving into twenty-one personalities in the first century of a new era</p>
+            </div>
+            <div className="nft-left-des mb-[60px]">
+              <p>The combination of these six entities determines the construction of K</p>
+              <p>Storing all the information of life's personality, color, gestation, growth and decline</p>
+              <p>Enunciating the colorful hue of K</p>
+            </div>
+            <div className="nft-right-des mb-[60px]">
+              <p>K opened his sleepy eyes and furrowed his brow</p>
+              <p>Staring in confusion at the faint shimmer in his hands</p>
+            </div>
+            <div className="nft-left-des">
+              <p>Slowly, it unfurled, ushering in a new era of Web3...</p>
             </div>
             <div>
               <Character />
