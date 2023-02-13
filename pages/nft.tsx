@@ -6,6 +6,7 @@ import Image from 'next/image'
 import ConnectBtn from '../components/ConnectBtn'
 import { useRecoilState } from "recoil";
 import Character from '../components/nft/Character'
+import log from "../lib/log";
 import Bg1 from '../statics/img/bg_text1.gif'
 import Bg2 from '../statics/img/bg_2text.gif'
 import ImgToRight from "../statics/img/toRight.png";
@@ -76,6 +77,7 @@ const nft = () => {
       console.log("open success");
       setActiveNftDetail(res.data)
       setIsShowPic(true)
+      log('open_box', account)
     }
   };
 
@@ -130,7 +132,7 @@ const nft = () => {
                           <div>
                             <div className="pic-con">
                               {t.map((item: any) =>
-                                item.is_open === 0 ? (
+                                item.is_open === 1 ? (
                                   <div className="pic-item">
                                     <img src={item.token_uri} />
                                     <div className="pic-open-btn">
