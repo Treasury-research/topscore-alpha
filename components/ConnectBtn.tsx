@@ -155,14 +155,20 @@ const ConnectBtn = () => {
         </button>
       )}
 
-      {account && profileList.length > 0 && !knn3TokenValid && (
-        <button
-          onClick={() => doLogin()}
+      {account && !knn3TokenValid && <>
+      
+      {profileList.length > 0 ? <button
+        onClick={() => doLogin()}
+        className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]"
+      >
+        Log in
+      </button> : <button
           className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]"
         >
-          Log in
-        </button>
-      )}
+          No profile detected
+        </button>}
+      </>
+      }
 
       {/* {profileList.length > 0 && currentProfile && (
         <Dropdown
