@@ -321,7 +321,7 @@ const Character = (props: any) => {
                                     <LensterShareButton
                                         title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：@KNN3Network #Lens`}
                                         url={`https://topscore.knn3.xyz/user/${account}/${currentProfile ? currentProfile.profileId : ''}`}
-                                        hashtags="@knn3_network #Lens"
+                                        hashtags="knn3_network #Lens"
                                     >
                                         <Image src={IconLenster} alt="" />
                                     </LensterShareButton>
@@ -329,7 +329,7 @@ const Character = (props: any) => {
                                 <div>
                                     <TwitterShareButton2
                                         url={shareUrl}
-                                        hashtags={["@KNN3Network #Lens"]}
+                                        hashtags={["KNN3Network #Lens"]}
                                         title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：@knn3_network #Lens`}
                                     >
                                         <TwitterOutlined className="twitter-icon" style={{ color: '#26a7de' }}/>

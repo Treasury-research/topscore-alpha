@@ -4,6 +4,9 @@ import api from "../api";
 import { Checkbox, Popover } from 'antd';
 import { currentProfileState } from "../store/state";
 import { useRecoilState } from "recoil";
+import Image from 'next/image'
+import IconVolume from '../statics/img/volume.svg'
+
 import moment from 'moment'
 import BN from "bignumber.js";
 
@@ -188,7 +191,7 @@ const rmodynamics = () => {
     }
 
     const getLastWeek = () => {
-        if (weekCount <= 3) {
+        if (week[0] !== '01/30') {
             weekCount++;
             getCurrentWeek();
         }
@@ -216,15 +219,15 @@ const rmodynamics = () => {
         console.log(maxMount)
         let lv = maxMount / 5;
         if (totalMount < lv) {
-            return 'bg-[#D13005]'
+            return 'bg-[#311C17]'
         } else if (lv <= totalMount && totalMount < lv * 2) {
-            return 'bg-[#A32A0A]'
+            return 'bg-[#471F14]'
         } else if (lv * 2 <= totalMount && totalMount < lv * 3) {
             return 'bg-[#75240F]'
         } else if (lv * 3 <= totalMount && totalMount < lv * 4) {
-            return 'bg-[#471F14]'
+            return 'bg-[#A32A0A]'
         } else if (lv * 4 <= totalMount) {
-            return 'bg-[#311C17]'
+            return 'bg-[#D13005]'
         }
     }
 
@@ -320,26 +323,26 @@ const rmodynamics = () => {
                 </div>
                 <div className="ml-5 mr-5 mt-[14px]">
                     <div className="text-[12px] mt-[20px] ml-[-4px]">High</div>
-                    <div className="h-[45px] w-[16px] bg-[#311C17] mt-[4px]">
-
-                    </div>
-                    <div className="h-[45px] w-[16px] bg-[#471F14]">
-
-                    </div>
-                    <div className="h-[45px] w-[16px] bg-[#75240F]">
+                    <div className="h-[45px] w-[16px] bg-[#D13005] mt-[4px]">
 
                     </div>
                     <div className="h-[45px] w-[16px] bg-[#A32A0A]">
 
                     </div>
-                    <div className="h-[45px] w-[16px] bg-[#D13005]">
+                    <div className="h-[45px] w-[16px] bg-[#75240F]">
+
+                    </div>
+                    <div className="h-[45px] w-[16px] bg-[#471F14]">
+
+                    </div>
+                    <div className="h-[45px] w-[16px] bg-[#311C17]">
 
                     </div>
                     <div className="text-[12px] mt-[4px] ml-[-4px]">Low</div>
                 </div>
                 <div className="w-[calc(100%-800px)] mt-[10px]">
                     <div className="flex min-w-50 max-w-100">
-                        <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer ${weekCount == 4 ? 'cursor-[not-allowed]' : ''}`} onClick={getLastWeek}><LeftOutlined /></div>
+                        <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer ${week[0] === '01/30' ? 'cursor-[not-allowed]' : ''}`} onClick={getLastWeek}><LeftOutlined /></div>
                         <div className="w-[calc(100%-100px)] mx-5 h-10 bg-[rgb(41,41,41)] flex items-center justify-center">
                             {
                                 week.length !== 0 &&
@@ -390,7 +393,14 @@ const rmodynamics = () => {
                                     <span className="text-[#fff] text-[16px]">Volume</span>
                                 </Checkbox>
                             </div>
-                            <div className="ml-[auto]">{Number(totalAmount.collectFee).toFixed()}</div>
+                            <div className="ml-[auto] flex items-center">
+                                <Image
+                                    className="mr-1 h-8 w-8 mr-2"
+                                    src={IconVolume}
+                                    alt=""
+                                /><span>{Number(totalAmount.collectFee).toFixed()}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
