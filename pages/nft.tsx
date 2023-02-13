@@ -34,7 +34,7 @@ const nft = () => {
 
   const [total, setTotal] = useState(0);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [activeNftDetail, setActiveNftDetail] = useState<any>({});
 
