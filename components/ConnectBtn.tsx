@@ -13,7 +13,7 @@ import ChangeProfile from "./connect/ChangeProfile";
 
 const ConnectBtn = () => {
   const router = useRouter();
-  const { account, connectWallet, chainId, doLogin } = useWeb3Context();
+  const { account, connectWallet, chainId, doLogin, doLogout } = useWeb3Context();
   const [knn3TokenValid, setKnn3TokenValid] = useRecoilState(knn3TokenValidState);
   const [profileList, setProfileList] = useRecoilState(profileListState);
   const [loadingProfileList, setLoadingProfileList] = useRecoilState(loadingProfileListState)
@@ -116,7 +116,7 @@ const ConnectBtn = () => {
               Switch to polygon
             </button>
           ) : (
-            <Popover
+            knn3TokenValid && <Popover
               content={
                 <div>
                   <div className="text-[14px]">Logged in as</div>
@@ -130,7 +130,7 @@ const ConnectBtn = () => {
                     >
                       Switch Profile
                     </div>
-                    <div className="cursor-pointer flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]">
+                    <div onClick={doLogout} className="cursor-pointer flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]">
                       Logout
                     </div>
                   </div>
