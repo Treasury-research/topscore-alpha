@@ -35,7 +35,7 @@ const PubCard = (props: any) => {
       } else {
         setPubData([])
       }
-    }else{
+    } else {
       setLoading(false)
     }
   }, [lineData])
@@ -48,7 +48,7 @@ const PubCard = (props: any) => {
       for (var i = 0; i < res.data.length; i += 3) {
         newList.push(res.data.slice(i, i + 3));
       }
-      const data:any = DivideArrayEquallyInto4Parts(res.data)
+      const data: any = DivideArrayEquallyInto4Parts(res.data)
       setPubData(data)
     }
   };
@@ -82,8 +82,17 @@ const PubCard = (props: any) => {
 
   const getHours = (t: any) => {
     let diff = new Date().getTime() - t.timestamp * 1000
-    const h = Math.floor(diff / (1000 * 60 * 60));
-    return h
+    if (diff < 60 * 60 * 1000) { // 1小时内
+      const h = Math.floor(diff / (1000 * 60));
+      return `${h} m`
+    }else if(diff > 60 * 60 * 1000 && diff < 24 * 60 * 60 * 1000){ // 1天内
+      const h = Math.floor(diff / (1000 * 60 * 60));
+      return `${h} h`
+    }else if(diff > 24 * 60 * 60 * 1000 && diff < 365 * 24 * 60 * 60 * 1000){ // 1年内
+      return `${moment(t.timestamp * 1000).format('MM/DD')}`
+    }else{
+      return `${moment(t.timestamp * 1000).format('YY/MM/DD')}` // 往年
+    }
   }
 
   return (
@@ -125,7 +134,6 @@ const PubCard = (props: any) => {
                             {
                               getHours(tem)
                             }
-                            h
                           </div>
                           <p className='text-[rgba(255,255,255,0.7)] text-[14px]'>
                             {tem.content}

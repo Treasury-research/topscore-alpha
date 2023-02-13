@@ -283,7 +283,7 @@ const rmodynamics = () => {
             </div>
 
             <div className="flex bg-[#1A1A1A] p-5 w-full">
-                <div className="w-[780px]">
+                <div className="w-[780px] flex-shrink-0">
                     {
                         loading ?
                             <LoadingOutlined className="text-2xl block mx-auto my-[130px]" />
