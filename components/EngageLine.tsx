@@ -337,6 +337,12 @@ const ChartLine = (props: any) => {
       yAxis: [
         {
           type: 'value',
+          name: type === 0 ? 'Engagements' : 'Collections',
+          nameLocation :'end',
+          nameTextStyle:{
+            color: 'rgba(255,255,255,0.8)',
+          },
+          nameGap :20,
           scale: true,
           splitLine: {
             lineStyle: {
@@ -357,6 +363,12 @@ const ChartLine = (props: any) => {
           }
         }, {
           type: 'value',
+          name: type === 0 ? 'Followers' : 'Earnings(WMATIC)',
+          nameLocation :'end',
+          nameTextStyle:{
+            color: 'rgba(255,255,255,0.8)',
+          },
+          nameGap :20,
           position: 'right',
           max: function (value: any) {//取最大值向上取整为最大刻度
             return value.max
