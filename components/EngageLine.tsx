@@ -337,11 +337,12 @@ const ChartLine = (props: any) => {
       yAxis: [
         {
           type: 'value',
-          name: type === 0 ? 'Engagements' : 'Collections',
+          name: (type === 0 || type === 1) ? 'Engagements' : 'Collections',
           nameLocation :'end',
           nameTextStyle:{
             color: 'rgba(255,255,255,0.8)',
           },
+          minInterval : 1,
           nameGap :20,
           scale: true,
           splitLine: {
@@ -350,7 +351,7 @@ const ChartLine = (props: any) => {
             }
           },
           max: function (value: any) {//取最大值向上取整为最大刻度
-            return Math.ceil(value.max) * 1
+            return (Math.ceil(value.max) * 1.2).toFixed(0)
           },
           min: function (value: any) {//取最大值向上取整为最大刻度
             return value.min
@@ -363,19 +364,21 @@ const ChartLine = (props: any) => {
           }
         }, {
           type: 'value',
-          name: type === 0 ? 'Followers' : 'Earnings(WMATIC)',
+          name: (type === 0 || type === 1) ? 'Followers' : 'Earnings（WMATIC）',
           nameLocation :'end',
+          minInterval : 1,
           nameTextStyle:{
             color: 'rgba(255,255,255,0.8)',
           },
           nameGap :20,
           position: 'right',
           max: function (value: any) {//取最大值向上取整为最大刻度
-            return value.max
+            return (value.max * 1.02).toFixed(0)
           },
           min: function (value: any) {//取最大值向上取整为最大刻度
-            return value.min
+            return (value.min * 0.98).toFixed(0)
           },
+          // scale:true,
           splitLine: {
             lineStyle: {
               color: 'rgba(255,255,255,0.1)'

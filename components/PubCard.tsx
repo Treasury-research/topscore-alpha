@@ -12,11 +12,14 @@ import IconNum6 from '../statics/img/post_icon.svg'
 import { LoadingOutlined } from '@ant-design/icons';
 import { ethers } from 'ethers'
 import moment from 'moment'
+import { currentProfileState } from "../store/state";
+import { useRecoilState } from "recoil";
 
 const PubCard = (props: any) => {
   const [pubData, setPubData] = useState<any>([]);
   const { lineData } = props;
   const [loading, setLoading] = useState(false);
+  const [currentProfile] = useRecoilState<any>(currentProfileState);
 
   useEffect(() => {
     setLoading(true)
@@ -38,7 +41,7 @@ const PubCard = (props: any) => {
   }, [lineData])
 
   const getPubs = async (ids: any) => {
-    const res = await api.get(`/lens/pubByLatest?profileId=5&pubIds=${ids.join(',')}`);
+    const res = await api.get(`/lens/pubByLatest?profileId=${currentProfile.profileId}&pubIds=${ids.join(',')}`);
     setLoading(false)
     if (res.data) {
       let newList: any = [];
