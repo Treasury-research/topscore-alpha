@@ -32,7 +32,8 @@ export const Web3Context = createContext({
     return "";
   },
   sendTx: async () => {},
-  doLogin: async () => {}
+  doLogin: async () => {},
+  doLogout: async () => {},
 });
 
 export const Web3ContextProvider = ({ children }) => {
@@ -156,6 +157,17 @@ export const Web3ContextProvider = ({ children }) => {
     lensApi.setToken(token.accessToken);
   };
 
+  const doLogout = async () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("knn3Token");
+    localStorage.removeItem("knn3RefreshToken");
+    api.defaults.headers.authorization = "";
+    lensApi.setToken('');
+    setKnn3TokenValid(false)
+    resetWallet();
+  };
+
   /**
    *
    * @param {*} func , required
@@ -250,6 +262,7 @@ export const Web3ContextProvider = ({ children }) => {
         sendTx,
         signMessage,
         doLogin,
+        doLogout,
       }}
     >
       {children}
