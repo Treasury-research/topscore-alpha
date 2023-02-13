@@ -171,7 +171,10 @@ const ChartLine = (props: any) => {
     let dy:any = [];
     dates.forEach((t:any,i:any) => {
       if(i !== 0){
-        dy.push(t)
+        const dtr = t.toString()
+        if(dtr){
+          dy.push(`${dtr.slice(2,4)}/${dtr.slice(4,6)}/${dtr.slice(6,8)}`)
+        }
       }
     })
     const option = {
