@@ -11,21 +11,21 @@ import IconOpensea from '../statics/img/opensea.png'
 import { useRecoilState } from "recoil";
 import useErc721Contract from "../contract/useErc721Contract";
 import config from "../config";
-import { LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined, CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import useWeb3Context from "../hooks/useWeb3Context";
 import { currentProfileState, profileListState, loadingProfileListState } from "../store/state";
 
 const Create = () => {
     const [scores, setScores] = useState<any>({
-        lastWeek:{
-            pr_rank_creator:0,
-            pr_rank_engager:0,
-            pr_rank_compaign:0
+        lastWeek: {
+            pr_rank_creator: 0,
+            pr_rank_engager: 0,
+            pr_rank_compaign: 0
         },
-        now:{
-            pr_rank_creator:0,
-            pr_rank_engager:0,
-            pr_rank_compaign:0
+        now: {
+            pr_rank_creator: 0,
+            pr_rank_engager: 0,
+            pr_rank_compaign: 0
         }
     });
     const [loadingScores, setLoadingScores] = useState<boolean>(false);
@@ -45,7 +45,7 @@ const Create = () => {
                 profileId: currentProfile.profileId
             }
         })
-        if(res && res.data){
+        if (res && res.data) {
             setScores(res.data);
         }
         setLoadingScores(false)
@@ -135,21 +135,13 @@ const Create = () => {
                             <div className="flex items-center">
                                 {
                                     scores.lastWeek.pr_rank_creator - scores.now.pr_rank_creator < 0 &&
-                                    <Image
-                                        className="mr-1"
-                                        src={IconDown}
-                                        alt=""
-                                    />
+                                    <CaretDownOutlined className="creat-down-icon"/>
                                 }
                                 {
                                     scores.lastWeek.pr_rank_creator - scores.now.pr_rank_creator > 0 &&
-                                    <Image
-                                        className="mr-1"
-                                        src={IconUp}
-                                        alt=""
-                                    />
+                                    <CaretUpOutlined className="creat-up-icon" />
                                 }
-                                <span>{scores.lastWeek.pr_rank_creator - scores.now.pr_rank_creator} this week</span>
+                                <span>{Math.abs(scores.lastWeek.pr_rank_creator - scores.now.pr_rank_creator)} this week</span>
                             </div>
                         </div>
                         <div className="w-[300px] p-4 bg-[#1A1A1A] text-[rgba(255,255,255,0.5)] mr-10">
@@ -158,21 +150,13 @@ const Create = () => {
                             <div className="flex items-center">
                                 {
                                     scores.lastWeek.pr_rank_engager - scores.now.pr_rank_engager < 0 &&
-                                    <Image
-                                        className="mr-1"
-                                        src={IconDown}
-                                        alt=""
-                                    />
+                                    <CaretDownOutlined className="creat-down-icon" />
                                 }
                                 {
                                     scores.lastWeek.pr_rank_engager - scores.now.pr_rank_engager > 0 &&
-                                    <Image
-                                        className="mr-1"
-                                        src={IconUp}
-                                        alt=""
-                                    />
+                                    <CaretUpOutlined className="creat-up-icon" />
                                 }
-                                <span>{scores.lastWeek.pr_rank_engager - scores.now.pr_rank_engager} this week</span>
+                                <span>{Math.abs(scores.lastWeek.pr_rank_engager - scores.now.pr_rank_engager)} this week</span>
                             </div>
                         </div>
                         <div className="w-[300px] p-4 bg-[#1A1A1A] text-[rgba(255,255,255,0.5)] mr-10">
@@ -181,21 +165,13 @@ const Create = () => {
                             <div className="flex items-center">
                                 {
                                     scores.lastWeek.pr_rank_compaign - scores.now.pr_rank_compaign < 0 &&
-                                    <Image
-                                        className="mr-1"
-                                        src={IconDown}
-                                        alt=""
-                                    />
+                                    <CaretDownOutlined className="creat-down-icon" />
                                 }
                                 {
                                     scores.lastWeek.pr_rank_compaign - scores.now.pr_rank_compaign > 0 &&
-                                    <Image
-                                        className="mr-1"
-                                        src={IconUp}
-                                        alt=""
-                                    />
+                                    <CaretUpOutlined className="creat-up-icon" />
                                 }
-                                <span>{scores.lastWeek.pr_rank_compaign - scores.now.pr_rank_compaign} this week</span>
+                                <span>{Math.abs(scores.lastWeek.pr_rank_compaign - scores.now.pr_rank_compaign)} this week</span>
                             </div>
                         </div>
                     </>}

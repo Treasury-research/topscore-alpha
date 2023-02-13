@@ -333,6 +333,7 @@ const Post = () => {
               placement="right"
               open={showList}
               closable={false}
+              onClose={onClose}
             >
               <div>
                 <div className="drawer flex">
