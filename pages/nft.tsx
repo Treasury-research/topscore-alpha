@@ -104,14 +104,16 @@ const nft = () => {
     <div className="w-full h-full bg-[#000] flex">
       <Navbar />
       <div className='p-5 w-full text-[#fff] relative'>
-        <ConnectBtn />
+        <div className="absolute w-full left-0 top-0 z-30 p-5">
+          <ConnectBtn />
+        </div>
         {
           loading ?
-          <div className="nft-loading"><LoadingOutlined className="text-2xl block mx-auto" /></div>
+            <div className="nft-loading"><LoadingOutlined className="text-2xl block mx-auto" /></div>
             : <>
               <div className='h-[calc(100vh-70px)] overflow-y-auto relative'>
                 <div className="absolute top-0 w-full left-0 h-full z-20">
-                  <div className="nft-left-des mb-[60px]">
+                  <div className="nft-left-des mb-[60px] mt-[120px]">
                     <p>At dawn, the warm, amber light shines and all things come to life.</p>
                     <p>A crystal prism sits on the windowsill, refracting the light into a spectrum of colors.</p>
                     <p>Rainbows dance across the wall, a seven-hued display of light and shadow.</p>
@@ -230,7 +232,7 @@ const nft = () => {
                 </div>
 
               </div>
-              <div className="absolute top-[60px] w-full left-0 h-full opacity-[0.3] z-10 charvideo">
+              <div className="absolute top-[0px] w-full left-0 h-full opacity-[0.3] z-10 charvideo">
                 {
                   videoUrl &&
                   <video
