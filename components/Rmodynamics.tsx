@@ -10,7 +10,7 @@ import IconVolume from '../statics/img/volume.svg'
 import moment from 'moment'
 import BN from "bignumber.js";
 
-const dys = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+const dys = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
 
 let maxRemoData: any = [0, 0, 0, 0, 0]
 
@@ -332,7 +332,7 @@ const rmodynamics = () => {
                                     {
                                         remodyBaseData.map((t: any, i: number) => (
                                             <div className="flex mb-[1px]" key={i}>
-                                                <div className="text-[12px] w-[40px] h-[30px] flex items-center">{dys[i]}</div>
+                                                <div className="text-[12px] w-[20px] h-[30px] flex items-center">{dys[i]}</div>
                                                 {
                                                     t.map((item: any, index: number) => (
                                                         (!item || !checked.includes(true)) ?

@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 
 const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-const dys = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+const dys = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
 
 let weekCount = 0;
 
@@ -429,7 +429,7 @@ const rmodynamics = () => {
                                     {
                                         remodyBaseData.map((t: any, i: number) => (
                                             <div className="flex mb-[2px]" key={i}>
-                                                <div className="text-[10px] w-[40px] h-[14px] flex items-center">{dys[i]}</div>
+                                                <div className="text-[10px] w-[20px] h-[14px] flex items-center">{dys[i]}</div>
                                                 {
                                                     t.map((item: any, index: number) => (
                                                         (!item || (!item[0] && item[0] !== 0) || item === 'hidden') ?
