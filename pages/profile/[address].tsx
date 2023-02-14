@@ -16,6 +16,7 @@ import ImgHoverGenerate from "../../statics/img/hover-generate-button.gif";
 import Image from 'next/image'
 import { useRecoilState } from 'recoil';
 import { currentProfileState, profileListState } from '../../store/state'
+import ImgLenster from '../../statics/img/lest-head.png'
 
 const typeList = [
   "Influence",
@@ -216,7 +217,7 @@ const Post = () => {
     }
   }, [currentProfile]);
 
-  useEffect(()=>{
+  useEffect(() => {
     log('visit_profile', account)
   }, [])
 
@@ -249,7 +250,11 @@ const Post = () => {
                   src={formatIPFS(imageURI)}
                 />
               ) : (
-                <div className="net-head-img">K</div>
+                <Image
+                  className="net-head-img"
+                  src={ImgLenster}
+                  alt=""
+                />
               )}
               <div>
                 <div>
