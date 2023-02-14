@@ -285,6 +285,13 @@ const rmodynamics = () => {
         let last_sunday = moment().startOf('day').subtract(weekOfDay + 7 * (weekCount - 1), 'days').toDate();//周日日期
         setWeek([moment(last_monday).format('MM/DD'), moment(last_sunday).format('MM/DD')])
         setActiveItems([]);
+        let rem: any = [[], [], [], [], [], [], []]
+        for (let i = 0; i < 7; i++) {
+            for (let j = 0; j < 52; j++) {
+                rem[i].push(null)
+            }
+        }
+        setRemodyBaseData(rem)
     }
 
     const getBorderStyle = (e: any) => {
