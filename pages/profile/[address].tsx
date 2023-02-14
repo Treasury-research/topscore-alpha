@@ -47,6 +47,7 @@ const Post = () => {
   const [openScoreDropdown, setOpenScoreDropdown] = useState(false);
   const [radarDetailScore, setRadarDetailScore] = useState<any>({});
   const [profileList,] = useRecoilState(profileListState);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -196,6 +197,11 @@ const Post = () => {
     setShowList(true);
   };
 
+  const connectAndLogin = () => {
+    connectWallet()
+    setIsLogin(true)
+  };
+
   useEffect(() => {
     const { profileId } = currentProfile;
     if (!profileId) {
@@ -223,10 +229,10 @@ const Post = () => {
   }, [profileList, account]);
 
   useEffect(() => {
-    if (account) {
+    if (isLogin && account) {
       doLogin();
     }
-  }, [account]);
+  }, [isLogin, account]);
 
   return (
     <div className="w-full h-full bg-[#000] flex">
@@ -277,7 +283,7 @@ const Post = () => {
                 {showRadorGif && (
                   <Image
                     onMouseLeave={() => setShowRadorGif(false)}
-                    onClick={() => connectWallet()}
+                    onClick={() => connectAndLogin()}
                     src={ImgHoverGenerate}
                     alt=""
                   />
