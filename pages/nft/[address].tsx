@@ -74,7 +74,7 @@ const nft = ({
   };
 
   const getAllNfts = async () => {
-    setLoading(true)
+    // setLoading(true)
     const res = await erc721Contract.getAll(config.contracts.nft);
     // check if claimed
     const res2: any = await api.get("/v1/nft/query_ids", {
@@ -82,7 +82,7 @@ const nft = ({
         ids: res.join(','),
       },
     });
-    setLoading(false)
+    // setLoading(false)
     if (res2.data.length > 0) {
       setTotal(res2.data.length);
       let newList: any = [];
