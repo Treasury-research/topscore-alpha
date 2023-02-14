@@ -61,7 +61,7 @@ const Create = () => {
                 ids: res.join(','),
             },
         })
-        if (res2.data.length > 0) {
+        if (res2 && res2.data && res2.data.length > 0) {
             setNftList(res2);
         }
         setLoadingNftBalance(false);
