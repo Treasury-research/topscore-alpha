@@ -8,7 +8,6 @@ const areaColor = ['#FF3300', '#3B5CFF', '#A1C3BE', '#F95D6A', '#003F5C', '#FF7C
 const ChartLine = (props: any) => {
 
   const { id = 'default-id', width = '100%', height = '100%', dates, dayType, lineData, commentSwitch, mirrorSwitch, postSwitch, type, sigleData } = props;
-  console.log(lineData)
   const getSeriesData = (s: any, i: number) => {
     let seriesObj:any = {
       name: `Pub#${s[i]['pubId']}`,
@@ -135,8 +134,6 @@ const ChartLine = (props: any) => {
     let seriesData = [];
     if (lineData.length == 0) return;
     const s = lineData[lineData.length - 1];
-    console.log(s);
-    console.log(lineData);
     if (postSwitch) {
       for (let i = 0; i < s.length; i++) {
         if (s[i]['type'] === 'Post') {
@@ -394,7 +391,6 @@ const ChartLine = (props: any) => {
       ],
       series: [...seriesData]
     };
-    console.log(option)
     // option.series = seriesData;
 
     const HTMLElement = document.getElementById(id) as HTMLElement;
@@ -402,7 +398,7 @@ const ChartLine = (props: any) => {
     const chart = echarts.init(HTMLElement);
 
     chart.setOption({ ...option });
-    // console.log(chart)
+    
     window.addEventListener("resize", () => {
       if (chart) {
         chart.resize()
@@ -410,10 +406,6 @@ const ChartLine = (props: any) => {
     })
 
   });
-
-  useEffect(() => {
-    console.log(1)
-  })
 
   return (
     <div id={id} style={{ width: width, height: height }}>

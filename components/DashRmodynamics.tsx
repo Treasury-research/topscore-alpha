@@ -156,10 +156,6 @@ const rmodynamics = () => {
                 type: str,
             }
         })
-        if (!res || !res.data) {
-            setLoading(false);
-            return false;
-        }
         let rem: any = [[], [], [], [], [], [], []]
         for (let i = 0; i < 7; i++) {
             for (let j = 0; j < 52; j++) {
@@ -195,11 +191,14 @@ const rmodynamics = () => {
             rem[5][0] = 'hidden'
         }
         maxRemoData = 0
-
+        if (!res || !res.data) {
+            setRemodyBaseData(rem)
+            setLoading(false);
+            return false;
+        }
         res.data.forEach((t: any) => {
             let week = moment(t.date).weekday()
             let month = Number(t.date.slice(6, 8))
-            console.log('date', getYearWeek(t.date.split('-')[0], t.date.split('-')[1], t.date.split('-')[2]))
             const numMonth = getYearWeek(t.date.split('-')[0], t.date.split('-')[1], t.date.split('-')[2]) // 本年第几周
             if (t.count > maxRemoData) {
                 maxRemoData = t.count
@@ -219,7 +218,6 @@ const rmodynamics = () => {
             }
 
         })
-        console.log(rem)
         setRemodyBaseData(rem)
         setLoading(false);
     }
@@ -253,16 +251,8 @@ const rmodynamics = () => {
         let weekOfDay = parseInt(moment().format('E'));//计算今天是这周第几天
         let last_monday = moment().startOf('day').subtract(weekOfDay + 7 * weekCount - 1, 'days').toDate();//周一日期
         let last_sunday = moment().startOf('day').subtract(weekOfDay + 7 * (weekCount - 1), 'days').toDate();//周日日期
-        console.log([moment(last_monday).format('MM/DD'), moment(last_sunday).format('MM/DD')])
         setWeek([moment(last_monday).format('MM/DD'), moment(last_sunday).format('MM/DD')])
         setActiveItems([]);
-        let rem: any = [[], [], [], [], [], [], []]
-        for (let i = 0; i < 7; i++) {
-            for (let j = 0; j < 52; j++) {
-                rem[i].push(null)
-            }
-        }
-        setRemodyBaseData(rem)
     }
 
     const getBorderStyle = (e: any) => {
