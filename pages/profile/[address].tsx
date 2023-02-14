@@ -197,6 +197,7 @@ const Post = () => {
   const connectAndLogin = () => {
     connectWallet()
     setIsLogin(true)
+    log('profile_generate', account)
   };
 
   useEffect(() => {

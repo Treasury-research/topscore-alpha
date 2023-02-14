@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api";
+import log from "../../lib/log";
 import Image from 'next/image'
 import Mastermind from "../../statics/img/dark-character/Mastermind.png";
 import Pioneer from "../../statics/img/dark-character/Pioneer.png";
@@ -101,6 +102,8 @@ const noSharePic:any = {
 }
 
 const Character = (props: any) => {
+
+    const { account } = useWeb3Context();
 
     const { activeProfile, activeAddress } = props
 
@@ -285,6 +288,7 @@ const Character = (props: any) => {
         return (
             <a
                 target="_blank"
+                onClick={() => log('share_lenster', account)}
                 rel="noreferrer"
                 href={`https://lenster.xyz/?text=${encodeURIComponent(title)}&url=${url}&hashtags=${hashtags}&preview=true`}
             >
@@ -293,10 +297,11 @@ const Character = (props: any) => {
         );
     };
 
-    const TwitterShareButton2 = ({ title, url, hashtags, children }: any) => {
+    const TwitterShareButton2 = ({ title, hashtags, children }: any) => {
         return (
             <a
                 target="_blank"
+                onClick={() => log('share_twitter', account)}
                 rel="noreferrer"
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&hashtags=${hashtags}&preview=true`}
             >

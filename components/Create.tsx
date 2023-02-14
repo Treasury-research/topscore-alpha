@@ -6,6 +6,7 @@ import api from "../api";
 import Image from 'next/image'
 import IconUp from '../statics/img/up.svg'
 import IconDown from '../statics/img/down.svg'
+import log from "../lib/log";
 import IconError from '../statics/img/error.png'
 import IconOpensea from '../statics/img/opensea.png'
 import { useRecoilState } from "recoil";
@@ -114,7 +115,7 @@ const Create = () => {
                             nftList.length === 0 &&
                             <div className="flex justify-end my-[10px]">
                                 <Image
-                                    className="mr-1 h-[fit-content] mr-[10px] cursor-pointer"
+                                    className="h-[fit-content] mr-[10px] cursor-pointer"
                                     src={IconOpensea}
                                     onClick={() => window.open(`https://opensea.io/collection/your-2022-wrapped-on-lens`)}
                                     alt=""
