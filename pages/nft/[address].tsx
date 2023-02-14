@@ -153,7 +153,7 @@ const nft = ({
         <meta name="twitter:title" content="Unlock your web3 social presence with TopScore！" />
         <meta
           name="twitter:description"
-          content="TopScore - a KNN3-powered scoring system based on Lens Protocol to evaluate this campaign."
+          content="TopScore is a user-friendly tool that enables users to create,build, and earn their social presence."
         />
         <meta
           property="twitter:image"
@@ -162,7 +162,7 @@ const nft = ({
         <meta property="og:title" content="Unlock your web3 social presence with TopScore！" />
         <meta
           property="og:description"
-          content="TopScore - a KNN3-powered scoring system based on Lens Protocol to evaluate this campaign."
+          content="TopScore is a user-friendly tool that enables users to create,build, and earn their social presence."
         />
         <meta
           property="og:image"
