@@ -335,7 +335,7 @@ const Character = (props: any) => {
                                     <TwitterShareButton2
                                         // url={shareUrl}
                                         hashtags={["KNN3Network #Lens"]}
-                                        title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：${shareUrl} @knn3_network #Lens`}
+                                        title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：${shareUrl} @Knn3Network #Lens`}
                                     >
                                         <TwitterOutlined className="twitter-icon" style={{ color: '#26a7de' }}/>
                                     </TwitterShareButton2>
