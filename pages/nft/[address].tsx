@@ -107,6 +107,11 @@ const nft = ({
     }
   };
 
+  const doPreview = async (item) => {
+    setActiveNftDetail(item)
+    setIsShowPic(true)
+  }
+
   useEffect(() => {
     if (!account) {
       return;
@@ -184,11 +189,6 @@ const nft = ({
                     <p>At dawn, the warm, amber light shines and all things come to life.</p>
                     <p>A crystal prism sits on the windowsill, refracting the light into a spectrum of colors.</p>
                     <p>Rainbows dance across the wall, a seven-hued display of light and shadow.</p>
-                    {/* <Image
-                className='mx-[auto]'
-                src={Bg1}
-                alt=""
-              /> */}
                   </div>
                   <div className="nft-right-des">
                     <p>But one strange, golden ray slices through the prism, creating a crevice in its facade.</p>
@@ -211,8 +211,8 @@ const nft = ({
                                   <div className="pic-con">
                                     {t.map((item: any) =>
                                       item.is_open === 1 ? (
-                                        <div className="pic-item">
-                                          <img src={item.token_uri} />
+                                        <div className="pic-item" onClick={() => doPreview(item)}>
+                                          <img src={item.token_uri} className="cursor-pointer" />
                                           <div className="pic-open-btn">
                                             <div className="reveal">#{item.id}</div>
                                           </div>
