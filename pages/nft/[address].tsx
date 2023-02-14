@@ -1,30 +1,38 @@
 import React, { useState, useEffect, useRef } from "react";
-import Navbar from '../components/Navbar'
+import Navbar from '../../components/Navbar'
 import { CloseOutlined, LoadingOutlined } from "@ant-design/icons";
-import api from "../api";
+import api from "../../api";
 import Image from 'next/image'
-import ConnectBtn from '../components/ConnectBtn'
+import ConnectBtn from '../../components/ConnectBtn'
 import { useRecoilState } from "recoil";
-import Character from '../components/nft/Character'
-import log from "../lib/log";
-import Bg1 from '../statics/img/bg_text1.gif'
-import Bg2 from '../statics/img/bg_2text.gif'
-import ImgToRight from "../statics/img/toRight.png";
-import ImgToLeft from "../statics/img/toLeft.png";
-import ImgWhole from "../statics/img/whole-top.png";
+import { useRouter } from "next/router";
+import Character from '../../components/nft/Character'
+import log from "../../lib/log";
+// import Bg1 from '../statics/img/bg_text1.gif'
+// import Bg2 from '../statics/img/bg_2text.gif'
+import ImgToRight from "../../statics/img/toRight.png";
+import ImgToLeft from "../../statics/img/toLeft.png";
+import ImgWhole from "../../statics/img/whole-top.png";
 import { Modal, Carousel } from "antd";
-import { knn3TokenValidState } from '../store/state'
-import useWeb3Context from "../hooks/useWeb3Context";
-import config from "../config";
-import useErc721Contract from "../contract/useErc721Contract";
+import { currentProfileState, knn3TokenValidState } from '../../store/state'
+import useWeb3Context from "../../hooks/useWeb3Context";
+import config from "../../config";
+import useErc721Contract from "../../contract/useErc721Contract";
 import { toast } from "react-toastify";
 // import VideoSource from "/public/vedio_rainbow.mp4"
 
 const nft = () => {
+  const router = useRouter()
 
   const { account, connectWallet, doLogin, } = useWeb3Context();
 
+  const [activeProfile, setActiveProfile] = useState<any>({});
+
+  const [activeAddress, setActiveAddress] = useState<string>('');
+
   const [knn3TokenValid, setKnn3TokenValid] = useRecoilState(knn3TokenValidState);
+
+  const [currentProfile, setCurrentProfile] = useRecoilState(currentProfileState);
 
   const [nftList, setNftList] = useState([]);
 
@@ -99,6 +107,30 @@ const nft = () => {
     }, 1500)
   }, []);
 
+  useEffect(() => {
+    log("visit_nft", account);
+  }, []);
+
+  const getActiveProfile = async (address: string, profileId: string) =>{
+
+    const res: any = await api.get(`/lens/handles/${address}`);
+
+    const filtered = res.data.filter((item:any) => item.profileId == profileId)[0]
+
+    setActiveProfile(filtered)
+  }
+
+  useEffect(()=>{
+    const address:any = router.query.address;
+    const queryProfileId:any = router.query.profileId;
+
+    if(address && queryProfileId){
+      getActiveProfile(address, queryProfileId);
+      setActiveAddress(address)
+    }else{
+      toast.error('Not a valid address or profile')
+    }
+  }, [router, currentProfile])
 
   return (
     <div className="w-full h-full bg-[#000] flex">
@@ -227,7 +259,7 @@ const nft = () => {
                     <p>Slowly, it unfurled, ushering in a new era of Web3...</p>
                   </div>
                   <div>
-                    <Character />
+                    <Character activeProfile={activeProfile} activeAddress={activeAddress} />
                   </div>
                 </div>
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Image from 'next/image'
 import Link from 'next/link'
+import useWeb3Context from "../hooks/useWeb3Context";
 import Router, { useRouter } from "next/router";
 import IconSelect1 from '../statics/img/select/icon1.svg'
 import IconSelect2 from '../statics/img/select/icon2.svg'
@@ -18,6 +19,7 @@ import IconTop from '../statics/img/topIcon.png'
 import Soon from '../statics/img/Soon.svg'
 import { currentProfileState } from "../store/state";
 import { useRecoilState } from "recoil";
+import { toast } from "react-toastify";
 
 const headerTabs = ['Profile', 'Create', 'Gallery', 'Circle', 'NFT']
 
@@ -25,7 +27,12 @@ const imgSelectUrl = [IconSelect1, IconSelect2, IconSelect3, IconSelect4, IconSe
 
 const imgNoSelectUrl = [IconNoSelect1, IconNoSelect2, IconNoSelect3, IconNoSelect4, IconNoSelect5]
 
+const knn3Address = '0x09c85610154a276a71eb8a887e73c16072029b20'
+const knn3ProfileId = 101548
+
 const Navbar = () => {
+
+    const {account} = useWeb3Context();
 
     const router = useRouter();
 
@@ -35,7 +42,13 @@ const Navbar = () => {
 
     const getAddress = (item:any) => {
         if(item === 'Profile'){
-            return `/${item.toLocaleLowerCase()}/${currentProfile.address ? currentProfile.address : '0x09c85610154a276a71eb8a887e73c16072029b20'}`
+            return `/${item.toLocaleLowerCase()}/${currentProfile.address ? currentProfile.address : knn3Address}`
+        }else if(item === 'NFT'){
+            if(account && currentProfile.profileId){
+                return `/${item.toLocaleLowerCase()}/${account}?profileId=${currentProfile.profileId}`
+            }else{
+                return `/${item.toLocaleLowerCase()}/${knn3Address}?profileId=${knn3ProfileId}`
+            }
         }else{
             return `/${item.toLocaleLowerCase()}`
         }    
