@@ -104,7 +104,6 @@ const rmodynamics = () => {
                 }
             }
         }
-        console.log(rem)
         maxRemoData = [0, 0, 0, 0, 0]
         setLoading(false);
         if (!res || !res.data) {

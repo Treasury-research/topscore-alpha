@@ -136,6 +136,21 @@ const rmodynamics = () => {
         setMirrorTotal(total)
     }
 
+    const getWeekNum = () => {
+        var year = new Date().getFullYear();
+        var week = moment(new Date()).format("E");
+        var startweek = moment(new Date(year + "-01-01")).format("E");
+        var millisDiff =
+            new Date(moment().format("yyyy-MM-DD")).getTime() -
+            new Date(year + "-01-01").getTime();
+        var days =
+            (millisDiff -
+                Number(week) * (24 * 60 * 60 * 1000) -
+                (7 - Number(startweek)) * (24 * 60 * 60 * 1000)) /
+            86400000;
+        return days / 7 + 2;
+    }
+
     const getGlobalHeatmapData = async () => {
         setLoading(true);
         let types = ['Post', 'Mirror', 'Comment'];
@@ -157,11 +172,6 @@ const rmodynamics = () => {
             }
         })
         let rem: any = [[], [], [], [], [], [], []]
-        for (let i = 0; i < 7; i++) {
-            for (let j = 0; j < 52; j++) {
-                rem[i].push(null)
-            }
-        }
         if (activeTab === 1) {
             rem[0].push(null)
             rem[1].push(null)
@@ -174,6 +184,7 @@ const rmodynamics = () => {
             rem[2][0] = 'hidden'
             rem[3][0] = 'hidden'
             rem[4][0] = 'hidden'
+            rem[5][0] = 'noData'
         }
         if (activeTab === 0) {
             rem[0].push(null)
@@ -189,7 +200,28 @@ const rmodynamics = () => {
             rem[3][0] = 'hidden'
             rem[4][0] = 'hidden'
             rem[5][0] = 'hidden'
+            rem[6][0] = 'noData'
         }
+        let weekNum = getWeekNum();
+        let weekOfDay = parseInt(moment().format('E'))
+        for (let i = 0; i < 7; i++) {
+            for (let j = 0; j < 52; j++) {
+                if (activeTab === 1) {
+                    rem[i].push('noData')
+                } else {
+                    if (j > weekNum - 2) {
+                        rem[i].push(null)
+                    } else if (j < weekNum - 2) {
+                        rem[i].push('noData')
+                    } else if (j == weekNum - 2 && weekOfDay < i + 1) {
+                        rem[i].push(null)
+                    } else if (j == weekNum - 2 && weekOfDay >= i + 1) {
+                        rem[i].push('noData')
+                    }
+                }
+            }
+        }
+        console.log(rem)
         maxRemoData = 0
         if (!res || !res.data) {
             setRemodyBaseData(rem)
@@ -223,14 +255,14 @@ const rmodynamics = () => {
     }
 
     const onChange = (e: any, i: number) => {
-        if(!e.target.checked){
-            if(i === 0 && !checked[1] && !checked[2]){
+        if (!e.target.checked) {
+            if (i === 0 && !checked[1] && !checked[2]) {
                 return false
             }
-            if(i === 1 && !checked[0] && !checked[2]){
+            if (i === 1 && !checked[0] && !checked[2]) {
                 return false
             }
-            if(i === 2 && !checked[0] && !checked[1]){
+            if (i === 2 && !checked[0] && !checked[1]) {
                 return false
             }
         }
@@ -241,7 +273,7 @@ const rmodynamics = () => {
     };
 
     const onChangePub = (e: any) => {
-        if(!e.target.checked){
+        if (!e.target.checked) {
             return false
         }
         setcheckedPub(e.target.checked)
@@ -265,7 +297,7 @@ const rmodynamics = () => {
     }
 
     const getItemStyle = (e: any) => {
-        if (!e || (!e[0] && e[0] !== 0)) return 'bg-[#232323]'
+        if (!e || (!e[0] && e[0] !== 0) || e === 'noData') return 'bg-[#232323]'
         let lv = maxRemoData / 5;
         if (e[0] < lv) {
             return 'bg-[#311C17]'
@@ -280,8 +312,24 @@ const rmodynamics = () => {
         }
     }
 
-    const getContent = (e: any) => {
+    const getContent = (e: any, i: number, j: number) => {
         if (!e || (!e[0] && e[0] !== 0)) return ''
+        let noDateStr = ''
+        if (e === 'noData') {
+            // console.log(moment('2023-01-01').startOf('day') .valueOf())
+            // moment(t.timestamp * 1000).format('MM/DD')
+            // moment() .startOf('day') .valueOf()
+            let startHs = 0;
+            let endHs = 0;
+            if(activeTab == 0){
+                startHs = moment('2023-01-01').startOf('day').valueOf()
+                endHs = startHs + (j - 1) * 7 * 24 * 60 * 60 * 1000 + (i + 1) * 24 * 60 * 60 * 1000
+            }else{
+                startHs = moment('2022-01-01').startOf('day').valueOf()
+                endHs = startHs + (j - 1) * 7 * 24 * 60 * 60 * 1000 + (i + 2) * 24 * 60 * 60 * 1000
+            }
+            noDateStr = moment(endHs).format('YYYY/MM/DD')
+        }
         let filterResPost = resPost.filter((t: any) => {
             return t.date === e[1]
         })
@@ -293,18 +341,40 @@ const rmodynamics = () => {
         })
         return (
             <div>
-                <p className="text-[18px] font-[600]">{e[1] || '--'}</p>
+                {
+                    e !== 'noData' && 
+                    <p className="text-[18px] font-[600]">{e[1] || '--'}</p>
+                }
+
+                {
+                    e == 'noData' && 
+                    <p className="text-[18px] font-[600]">{noDateStr}</p>
+                }
+
                 <div>
                     {
-                        checked[0] && filterResPost.length > 0 &&
+                        checked[0] && e == 'noData' &&
+                        <div>Post：0</div>
+                    }
+                    {
+                        checked[1] && e == 'noData' &&
+                        <div>Comment：0</div>
+                    }
+                    {
+                        checked[2] && e == 'noData' &&
+                        <div>Mirror：0</div>
+                    }
+
+                    {
+                        checked[0] && filterResPost.length > 0 && e !== 'noData' &&
                         <div>Post：{filterResPost[0]['count']}</div>
                     }
                     {
-                        checked[1] && filterResComment.length > 0 &&
+                        checked[1] && filterResComment.length > 0 && e !== 'noData' &&
                         <div>Comment：{filterResComment[0]['count']}</div>
                     }
                     {
-                        checked[2] && filterResMirror.length > 0 &&
+                        checked[2] && filterResMirror.length > 0 && e !== 'noData' &&
                         <div>Mirror：{filterResMirror[0]['count']}</div>
                     }
                 </div>
@@ -358,7 +428,7 @@ const rmodynamics = () => {
                                                         (!item || (!item[0] && item[0] !== 0) || item === 'hidden') ?
                                                             (
                                                                 <div key={index} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
-                                                            ) : (<Popover placement="bottom" content={() => getContent(item)}>
+                                                            ) : (<Popover placement="bottom" content={() => getContent(item, i, index)}>
                                                                 <div key={index} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
                                                             </Popover>)
                                                         // <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
