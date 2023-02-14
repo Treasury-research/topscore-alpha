@@ -150,7 +150,7 @@ const nft = ({
     <div className="w-full h-full bg-[#000] flex">
      <Head>
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Your 2022 Wrapped on Lens" />
+        <meta name="twitter:title" content="Unlock your web3 social presence with TopScore！" />
         <meta
           name="twitter:description"
           content="TopScore - a KNN3-powered scoring system based on Lens Protocol to evaluate this campaign."
@@ -159,7 +159,7 @@ const nft = ({
           property="twitter:image"
           content={`https://lens-api.knn3.xyz/api/lens/generate/shareImg/${pId}`}
         />
-        <meta property="og:title" content="Your 2022 Wrapped on Lens" />
+        <meta property="og:title" content="Unlock your web3 social presence with TopScore！" />
         <meta
           property="og:description"
           content="TopScore - a KNN3-powered scoring system based on Lens Protocol to evaluate this campaign."
