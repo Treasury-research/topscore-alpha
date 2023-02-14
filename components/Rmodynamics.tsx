@@ -95,13 +95,16 @@ const rmodynamics = () => {
         const dHour = parseInt(moment().format('HH'))
         for (let i = 0; i < 7; i++) {
             for (let j = 0; j < 24; j++) {
-                if (dWeek <= i + 1 && dHour <= j && weekCount === 0) {
-                    rem[i].push(null)
-                } else {
+                if ((dWeek > i + 1 || (dWeek === i+1 && dHour > j)) && weekCount === 0) {
                     rem[i].push('noData')
+                } else if(weekCount !== 0) {
+                    rem[i].push('noData')
+                }else{
+                    rem[i].push(null)
                 }
             }
         }
+        console.log(rem)
         maxRemoData = [0, 0, 0, 0, 0]
         setLoading(false);
         if (!res || !res.data) {
