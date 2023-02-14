@@ -830,4 +830,8 @@
 .engage-head-fee-score-num{
   min-width: 40px;
 }
+
+.profile-drawer .ant-drawer-mask{
+  display: none !important;
+}
 // permission-modal-content absolute left-[50%] top-[40%] z-100 text-[#fff] bg-[#292929] w-[500px] translate-[-50%,-50%]

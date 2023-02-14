@@ -219,6 +219,10 @@ const Post = () => {
   }, [])
 
   useEffect(() => {
+    setShowList(true)
+  }, [])
+
+  useEffect(() => {
     if (account) {
       if (profileList.length == 0 && !loadingProfileList) {
         message.info("You must have a Lens Protocol Profile");
@@ -356,10 +360,11 @@ const Post = () => {
             <Drawer
               title=""
               className="profile-tips"
+              rootClassName="profile-drawer"
               placement="right"
               open={showList}
               closable={false}
-              onClose={onClose}
+              onClose={() => onClose()}
             >
               <div>
                 <div className="drawer flex">
@@ -395,7 +400,7 @@ const Post = () => {
                       </div>
                     </Dropdown>
                   </div>
-                  <div onClick={onClose} className="ml-[auto] cursor-pointer text-[18px] bg-[#262626] text-[#fff] h-10 w-10 flex justify-center items-center rounded-[4px]">
+                  <div onClick={() => onClose()} className="ml-[auto] cursor-pointer text-[18px] bg-[#262626] text-[#fff] h-10 w-10 flex justify-center items-center rounded-[4px]">
                     <CloseOutlined />
                   </div>
                 </div>
