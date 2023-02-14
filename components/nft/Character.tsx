@@ -105,6 +105,8 @@ const noSharePic:any = {
 
 const Character = (props: any) => {
 
+    const router = useRouter();
+
     const [imgUrl, setImgUrl] = useState<any>("");
 
     const [userInfo, setUserInfo] = useState<any>("");
@@ -169,7 +171,7 @@ const Character = (props: any) => {
         }
     }, [currentProfile]);
 
-    const shareUrl = `https://topscore.staging.knn3.xyz/user/${account}?queryProfileId=${currentProfile ? currentProfile.profileId : ''}`
+    const shareUrl = `https://topscore.staging.knn3.xyz/nft?profileId=${currentProfile.profileId}`
 
     const getImg = (arr: any) => {
         if (arr[0].score - arr[1].score > 1.6) {
@@ -281,6 +283,19 @@ const Character = (props: any) => {
         }
     }
 
+    useEffect(()=>{
+        const queryProfileId = router.query.profileId;
+        if(queryProfileId){
+            return
+
+            // TODO
+        }else{
+            router.push(`/nft/${currentProfile.profileId}`)
+        }
+        console.log('router is', queryProfileId);
+        
+    }, [router])
+
     const LensterShareButton = ({ title, url, hashtags, children }: any) => {
         return (
             <a
@@ -328,9 +343,9 @@ const Character = (props: any) => {
                                 </div>
                                 <div>
                                     <TwitterShareButton2
-                                        url={shareUrl}
+                                        // url={shareUrl}
                                         hashtags={["KNN3Network #Lens"]}
-                                        title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：@knn3_network #Lens`}
+                                        title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：${shareUrl} @knn3_network #Lens`}
                                     >
                                         <TwitterOutlined className="twitter-icon" style={{ color: '#26a7de' }}/>
                                     </TwitterShareButton2>
