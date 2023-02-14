@@ -32,7 +32,7 @@ const knn3ProfileId = 101548
 
 const Navbar = () => {
 
-    const {account} = useWeb3Context();
+    const { account } = useWeb3Context();
 
     const router = useRouter();
 
@@ -40,20 +40,21 @@ const Navbar = () => {
 
     const [currentProfile] = useRecoilState<any>(currentProfileState);
 
-    const getAddress = (item:any) => {
-        if(item === 'Profile'){
-            return `/${item.toLocaleLowerCase()}/${currentProfile.address ? currentProfile.address : knn3Address}`
-        }else if(item === 'NFT'){
-            if(account && currentProfile.profileId){
-                return `/${item.toLocaleLowerCase()}/${account}?profileId=${currentProfile.profileId}`
-            }else{
-                return `/${item.toLocaleLowerCase()}/${knn3Address}?profileId=${knn3ProfileId}`
+    const getAddress = (item: any) => {
+        console.log('address', item)
+        if (item === 'Profile') {
+            router.push(`/${item.toLocaleLowerCase()}/${currentProfile.address ? currentProfile.address : knn3Address}`)
+        } else if (item === 'NFT') {
+            if (account && currentProfile.profileId) {
+                router.push(`/${item.toLocaleLowerCase()}/${account}?profileId=${currentProfile.profileId}`)
+            } else {
+                router.push(`/${item.toLocaleLowerCase()}/${knn3Address}?profileId=${knn3ProfileId}`)
             }
-        }else{
-            return `/${item.toLocaleLowerCase()}`
-        }    
+        } else {
+            router.push(`/${item.toLocaleLowerCase()}`)
+        }
     }
-    
+
     return (
         <div className='h-full leading-20 pl-6 pr-6 pt-10 bg-[#1A1A1A]'>
             <div className="flex items-center mb-10 ml-[-10px]">
@@ -69,16 +70,18 @@ const Navbar = () => {
                     <div key={i} className={`${router.pathname.includes(t.toLocaleLowerCase()) ? 'bg-[rgb(46,35,28)] text-[rgba(255,255,255,0.9)]' : 'text-[rgba(255,255,255,0.5)]'} text-[#fff] h-14 flex items-center cursor-pointer hover:bg-[rgb(46,35,28)] w-[160px]`} onClick={() => setActiveTab(i)}>
                         {
                             t === 'Create' || t === 'Profile' || t === 'NFT' ? (
-                                <Link className="w-full h-full flex items-center" href={getAddress(t)}>
+                                <div className="w-full h-full flex items-center" onClick={() => getAddress(t)}>
                                     <div className="flex">
-                                        <Image
-                                            className="mr-1 ml-5"
-                                            src={router.pathname.includes(t.toLocaleLowerCase()) ? imgSelectUrl[i] : imgNoSelectUrl[i]}
-                                            alt=""
-                                        />
+                                        <div className="w-[40px] flex mr-1">
+                                            <Image
+                                                className="ml-[auto]"
+                                                src={router.pathname.includes(t.toLocaleLowerCase()) ? imgSelectUrl[i] : imgNoSelectUrl[i]}
+                                                alt=""
+                                            />
+                                        </div>
                                         <div>{t}</div>
                                     </div>
-                                </Link>) :
+                                </div>) :
                                 (
                                     <div className="flex">
                                         <Image
