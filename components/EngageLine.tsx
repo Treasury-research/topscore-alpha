@@ -285,7 +285,7 @@ const ChartLine = (props: any) => {
       },
       grid: {
         left: 40,
-        right: 40,
+        right: 60,
         bottom: '16%',
         containLabel: true
       },
