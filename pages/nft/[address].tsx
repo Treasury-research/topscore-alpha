@@ -123,7 +123,7 @@ const nft = ({
   useEffect(() => {
     setTimeout(() => {
       setVideoUrl('/vedio_rainbow.mp4')
-    }, 1500)
+    }, 500)
   }, []);
 
   useEffect(() => {

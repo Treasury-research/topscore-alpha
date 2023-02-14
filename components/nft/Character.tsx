@@ -46,7 +46,8 @@ import MusicianP from "../../statics/img/character-noShare/Musician.png";
 import MotivatorP from "../../statics/img/character-noShare/Motivator.png";
 import DemonstratorP from "../../statics/img/character-noShare/Demonstrator.png";
 
-import IconLenster from "../../statics/img/g5.svg";
+import IconTwiter from "../../statics/img/share-twiter.png";
+import IconLenster from "../../statics/img/share-lenst.png";
 import { TwitterOutlined } from "@ant-design/icons";
 import useWeb3Context from "../../hooks/useWeb3Context";
 import BN from "bignumber.js";
@@ -135,7 +136,7 @@ const Character = (props: any) => {
         }
         setTimeout(() => {
             setShowPic(true)
-        },3000)
+        },500)
     };
 
     const getIndicators = async (profileId: string) => {
@@ -337,7 +338,7 @@ const Character = (props: any) => {
                                         hashtags={["KNN3Network #Lens"]}
                                         title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：${shareUrl} @Knn3Network #Lens`}
                                     >
-                                        <TwitterOutlined className="twitter-icon" style={{ color: '#26a7de' }}/>
+                                        <Image src={IconTwiter} alt="" />
                                     </TwitterShareButton2>
                                 </div>
                             </div>) :

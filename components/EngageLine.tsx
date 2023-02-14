@@ -349,7 +349,7 @@ const ChartLine = (props: any) => {
             }
           },
           max: function (value: any) {//取最大值向上取整为最大刻度
-            return (Math.ceil(value.max) * 1.2).toFixed(0)
+            return Math.ceil(value.max * 1.2)
           },
           min: function (value: any) {//取最大值向上取整为最大刻度
             return value.min
