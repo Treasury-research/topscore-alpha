@@ -22,7 +22,17 @@ import useErc721Contract from "../../contract/useErc721Contract";
 import { toast } from "react-toastify";
 // import VideoSource from "/public/vedio_rainbow.mp4"
 
-const nft = () => {
+export async function getServerSideProps(context: any){
+  return {
+    props: {
+      pId: context.query.profileId || null
+    }
+  }
+}
+
+const nft = ({
+  pId
+}: any) => {
   const router = useRouter()
 
   const { account, connectWallet, doLogin, } = useWeb3Context();
@@ -142,7 +152,7 @@ const nft = () => {
         />
         <meta
           property="twitter:image"
-          content={`https://lens-api.knn3.xyz/api/lens/generate/shareImg/${queryProfileId}`}
+          content={`https://lens-api.knn3.xyz/api/lens/generate/shareImg/${pId}`}
         />
         <meta property="og:title" content="Your 2022 Wrapped on Lens" />
         <meta
@@ -151,7 +161,7 @@ const nft = () => {
         />
         <meta
           property="og:image"
-          content={`https://lens-api.knn3.xyz/api/lens/generate/shareImg/${queryProfileId}`}
+          content={`https://lens-api.knn3.xyz/api/lens/generate/shareImg/${pId}`}
         />
         <meta property="og:locale'" content="en_US" />
         <meta property="og:type" content="website" />

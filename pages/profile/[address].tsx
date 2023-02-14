@@ -261,7 +261,7 @@ const Post = () => {
             </div>
 
             {/** Show follow button only when it's knn3 */}
-            {!currentProfile.handle && <Follow
+            {!currentProfile.handle && account && <Follow
                 profileId={currentProfile.profileId}
                 handle={currentProfile.handle}
             />}
