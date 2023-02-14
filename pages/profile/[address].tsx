@@ -34,7 +34,7 @@ const defaultKnn3Profile = {
 
 const Post = () => {
 
-  const { account, connectWallet } = useWeb3Context();
+  const { account, connectWallet, doLogin } = useWeb3Context();
   const [showList, setShowList] = useState(false);
   const [userInfo, setUserInfo] = useState<any>({});
   const [currentProfile, setCurrentProfile] = useRecoilState<any>(currentProfileState);
@@ -216,6 +216,12 @@ const Post = () => {
       }
     }
   }, [profileList, account]);
+
+  useEffect(() => {
+    if (account) {
+      doLogin();
+    }
+  }, [account]);
 
   return (
     <div className="w-full h-full bg-[#000] flex">
