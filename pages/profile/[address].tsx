@@ -9,6 +9,7 @@ import ConnectBtn from '../../components/ConnectBtn'
 import lensApi from "../../api/lensApi";
 import Radar from '../../components/profile/Radar'
 import Router, { useRouter } from "next/router";
+import log from "../../lib/log";
 import api from "../../api";
 import ImgGenerate from "../../statics/img/generate-button.gif";
 import ImgHoverGenerate from "../../statics/img/hover-generate-button.gif";
@@ -214,6 +215,10 @@ const Post = () => {
       getProfileByHandle(defaultKnn3Profile.handle)
     }
   }, [currentProfile]);
+
+  useEffect(()=>{
+    log('visit_profile', account)
+  }, [])
 
   useEffect(() => {
     if (account) {

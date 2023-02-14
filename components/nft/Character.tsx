@@ -48,9 +48,6 @@ import DemonstratorP from "../../statics/img/character-noShare/Demonstrator.png"
 import IconLenster from "../../statics/img/g5.svg";
 import { TwitterOutlined } from "@ant-design/icons";
 import useWeb3Context from "../../hooks/useWeb3Context";
-import { useRouter } from "next/router";
-import { useRecoilState } from 'recoil';
-import { currentProfileState, profileListState } from '../../store/state'
 import BN from "bignumber.js";
 
 const haveSharePic = {
@@ -105,13 +102,11 @@ const noSharePic:any = {
 
 const Character = (props: any) => {
 
+    const { activeProfile, activeAddress } = props
+
     const [imgUrl, setImgUrl] = useState<any>("");
 
     const [userInfo, setUserInfo] = useState<any>("");
-
-    const { account } = useWeb3Context();
-
-    const [currentProfile] = useRecoilState<any>(currentProfileState);
 
     const [showShareBtn, setShowShareBtn] = useState(true);
 
@@ -161,10 +156,10 @@ const Character = (props: any) => {
     };
 
     useEffect(() => {
-        if (currentProfile && currentProfile.profileId) {
-            getRadar(currentProfile.profileId);
-            getIndicators(currentProfile.profileId);
-            //getPublication(currentProfile.profileId);
+        if (activeProfile && activeProfile.profileId) {
+            getRadar(activeProfile.profileId);
+            getIndicators(activeProfile.profileId);
+            //getPublication(activeProfile.profileId);
             setShowShareBtn(true);
         } else {
             getRadar('101548');
@@ -172,9 +167,9 @@ const Character = (props: any) => {
             // getPublication('101548');
             setShowShareBtn(false);
         }
-    }, [currentProfile]);
+    }, [activeProfile]);
 
-    const shareUrl = `https://topscore.staging.knn3.xyz/user/${account}?queryProfileId=${currentProfile ? currentProfile.profileId : ''}`
+    const shareUrl = `https://topscore.staging.knn3.xyz/nft/${activeAddress}?profileId=${activeProfile.profileId}`
 
     const getImg = (arr: any) => {
         if (arr[0].score - arr[1].score > 1.6) {
@@ -313,19 +308,19 @@ const Character = (props: any) => {
     return (
         <div className="char-pic-default">
             {
-                account && imgUrl &&
+                activeAddress && imgUrl &&
                 <div className="h-[800px]">
                     <Image src={imgUrl} alt="" className={`${showPic ? '' : 'hidden'}`}/>
                     <div className={`character-rank text-[30px] ${showPic ? '' : 'hidden'}`}>{userInfo.rank}</div>
-                    <div className={`character-lens text-[30px] ${showPic ? '' : 'hidden'}`}>{currentProfile && currentProfile.handle ? currentProfile.handle : 'knn3_network.lens'}</div>
+                    <div className={`character-lens text-[30px] ${showPic ? '' : 'hidden'}`}>{activeProfile && activeProfile.handle ? activeProfile.handle : 'knn3_network.lens'}</div>
                     <div className={`character-score text-[30px] ${showPic ? '' : 'hidden'}`}>{new BN(userInfo.score).toFixed(2)}</div>
                     {
-                        showShareBtn && account ?
+                        showShareBtn && activeAddress ?
                             (<div className={`char-share-btnGroup ${showPic ? '' : 'hidden'}`}>
                                 <div>
                                     <LensterShareButton
                                         title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：@knn3_network #Lens`}
-                                        url={`https://topscore.knn3.xyz/user/${account}/${currentProfile ? currentProfile.profileId : ''}`}
+                                        url={shareUrl}
                                         hashtags="KNN3Network #Lens"
                                     >
                                         <Image src={IconLenster} alt="" />
@@ -333,9 +328,9 @@ const Character = (props: any) => {
                                 </div>
                                 <div>
                                     <TwitterShareButton2
-                                        url={shareUrl}
+                                        // url={shareUrl}
                                         hashtags={["KNN3Network #Lens"]}
-                                        title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：@knn3_network #Lens`}
+                                        title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：${shareUrl} @knn3_network #Lens`}
                                     >
                                         <TwitterOutlined className="twitter-icon" style={{ color: '#26a7de' }}/>
                                     </TwitterShareButton2>
