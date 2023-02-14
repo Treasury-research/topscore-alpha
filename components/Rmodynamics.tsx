@@ -89,10 +89,19 @@ const rmodynamics = () => {
             collectCount: 0,
             collectFee: 0
         }
+        let weekOfDay = parseInt(moment().format('E'));//计算今天是这周第几天
         let rem: any = [[], [], [], [], [], [], []]
+        const dWeek = weekOfDay === 0 ? 6 : weekOfDay
+        const dHour = parseInt(moment().format('HH'))
         for (let i = 0; i < 7; i++) {
             for (let j = 0; j < 24; j++) {
-                rem[i].push(null)
+                if ((dWeek > i + 1 || (dWeek === i+1 && dHour > j)) && weekCount === 0) {
+                    rem[i].push('noData')
+                } else if(weekCount !== 0) {
+                    rem[i].push('noData')
+                }else{
+                    rem[i].push(null)
+                }
             }
         }
         maxRemoData = [0, 0, 0, 0, 0]
@@ -132,7 +141,6 @@ const rmodynamics = () => {
                 rem[week - 1][Number(t.timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), t.timePeriod];
             }
         })
-        console.log(rem)
         setRemodyBaseData(rem)
         setTotalAmount(totalAmount)
         setLoading(false);
@@ -145,15 +153,7 @@ const rmodynamics = () => {
         // console.log([moment(last_monday).format('MM/DD'), moment(last_sunday).format('MM/DD')])
         setWeek([moment(last_monday).format('MM/DD'), moment(last_sunday).format('MM/DD')])
         setCurrentDate([`20${moment(last_monday).format('YYMMDD')}`, `20${moment(last_sunday).format('YYMMDD')}`])
-        console.log([`20${moment(last_monday).format('YYMMDD')}`, `20${moment(last_sunday).format('YYMMDD')}`])
         setActiveItems([]);
-        let rem: any = [[], [], [], [], [], [], []]
-        for (let i = 0; i < 7; i++) {
-            for (let j = 0; j < 24; j++) {
-                rem[i].push(null)
-            }
-        }
-        setRemodyBaseData(rem)
     }
 
     const onChange = (e: any, i: number) => {
@@ -207,7 +207,7 @@ const rmodynamics = () => {
     }
 
     const getItemStyle = (e: any) => {
-        if (!e || !checked.includes(true)) return 'bg-[#232323]'
+        if (!e || !checked.includes(true) || e === 'noData') return 'bg-[#232323]'
         let maxMount = 0;
         let totalMount = 0;
         checked.forEach((t: any, i: number) => {
@@ -216,7 +216,6 @@ const rmodynamics = () => {
                 totalMount += e[i]
             }
         })
-        console.log(maxMount)
         let lv = maxMount / 5;
         if (totalMount < lv) {
             return 'bg-[#311C17]'
@@ -231,38 +230,68 @@ const rmodynamics = () => {
         }
     }
 
-    const getContent = (e: any) => {
+    const getContent = (e: any, i: number) => {
         if (!e || !checked.includes(true)) return ''
-        let totalMount = 0;
         let strDate = e[5].toString();
-        checked.forEach((t: any, i: number) => {
-            if (t) {
-                totalMount += e[i]
-            }
-        })
+        let noStrDate = '';
+        if (e === 'noData') {
+            let current_hs = Number(moment(`2023/${week[0]}`).format("x"))
+            noStrDate = moment(current_hs + i * 24 * 60 * 60 * 1000).format(`YYYY/MM/DD`)
+        }
         return (
             <div>
-                <p className="text-[18px] font-[600]">{e[5] ? strDate.slice(0, 4) + '/' + strDate.slice(4, 6) + '/' + strDate.slice(6, 8) : ''}</p>
+                {
+                    e !== 'noData' && 
+                    <p className="text-[18px] font-[600]">
+                        {e[5] ? strDate.slice(0, 4) + '/' + strDate.slice(4, 6) + '/' + strDate.slice(6, 8) : ''}
+                    </p>
+                }
+                {
+                    e === 'noData' &&
+                    <p className="text-[18px] font-[600]">
+                        {noStrDate}
+                    </p>
+                }
                 {/* <p>Count：{totalMount.toFixed(2)}</p> */}
                 <div>
                     {
-                        checked[0] && activeTab === 0 &&
+                        e === 'noData' && checked[1] && (
+                            <div>Comment：0</div>
+                        )
+                    }
+                    {
+                        e === 'noData' && checked[2] && (
+                            <div>Mirror：0</div>
+                        )
+                    }
+                    {
+                        e === 'noData' && checked[3] && (
+                            <div>Collect：0</div>
+                        )
+                    }
+                    {
+                        e === 'noData' && checked[4] && (
+                            <div>Volume：0</div>
+                        )
+                    }
+                    {
+                        checked[0] && activeTab === 0 && e !== 'noData' &&
                         <div>Post：{e[0]}</div>
                     }
                     {
-                        checked[1] &&
+                        checked[1] && e !== 'noData' &&
                         <div>Comment：{e[1]}</div>
                     }
                     {
-                        checked[2] &&
+                        checked[2] && e !== 'noData' &&
                         <div>Mirror：{e[2]}</div>
                     }
                     {
-                        checked[3] &&
+                        checked[3] && e !== 'noData' &&
                         <div>Collect：{e[3]}</div>
                     }
                     {
-                        checked[4] &&
+                        checked[4] && e !== 'noData' &&
                         <div>Volume：{e[4].toFixed(2)}</div>
                     }
                 </div>
@@ -277,11 +306,8 @@ const rmodynamics = () => {
                     tabs.map((t: any, i: number) => (
                         <div onClick={() => setActiveTab(i)} key={i} className={`px-[30px] pb-[6px] cursor-pointer ${activeTab === i ? 'pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px]' : 'pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px]'}`}>{t}</div>
                     ))
-                }
-                {/* <div className="px-[30px] pb-[6px] pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px] cursor-pointer">Global</div>
-                <div className="px-[30px] pb-[6px] pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px] cursor-pointer">Personal</div> */}
+                }        
             </div>
-
             <div className="flex bg-[#1A1A1A] p-5 w-full">
                 <div className="w-[780px] flex-shrink-0">
                     {
@@ -296,11 +322,10 @@ const rmodynamics = () => {
                                                 <div className="text-[12px] w-[40px] h-[30px] flex items-center">{dys[i]}</div>
                                                 {
                                                     t.map((item: any, index: number) => (
-
                                                         (!item || !checked.includes(true)) ?
                                                             (
                                                                 <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[28px] w-[28px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
-                                                            ) : (<Popover placement="bottom" content={() => getContent(item)}>
+                                                            ) : (<Popover placement="bottom" content={() => getContent(item, i)}>
                                                                 <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[28px] w-[28px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
                                                             </Popover>)
 
