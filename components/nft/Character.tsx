@@ -319,9 +319,9 @@ const Character = (props: any) => {
                             (<div className="char-share-btnGroup">
                                 <div>
                                     <LensterShareButton
-                                        title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：@KNN3Network #Lens`}
+                                        title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：@knn3_network #Lens`}
                                         url={`https://topscore.knn3.xyz/user/${account}/${currentProfile ? currentProfile.profileId : ''}`}
-                                        hashtags="knn3_network #Lens"
+                                        hashtags="KNN3Network #Lens"
                                     >
                                         <Image src={IconLenster} alt="" />
                                     </LensterShareButton>
