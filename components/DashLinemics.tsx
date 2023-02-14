@@ -55,7 +55,7 @@ const rmodynamics = () => {
         if (activeTab === 0 || activeTab === 1) {
             const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${activeTab + 1}&type=Post,Comment`);
             const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
-            if(!res || !res.data || !res1 || !res1.data){
+            if (!res || !res.data || !res1 || !res1.data) {
                 setLoading(false);
                 return false;
             }
@@ -64,7 +64,7 @@ const rmodynamics = () => {
         } else {
             const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${activeTab - 1}&type=Post,Comment&isFee=${chargeSwitch ? 1 : ''}`);
             const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
-            if(!res || !res.data || !res1 || !res1.data){
+            if (!res || !res.data || !res1 || !res1.data) {
                 setLoading(false);
                 return false;
             }
@@ -74,7 +74,7 @@ const rmodynamics = () => {
         let newDates: any = []
         if (resData.length !== 0) {
             resData.map((t: any) => {
-                if(!newDates.includes(t.day)){
+                if (!newDates.includes(t.day)) {
                     newDates.push(t.day)
                 }
             })
@@ -120,7 +120,7 @@ const rmodynamics = () => {
         if (currentProfile && currentProfile.profileId) {
             getEngageLineData()
         }
-    }, [activeTab, chargeSwitch, activeTab1,currentProfile])
+    }, [activeTab, chargeSwitch, activeTab1, currentProfile])
 
     return (
         <>
@@ -166,21 +166,30 @@ const rmodynamics = () => {
                                 <LoadingOutlined className="text-2xl block mx-auto my-[80px]" />
                             </div>
                         ) : (
-                            <EngageLine
-                                id={'line_1'}
-                                dates={dates}
-                                lineData={lindData}
-                                commentSwitch={commentSwitch}
-                                mirrorSwitch={mirrorSwitch}
-                                postSwitch={postSwitch}
-                                dayType={activeTab1}
-                                type={activeTab}
-                                sigleData={sigleData}
-                            />
+                            <>
+                                {
+                                    dates.length > 0 &&
+                                    <EngageLine
+                                        id={'line_1'}
+                                        dates={dates}
+                                        lineData={lindData}
+                                        commentSwitch={commentSwitch}
+                                        mirrorSwitch={mirrorSwitch}
+                                        postSwitch={postSwitch}
+                                        dayType={activeTab1}
+                                        type={activeTab}
+                                        sigleData={sigleData}
+                                    />
+                                }
+                                {
+                                    dates.length == 0 &&
+                                    <div className="h-full w-full flex items-center justify-center text-[rgba(255,255,255,0.6)] text-[20px]">No recent change</div>
+                                }
+                            </>
                         )
                     }
                     {
-                        !loading &&
+                        !loading && dates.length > 0 &&
                         <>
                             <div className="absolute flex items-center justify-center mr-4 right-0 bottom-0">
                                 <span className="mr-2">Post Only</span>
