@@ -10,7 +10,7 @@ import IconVolume from '../statics/img/volume.svg'
 import moment from 'moment'
 import BN from "bignumber.js";
 
-const dys = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+const dys = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
 
 let maxRemoData: any = [0, 0, 0, 0, 0]
 
@@ -32,7 +32,13 @@ const rmodynamics = () => {
 
     const [currentDate, setCurrentDate] = useState<any>([]);
 
-    const [totalAmount, setTotalAmount] = useState<any>({});
+    const [totalAmount, setTotalAmount] = useState<any>({
+        postCount: 0,
+        commentCount: 0,
+        mirrorCount: 0,
+        collectCount: 0,
+        collectFee: 0
+    });
 
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -154,6 +160,13 @@ const rmodynamics = () => {
         setWeek([moment(last_monday).format('MM/DD'), moment(last_sunday).format('MM/DD')])
         setCurrentDate([`20${moment(last_monday).format('YYMMDD')}`, `20${moment(last_sunday).format('YYMMDD')}`])
         setActiveItems([]);
+        let rem: any = [[], [], [], [], [], [], []]
+        for (let i = 0; i < 7; i++) {
+            for (let j = 0; j < 24; j++) {
+                rem[i].push(null)
+            }
+        }
+        setRemodyBaseData(rem)
     }
 
     const onChange = (e: any, i: number) => {
@@ -319,7 +332,7 @@ const rmodynamics = () => {
                                     {
                                         remodyBaseData.map((t: any, i: number) => (
                                             <div className="flex mb-[1px]" key={i}>
-                                                <div className="text-[12px] w-[40px] h-[30px] flex items-center">{dys[i]}</div>
+                                                <div className="text-[12px] w-[20px] h-[30px] flex items-center">{dys[i]}</div>
                                                 {
                                                     t.map((item: any, index: number) => (
                                                         (!item || !checked.includes(true)) ?
@@ -385,7 +398,7 @@ const rmodynamics = () => {
                                         <span className="text-[#fff] text-[16px]">Post</span>
                                     </Checkbox>
                                 </div>
-                                <div className="ml-[auto]">{new BN(totalAmount.postCount).toFormat()}</div>
+                                <div className="ml-[auto]">{new BN(totalAmount.postCount).toFormat() || '-'}</div>
                             </div>
                         }
                         <div className="flex mb-2">

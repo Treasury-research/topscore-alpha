@@ -33,6 +33,7 @@ const PubCard = (props: any) => {
       if (legendData.length > 0) {
         getPubs([legendData])
       } else {
+        setLoading(false)
         setPubData([])
       }
     } else {
@@ -43,7 +44,7 @@ const PubCard = (props: any) => {
   const getPubs = async (ids: any) => {
     const res = await api.get(`/lens/pubByLatest?profileId=${currentProfile.profileId}&pubIds=${ids.join(',')}`);
     setLoading(false)
-    if (res.data) {
+    if (res && res.data) {
       let newList: any = [];
       for (var i = 0; i < res.data.length; i += 3) {
         newList.push(res.data.slice(i, i + 3));

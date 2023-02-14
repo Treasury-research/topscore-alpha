@@ -168,8 +168,8 @@ const nft = () => {
           loading ?
             <div className="nft-loading"><LoadingOutlined className="text-2xl block mx-auto" /></div>
             : <>
-              <div className='h-[calc(100vh-70px)] overflow-y-auto relative'>
-                <div className="absolute top-0 w-full left-0 h-full z-20">
+              <div className='h-[100%] overflow-y-auto relative'>
+                <div className="absolute top-0 w-full left-0 h-[fit-content] z-20">
                   <div className="nft-left-des mb-[60px] mt-[120px]">
                     <p>At dawn, the warm, amber light shines and all things come to life.</p>
                     <p>A crystal prism sits on the windowsill, refracting the light into a spectrum of colors.</p>
