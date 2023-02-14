@@ -285,7 +285,7 @@ const ChartLine = (props: any) => {
       },
       grid: {
         left: '3%',
-        right: '3%',
+        right: 100,
         bottom: '16%',
         containLabel: true
       },
@@ -338,6 +338,7 @@ const ChartLine = (props: any) => {
           nameLocation :'end',
           nameTextStyle:{
             color: 'rgba(255,255,255,0.8)',
+            align:'left'
           },
           minInterval : 1,
           nameGap :20,
