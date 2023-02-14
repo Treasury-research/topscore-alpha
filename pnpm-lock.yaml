@@ -21,6 +21,7 @@ specifiers:
   eslint: 8.31.0
   eslint-config-next: 13.1.1
   ethers: ^5.7.1
+  gleap: ^9.0.0
   graphql: ^16.6.0
   graphql-request: ^5.1.0
   highcharts: ^10.3.3
@@ -59,6 +60,7 @@ dependencies:
   eslint: 8.31.0
   eslint-config-next: 13.1.1_iukboom6ndih5an6iafl45j2fe
   ethers: 5.7.2
+  gleap: 9.0.0
   graphql: 16.6.0
   graphql-request: 5.1.0_graphql@16.6.0
   highcharts: 10.3.3
@@ -5187,6 +5189,10 @@ packages:
     resolution: {integrity: sha512-0fzj9JxOLfJ+XGLhR8ze3unN0KZCgZwiSSDz168VERjK8Wl8kVSdcu2kspd4s4wtAa1y/qrVRiAA0WclVsu0ng==}
     dependencies:
       assert-plus: 1.0.0
+    dev: false
+
+  /gleap/9.0.0:
+    resolution: {integrity: sha512-apaX/ZBxhQZPwKWHlfiE77wi6x2UC38zgj2TAosEbGu5vJMAstfcvFc6TJXMRcFRAmzU/BueLszcsXxjIKbcCg==}
     dev: false
 
   /glob-parent/5.1.2:
