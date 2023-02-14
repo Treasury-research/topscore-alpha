@@ -406,10 +406,10 @@ const Post = () => {
                 </div>
                 <div className="bg-[#262626] mt-2 rounded-[4px] py-3 pl-5 text-[rgba(255,255,255,1)]">
                   <div className="text-[#D1D1D1]">Score</div>
-                  <div className="text-[24px] mb-4">{new BN(getItemScore()).toFixed(2)}</div>
+                  <div className="text-[24px] mb-4">{new BN(getItemScore() || 0).toFixed(2) || 0}</div>
                   {/* <div className="text-[#D1D1D1] text-[12px] mb-4">- 2  this week</div> */}
                   <div className="text-[#D1D1D1]">Rank</div>
-                  <div className="text-[24px]">{getItemRank()}</div>
+                  <div className="text-[24px]">{getItemRank() || 0}</div>
                   {/* <div className="text-[#D1D1D1] text-[12px]">- 2  this week</div> */}
                 </div>
               </div>
