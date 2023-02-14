@@ -10,6 +10,7 @@ import Character from '../../components/nft/Character'
 import log from "../../lib/log";
 // import Bg1 from '../statics/img/bg_text1.gif'
 // import Bg2 from '../statics/img/bg_2text.gif'
+import Head from "next/head";
 import ImgToRight from "../../statics/img/toRight.png";
 import ImgToLeft from "../../statics/img/toLeft.png";
 import ImgWhole from "../../statics/img/whole-top.png";
@@ -49,6 +50,9 @@ const nft = () => {
   const [videoUrl, setVideoUrl] = useState<any>('');
 
   const erc721Contract = useErc721Contract();
+
+  const address:any = router.query.address;
+  const queryProfileId:any = router.query.profileId;
 
   const handleOk = () => {
     setIsShowPic(false);
@@ -121,19 +125,40 @@ const nft = () => {
   }
 
   useEffect(()=>{
-    const address:any = router.query.address;
-    const queryProfileId:any = router.query.profileId;
-
     if(address && queryProfileId){
       getActiveProfile(address, queryProfileId);
       setActiveAddress(address)
-    }else{
-      toast.error('Not a valid address or profile')
     }
-  }, [router, currentProfile])
+  }, [currentProfile])
 
   return (
     <div className="w-full h-full bg-[#000] flex">
+     <Head>
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Your 2022 Wrapped on Lens" />
+        <meta
+          name="twitter:description"
+          content="TopScore - a KNN3-powered scoring system based on Lens Protocol to evaluate this campaign."
+        />
+        <meta
+          property="twitter:image"
+          content={`https://lens-api.knn3.xyz/api/lens/generate/shareImg/${queryProfileId}`}
+        />
+        <meta property="og:title" content="Your 2022 Wrapped on Lens" />
+        <meta
+          property="og:description"
+          content="TopScore - a KNN3-powered scoring system based on Lens Protocol to evaluate this campaign."
+        />
+        <meta
+          property="og:image"
+          content={`https://lens-api.knn3.xyz/api/lens/generate/shareImg/${queryProfileId}`}
+        />
+        <meta property="og:locale'" content="en_US" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://topscore.knn3.xyz" />
+        <meta property="og:site_name" content="Topscore" />
+      </Head>
+
       <Navbar />
       <div className='p-5 w-full text-[#fff] relative'>
         <div className="absolute w-full left-0 top-0 z-30 p-5">

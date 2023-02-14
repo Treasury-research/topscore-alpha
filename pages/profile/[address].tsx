@@ -8,14 +8,14 @@ import useWeb3Context from "../../hooks/useWeb3Context";
 import ConnectBtn from '../../components/ConnectBtn'
 import lensApi from "../../api/lensApi";
 import Radar from '../../components/profile/Radar'
-import Router, { useRouter } from "next/router";
 import log from "../../lib/log";
+import Follow from '../../components/Follow'
 import api from "../../api";
 import ImgGenerate from "../../statics/img/generate-button.gif";
 import ImgHoverGenerate from "../../statics/img/hover-generate-button.gif";
 import Image from 'next/image'
 import { useRecoilState } from 'recoil';
-import { currentProfileState, profileListState } from '../../store/state'
+import { currentProfileState, profileListState, loadingProfileListState } from '../../store/state'
 
 const typeList = [
   "Influence",
@@ -39,6 +39,7 @@ const Post = () => {
   const [showList, setShowList] = useState(false);
   const [userInfo, setUserInfo] = useState<any>({});
   const [currentProfile, setCurrentProfile] = useRecoilState<any>(currentProfileState);
+  const [loadingProfileList] = useRecoilState<any>(loadingProfileListState);
   const [activeRankIndex, setActiveRankIndex] = useState<number>(0);
   const [canLoadAvatar, setCanLoadAvatar] = useState<boolean>(true);
   const [rankInfo, setRankInfo] = useState<any>({});
@@ -48,10 +49,6 @@ const Post = () => {
   const [radarDetailScore, setRadarDetailScore] = useState<any>({});
   const [profileList,] = useRecoilState(profileListState);
   const [isLogin, setIsLogin] = useState<boolean>(false);
-
-  const router = useRouter();
-
-  const { address, queryProfileId } = router.query;
 
   const [rador1, setRador1] = useState([
     { name: "Influence", value: 0 },
@@ -67,7 +64,6 @@ const Post = () => {
   };
 
   const getProfileByHandle = async (handle: string) => {
-    console.log('h is', handle)
     const res = await lensApi.getProfileByHandle(handle);
     if (res && res.picture && res.picture.original && res.picture.original.url) {
       setImageURI(res.picture.original.url)
@@ -222,11 +218,11 @@ const Post = () => {
 
   useEffect(() => {
     if (account) {
-      if (profileList.length == 0) {
+      if (profileList.length == 0 && !loadingProfileList) {
         message.info("You must have a Lens Protocol Profile");
       }
     }
-  }, [profileList, account]);
+  }, [profileList, account, loadingProfileList]);
 
   useEffect(() => {
     if (isLogin && account) {
@@ -240,7 +236,7 @@ const Post = () => {
       <div className='p-5 w-full text-[#fff]'>
         <ConnectBtn />
         <div className="toscore-main">
-          <div>
+          <div className="flex items-center justify-between">
             <div className="toscore-main-base-info">
               {imageURI && canLoadAvatar ? (
                 <img
@@ -258,6 +254,13 @@ const Post = () => {
                 <div>@{currentProfile.handle ? currentProfile.handle : defaultKnn3Profile.handle}</div>
               </div>
             </div>
+
+            {/** Show follow button only when it's knn3 */}
+            {!currentProfile.handle && <Follow
+                profileId={currentProfile.profileId}
+                handle={currentProfile.handle}
+            />}
+            
           </div>
 
           <div className="top-rador">
