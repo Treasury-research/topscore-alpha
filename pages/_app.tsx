@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Web3ContextProvider>
         <Head>
           <title>
-            2022 Wrapped on Lens
+            Unlock your web3 social presence with #TopScore!
           </title>
           <link rel="icon" href="/topIcon.png" />
         </Head>
