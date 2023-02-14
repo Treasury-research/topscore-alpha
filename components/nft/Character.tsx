@@ -115,6 +115,8 @@ const Character = (props: any) => {
 
     const [showShareBtn, setShowShareBtn] = useState(true);
 
+    const [showPic, setShowPic] = useState(false);
+
     const getRadar = async (profileId: string) => {
         const res: any = await api.get(`/lens/scores/${profileId}`);
         if(!res || !res.data) return false;
@@ -133,6 +135,9 @@ const Character = (props: any) => {
         } else {
             setImgUrl(haveSharePic[str || 'NoImg'])
         }
+        setTimeout(() => {
+            setShowPic(true)
+        },3000)
     };
 
     const getIndicators = async (profileId: string) => {
@@ -310,13 +315,13 @@ const Character = (props: any) => {
             {
                 account && imgUrl &&
                 <div className="h-[800px]">
-                    <Image src={imgUrl} alt="" />
-                    <div className="character-rank text-[30px]">{userInfo.rank}</div>
-                    <div className="character-lens text-[30px]">{currentProfile && currentProfile.handle ? currentProfile.handle : 'knn3_network.lens'}</div>
-                    <div className="character-score text-[30px]">{new BN(userInfo.score).toFixed(2)}</div>
+                    <Image src={imgUrl} alt="" className={`${showPic ? '' : 'hidden'}`}/>
+                    <div className={`character-rank text-[30px] ${showPic ? '' : 'hidden'}`}>{userInfo.rank}</div>
+                    <div className={`character-lens text-[30px] ${showPic ? '' : 'hidden'}`}>{currentProfile && currentProfile.handle ? currentProfile.handle : 'knn3_network.lens'}</div>
+                    <div className={`character-score text-[30px] ${showPic ? '' : 'hidden'}`}>{new BN(userInfo.score).toFixed(2)}</div>
                     {
                         showShareBtn && account ?
-                            (<div className="char-share-btnGroup">
+                            (<div className={`char-share-btnGroup ${showPic ? '' : 'hidden'}`}>
                                 <div>
                                     <LensterShareButton
                                         title={`🔥 Unlock your web3 social presence with #TopScore! Stand out from the crowd & explore your self-building potential! 🔗：@knn3_network #Lens`}
