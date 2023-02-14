@@ -28,7 +28,7 @@ const typeList = [
 const defaultKnn3Profile = {
   address: "0x09c85610154a276a71eb8a887e73c16072029b20",
   handle: "knn3_network.lens",
-  profileId: "5",
+  profileId: "101548",
   name: "KNN3 Network Official"
 }
 
