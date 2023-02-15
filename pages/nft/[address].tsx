@@ -75,7 +75,7 @@ const nft = ({
 
   const getAllNfts = async () => {
     // setLoading(true)
-    const res = await erc721Contract.getAll(config.contracts.nft);
+    const res = await erc721Contract.getAll(config.contracts.nft, address);
     // check if claimed
     const res2: any = await api.get("/v1/nft/query_ids", {
       params: {
@@ -103,6 +103,7 @@ const nft = ({
       console.log("open success");
       setActiveNftDetail(res.data)
       setIsShowPic(true)
+      getAllNfts();
       log('open_box', account)
     }
   };
@@ -113,12 +114,12 @@ const nft = ({
   }
 
   useEffect(() => {
-    if (!account) {
+    if (!address || !account) {
       return;
     }
     getAllNfts();
     setIsShow(true)
-  }, [account]);
+  }, [address, account]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -223,7 +224,7 @@ const nft = ({
                                             <div className="text-top">YOUR 2022 WRAPPED ON LENS</div>
                                             <div className="text-bot">MYSTERY BOH</div>
                                           </div>
-                                          <div className="pic-open-btn">
+                                          {address === account && <div className="pic-open-btn">
                                             <div className="arrow">
                                               <Image src={ImgToRight} alt="" />
                                             </div>
@@ -241,7 +242,7 @@ const nft = ({
                                             <div className="arrow">
                                               <Image src={ImgToLeft} alt="" />
                                             </div>
-                                          </div>
+                                          </div>}
                                         </div>
                                       )
                                     )}
