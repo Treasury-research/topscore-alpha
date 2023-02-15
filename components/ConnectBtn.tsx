@@ -93,6 +93,12 @@ const ConnectBtn = () => {
     }
   };
 
+  const gotoMyNft = () => {
+    if (account && currentProfile.profileId) {
+      router.push(`/nft/${account}?profileId=${currentProfile.profileId}`)
+    }
+  }
+
   useEffect(() => {
     checkKnn3Token();
     const intervalId = setInterval(() => {
@@ -117,32 +123,43 @@ const ConnectBtn = () => {
               Switch to polygon
             </button>
           ) : (
-            knn3TokenValid && <Popover
-              content={
-                <div>
-                  <div className="text-[14px]">Logged in as</div>
-                  <div className="text-[#CE3900] border-b-[1px] pb-[4px] border-[#4A4A4A] font-[600] text-[16px]">
-                    @{currentProfile.handle}
-                  </div>
-                  <div>
-                    <div
-                      onClick={() => handleShowModal(true, 2)}
-                      className="cursor-pointer my-[10px] flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]"
-                    >
-                      Switch Profile
-                    </div>
-                    <div onClick={doLogout} className="cursor-pointer flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]">
-                      Logout
-                    </div>
-                  </div>
-                </div>
+            knn3TokenValid && 
+            <>
+              {
+                router.query.address !== account && router.pathname === '/nft/[address]' && profileList.length > 0 &&
+                <button className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]" onClick={() => gotoMyNft()}>
+                   check my nft
+                </button>
               }
-              placement="bottom"
-            >
-              <button className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]">
-                {shortenAddr(account)}
-              </button>
-            </Popover>
+              <Popover
+                content={
+                  <div>
+                    <div className="text-[14px]">Logged in as</div>
+                    <div className="text-[#CE3900] border-b-[1px] pb-[4px] border-[#4A4A4A] font-[600] text-[16px]">
+                      @{currentProfile.handle}
+                    </div>
+                    <div>
+                      <div
+                        onClick={() => handleShowModal(true, 2)}
+                        className="cursor-pointer my-[10px] flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]"
+                      >
+                        Switch Profile
+                      </div>
+                      <div onClick={doLogout} className="cursor-pointer flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]">
+                        Logout
+                      </div>
+                    </div>
+                  </div>
+                }
+                placement="bottom"
+              >
+                <button className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]">
+                  {shortenAddr(account)}
+                </button>
+              </Popover>
+            </>
+
+            
           )}
         </>
       ) : (
