@@ -374,14 +374,14 @@ const rmodynamics = () => {
                 </div>
                 <div className="w-[calc(100%-800px)] mt-[10px]">
                     <div className="flex min-w-50 max-w-100">
-                        <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer ${week[0] === '01/30' ? 'cursor-[not-allowed]' : ''}`} onClick={getLastWeek}><LeftOutlined /></div>
+                        <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] ${week[0] === '01/30' ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getLastWeek}><LeftOutlined /></div>
                         <div className="w-[calc(100%-100px)] mx-5 h-10 bg-[rgb(41,41,41)] flex items-center justify-center">
                             {
                                 week.length !== 0 &&
                                 <span>{week[0]}-{week[1]}</span>
                             }
                         </div>
-                        <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer ${weekCount == 0 ? 'cursor-[not-allowed]' : ''}`} onClick={getNextWeek}><RightOutlined /></div>
+                        <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] ${weekCount == 0 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getNextWeek}><RightOutlined /></div>
                     </div>
                     <div className="px-6 py-4 bg-[rgb(41,41,41)] mt-10 rounded-[10px]">
                         {
