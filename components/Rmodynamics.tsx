@@ -224,6 +224,9 @@ const rmodynamics = () => {
             }
         })
         let lv = maxMount / 5;
+        if(lv === 0){
+            return 'bg-[#232323]'
+        }
         if (totalMount < lv) {
             return 'bg-[#311C17]'
         } else if (lv <= totalMount && totalMount < lv * 2) {
