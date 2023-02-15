@@ -21,6 +21,8 @@ export default function App({ Component, pageProps }: AppProps) {
       <Web3ContextProvider>
         <Head>
           <title>TopScore - Unlock Your Web3 Social Presence</title>
+          <meta name="keywords" content="TopScore, KNN3, Lens, Web3 Social, Crypto, Ethereum, Bitcoin, Polygon, dApp" />
+          <meta name="description" content="TopScore revolutionizes Web3 social strategy by providing data-driven insights and guidance to help you create, build, and monetize more efficiently and scientifically." />
           <link rel="icon" href="/topIcon.png" />
         </Head>
         <Component {...pageProps} />

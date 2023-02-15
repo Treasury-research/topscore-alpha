@@ -71,7 +71,7 @@ const Create = () => {
 
     return (
         <>
-            <div className="absolute top-[20px] text-[24px]">Create</div>
+            <div className="absolute top-[20px] text-[24px]">Dashboard</div>
             {
                 !loadingProfileList && !loadingNftBalance && (profileList.length === 0 || nftList.length == 0) && account &&
                 <div className="permission-modal">
