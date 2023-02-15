@@ -22,7 +22,7 @@ const ConnectBtn = () => {
     useRecoilState<any>(currentProfileState);
 
   useEffect(() => {
-    if (!account) {
+    if (!account || profileList.length > 0) {
       return;
     }
     getLensHandle();
@@ -35,6 +35,7 @@ const ConnectBtn = () => {
   }, [profileList]);
 
   const getLensHandle = async () => {
+    console.log('ready to get handlddddd')
     setLoadingProfileList(true)
     const res: any = await api.get(`/lens/handles/${account}`);
     setProfileList(res.data);
