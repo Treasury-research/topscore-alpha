@@ -35,7 +35,6 @@ const ConnectBtn = () => {
   }, [profileList]);
 
   const getLensHandle = async () => {
-    console.log('ready to get handlddddd')
     setLoadingProfileList(true)
     const res: any = await api.get(`/lens/handles/${account}`);
     setProfileList(res.data);
@@ -128,7 +127,7 @@ const ConnectBtn = () => {
               {
                 router.query.address !== account && router.pathname === '/nft/[address]' && profileList.length > 0 &&
                 <button className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]" onClick={() => gotoMyNft()}>
-                   check my nft
+                   Check My NFT
                 </button>
               }
               <Popover

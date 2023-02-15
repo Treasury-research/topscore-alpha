@@ -144,7 +144,7 @@ const nft = ({
       getActiveProfile(address, queryProfileId);
       setActiveAddress(address)
     }
-  }, [currentProfile])
+  }, [currentProfile, pId])
 
   return (
     <div className="w-full h-full bg-[#000] flex">

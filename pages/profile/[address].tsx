@@ -204,6 +204,9 @@ const Post = () => {
   };
 
   useEffect(() => {
+    if(loadingProfileList){
+      return
+    }
     const { profileId } = currentProfile;
     if (!profileId) {
       getUserInfo(defaultKnn3Profile.profileId);
@@ -215,7 +218,7 @@ const Post = () => {
     } else {
       getProfileByHandle(defaultKnn3Profile.handle)
     }
-  }, [currentProfile]);
+  }, [currentProfile, loadingProfileList]);
 
   useEffect(() => {
     log('visit_profile', account)
@@ -260,16 +263,18 @@ const Post = () => {
                   alt=""
                 />
               )}
-              <div>
+
+              {!loadingProfileList && <div>
                 <div>
                   <span className="space">{(currentProfile.name || currentProfile.handle) ? (currentProfile.name || currentProfile.handle) : defaultKnn3Profile.name}</span>
                 </div>
                 <div>@{currentProfile.handle ? currentProfile.handle : defaultKnn3Profile.handle}</div>
-              </div>
+              </div>}
+              
             </div>
 
             {/** Show follow button only when it's knn3 */}
-            {!currentProfile.handle && account && <Follow
+            {!currentProfile.handle && account && !loadingProfileList && <Follow
                 profileId={currentProfile.profileId}
                 handle={currentProfile.handle}
             />}
