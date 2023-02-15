@@ -212,7 +212,7 @@ const nft = ({
                                     {t.map((item: any) =>
                                       item.is_open === 1 ? (
                                         <div className="pic-item" onClick={() => doPreview(item)}>
-                                          <img src={item.token_uri} className="cursor-pointer" />
+                                          <img src={item.token_uri} className="cursor-pointer h-[200px] w-[200px] mb-[20px]" />
                                           <div className="pic-open-btn">
                                             <div className="reveal">#{item.id}</div>
                                           </div>
