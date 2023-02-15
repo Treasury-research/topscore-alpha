@@ -150,10 +150,10 @@ const nft = ({
     <div className="w-full h-full bg-[#000] flex">
      <Head>
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Unlock your web3 social presence with TopScore！" />
+        <meta name="twitter:title" content="TopScore - Unlock Your Web3 Social Presence" />
         <meta
           name="twitter:description"
-          content="TopScore - a user-friendly tool that enables users to create, build, and earn their social presence."
+          content="TopScore - a user-friendly tool that enables users to create, build, and monetize their social presence."
         />
         <meta
           property="twitter:image"
@@ -162,7 +162,7 @@ const nft = ({
         <meta property="og:title" content="Unlock your web3 social presence with TopScore！" />
         <meta
           property="og:description"
-          content="TopScore - a user-friendly tool that enables users to create, build, and earn their social presence."
+          content="TopScore - a user-friendly tool that enables users to create, build, and monetize their social presence."
         />
         <meta
           property="og:image"

@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <RecoilRoot>
       <Web3ContextProvider>
         <Head>
-          <title>Unlock your web3 social presence with #TopScore!</title>
+          <title>TopScore - Unlock Your Web3 Social Presence</title>
           <link rel="icon" href="/topIcon.png" />
         </Head>
         <Component {...pageProps} />

@@ -150,7 +150,7 @@ const Create = () => {
                             </div>
                         </div>
                         <div className="w-[300px] p-4 bg-[#1A1A1A] text-[rgba(255,255,255,0.5)] mr-10 rounded-[10px]">
-                            <div className="mb-2">Campaign</div>
+                            <div className="mb-2">Campaigner</div>
                             <div className="mb-1 text-[24px] text-[rgba(255,255,255,0.9)]">#{JSON.stringify(scores) !== '{}' ? scores.now.pr_rank_compaign : '-'}</div>
                             <div className="flex items-center">
                                 {

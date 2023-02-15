@@ -38,7 +38,7 @@ const ConnectBtn = () => {
     setLoadingProfileList(true)
     const res: any = await api.get(`/lens/handles/${account}`);
     setProfileList(res.data);
-    if(res.data.length > 0){
+    if(res.data.length > 0 && !currentProfile.handle){
       setCurrentProfile(res.data[0]);
     }
     setLoadingProfileList(false);
