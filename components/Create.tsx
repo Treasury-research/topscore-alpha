@@ -17,18 +17,7 @@ import useWeb3Context from "../hooks/useWeb3Context";
 import { currentProfileState, profileListState, loadingProfileListState } from "../store/state";
 
 const Create = () => {
-    const [scores, setScores] = useState<any>({
-        lastWeek: {
-            pr_rank_creator: 0,
-            pr_rank_engager: 0,
-            pr_rank_compaign: 0
-        },
-        now: {
-            pr_rank_creator: 0,
-            pr_rank_engager: 0,
-            pr_rank_compaign: 0
-        }
-    });
+    const [scores, setScores] = useState<any>({});
     const [loadingScores, setLoadingScores] = useState<boolean>(false);
     const [currentProfile] = useRecoilState<any>(currentProfileState);
     const [loadingProfileList] = useRecoilState<any>(loadingProfileListState)
@@ -132,47 +121,47 @@ const Create = () => {
                     {loadingScores ? <LoadingOutlined className="text-2xl block mx-auto my-4" /> : <>
                         <div className="w-[300px] p-4 bg-[#1A1A1A] text-[rgba(255,255,255,0.5)] mr-10">
                             <div className="mb-2">Creator</div>
-                            <div className="mb-1 text-[24px] text-[rgba(255,255,255,0.9)]">#{scores.now.pr_rank_creator}</div>
+                            <div className="mb-1 text-[24px] text-[rgba(255,255,255,0.9)]">#{JSON.stringify(scores) !== '{}' ? scores.now.pr_rank_creator : '-'}</div>
                             <div className="flex items-center">
                                 {
-                                    scores.lastWeek.pr_rank_creator - scores.now.pr_rank_creator < 0 &&
+                                    JSON.stringify(scores) !== '{}' && scores.lastWeek.pr_rank_creator - scores.now.pr_rank_creator < 0 &&
                                     <CaretDownOutlined className="creat-down-icon"/>
                                 }
                                 {
-                                    scores.lastWeek.pr_rank_creator - scores.now.pr_rank_creator > 0 &&
+                                    JSON.stringify(scores) !== '{}' && scores.lastWeek.pr_rank_creator - scores.now.pr_rank_creator > 0 &&
                                     <CaretUpOutlined className="creat-up-icon" />
                                 }
-                                <span>{Math.abs(scores.lastWeek.pr_rank_creator - scores.now.pr_rank_creator)} this week</span>
+                                <span>{JSON.stringify(scores) !== '{}' ? Math.abs(scores.lastWeek.pr_rank_creator - scores.now.pr_rank_creator) : '-'} this week</span>
                             </div>
                         </div>
                         <div className="w-[300px] p-4 bg-[#1A1A1A] text-[rgba(255,255,255,0.5)] mr-10">
                             <div className="mb-2">Engager</div>
-                            <div className="mb-1 text-[24px] text-[rgba(255,255,255,0.9)]">#{scores.now.pr_rank_engager}</div>
+                            <div className="mb-1 text-[24px] text-[rgba(255,255,255,0.9)]">#{JSON.stringify(scores) !== '{}' ? scores.now.pr_rank_engager : '-'}</div>
                             <div className="flex items-center">
                                 {
-                                    scores.lastWeek.pr_rank_engager - scores.now.pr_rank_engager < 0 &&
+                                    JSON.stringify(scores) !== '{}' && scores.lastWeek.pr_rank_engager - scores.now.pr_rank_engager < 0 &&
                                     <CaretDownOutlined className="creat-down-icon" />
                                 }
                                 {
-                                    scores.lastWeek.pr_rank_engager - scores.now.pr_rank_engager > 0 &&
+                                    JSON.stringify(scores) !== '{}' && scores.lastWeek.pr_rank_engager - scores.now.pr_rank_engager > 0 &&
                                     <CaretUpOutlined className="creat-up-icon" />
                                 }
-                                <span>{Math.abs(scores.lastWeek.pr_rank_engager - scores.now.pr_rank_engager)} this week</span>
+                                <span>{JSON.stringify(scores) !== '{}' ? Math.abs(scores.lastWeek.pr_rank_engager - scores.now.pr_rank_engager) : '-'} this week</span>
                             </div>
                         </div>
                         <div className="w-[300px] p-4 bg-[#1A1A1A] text-[rgba(255,255,255,0.5)] mr-10">
                             <div className="mb-2">Campaign</div>
-                            <div className="mb-1 text-[24px] text-[rgba(255,255,255,0.9)]">#{scores.now.pr_rank_compaign}</div>
+                            <div className="mb-1 text-[24px] text-[rgba(255,255,255,0.9)]">#{JSON.stringify(scores) !== '{}' ? scores.now.pr_rank_compaign : '-'}</div>
                             <div className="flex items-center">
                                 {
-                                    scores.lastWeek.pr_rank_compaign - scores.now.pr_rank_compaign < 0 &&
+                                    JSON.stringify(scores) !== '{}' && scores.lastWeek.pr_rank_compaign - scores.now.pr_rank_compaign < 0 &&
                                     <CaretDownOutlined className="creat-down-icon" />
                                 }
                                 {
-                                    scores.lastWeek.pr_rank_compaign - scores.now.pr_rank_compaign > 0 &&
+                                    JSON.stringify(scores) !== '{}' && scores.lastWeek.pr_rank_compaign - scores.now.pr_rank_compaign > 0 &&
                                     <CaretUpOutlined className="creat-up-icon" />
                                 }
-                                <span>{Math.abs(scores.lastWeek.pr_rank_compaign - scores.now.pr_rank_compaign)} this week</span>
+                                <span>{JSON.stringify(scores) !== '{}' ? Math.abs(scores.lastWeek.pr_rank_compaign - scores.now.pr_rank_compaign) : '-'} this week</span>
                             </div>
                         </div>
                     </>}
