@@ -10,7 +10,7 @@ import IconVolume from '../statics/img/volume.svg'
 import moment from 'moment'
 import BN from "bignumber.js";
 
-const dys = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+const dys = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 let maxRemoData: any = [0, 0, 0, 0, 0]
 
@@ -32,13 +32,7 @@ const rmodynamics = () => {
 
     const [currentDate, setCurrentDate] = useState<any>([]);
 
-    const [totalAmount, setTotalAmount] = useState<any>({
-        postCount: 0,
-        commentCount: 0,
-        mirrorCount: 0,
-        collectCount: 0,
-        collectFee: 0
-    });
+    const [totalAmount, setTotalAmount] = useState<any>();
 
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -101,11 +95,11 @@ const rmodynamics = () => {
         const dHour = parseInt(moment().format('HH'))
         for (let i = 0; i < 7; i++) {
             for (let j = 0; j < 24; j++) {
-                if ((dWeek > i + 1 || (dWeek === i+1 && dHour > j)) && weekCount === 0) {
+                if ((dWeek > i + 1 || (dWeek === i + 1 && dHour > j)) && weekCount === 0) {
                     rem[i].push('noData')
-                } else if(weekCount !== 0) {
+                } else if (weekCount !== 0) {
                     rem[i].push('noData')
-                }else{
+                } else {
                     rem[i].push(null)
                 }
             }
@@ -254,7 +248,7 @@ const rmodynamics = () => {
         return (
             <div>
                 {
-                    e !== 'noData' && 
+                    e !== 'noData' &&
                     <p className="text-[18px] font-[600]">
                         {e[5] ? strDate.slice(0, 4) + '/' + strDate.slice(4, 6) + '/' + strDate.slice(6, 8) : ''}
                     </p>
@@ -319,7 +313,7 @@ const rmodynamics = () => {
                     tabs.map((t: any, i: number) => (
                         <div onClick={() => setActiveTab(i)} key={i} className={`px-[30px] pb-[6px] cursor-pointer ${activeTab === i ? 'pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px]' : 'pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px]'}`}>{t}</div>
                     ))
-                }        
+                }
             </div>
             <div className="flex bg-[#1A1A1A] p-5 w-full">
                 <div className="w-[780px] flex-shrink-0">
@@ -332,7 +326,7 @@ const rmodynamics = () => {
                                     {
                                         remodyBaseData.map((t: any, i: number) => (
                                             <div className="flex mb-[1px]" key={i}>
-                                                <div className="text-[12px] w-[20px] h-[30px] flex items-center">{dys[i]}</div>
+                                                <div className="text-[12px] w-[40px] h-[30px] flex items-center">{dys[i]}</div>
                                                 {
                                                     t.map((item: any, index: number) => (
                                                         (!item || !checked.includes(true)) ?
@@ -380,14 +374,14 @@ const rmodynamics = () => {
                 </div>
                 <div className="w-[calc(100%-800px)] mt-[10px]">
                     <div className="flex min-w-50 max-w-100">
-                        <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer ${week[0] === '01/30' ? 'cursor-[not-allowed]' : ''}`} onClick={getLastWeek}><LeftOutlined /></div>
+                        <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] ${week[0] === '01/30' ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getLastWeek}><LeftOutlined /></div>
                         <div className="w-[calc(100%-100px)] mx-5 h-10 bg-[rgb(41,41,41)] flex items-center justify-center">
                             {
                                 week.length !== 0 &&
                                 <span>{week[0]}-{week[1]}</span>
                             }
                         </div>
-                        <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] cursor-pointer ${weekCount == 0 ? 'cursor-[not-allowed]' : ''}`} onClick={getNextWeek}><RightOutlined /></div>
+                        <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] ${weekCount == 0 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getNextWeek}><RightOutlined /></div>
                     </div>
                     <div className="px-6 py-4 bg-[rgb(41,41,41)] mt-10 rounded-[10px]">
                         {
@@ -398,7 +392,7 @@ const rmodynamics = () => {
                                         <span className="text-[#fff] text-[16px]">Post</span>
                                     </Checkbox>
                                 </div>
-                                <div className="ml-[auto]">{new BN(totalAmount.postCount).toFormat() || '-'}</div>
+                                <div className="ml-[auto]">{(totalAmount && (totalAmount.postCount || totalAmount.postCount === 0)) ? new BN(totalAmount.postCount).toFormat() : '-'}</div>
                             </div>
                         }
                         <div className="flex mb-2">
@@ -407,7 +401,7 @@ const rmodynamics = () => {
                                     <span className="text-[#fff] text-[16px]">Comment {activeTab == 1 ? '(by)' : ''}</span>
                                 </Checkbox>
                             </div>
-                            <div className="ml-[auto]">{new BN(totalAmount.commentCount).toFormat()}</div>
+                            <div className="ml-[auto]">{(totalAmount && (totalAmount.commentCount || totalAmount.commentCount === 0)) ? new BN(totalAmount.commentCount).toFormat() : '-'}</div>
                         </div>
                         <div className="flex mb-2">
                             <div>
@@ -415,7 +409,7 @@ const rmodynamics = () => {
                                     <span className="text-[#fff] text-[16px]">Mirror {activeTab == 1 ? '(by)' : ''}</span>
                                 </Checkbox>
                             </div>
-                            <div className="ml-[auto]">{new BN(totalAmount.mirrorCount).toFormat()}</div>
+                            <div className="ml-[auto]">{(totalAmount && (totalAmount.mirrorCount || totalAmount.mirrorCount === 0)) ? new BN(totalAmount.mirrorCount).toFormat() : '-'}</div>
                         </div>
                         <div className="flex mb-2">
                             <div>
@@ -423,7 +417,7 @@ const rmodynamics = () => {
                                     <span className="text-[#fff] text-[16px]">Collect {activeTab == 1 ? '(by)' : ''}</span>
                                 </Checkbox>
                             </div>
-                            <div className="ml-[auto]">{new BN(totalAmount.collectCount).toFormat()}</div>
+                            <div className="ml-[auto]">{(totalAmount && (totalAmount.collectCount || totalAmount.collectCount === 0)) ? new BN(totalAmount.collectCount).toFormat() : '-'}</div>
                         </div>
                         <div className="flex">
                             <div>
@@ -436,7 +430,7 @@ const rmodynamics = () => {
                                     className="mr-1 h-5 w-5 mr-2"
                                     src={IconVolume}
                                     alt=""
-                                /><span>{Number(totalAmount.collectFee).toFixed()}
+                                /><span>{(totalAmount && (totalAmount.collectFee || totalAmount.collectFee === 0)) ? Number(totalAmount.collectFee).toFixed(2) : '-'}
                                 </span>
                             </div>
                         </div>

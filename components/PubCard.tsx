@@ -50,6 +50,7 @@ const PubCard = (props: any) => {
         newList.push(res.data.slice(i, i + 3));
       }
       const data: any = DivideArrayEquallyInto4Parts(res.data)
+      console.log(data)
       setPubData(data)
     }
   };
@@ -57,11 +58,11 @@ const PubCard = (props: any) => {
   const DivideArrayEquallyInto4Parts = (s: any) => {
     if (s.length >= 4) {
       let arr1, arr2, arr3, arr4;
-      arr1 = s.slice(0, Math.round(s.length / 4));
+      arr1 = s.slice(0, Math.ceil(s.length / 4));
       arr2 = s.slice(Math.round(s.length / 4), Math.round(s.length / 4) * 2);
       arr3 = s.slice(Math.round(s.length / 4) * 2, Math.round(s.length / 4) * 3);
       arr4 = s.slice(Math.round(s.length / 4) * 3);
-      return [arr1, arr2, arr3, arr4];
+      return [arr4, arr3, arr2, arr1];
     } else if (s.length == 3) {
       return [[s[0]], [s[1]], [s[2]]];
     }

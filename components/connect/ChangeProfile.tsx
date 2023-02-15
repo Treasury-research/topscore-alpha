@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Switch, Input, Select, InputNumber } from 'antd';
+import { formatIPFS } from "../../lib/tool";
+import lensApi from "../../api/lensApi";
 import Image from 'next/image'
 import Plogin from '../../statics/img/login-head-icon.png'
 import P1 from '../../statics/img/Lens.svg'
@@ -8,20 +10,22 @@ import { profileListState, currentProfileState } from "../../store/state";
 import { useRouter } from "next/router";
 import useWeb3Context from "../../hooks/useWeb3Context";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { CloseOutlined,CheckOutlined } from "@ant-design/icons";
+import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
+import ImgLenster from '../../statics/img/lest-head.png'
 
 const ChangeProfile = (props: any) => {
     const profileList = useRecoilValue(profileListState);
     const { account } = useWeb3Context();
     const [currentProfile, setCurrentProfile] = useRecoilState(currentProfileState);
+    const [canLoadAvatar, setCanLoadAvatar] = useState(true);
     const router = useRouter();
 
     const afterChangeProfile = (profileId: number) => {
         // 如果在 profile 页面，把 profile 也切换掉。
         if (router.pathname === "/profile/[address]") {
-          router.push(`/profile/${account}?queryProfileId=${profileId}`);
+            router.push(`/profile/${account}?queryProfileId=${profileId}`);
         }
-      };
+    };
 
     const handleOk = () => {
         props.onCancel();
@@ -30,6 +34,11 @@ const ChangeProfile = (props: any) => {
     const handleCancel = () => {
         props.onCancel();
     };
+
+    const getImgUrl = (str: string) => {
+        const imgUrl = str.replace("https://ipfs.infura.io", "https://lens.infura-ipfs.io")
+        return imgUrl
+    }
 
     return (
         <Modal title="Basic Modal" open={true} onOk={handleOk} onCancel={handleCancel}>
@@ -46,11 +55,24 @@ const ChangeProfile = (props: any) => {
                     {profileList.map((t: any, i: number) => (
                         <div
                             key={i}
-
-                            onClick={() =>{ setCurrentProfile(t); afterChangeProfile(t.profileId); handleOk()}}
-                            className="cursor-pointer flex items-center px-1 rounded-[4px] hover:bg-[#555555]"
+                            onClick={() => { setCurrentProfile(t); afterChangeProfile(t.profileId); handleOk() }}
+                            className="cursor-pointer flex py-1 items-center px-1 rounded-[4px] hover:bg-[#555555]"
                         >
-                            {t.handle}
+                            {
+                                t.imageURI &&
+                                <img
+                                    className="w-[30px] h-[30px] rounded-[15px] mr-2"
+                                    src={getImgUrl(t.imageURI)}
+                                    alt="" />
+                            }
+                            {
+                                !t.imageURI &&
+                                <Image
+                                    className="w-[30px] h-[30px] rounded-[15px] mr-2"
+                                    src={ImgLenster}
+                                    alt="" />
+                            }
+                            <span>{t.handle}</span>
                             {currentProfile.profileId === t.profileId && <CheckOutlined className="ml-[auto]" />}
                         </div>
                     ))}

@@ -699,6 +699,10 @@
     right: 280px;
     top: 610px;
 
+    img {
+      border-radius: 20px;
+    }
+
     >div {
       float: left;
       height: 40px;
@@ -808,26 +812,31 @@
   }
 }
 
-.slick-track{
+.slick-track {
   height: 300px !important;
 }
 
-.creat-up-icon svg{
+.creat-up-icon svg {
   color: green !important;
 }
 
-.creat-down-icon svg{
+.creat-down-icon svg {
   color: red !important;
 }
 
-.nft-loading{
+.nft-loading {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 
-.engage-head-fee-score-num{
+.engage-head-fee-score-num {
   min-width: 40px;
 }
+
+.profile-drawer .ant-drawer-mask {
+  display: none !important;
+}
+
 // permission-modal-content absolute left-[50%] top-[40%] z-100 text-[#fff] bg-[#292929] w-[500px] translate-[-50%,-50%]

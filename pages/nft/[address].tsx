@@ -83,7 +83,7 @@ const nft = ({
       },
     });
     // setLoading(false)
-    if (res2.data.length > 0) {
+    if (res2 && res2.data && res2.data.length > 0) {
       setTotal(res2.data.length);
       let newList: any = [];
       for (var i = 0; i < res2.data.length; i += 4) {
@@ -123,7 +123,7 @@ const nft = ({
   useEffect(() => {
     setTimeout(() => {
       setVideoUrl('/vedio_rainbow.mp4')
-    }, 1500)
+    }, 500)
   }, []);
 
   useEffect(() => {

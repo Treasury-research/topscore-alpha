@@ -219,6 +219,10 @@ const Post = () => {
   }, [])
 
   useEffect(() => {
+    setShowList(true)
+  }, [])
+
+  useEffect(() => {
     if (account) {
       if (profileList.length == 0 && !loadingProfileList) {
         message.info("You must have a Lens Protocol Profile");
@@ -356,10 +360,11 @@ const Post = () => {
             <Drawer
               title=""
               className="profile-tips"
+              rootClassName="profile-drawer"
               placement="right"
               open={showList}
               closable={false}
-              onClose={onClose}
+              onClose={() => onClose()}
             >
               <div>
                 <div className="drawer flex">
@@ -395,16 +400,16 @@ const Post = () => {
                       </div>
                     </Dropdown>
                   </div>
-                  <div onClick={onClose} className="ml-[auto] cursor-pointer text-[18px] bg-[#262626] text-[#fff] h-10 w-10 flex justify-center items-center rounded-[4px]">
+                  <div onClick={() => onClose()} className="ml-[auto] cursor-pointer text-[18px] bg-[#262626] text-[#fff] h-10 w-10 flex justify-center items-center rounded-[4px]">
                     <CloseOutlined />
                   </div>
                 </div>
                 <div className="bg-[#262626] mt-2 rounded-[4px] py-3 pl-5 text-[rgba(255,255,255,1)]">
                   <div className="text-[#D1D1D1]">Score</div>
-                  <div className="text-[24px] mb-4">{new BN(getItemScore()).toFixed(2)}</div>
+                  <div className="text-[24px] mb-4">{new BN(getItemScore() || 0).toFixed(2) || 0}</div>
                   {/* <div className="text-[#D1D1D1] text-[12px] mb-4">- 2  this week</div> */}
                   <div className="text-[#D1D1D1]">Rank</div>
-                  <div className="text-[24px]">{getItemRank()}</div>
+                  <div className="text-[24px]">{getItemRank() || 0}</div>
                   {/* <div className="text-[#D1D1D1] text-[12px]">- 2  this week</div> */}
                 </div>
               </div>
