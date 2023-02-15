@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import useWeb3Context from "../hooks/useWeb3Context";
 import Router, { useRouter } from "next/router";
+import Socials from "./Socials";
 import IconSelect1 from '../statics/img/select/icon1.svg'
 import IconSelect2 from '../statics/img/select/icon2.svg'
 import IconSelect3 from '../statics/img/select/icon3.svg'
@@ -56,7 +57,8 @@ const Navbar = () => {
     }
 
     return (
-        <div className='h-full leading-20 pl-6 pr-6 pt-10 bg-[#1A1A1A]'>
+        <div className='h-full leading-20 pl-6 pr-6 pt-10 bg-[#1A1A1A] flex flex-col justify-between'>
+            <div>
             <div className="flex items-center mb-10 ml-[-10px]">
                 <Image
                     className="mr-1 h-8 w-8"
@@ -102,6 +104,9 @@ const Navbar = () => {
                     </div>
                 ))
             }
+            </div>
+
+            <Socials />
         </div>
     )
 }
