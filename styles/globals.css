@@ -32,6 +32,18 @@
 	src: url("../accests/font/EURBLACK/EurostileExtendedBlack.ttf");
 }
 
+@font-face {
+	font-family: "EurBlack";
+	font-weight: 500;
+	src: url("../accests/font/EURBLACK/EurostileExtendedBlack.ttf");
+}
+
+@font-face {
+	font-family: "Liber";
+	font-weight: 500;
+	src: url("../accests/font/Liber/LiberationMono-Regular.ttf");
+}
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;

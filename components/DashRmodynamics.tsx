@@ -432,7 +432,7 @@ const rmodynamics = () => {
                                     {
                                         remodyBaseData.map((t: any, i: number) => (
                                             <div className="flex mb-[2px]" key={i}>
-                                                <div className="text-[10px] w-[40px] h-[14px] flex items-center">{dys[i]}</div>
+                                                <div className="text-[10px] w-[40px] h-[14px] flex items-center day-liber">{dys[i]}</div>
                                                 {
                                                     t.map((item: any, index: number) => (
                                                         (!item || (!item[0] && item[0] !== 0) || item === 'hidden') ?
