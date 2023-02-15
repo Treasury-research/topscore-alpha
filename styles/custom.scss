@@ -841,4 +841,24 @@
   display: none !important;
 }
 
+.radar-name1,.radar-name2,.radar-name3,.radar-name4,.radar-name5,.radar-name6{
+  position: absolute;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgb(35, 36, 41);
+  cursor: pointer;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  width: 100px;
+  z-index: 999;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.radar-name5{
+  width: 120px;
+}
+.radar-active{
+  border: 1px solid #fff;
+  color: rgba(255, 255, 255, 0.8);;
+}
 // permission-modal-content absolute left-[50%] top-[40%] z-100 text-[#fff] bg-[#292929] w-[500px] translate-[-50%,-50%]
