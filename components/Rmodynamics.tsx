@@ -321,7 +321,7 @@ const rmodynamics = () => {
                         loading ?
                             <LoadingOutlined className="text-2xl block mx-auto my-[130px]" />
                             : <>
-                                <div className="text-[18px] mb-[30px] mt-[10px]">Optima Post Time</div>
+                                <div className="text-[18px] mb-[30px] mt-[10px]">Weekly Heat Map</div>
                                 <div>
                                     {
                                         remodyBaseData.map((t: any, i: number) => (
