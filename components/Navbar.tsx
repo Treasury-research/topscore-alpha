@@ -22,7 +22,7 @@ import { currentProfileState } from "../store/state";
 import { useRecoilState } from "recoil";
 import { toast } from "react-toastify";
 
-const headerTabs = ['Profile', 'Create', 'Gallery', 'Circle', 'NFT']
+const headerTabs = ['Profile', 'Creation', 'Gallery', 'Circle', 'NFT']
 
 const imgSelectUrl = [IconSelect1, IconSelect2, IconSelect3, IconSelect4, IconSelect5]
 
@@ -71,7 +71,7 @@ const Navbar = () => {
                 headerTabs.map((t: string, i: number) => (
                     <div key={i} className={`${router.pathname.includes(t.toLocaleLowerCase()) ? 'bg-[rgb(46,35,28)] text-[rgba(255,255,255,0.9)]' : 'text-[rgba(255,255,255,0.5)]'} text-[#fff] h-14 flex items-center cursor-pointer hover:bg-[rgb(46,35,28)] w-[160px]`} onClick={() => setActiveTab(i)}>
                         {
-                            t === 'Create' || t === 'Profile' || t === 'NFT' ? (
+                            t === 'Creation' || t === 'Profile' || t === 'NFT' ? (
                                 <div className="w-full h-full flex items-center" onClick={() => getAddress(t)}>
                                     <div className="flex">
                                         <div className="w-[40px] flex mr-1">
