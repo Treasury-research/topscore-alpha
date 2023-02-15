@@ -119,7 +119,7 @@ const Create = () => {
                 {/* <PostEdit></PostEdit> */}
                 <div className="flex mb-10 mt-[60px]">
                     {loadingScores ? <LoadingOutlined className="text-2xl block mx-auto my-4" /> : <>
-                        <div className="w-[300px] p-4 bg-[#1A1A1A] text-[rgba(255,255,255,0.5)] mr-10">
+                        <div className="w-[300px] p-4 bg-[#1A1A1A] text-[rgba(255,255,255,0.5)] mr-10 rounded-[10px]">
                             <div className="mb-2">Creator</div>
                             <div className="mb-1 text-[24px] text-[rgba(255,255,255,0.9)]">#{JSON.stringify(scores) !== '{}' ? scores.now.pr_rank_creator : '-'}</div>
                             <div className="flex items-center">
@@ -134,7 +134,7 @@ const Create = () => {
                                 <span>{JSON.stringify(scores) !== '{}' ? Math.abs(scores.lastWeek.pr_rank_creator - scores.now.pr_rank_creator) : '-'} this week</span>
                             </div>
                         </div>
-                        <div className="w-[300px] p-4 bg-[#1A1A1A] text-[rgba(255,255,255,0.5)] mr-10">
+                        <div className="w-[300px] p-4 bg-[#1A1A1A] text-[rgba(255,255,255,0.5)] mr-10 rounded-[10px]">
                             <div className="mb-2">Engager</div>
                             <div className="mb-1 text-[24px] text-[rgba(255,255,255,0.9)]">#{JSON.stringify(scores) !== '{}' ? scores.now.pr_rank_engager : '-'}</div>
                             <div className="flex items-center">
@@ -149,7 +149,7 @@ const Create = () => {
                                 <span>{JSON.stringify(scores) !== '{}' ? Math.abs(scores.lastWeek.pr_rank_engager - scores.now.pr_rank_engager) : '-'} this week</span>
                             </div>
                         </div>
-                        <div className="w-[300px] p-4 bg-[#1A1A1A] text-[rgba(255,255,255,0.5)] mr-10">
+                        <div className="w-[300px] p-4 bg-[#1A1A1A] text-[rgba(255,255,255,0.5)] mr-10 rounded-[10px]">
                             <div className="mb-2">Campaign</div>
                             <div className="mb-1 text-[24px] text-[rgba(255,255,255,0.9)]">#{JSON.stringify(scores) !== '{}' ? scores.now.pr_rank_compaign : '-'}</div>
                             <div className="flex items-center">
