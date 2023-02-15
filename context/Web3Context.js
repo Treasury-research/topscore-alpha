@@ -5,7 +5,7 @@ import config from "../config";
 import { ethers } from "ethers";
 import lensApi from "../api/lensApi";
 import api from "../api";
-import { knn3TokenValidState } from "../store/state";
+import { knn3TokenValidState, currentProfileState } from "../store/state";
 import { useRecoilState } from "recoil";
 import { switchChain } from "../lib/tool";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -47,6 +47,7 @@ export const Web3ContextProvider = ({ children }) => {
   const [blockNumber, setBlockNumber] = useState("");
   const [knn3TokenValid, setKnn3TokenValid] =
     useRecoilState(knn3TokenValidState);
+  const [currentProfile, setCurrentProfile] = useRecoilState(currentProfileState)
 
   const listenProvider = (provider) => {
     provider.on("close", () => {
@@ -58,6 +59,7 @@ export const Web3ContextProvider = ({ children }) => {
       localStorage.removeItem("knn3RefreshToken");
       api.defaults.headers.authorization = "";
       setKnn3TokenValid(false);
+      setCurrentProfile('')
     });
     provider.on("chainChanged", (chainId) => {
       setChainId(parseInt(chainId, 16));
