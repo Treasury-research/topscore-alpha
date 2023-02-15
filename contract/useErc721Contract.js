@@ -63,16 +63,16 @@ export default function useERC721Contract() {
     },
 
     //TODO.need optimize , move to store
-    async getAll(nftAddress) {
+    async getAll(nftAddress, userAddress = account) {
       const contract = new web3.eth.Contract(Erc721Abi, nftAddress);
       // get total num
-      const num = await contract.methods.balanceOf(account).call();
+      const num = await contract.methods.balanceOf(userAddress).call();
 
       let list = [];
 
       for (let i = 0; i < num; i++) {
         const tokenId = await contract.methods
-          .tokenOfOwnerByIndex(account, i)
+          .tokenOfOwnerByIndex(userAddress, i)
           .call();
 
         console.log("to id", tokenId);
