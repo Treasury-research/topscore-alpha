@@ -40,11 +40,11 @@ const rmodynamics = () => {
 
     const [activeItems, setActiveItems] = useState<any>([]);
 
-    const [postTotal, setPostTotal] = useState(0);
+    const [postTotal, setPostTotal] = useState<any>();
 
-    const [commentTotal, setCommentTotal] = useState(0);
+    const [commentTotal, setCommentTotal] = useState<any>();
 
-    const [mirrorTotal, setMirrorTotal] = useState(0);
+    const [mirrorTotal, setMirrorTotal] = useState<any>();
 
     const [currentProfile] = useRecoilState<any>(currentProfileState);
 
@@ -475,7 +475,7 @@ const rmodynamics = () => {
                                     </div>
                                 }
                             </div>
-                            <div className="ml-[auto]">{postTotal + commentTotal + mirrorTotal}</div>
+                            <div className="ml-[auto]">{!isNaN(postTotal + commentTotal + mirrorTotal) ? postTotal + commentTotal + mirrorTotal : '-'}</div>
                         </div>
                         <div className="flex mb-2 ml-[20px]">
                             <div>
@@ -483,7 +483,7 @@ const rmodynamics = () => {
                                     <span className="text-[#fff] text-[16px]">Post</span>
                                 </Checkbox>
                             </div>
-                            <div className="ml-[auto]">{postTotal}</div>
+                            <div className="ml-[auto]">{postTotal || postTotal === 0 ? postTotal : '-'}</div>
                         </div>
                         <div className="flex mb-2 ml-[20px]">
                             <div>
@@ -491,7 +491,7 @@ const rmodynamics = () => {
                                     <span className="text-[#fff] text-[16px]">Comment</span>
                                 </Checkbox>
                             </div>
-                            <div className="ml-[auto]">{commentTotal}</div>
+                            <div className="ml-[auto]">{commentTotal || commentTotal === 0 ? commentTotal : '-'}</div>
                         </div>
                         <div className="flex mb-2 ml-[20px]">
                             <div>
@@ -499,7 +499,7 @@ const rmodynamics = () => {
                                     <span className="text-[#fff] text-[16px]">Mirror</span>
                                 </Checkbox>
                             </div>
-                            <div className="ml-[auto]">{mirrorTotal}</div>
+                            <div className="ml-[auto]">{mirrorTotal || mirrorTotal === 0 ? mirrorTotal : '-'}</div>
                         </div>
                     </div>
                 </div>
