@@ -69,6 +69,9 @@ const Post = () => {
     if (res && res.picture && res.picture.original && res.picture.original.url) {
       setImageURI(res.picture.original.url)
     }
+    if (res && res.picture && res.picture.uri) {
+      setImageURI(res.picture.uri)
+    }
     console.log('profile info', res)
   }
 
