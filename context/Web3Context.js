@@ -7,6 +7,7 @@ import lensApi from "../api/lensApi";
 import api from "../api";
 import { knn3TokenValidState } from "../store/state";
 import { useRecoilState } from "recoil";
+import { switchChain } from "../lib/tool";
 import { LoadingOutlined } from "@ant-design/icons";
 import useWeb3Modal from "../hooks/useWeb3Modal";
 
@@ -94,6 +95,8 @@ export const Web3ContextProvider = ({ children }) => {
 
       listenProvider(provider);
 
+      switchChain(config.chainId)
+
       return accounts[0];
     } catch (error) {
       setWeb3(new Web3(config.provider));
@@ -101,6 +104,12 @@ export const Web3ContextProvider = ({ children }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [web3Modal]);
+
+  useEffect(()=>{
+    if(chainId !== config.chainId){
+      switchChain(config.chainId)
+    }
+  }, [chainId])
 
   const resetWallet = useCallback(async () => {
     if (web3 && web3.currentProvider && web3.currentProvider.close) {
