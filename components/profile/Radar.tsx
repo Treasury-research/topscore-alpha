@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import * as echarts from 'echarts';
 import radorImg from '../../statics/img/radar.png'
 import Image from 'next/image'
@@ -8,8 +8,6 @@ import Image from 'next/image'
 
 const ChartLine = (props: any) => {
     const { optionsData = null, id = 'default-id', width = '100%', height = '100%', data = [], showTooltip } = props;
-    const [activeName, setActiveName] = useState('Influence');
-
     let dataBJ = data.map((t: any) => {
         t.max = 10;
         return t.value
@@ -22,7 +20,6 @@ const ChartLine = (props: any) => {
             },
             radar: {
                 axisName: {
-                    show: false,
                     color: 'rgba(255,255,255,.5)',
                     fontSize: 14,
                     backgroundColor: '#232429',
@@ -32,12 +29,12 @@ const ChartLine = (props: any) => {
                 indicator: data,
                 shape: 'circle',
                 splitNumber: 4,
-                // name: {
-                //     textStyle: {
-                //         color: '#ffffff',
-                //         fontSize: 16
-                //     }
-                // },
+                name: {
+                    textStyle: {
+                        color: '#ffffff',
+                        fontSize: 16
+                    }
+                },
                 splitLine: {
                     show: false,
                     lineStyle: {
@@ -105,12 +102,11 @@ const ChartLine = (props: any) => {
         };
         const HTMLElement = document.getElementById(id) as HTMLElement;
         const chart = echarts.init(HTMLElement);
-        // chart.on('click', function (param) {
-        //     if (param.targetType == "axisName") {
-        //         setActiveName(param.name)
-        //         props.showList(param.name)
-        //     }
-        // })
+        chart.on('click', function (param) {
+            if (param.targetType == "axisName") {
+                props.showList(param.name)
+            }
+        })
         chart.setOption(option);
         window.addEventListener("resize", () => {
             if (chart) {
@@ -119,24 +115,12 @@ const ChartLine = (props: any) => {
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [optionsData, data]);
-
-    const showRankDetail = (e:any) => {
-        setActiveName(e)
-        props.showList(e)
-    }
-
     return (
         <div style={{ width: width, height: height, position: "relative" }}>
             <div id={id} style={{ width: width, height: height, zIndex: '99' }}>
 
             </div>
             <Image src={radorImg} alt="" style={{ position: "absolute", height: "400px", width: "360px", zIndex: '9', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }} />
-            <div className={`${activeName === 'Influence' ? 'radar-name1 radar-active' : 'radar-name1'}`} style={{ left: '50%', top: '20px', transform: 'translate(-50%, 0)' }} onClick={() => showRankDetail('Influence')}>Influence</div>
-            <div className={`${activeName === 'Creation' ? 'radar-active radar-name2' : 'radar-name2'}`} style={{ right: '220px', top: '137px' }} onClick={() => showRankDetail('Creation')}>Creation</div>
-            <div className={`${activeName === 'Collection' ? 'radar-active radar-name3' : 'radar-name3'}`} style={{ right: '220px', bottom: '137px' }} onClick={() => showRankDetail('Collection')}>Collection</div>
-            <div className={`${activeName === 'Curation' ? 'radar-active radar-name4' : 'radar-name4'}`} style={{ left: '50%', bottom: '20px', transform: 'translate(-50%, 0)' }} onClick={() => showRankDetail('Curation')}>Curation</div>
-            <div className={`${activeName === 'Engagement' ? 'radar-active radar-name5' : 'radar-name5'}`} style={{ left: '200px', top: '137px' }} onClick={() => showRankDetail('Engagement')}>Engagement</div>
-            <div className={`${activeName === 'Campaign' ? 'radar-active radar-name6' : 'radar-name6'}`} style={{ left: '220px', bottom: '137px' }} onClick={() => showRankDetail('Campaign')}>Campaign</div>
         </div>
     );
 };
