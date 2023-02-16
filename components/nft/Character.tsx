@@ -173,7 +173,7 @@ const Character = (props: any) => {
         }
     }, [activeProfile]);
 
-    const shareUrl = `https://topscore.staging.knn3.xyz/nft/${activeAddress}?profileId=${activeProfile && activeProfile.profileId ? activeProfile.profileId : ''}`
+    const shareUrl = `https://topscore.knn3.xyz/nft/${activeAddress}?profileId=${activeProfile && activeProfile.profileId ? activeProfile.profileId : ''}`
 
     const getImg = (arr: any) => {
         if (arr[0].score - arr[1].score > 1.6) {
