@@ -153,7 +153,7 @@ const rmodynamics = () => {
 
     const getGlobalHeatmapData = async () => {
         setLoading(true);
-        let types = ['Post', 'Mirror', 'Comment'];
+        let types = ['Post', 'Comment', 'Mirror'];
         let str = "";
         checked.forEach((t: any, i: number) => {
             if (t) {
@@ -306,6 +306,9 @@ const rmodynamics = () => {
     const getItemStyle = (e: any) => {
         if (!e || (!e[0] && e[0] !== 0) || e === 'noData') return 'bg-[#232323]'
         let lv = maxRemoData / 5;
+        if(lv === 0){
+            return 'bg-[#232323]'
+        }
         if (e[0] < lv) {
             return 'bg-[#311C17]'
         } else if (lv <= e[0] && e[0] < lv * 2) {
@@ -429,7 +432,7 @@ const rmodynamics = () => {
                                     {
                                         remodyBaseData.map((t: any, i: number) => (
                                             <div className="flex mb-[2px]" key={i}>
-                                                <div className="text-[10px] w-[40px] h-[14px] flex items-center">{dys[i]}</div>
+                                                <div className="text-[10px] w-[40px] h-[14px] flex items-center day-liber">{dys[i]}</div>
                                                 {
                                                     t.map((item: any, index: number) => (
                                                         (!item || (!item[0] && item[0] !== 0) || item === 'hidden') ?

@@ -329,7 +329,7 @@ const rmodynamics = () => {
                                     {
                                         remodyBaseData.map((t: any, i: number) => (
                                             <div className="flex mb-[1px]" key={i}>
-                                                <div className="text-[12px] w-[40px] h-[30px] flex items-center">{dys[i]}</div>
+                                                <div className="text-[12px] w-[40px] h-[30px] flex items-center day-liber">{dys[i]}</div>
                                                 {
                                                     t.map((item: any, index: number) => (
                                                         (!item || !checked.includes(true)) ?
