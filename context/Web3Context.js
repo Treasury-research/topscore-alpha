@@ -174,7 +174,7 @@ export const Web3ContextProvider = ({ children }) => {
     localStorage.removeItem("knn3Token");
     localStorage.removeItem("knn3RefreshToken");
     api.defaults.headers.authorization = "";
-    lensApi.setToken('');
+    lensApi.removeToken();
     setKnn3TokenValid(false)
     resetWallet();
   };
