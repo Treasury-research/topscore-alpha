@@ -11,8 +11,8 @@ import Radar from '../../components/profile/Radar'
 import log from "../../lib/log";
 import Follow from '../../components/Follow'
 import api from "../../api";
-import ImgGenerate from "../../statics/img/generate-button.gif";
-import ImgHoverGenerate from "../../statics/img/hover-generate-button.gif";
+// import ImgGenerate from "../../statics/img/generate-button.gif";
+// import ImgHoverGenerate from "../../statics/img/hover-generate-button.gif";
 import Image from 'next/image'
 import { useRecoilState } from 'recoil';
 import { currentProfileState, profileListState, loadingProfileListState } from '../../store/state'
@@ -197,11 +197,11 @@ const Post = () => {
     setShowList(true);
   };
 
-  const connectAndLogin = () => {
-    connectWallet()
-    setIsLogin(true)
-    log('profile_generate', account)
-  };
+  // const connectAndLogin = () => {
+  //   connectWallet()
+  //   setIsLogin(true)
+  //   log('profile_generate', account)
+  // };
 
   useEffect(() => {
     if(loadingProfileList){
@@ -292,7 +292,7 @@ const Post = () => {
                 showList={(name: string) => showRank(name)}
               />
             </div>
-            {!account && (
+            {/* {!account && (
               <div className="generate">
                 {!showRadorGif && (
                   <Image
@@ -310,7 +310,7 @@ const Post = () => {
                   />
                 )}
               </div>
-            )}
+            )} */}
             <div className="top-rador-info">
               <div className="rador-info">
                 <div>

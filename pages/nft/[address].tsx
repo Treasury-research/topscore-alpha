@@ -76,6 +76,7 @@ const nft = ({
   const getAllNfts = async () => {
     // setLoading(true)
     const res = await erc721Contract.getAll(config.contracts.nft, address);
+
     // check if claimed
     const res2: any = await api.get("/v1/nft/query_ids", {
       params: {
@@ -213,7 +214,8 @@ const nft = ({
                                     {t.map((item: any) =>
                                       item.is_open === 1 ? (
                                         <div className="pic-item" onClick={() => doPreview(item)}>
-                                          <img src={item.token_uri} className="cursor-pointer h-[200px] w-[240px] mb-[20px]" />
+                                          {/* <img src={item.token_uri} className="cursor-pointer h-[200px] w-[240px] mb-[20px]" /> */}
+                                          <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item.id}.png`} className="cursor-pointer h-[200px] w-[240px] mb-[20px]" />
                                           <div className="pic-open-btn">
                                             <div className="reveal">#{item.id}</div>
                                           </div>
