@@ -61,13 +61,14 @@ const rmodynamics = () => {
         for (let i = 1; i <= day; i++) {
             daysList.push(Number(start.add(1, "days").format("YYYYMMDD")));
         }
-        console.log(daysList)
         return daysList;
     }
 
     const getEngageLineData = async () => {
         setLoading(true)
         setPubAll([])
+        resData = []
+        resAmountData = []
         const mdy = dayjs(new Date().getTime() - ((activeTab1 + 1) * 7 - 1) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
         const ndy = dayjs(new Date()).format('YYYYMMDD') // 当前日期
         if (activeTab === 0 || activeTab === 1) {
@@ -146,7 +147,6 @@ const rmodynamics = () => {
 
                     }
                 }
-
                 for (let j = 0; j < resAmountData.length; j++) {
                     if (resAmountData[j]['day'] === dates[i]) {
                         if (activeTab === 0 || activeTab === 1) {
@@ -215,7 +215,7 @@ const rmodynamics = () => {
                         ) : (
                             <>
                                 {
-                                    (lindData.length > 0 || sigleData.length > 0) &&
+                                    (pubAll.length > 0 || sigleData.length > 0) &&
                                     <EngageLine
                                         id={'line_1'}
                                         dates={dates}
@@ -229,7 +229,7 @@ const rmodynamics = () => {
                                     />
                                 }
                                 {
-                                    lindData.length === 0 && sigleData.length === 0 &&
+                                    pubAll.length === 0 && sigleData.length === 0 &&
                                     <div className="h-full w-full flex items-center justify-center text-[rgba(255,255,255,0.6)] text-[20px]">No recent change</div>
                                 }
                             </>

@@ -151,7 +151,6 @@ const ChartLine = (props: any) => {
             idx = 1
           }
           params.forEach((v: any, i: number) => {
-            console.log(v)
             if (!v.name || v.seriesName === 'amount') return false;
             if (type == 0 || type == 1) {
               htmlCon += `<div class="engage-items">
