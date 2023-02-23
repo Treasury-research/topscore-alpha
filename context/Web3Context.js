@@ -26,7 +26,7 @@ export const Web3Context = createContext({
   blockNumber: null,
   account: null,
   connector: null,
-  connectWallet: async () => {
+  connectWallet: async (walletName) => {
     return "";
   },
   resetWallet: async () => {},

@@ -17,7 +17,6 @@ import api from "../api";
 import LoginConnect from "./connect/LoginConnect";
 import SignLens from "./connect/SignLens";
 import ImgLenster from '../statics/img/lest-head.png'
-import ConnectModal from "./ConnectModal";
 import ChangeProfile from "./connect/ChangeProfile";
 
 const ConnectBtn = () => {
