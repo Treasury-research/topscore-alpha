@@ -21,12 +21,10 @@ const LoginConnect = (props: any) => {
     };
 
     const connector = async (walletName: string) => {
-        try{
-            await connectWallet(walletName)
+        const res = await connectWallet(walletName);
+        if(res){
             handleCancel();
             onConnect();
-        }catch(err){
-            console.log('err')
         }
     }
 

@@ -117,9 +117,9 @@ export const Web3ContextProvider = ({ children }) => {
       setBlockNumber(await web3Raw.eth.getBlockNumber());
 
 
-      switchChain(config.chainId)
+      switchChain(config.chainId);
 
-    return accounts[0];
+      return accounts[0];
     } catch (error) {
       setWeb3(new Web3(config.provider));
       console.log(error);
