@@ -276,7 +276,7 @@ const ConnectBtn = () => {
       {showModal[0] && (
         <LoginConnect
           onCancel={() => handleShowModal(false, 0)}
-          onConnect={() =>{console.log('111'); handleShowModal(true, 1)} }
+          onConnect={() =>{handleShowModal(true, 1)} }
         />
       )}
 
