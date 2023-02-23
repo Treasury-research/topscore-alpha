@@ -28,3 +28,10 @@ export const knn3TokenValidState = atom({
   key: "knn3TokenValid",
   default: false,
 });
+
+
+export const autoConnectState = atom({
+  key: "autoConnect",
+  default: false,
+  effects_UNSTABLE: [persistAtom],
+});

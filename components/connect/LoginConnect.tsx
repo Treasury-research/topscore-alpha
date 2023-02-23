@@ -21,9 +21,13 @@ const LoginConnect = (props: any) => {
     };
 
     const connector = async (walletName: string) => {
-        await connectWallet(walletName)
-        handleCancel();
-        onConnect();
+        try{
+            await connectWallet(walletName)
+            handleCancel();
+            onConnect();
+        }catch(err){
+            console.log('err')
+        }
     }
 
     return (

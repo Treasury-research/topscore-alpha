@@ -22,7 +22,7 @@ import ChangeProfile from "./connect/ChangeProfile";
 
 const ConnectBtn = () => {
   const router = useRouter();
-  const { account, connectWallet, chainId, doLogin, doLogout } =
+  const { account, chainId, doLogout } =
     useWeb3Context();
   const [knn3TokenValid, setKnn3TokenValid] =
     useRecoilState(knn3TokenValidState);
@@ -165,6 +165,10 @@ const ConnectBtn = () => {
     );
     return imgUrl;
   };
+
+  // useEffect(()=>{
+  //   determineLoginModal();
+  // }, [])
 
   return (
     <div className="w-full h-10 flex gap-3 justify-end ">

@@ -5,7 +5,7 @@ import config from "../config";
 import { ethers } from "ethers";
 import lensApi from "../api/lensApi";
 import api from "../api";
-import { knn3TokenValidState, currentProfileState } from "../store/state";
+import { knn3TokenValidState, currentProfileState , autoConnectState} from "../store/state";
 import { useRecoilState } from "recoil";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { switchChain } from "../lib/tool";
@@ -50,6 +50,7 @@ export const Web3ContextProvider = ({ children }) => {
   const [blockNumber, setBlockNumber] = useState("");
   const [wcProvider, setWcProvider] = useState("");
   const [connector, setConnector] = useState("");
+  const [autoConnect, setAutoConnect] = useRecoilState(autoConnectState)
   const [knn3TokenValid, setKnn3TokenValid] =
     useRecoilState(knn3TokenValidState);
   const [currentProfile, setCurrentProfile] = useRecoilState(currentProfileState)
@@ -59,7 +60,6 @@ export const Web3ContextProvider = ({ children }) => {
       resetWallet();
     });
     window.ethereum.on("accountsChanged", async (accounts) => {
-      console.log('aa change', 111)
       setAccount(accounts[0]);
       localStorage.removeItem("knn3Token");
       localStorage.removeItem("knn3RefreshToken");
@@ -97,6 +97,8 @@ export const Web3ContextProvider = ({ children }) => {
       // get account, use this variable to detech if user is connected
       const accounts = await web3Raw.eth.getAccounts();
       setAccount(accounts[0]);
+
+      setAutoConnect(true);
 
       // get signer object
       const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
@@ -217,6 +219,7 @@ export const Web3ContextProvider = ({ children }) => {
     lensApi.removeToken();
     setKnn3TokenValid(false)
     resetWallet();
+    setAutoConnect(false);
   };
 
   /**
@@ -271,9 +274,10 @@ export const Web3ContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // connectWallet();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if(autoConnect){
+      connectWallet();
+    }
+  }, [autoConnect]);
 
   return (
     <Web3Context.Provider
