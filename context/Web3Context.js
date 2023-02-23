@@ -7,6 +7,7 @@ import lensApi from "../api/lensApi";
 import api from "../api";
 import { knn3TokenValidState, currentProfileState } from "../store/state";
 import { useRecoilState } from "recoil";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 import { switchChain } from "../lib/tool";
 import { LoadingOutlined } from "@ant-design/icons";
 import useWeb3Modal from "../hooks/useWeb3Modal";
@@ -24,6 +25,7 @@ export const Web3Context = createContext({
   networkId: null,
   blockNumber: null,
   account: null,
+  connector: null,
   connectWallet: async () => {
     return "";
   },
@@ -35,6 +37,7 @@ export const Web3Context = createContext({
   sendTx: async () => {},
   doLogin: async () => {},
   doLogout: async () => {},
+  
 });
 
 export const Web3ContextProvider = ({ children }) => {
@@ -45,15 +48,18 @@ export const Web3ContextProvider = ({ children }) => {
   const [chainId, setChainId] = useState("");
   const [networkId, setnetworkId] = useState("");
   const [blockNumber, setBlockNumber] = useState("");
+  const [wcProvider, setWcProvider] = useState("");
+  const [connector, setConnector] = useState("");
   const [knn3TokenValid, setKnn3TokenValid] =
     useRecoilState(knn3TokenValidState);
   const [currentProfile, setCurrentProfile] = useRecoilState(currentProfileState)
 
-  const listenProvider = (provider) => {
-    provider.on("close", () => {
+  const listenProvider = () => {
+    window.ethereum.on("close", () => {
       resetWallet();
     });
-    provider.on("accountsChanged", async (accounts) => {
+    window.ethereum.on("accountsChanged", async (accounts) => {
+      console.log('aa change', 111)
       setAccount(accounts[0]);
       localStorage.removeItem("knn3Token");
       localStorage.removeItem("knn3RefreshToken");
@@ -61,18 +67,31 @@ export const Web3ContextProvider = ({ children }) => {
       setKnn3TokenValid(false);
       setCurrentProfile('')
     });
-    provider.on("chainChanged", (chainId) => {
+    window.ethereum.on("chainChanged", (chainId) => {
       setChainId(parseInt(chainId, 16));
     });
   };
 
-  const connectWallet = useCallback(async () => {
+  const connectWallet = useCallback(async (walletName) => {
     try {
-      const provider = await web3Modal.connect();
 
-      await provider.enable();
+      let web3Raw = null;
+      if (walletName === "walletconnect") {
+        const provider = new WalletConnectProvider({
+          infuraId: config.infuraId,
+        });
+        await provider.enable();
+        setWcProvider(provider);
+        setConnector("walletconnect");
+        web3Raw = new Web3(provider);
+      } else {
+        await window.ethereum.enable();
+        setConnector("injected");
+        web3Raw = new Web3(window.ethereum);
+      }
 
-      const web3Raw = new Web3(provider);
+      console.log('connected', )
+
       setWeb3(web3Raw);
 
       // get account, use this variable to detech if user is connected
@@ -80,7 +99,7 @@ export const Web3ContextProvider = ({ children }) => {
       setAccount(accounts[0]);
 
       // get signer object
-      const ethersProvider = new ethers.providers.Web3Provider(provider);
+      const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
 
       const signerRaw = ethersProvider.getSigner();
 
@@ -95,11 +114,10 @@ export const Web3ContextProvider = ({ children }) => {
       // init block number
       setBlockNumber(await web3Raw.eth.getBlockNumber());
 
-      listenProvider(provider);
 
       switchChain(config.chainId)
 
-      return accounts[0];
+    return accounts[0];
     } catch (error) {
       setWeb3(new Web3(config.provider));
       console.log(error);
@@ -114,19 +132,35 @@ export const Web3ContextProvider = ({ children }) => {
   }, [chainId])
 
   const resetWallet = useCallback(async () => {
-    if (web3 && web3.currentProvider && web3.currentProvider.close) {
-      await web3.currentProvider.close();
-    }
-    setAccount("");
-    await web3Modal.clearCachedProvider();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [web3Modal]);
+    console.log("ready to reset", connector, wcProvider);
 
-  useEffect(() => {
-    if (web3Modal && web3Modal.cachedProvider) {
-      connectWallet();
+    if (wcProvider) {
+      localStorage.removeItem("walletconnect");
+      setWcProvider(null);
+      setConnector(null)
+    } else {
+      // wallet.reset();
     }
-  }, [web3Modal]);
+
+    setConnector("");
+    setAccount("");
+    // if (web3 && web3.currentProvider && web3.currentProvider.close) {
+    //   await web3.currentProvider.close();
+    // }
+    // setAccount("");
+    // await web3Modal.clearCachedProvider();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // useEffect(() => {
+  //   if (web3Modal && web3Modal.cachedProvider) {
+  //     connectWallet();
+  //   }
+  // }, [web3Modal]);
+
+  useEffect(()=>{
+    listenProvider();
+  }, [])
 
   const estimateGas = async (func, value = 0) => {
     try {
@@ -143,10 +177,11 @@ export const Web3ContextProvider = ({ children }) => {
     }
   };
 
-  const doKnn3Login = async (message, signature) => {
+  const doKnn3Login = async (message, signature, account) => {
     const res = await api.post("/auth/login", {
       message,
       signature,
+      address: account,
     });
     if(!res){
       toast.error("You must have a lens handle");
@@ -164,7 +199,7 @@ export const Web3ContextProvider = ({ children }) => {
       .text;
     const signature = await signMessage(challenge);
 
-    await doKnn3Login(challenge, signature);
+    await doKnn3Login(challenge, signature, account);
 
     const token = (await lensApi.getAccessToken(account, signature))
       .authenticate;
@@ -236,29 +271,6 @@ export const Web3ContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!account) {
-      return;
-    }
-    const subscription = web3.eth.subscribe(
-      "newBlockHeaders",
-      (error, block) => {
-        if (!error) {
-          setBlockNumber(block.number);
-        }
-      }
-    );
-
-    return () => {
-      subscription.unsubscribe((error, success) => {
-        if (success) {
-          console.log("Unsubscribed");
-        }
-      });
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account]);
-
-  useEffect(() => {
     // connectWallet();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -271,6 +283,7 @@ export const Web3ContextProvider = ({ children }) => {
         chainId,
         networkId,
         account,
+        connector,
         blockNumber,
         connectWallet,
         resetWallet,

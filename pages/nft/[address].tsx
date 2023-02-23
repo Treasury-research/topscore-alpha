@@ -35,7 +35,7 @@ const nft = ({
 }: any) => {
   const router = useRouter()
 
-  const { account, connectWallet, doLogin, } = useWeb3Context();
+  const { account, doLogin, } = useWeb3Context();
 
   const [activeProfile, setActiveProfile] = useState<any>({});
 

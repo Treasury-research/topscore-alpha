@@ -1,6 +1,6 @@
 import envConf from "./polygon";
 
-export const baseURL = "https://lens-api.knn3.xyz/api";
+export const baseURL = "https://lens-api.staging.knn3.xyz/api";
 
 export const lensURL = "https://api.lens.dev";
 

@@ -8,10 +8,9 @@ import useWeb3Context from "../../hooks/useWeb3Context";
 import { CloseOutlined } from "@ant-design/icons";
 
 const LoginConnect = (props: any) => {
+    const { onConnect } = props
 
-    const {connectWalletNew} = useWeb3Context();
-
-    const { onConnect } = props;
+    const {connectWallet} = useWeb3Context();
 
     const handleOk = () => {
         props.onCancel();
@@ -20,6 +19,12 @@ const LoginConnect = (props: any) => {
     const handleCancel = () => {
         props.onCancel();
     };
+
+    const connector = async (walletName: string) => {
+        await connectWallet(walletName)
+        handleCancel();
+        onConnect();
+    }
 
     return (
         <Modal title="Basic Modal" open={true} onOk={handleOk} onCancel={handleCancel} width={'500px'}>
@@ -40,7 +45,7 @@ const LoginConnect = (props: any) => {
                 <div className="text-[#EEFBFF] text-[20px]">Collect your wallet.</div>
                 <div className="text-[#6C747D] text-[14px]">Connect with one of our available wallet providers or create a new one.</div>
                 <div className="mt-5">
-                    <div onClick={()=> connectWalletNew() } className="flex items-center border-[1px] border-[#4A4A4A] px-[10px] py-[8px] font-[600] rounded-[4px] mb-[10px] cursor-pointer">
+                    <div onClick={()=> connector('injected') } className="flex items-center border-[1px] border-[#4A4A4A] px-[10px] py-[8px] font-[600] rounded-[4px] mb-[10px] cursor-pointer">
                         <span>Browser Wallet</span>
                         <Image
                             className="ml-[auto]"
@@ -48,14 +53,14 @@ const LoginConnect = (props: any) => {
                             alt=""
                         />
                     </div>
-                    {/* <div onClick={()=> connectWalletNew() } className="flex items-center border-[1px] border-[#4A4A4A] px-[10px] py-[8px] font-[600] rounded-[4px] cursor-pointer">
+                    <div onClick={()=> connector('walletconnect') } className="flex items-center border-[1px] border-[#4A4A4A] px-[10px] py-[8px] font-[600] rounded-[4px] cursor-pointer">
                         <span>WalletConnect</span>
                         <Image
                             className="ml-[auto]"
                             src={P2}
                             alt=""
                         />
-                    </div> */}
+                    </div>
                 </div>
             </div>
         </Modal>

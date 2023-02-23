@@ -34,7 +34,7 @@ const defaultKnn3Profile = {
 
 const Post = () => {
 
-  const { account, connectWallet, doLogin } = useWeb3Context();
+  const { account, doLogin } = useWeb3Context();
   const [showList, setShowList] = useState(false);
   const [userInfo, setUserInfo] = useState<any>({});
   const [currentProfile, setCurrentProfile] = useRecoilState<any>(currentProfileState);
@@ -196,12 +196,6 @@ const Post = () => {
     setActiveRankIndex(typeList.indexOf(name));
     setShowList(true);
   };
-
-  // const connectAndLogin = () => {
-  //   connectWallet()
-  //   setIsLogin(true)
-  //   log('profile_generate', account)
-  // };
 
   useEffect(() => {
     if(loadingProfileList || !knn3TokenValid){

@@ -142,8 +142,8 @@ const ConnectBtn = () => {
     if (account) {
       handleShowModal(true, 1);
     } else {
-      await connectWallet();
-      handleShowModal(true, 1);
+      // await connectWallet();
+      handleShowModal(true, 0);
     }
   };
 
@@ -272,7 +272,7 @@ const ConnectBtn = () => {
       {showModal[0] && (
         <LoginConnect
           onCancel={() => handleShowModal(false, 0)}
-          onConnect={() => handleShowModal(false, 1)}
+          onConnect={() =>{console.log('111'); handleShowModal(true, 1)} }
         />
       )}
 
