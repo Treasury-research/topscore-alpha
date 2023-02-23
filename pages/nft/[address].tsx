@@ -199,7 +199,7 @@ const nft = ({
                   <div className="open-pic mb-[100px]">
                     {
                       total !== 0 &&
-                      <div className="my-[20px] text-center w-[fit-content] mb-[-50px]">Total:{total}</div>
+                      <div className="my-[20px] text-center w-[fit-content] mb-[-50px]">Total: {total}</div>
                     }
                     {
                       nftList.length > 0 &&
