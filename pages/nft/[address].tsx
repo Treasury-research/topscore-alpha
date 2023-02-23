@@ -8,6 +8,7 @@ import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import Character from '../../components/nft/Character'
 import log from "../../lib/log";
+import axios from "axios";
 // import Bg1 from '../statics/img/bg_text1.gif'
 // import Bg2 from '../statics/img/bg_2text.gif'
 import Head from "next/head";
@@ -17,7 +18,6 @@ import ImgWhole from "../../statics/img/whole-top.png";
 import { Modal, Carousel } from "antd";
 import { currentProfileState, knn3TokenValidState } from '../../store/state'
 import useWeb3Context from "../../hooks/useWeb3Context";
-import config from "../../config";
 import useErc721Contract from "../../contract/useErc721Contract";
 import { toast } from "react-toastify";
 // import VideoSource from "/public/vedio_rainbow.mp4"
@@ -75,14 +75,19 @@ const nft = ({
 
   const getAllNfts = async () => {
     // setLoading(true)
-    const res = await erc721Contract.getAll(config.contracts.nft, address);
+    const res:number[] = (await api.get(`/lens/tokenIds/${address}`)).data;
 
-    // check if claimed
-    const res2: any = await api.get("/v1/nft/query_ids", {
+    const res2: any = (await axios.get("http://35.85.55.16:8084/v1/nft/query_ids", {
       params: {
         ids: res.join(','),
       },
-    });
+    })).data
+    // check if claimed
+    // const res2: any = await api.get("/v1/nft/query_ids", {
+    //   params: {
+    //     ids: res.join(','),
+    //   },
+    // });
     // setLoading(false)
     if (res2 && res2.data && res2.data.length > 0) {
       setTotal(res2.data.length);
