@@ -355,7 +355,7 @@
 }
 
 .engage-head-fee-score-icon {
-  background: url("../statics/img/score.png") no-repeat center center;
+  background: url("../statics/img/pubIcon/matic.svg") no-repeat center center;
   background-size: cover;
   height: 26px;
   width: 26px;
@@ -411,7 +411,23 @@
 }
 
 .engage-items-head-post-icon {
-  background: url("../statics/img/post-chart.png") no-repeat center center;
+  // background: url("../statics/img/post-chart.png") no-repeat center center;
+  // background-size: cover;
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
+}
+
+.post-icon {
+  background: url("../statics/img/post_icon.svg") no-repeat center center;
+  background-size: cover;
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
+}
+
+.comment-icon {
+  background: url("../statics/img/pubIcon/commentBig.svg") no-repeat center center;
   background-size: cover;
   height: 20px;
   width: 20px;
@@ -419,8 +435,8 @@
 }
 
 .engage-items-head-comment-icon {
-  background: url("../statics/img/commentT.png") no-repeat center center;
-  background-size: cover;
+  // background: url("../statics/img/commentT.png") no-repeat center center;
+  // background-size: cover;
   height: 20px;
   width: 20px;
   margin-right: 10px;
@@ -444,34 +460,34 @@
 }
 
 .engage-items-comment-icon {
-  background: url("../statics/img/comment.png") no-repeat center center;
+  background: url("../statics/img/pubIcon/commentBig.svg") no-repeat center center;
   background-size: cover;
-  height: 16px;
-  width: 16px;
+  height: 24px;
+  width: 24px;
   margin-right: 4px;
 }
 
 .engage-items-mirror-icon {
-  background: url("../statics/img/mirror.png") no-repeat center center;
+  background: url("../statics/img/pubIcon/mirrors.svg") no-repeat center center;
   background-size: cover;
-  height: 16px;
-  width: 16px;
+  height: 24px;
+  width: 24px;
   margin-right: 4px;
 }
 
 .engage-items-noFee-icon {
-  background: url("../statics/img/noFee.png") no-repeat center center;
+  background: url("../statics/img/pubIcon/free.svg") no-repeat center center;
   background-size: cover;
-  height: 16px;
-  width: 16px;
+  height: 24px;
+  width: 24px;
   margin-right: 4px;
 }
 
 .engage-items-fee-icon {
-  background: url("../statics/img/fee.png") no-repeat center center;
+  background: url("../statics/img/pubIcon/paid.svg") no-repeat center center;
   background-size: cover;
-  height: 16px;
-  width: 16px;
+  height: 24px;
+  width: 24px;
   margin-right: 4px;
 }
 

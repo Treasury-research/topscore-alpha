@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { LeftOutlined, RightOutlined, LoadingOutlined } from '@ant-design/icons';
+import { LeftOutlined, RightOutlined, LoadingOutlined, CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import { Checkbox, Popover, message } from 'antd';
 import api from "../api";
 import moment from 'moment';
 import { currentProfileState } from "../store/state";
 import { useRecoilState } from "recoil";
+import Mirror from '../statics/img/mirror_1.svg'
+import Comment from '../statics/img/pubIcon/commentBig.svg'
+import Post from '../statics/img/post_icon.svg'
+import Image from 'next/image'
 
 const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -46,6 +50,19 @@ const rmodynamics = () => {
 
     const [mirrorTotal, setMirrorTotal] = useState<any>();
 
+    const [weekCountChange, setWeekCountChange] = useState<any>({
+        current: {
+            postTotal: 0,
+            commentTotal: 0,
+            mirrorTotal: 0
+        },
+        last: {
+            postTotal: 0,
+            commentTotal: 0,
+            mirrorTotal: 0
+        }
+    });
+
     const [currentProfile] = useRecoilState<any>(currentProfileState);
 
     useEffect(() => {
@@ -78,6 +95,24 @@ const rmodynamics = () => {
         }
     }, [checkedPub])
 
+    // 判断日期属于这一周or上一周
+    const judgeDatetoWeek = (dateStr: any) => {
+        let weekOfDay = parseInt(moment().format('E'));//计算今天是这周第几天
+        let current_monday = new Date(moment().startOf('day').subtract(weekOfDay - 1, 'days').toDate()).getTime();//本周周一日期毫秒
+        let current_sunday = new Date(moment().startOf('day').subtract(weekOfDay - 7, 'days').toDate()).getTime();//本周周日日期毫秒
+        let last_monday = new Date(moment().startOf('day').subtract(weekOfDay + 6, 'days').toDate()).getTime();//上周周一日期毫秒
+        let last_sunday = new Date(moment().startOf('day').subtract(weekOfDay, 'days').toDate()).getTime();//上周周日日期毫秒
+        let dateStrHs = new Date(dateStr).getTime()
+
+        if (current_monday < dateStrHs && dateStrHs < current_sunday) {
+            return 1 // 日期属于当前周
+        } else if (last_monday < dateStrHs && dateStrHs < last_sunday) {
+            return 2 // 日期属于上一周
+        } else {
+            return 3
+        }
+    }
+
     const getYearWeek = (a: any, b: any, c: any) => {
         var date1 = new Date(a, parseInt(b) - 1, c),
             date2 = new Date(a, 0, 1),
@@ -87,6 +122,8 @@ const rmodynamics = () => {
 
     const getTotalPostData = async () => {
         let total = 0;
+        let thisWeekTotal = 0;
+        let lastWeekTotal = 0;
         const res = await api.get(`/publication/${currentProfile.profileId}`, {
             params: {
                 profileId: currentProfile.profileId,
@@ -97,6 +134,17 @@ const rmodynamics = () => {
         if (!res || !res.data) return false;
         res.data.forEach((t: any) => {
             total += t.count
+            if (judgeDatetoWeek(t.date) === 1) {
+                thisWeekTotal += t.count
+            }
+            if (judgeDatetoWeek(t.date) === 2) {
+                lastWeekTotal += t.count
+            }
+        })
+        setWeekCountChange((prev) => {
+            prev.current.postTotal = thisWeekTotal
+            prev.last.postTotal = lastWeekTotal
+            return { ...prev }
         })
         resPost = res.data;
         setPostTotal(total)
@@ -104,6 +152,8 @@ const rmodynamics = () => {
 
     const getTotalCommentData = async () => {
         let total = 0;
+        let thisWeekTotal = 0;
+        let lastWeekTotal = 0;
         const res = await api.get(`/publication/${currentProfile.profileId}`, {
             params: {
                 profileId: currentProfile.profileId,
@@ -114,6 +164,17 @@ const rmodynamics = () => {
         if (!res || !res.data) return false;
         res.data.forEach((t: any) => {
             total += t.count
+            if (judgeDatetoWeek(t.date) === 1) {
+                thisWeekTotal += t.count
+            }
+            if (judgeDatetoWeek(t.date) === 2) {
+                lastWeekTotal += t.count
+            }
+        })
+        setWeekCountChange((prev) => {
+            prev.current.commentTotal = thisWeekTotal
+            prev.last.commentTotal = lastWeekTotal
+            return { ...prev }
         })
         resComment = res.data;
         setCommentTotal(total)
@@ -121,6 +182,8 @@ const rmodynamics = () => {
 
     const getTotalMirrorData = async () => {
         let total = 0;
+        let thisWeekTotal = 0;
+        let lastWeekTotal = 0;
         const res = await api.get(`/publication/${currentProfile.profileId}`, {
             params: {
                 profileId: currentProfile.profileId,
@@ -131,6 +194,17 @@ const rmodynamics = () => {
         if (!res || !res.data) return false;
         res.data.forEach((t: any) => {
             total += t.count
+            if (judgeDatetoWeek(t.date) === 1) {
+                thisWeekTotal += t.count
+            }
+            if (judgeDatetoWeek(t.date) === 2) {
+                lastWeekTotal += t.count
+            }
+        })
+        setWeekCountChange((prev) => {
+            prev.current.mirrorTotal = thisWeekTotal
+            prev.last.mirrorTotal = lastWeekTotal
+            return { ...prev }
         })
         resMirror = res.data;
         setMirrorTotal(total)
@@ -221,7 +295,6 @@ const rmodynamics = () => {
                 }
             }
         }
-        console.log(rem)
         maxRemoData = 0
         if (!res || !res.data) {
             setRemodyBaseData(rem)
@@ -254,8 +327,9 @@ const rmodynamics = () => {
         setLoading(false);
     }
 
-    const onChange = (e: any, i: number) => {
-        if (!e.target.checked) {
+    const onChange = (i: number) => {
+        let target = !checked[i]
+        if (!target) {
             if (i === 0 && !checked[1] && !checked[2]) {
                 return false
             }
@@ -267,7 +341,7 @@ const rmodynamics = () => {
             }
         }
         setChecked((prev: any) => {
-            prev[i] = e.target.checked;
+            prev[i] = target;
             return [...prev];
         });
     };
@@ -304,9 +378,10 @@ const rmodynamics = () => {
     }
 
     const getItemStyle = (e: any) => {
+        if (e === 'hidden') return ''
         if (!e || (!e[0] && e[0] !== 0) || e === 'noData') return 'bg-[#232323]'
         let lv = maxRemoData / 5;
-        if(lv === 0){
+        if (lv === 0) {
             return 'bg-[#232323]'
         }
         if (e[0] < lv) {
@@ -331,10 +406,10 @@ const rmodynamics = () => {
             // moment() .startOf('day') .valueOf()
             let startHs = 0;
             let endHs = 0;
-            if(activeTab == 0){
+            if (activeTab == 0) {
                 startHs = moment('2023-01-01').startOf('day').valueOf()
                 endHs = startHs + (j - 1) * 7 * 24 * 60 * 60 * 1000 + (i + 1) * 24 * 60 * 60 * 1000
-            }else{
+            } else {
                 startHs = moment('2022-01-01').startOf('day').valueOf()
                 endHs = startHs + (j - 1) * 7 * 24 * 60 * 60 * 1000 + (i + 2) * 24 * 60 * 60 * 1000
             }
@@ -352,12 +427,12 @@ const rmodynamics = () => {
         return (
             <div>
                 {
-                    e !== 'noData' && 
+                    e !== 'noData' &&
                     <p className="text-[18px] font-[600]">{e[1] || '--'}</p>
                 }
 
                 {
-                    e == 'noData' && 
+                    e == 'noData' &&
                     <p className="text-[18px] font-[600]">{noDateStr}</p>
                 }
 
@@ -397,19 +472,18 @@ const rmodynamics = () => {
             <div className="flex">
                 {
                     tabs.map((t: any, i: number) => (
-                        <div onClick={() => setActiveTab(i)} key={i} className={`px-[30px] pb-[6px] cursor-pointer ${activeTab === i ? 'pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px]' : 'pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px]'}`}>{t}</div>
+                        <div onClick={() => setActiveTab(i)} key={i} className={`px-[30px] pb-[6px] cursor-pointer ${activeTab === i ? 'pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px]' : 'pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px] text-[rgba(255,255,255,0.4)]'}`}>{t}</div>
                     ))
                 }
             </div>
             <div className="flex bg-[#1A1A1A] p-5 w-full">
-
-                <div className="w-[920px] overflow-hidden mr-4">
+                <div className="w-[920px] overflow-hidden">
                     {
                         loading ?
-                            <LoadingOutlined className="text-2xl block mx-auto my-[80px]" />
+                            <div className="h-[172px] flex items-center"><LoadingOutlined className="text-2xl block mx-auto" /></div>
                             : <>
-                                <div className="text-[18px] mb-[20px]">Overview</div>
-                                <div className="mb-4 mr-8 flex ml-[auto] w-[fit-content] items-center">
+                                {/* <div className="text-[18px] mb-[20px]">Overview</div> */}
+                                <div className="mb-4 mr-8 flex ml-[auto] w-[fit-content] items-center mt-[30px]">
                                     <div className="text-[12px] ml-[-4px] mr-2">Low</div>
                                     <div className="h-[16px] w-[45px] bg-[#311C17]">
 
@@ -458,52 +532,145 @@ const rmodynamics = () => {
                             </>
                     }
                 </div>
-                <div className="w-[calc(100%-940px)]">
-                    <div className="px-6 py-4 pb-2 rounded-[10px] bg-[rgb(41,41,41)] mt-9">
+                <div className="w-[calc(100%-920px)]">
+                    <div className="px-6 py-4 pb-2 rounded-[10px] bg-[rgb(41,41,41)]">
                         <div className="flex mb-2">
                             <div>
                                 {
                                     (!checked[0] || !checked[1] || !checked[2]) &&
-                                    <div className="flex items-center h-[25px] mt-[2px]">
+                                    <div className="flex items-center h-[25px]">
                                         <div onClick={() => setChecked([true, true, true])} className="h-4 w-4 bg-[#CE3900] flex items-center justify-center rounded-[4px] mr-2 text-[18px] cursor-pointer text-[600]">-</div>
-                                        <div className="text-[#fff] text-[15px]">Publication</div>
+                                        <div className="text-[#fff] text-[13px]">Publication</div>
                                     </div>
                                 }
                                 {
                                     checked[0] && checked[1] && checked[2] &&
                                     <div className="flex items-center h-[25px]">
                                         <Checkbox onChange={(e: any) => onChangePub(e)} checked={checkedPub}>
-                                            <span className="text-[#fff] text-[16px]">Publication</span>
+                                            <span className="text-[#fff] text-[14px]">Publication</span>
                                         </Checkbox>
                                     </div>
                                 }
                             </div>
-                            <div className="ml-[auto]">{!isNaN(postTotal + commentTotal + mirrorTotal) ? postTotal + commentTotal + mirrorTotal : '-'}</div>
+                            {/* <div className="ml-[auto]">{!isNaN(postTotal + commentTotal + mirrorTotal) ? postTotal + commentTotal + mirrorTotal : '-'}</div> */}
                         </div>
-                        <div className="flex mb-2 ml-[20px]">
-                            <div>
-                                <Checkbox onChange={(e: any) => onChange(e, 0)} checked={checked[0]}>
-                                    <span className="text-[#fff] text-[16px]">Post</span>
-                                </Checkbox>
+                        <div className="flex mb-[10px]">
+                            <div className="flex items-center text-[20px] ml-[22px]">{!isNaN(postTotal + commentTotal + mirrorTotal) ? postTotal + commentTotal + mirrorTotal : '-'}</div>
+                            <div className="ml-[auto] text-[14px]">
+                                <div className='flex items-center ml-[auto] w-[fit-content]'>
+                                    {
+                                        (weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
+                                        (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal) > 0 &&
+                                        <CaretUpOutlined className="creat-up-icon ml-[auto]" />
+                                    }
+                                    {
+                                        (weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
+                                        (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal) < 0 &&
+                                        <CaretDownOutlined className="creat-down-icon ml-[auto]" />
+                                    }
+                                    <span>{Math.abs((weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
+                                        (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal))
+                                    }</span>
+                                </div>
+                                <div className="text-[rgba(255,255,255,0.6)]">this week</div>
                             </div>
-                            <div className="ml-[auto]">{postTotal || postTotal === 0 ? postTotal : '-'}</div>
                         </div>
                         <div className="flex mb-2 ml-[20px]">
                             <div>
-                                <Checkbox onChange={(e: any) => onChange(e, 1)} checked={checked[1]}>
-                                    <span className="text-[#fff] text-[16px]">Comment</span>
-                                </Checkbox>
+                                <div className="flex items-center cursor-pointer text-[14px]" onClick={() => onChange(0)}>
+                                    <div className={`${checked[0] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
+                                        <Image
+                                            className="h-[fit-content] w-[16px] h-[16px]"
+                                            src={Post}
+                                            alt=""
+                                        />
+                                    </div>
+                                    <div className="mr-2">{postTotal || postTotal === 0 ? postTotal : '-'}</div>
+                                    <div>Post</div>
+                                </div>
+                            </div>
+                            <div className="ml-[auto]">
+                                <div className='flex items-center'>
+                                    {
+                                        weekCountChange.current.postTotal - weekCountChange.last.postTotal > 0 &&
+                                        <CaretUpOutlined className="creat-up-icon ml-[auto]" />
+                                    }
+                                    {
+                                        weekCountChange.current.postTotal - weekCountChange.last.postTotal < 0 &&
+                                        <CaretDownOutlined className="creat-down-icon ml-[auto]" />
+                                    }
+                                    <span>{Math.abs(weekCountChange.current.postTotal - weekCountChange.last.postTotal)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex mb-2 ml-[20px]">
+                            <div>
+                                <div className="flex items-center cursor-pointer text-[14px]" onClick={() => onChange(1)}>
+                                    <div className={`${checked[1] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
+                                        <Image
+                                            className="h-[fit-content] w-[16px] h-[16px]"
+                                            src={Comment}
+                                            alt=""
+                                        />
+                                    </div>
+                                    <div className="mr-2">{commentTotal || commentTotal === 0 ? commentTotal : '-'}</div>
+                                    <div>Comment</div>
+                                </div>
+                            </div>
+                            <div className="ml-[auto]">
+                                <div className='flex items-center'>
+                                    {
+                                        weekCountChange.current.commentTotal - weekCountChange.last.commentTotal > 0 &&
+                                        <CaretUpOutlined className="creat-up-icon ml-[auto]" />
+                                    }
+                                    {
+                                        weekCountChange.current.commentTotal - weekCountChange.last.commentTotal < 0 &&
+                                        <CaretDownOutlined className="creat-down-icon ml-[auto]" />
+                                    }
+                                    <span>{Math.abs(weekCountChange.current.commentTotal - weekCountChange.last.commentTotal)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex mb-2 ml-[20px]">
+                            <div>
+                                <div className="flex items-center cursor-pointer text-[14px]" onClick={() => onChange(2)}>
+                                    <div className={`${checked[2] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
+                                        <Image
+                                            className="h-[fit-content] w-[16px] h-[16px]"
+                                            src={Mirror}
+                                            alt=""
+                                        />
+                                    </div>
+                                    <div className="mr-2">{mirrorTotal || mirrorTotal === 0 ? mirrorTotal : '-'}</div>
+                                    <div>Mirror</div>
+                                </div>
+                            </div>
+                            <div className="ml-[auto]">
+                                <div className='flex items-center'>
+                                    {
+                                        weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal > 0 &&
+                                        <CaretUpOutlined className="creat-up-icon ml-[auto]" />
+                                    }
+                                    {
+                                        weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal < 0 &&
+                                        <CaretDownOutlined className="creat-down-icon ml-[auto]" />
+                                    }
+                                    <span>{Math.abs(weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {/* <div className="flex mb-2 ml-[20px]">
+                            <div>
                             </div>
                             <div className="ml-[auto]">{commentTotal || commentTotal === 0 ? commentTotal : '-'}</div>
                         </div>
                         <div className="flex mb-2 ml-[20px]">
                             <div>
-                                <Checkbox onChange={(e: any) => onChange(e, 2)} checked={checked[2]}>
-                                    <span className="text-[#fff] text-[16px]">Mirror</span>
-                                </Checkbox>
                             </div>
-                            <div className="ml-[auto]">{mirrorTotal || mirrorTotal === 0 ? mirrorTotal : '-'}</div>
-                        </div>
+                            <div className="ml-[auto]">
+                                {mirrorTotal || mirrorTotal === 0 ? mirrorTotal : '-'}
+                            </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

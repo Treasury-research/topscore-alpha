@@ -8,6 +8,7 @@ import EngageLine from './EngageLine'
 import PubCard from './PubCard'
 import { currentProfileState } from "../store/state";
 import { useRecoilState } from "recoil";
+import moment from 'moment'
 
 const tabs = ['Engagement', 'Top Engaged', 'Collections & Fee', 'Top Collected']
 
@@ -19,6 +20,7 @@ const lineDes = [
     'Daily collections of your latest pubs',
     'Daily collections of your top collected pubs in 28D'
 ]
+
 let resData: any = [];
 
 let resAmountData: any = [];
@@ -34,6 +36,8 @@ const rmodynamics = () => {
 
     const [sigleData, setSigleData] = useState([])
 
+    const [pubAll, setPubAll] = useState([])
+
     const [commentSwitch, setCommentSwitch] = useState(true)
 
     const [mirrorSwitch, setMirrorSwitch] = useState(true)
@@ -48,12 +52,26 @@ const rmodynamics = () => {
 
     const [currentProfile] = useRecoilState<any>(currentProfileState);
 
+    const enumerateDaysBetweenDates = (startDate, endDate) => {
+        let daysList = [];
+        const start = moment(startDate);
+        const end = moment(endDate);
+        const day = end.diff(start, "days");
+        daysList.push(Number(start.format("YYYYMMDD")));
+        for (let i = 1; i <= day; i++) {
+            daysList.push(Number(start.add(1, "days").format("YYYYMMDD")));
+        }
+        console.log(daysList)
+        return daysList;
+    }
+
     const getEngageLineData = async () => {
         setLoading(true)
-        const mdy = dayjs(new Date().getTime() - ((activeTab1 + 1) * 7 + 1) * 24 * 60 * 60 * 1000).format('YYYYMMDD') // 30天前的日期
+        setPubAll([])
+        const mdy = dayjs(new Date().getTime() - ((activeTab1 + 1) * 7 - 1) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
         const ndy = dayjs(new Date()).format('YYYYMMDD') // 当前日期
         if (activeTab === 0 || activeTab === 1) {
-            const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${activeTab + 1}&type=Post,Comment`);
+            const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${activeTab === 0 ? 1 : 4}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
             const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
             if (!res || !res.data || !res1 || !res1.data) {
                 setLoading(false);
@@ -62,31 +80,32 @@ const rmodynamics = () => {
             resData = res.data;
             resAmountData = res1.data;
         } else {
-            const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${activeTab - 1}&type=Post,Comment&isFee=${chargeSwitch ? 1 : ''}`);
+            const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${activeTab - 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
             const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
             if (!res || !res.data || !res1 || !res1.data) {
                 setLoading(false);
                 return false;
             }
-            resAmountData = res1.data;
             resData = res.data;
+            resAmountData = res1.data;
         }
-        let newDates: any = []
+        let pubAllData: any = []
         if (resData.length !== 0) {
             resData.map((t: any) => {
-                if (!newDates.includes(t.day)) {
-                    newDates.push(t.day)
+                if (!pubAllData.includes(t.pubId)) {
+                    pubAllData.push(t.pubId)
                 }
             })
-        } else if (resAmountData.length !== 0) {
-            resAmountData.map((t: any) => {
-                newDates.push(t.day)
-            })
         }
-        setTimeout(() => {
-            setLoading(false)
-        }, 1000)
-        setDates([...newDates])
+        let newPubAllData = pubAllData.sort((a, b) => { return a - b })
+        let idx = newPubAllData.indexOf(0)
+        if (idx > -1) {
+            newPubAllData.splice(idx, 1)
+            newPubAllData.unshift(0)
+        }
+        setPubAll(newPubAllData);
+        setLoading(false);
+        setDates(enumerateDaysBetweenDates(mdy, ndy))
     }
 
     useEffect(() => {
@@ -95,11 +114,39 @@ const rmodynamics = () => {
             let h: any = []; // 单独线数据
             for (let i = 0; i < dates.length; i++) {
                 let b = [];
-                for (let j = 0; j < resData.length; j++) {
-                    if (resData[j]['day'] === dates[i]) {
-                        b.push(resData[j])
+                for (let j = 0; j < pubAll.length; j++) {
+                    let filterPub = resData.filter((t: any) => {
+                        return (pubAll[j] === t.pubId && t.day === dates[i])
+                    })
+                    // && filterPub[0]['day'] === dates[i]
+                    if (filterPub && filterPub.length > 0) {
+                        b.push(filterPub[0])
+                    } else {
+                        let filterByID = resData.filter((t: any) => {
+                            return pubAll[j] === t.pubId
+                        })
+                        if (activeTab == 0 || activeTab == 1) {
+                            let obj = { ...filterByID[0] }
+                            obj.commentByCount = '0'
+                            obj.day = dates[i]
+                            obj.isFee = '0'
+                            obj.mirrorByCount = '0'
+                            obj.totalByCount = '0'
+                            b.push({
+                                ...obj
+                            })
+                        } else {
+                            let obj = { ...filterByID[0] }
+                            obj.collectByCount = '0'
+                            obj.day = dates[i]
+                            b.push({
+                                ...obj
+                            })
+                        }
+
                     }
                 }
+
                 for (let j = 0; j < resAmountData.length; j++) {
                     if (resAmountData[j]['day'] === dates[i]) {
                         if (activeTab === 0 || activeTab === 1) {
@@ -114,13 +161,13 @@ const rmodynamics = () => {
             setLindData(s)
             setSigleData(h)
         }
-    }, [dates, postSwitch])
+    }, [dates, pubAll])
 
     useEffect(() => {
         if (currentProfile && currentProfile.profileId) {
             getEngageLineData()
         }
-    }, [activeTab, chargeSwitch, activeTab1, currentProfile])
+    }, [activeTab, chargeSwitch, activeTab1, currentProfile, postSwitch])
 
     return (
         <>
@@ -168,7 +215,7 @@ const rmodynamics = () => {
                         ) : (
                             <>
                                 {
-                                    dates.length > 0 &&
+                                    (lindData.length > 0 || sigleData.length > 0) &&
                                     <EngageLine
                                         id={'line_1'}
                                         dates={dates}
@@ -182,7 +229,7 @@ const rmodynamics = () => {
                                     />
                                 }
                                 {
-                                    dates.length == 0 &&
+                                    lindData.length === 0 && sigleData.length === 0 &&
                                     <div className="h-full w-full flex items-center justify-center text-[rgba(255,255,255,0.6)] text-[20px]">No recent change</div>
                                 }
                             </>

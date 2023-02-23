@@ -8,6 +8,7 @@ import Image from 'next/image'
 import IconVolume from '../statics/img/volume.svg'
 
 import moment from 'moment'
+
 import BN from "bignumber.js";
 
 const dys = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -22,7 +23,7 @@ const rmodynamics = () => {
 
     const [remodyBaseData, setRemodyBaseData] = useState<any>([]);
 
-    const [checked, setChecked] = useState([true, true, true, true, true]);
+    const [checked, setChecked] = useState([true, true, true, true, false]);
 
     const [week, setWeek] = useState<any>([]);
 
@@ -51,18 +52,18 @@ const rmodynamics = () => {
     }, [])
 
     useEffect(() => {
-        setChecked([true, true, true, true, true])
+        setChecked([true, true, true, true, false])
         setActiveItems([])
     }, [activeTab])
 
-    useEffect(() => {
-        if (checked.length !== 0) {
-            let checkedIndex = [];
-            checked.forEach((t: any, i: number) => {
-                if (t) checkedIndex.push(i)
-            })
-        }
-    }, [checked])
+    // useEffect(() => {
+    //     if (checked.length !== 0) {
+    //         let checkedIndex = [];
+    //         checked.forEach((t: any, i: number) => {
+    //             if (t) checkedIndex.push(i)
+    //         })
+    //     }
+    // }, [checked])
 
     const getGlobalHeatmapData = async () => {
         setLoading(true);
@@ -150,7 +151,6 @@ const rmodynamics = () => {
         let weekOfDay = parseInt(moment().format('E'));//计算今天是这周第几天
         let last_monday = moment().startOf('day').subtract(weekOfDay + 7 * weekCount - 1, 'days').toDate();//周一日期
         let last_sunday = moment().startOf('day').subtract(weekOfDay + 7 * (weekCount - 1), 'days').toDate();//周日日期
-        // console.log([moment(last_monday).format('MM/DD'), moment(last_sunday).format('MM/DD')])
         setWeek([moment(last_monday).format('MM/DD'), moment(last_sunday).format('MM/DD')])
         setCurrentDate([`20${moment(last_monday).format('YYMMDD')}`, `20${moment(last_sunday).format('YYMMDD')}`])
         setActiveItems([]);
@@ -164,12 +164,18 @@ const rmodynamics = () => {
     }
 
     const onChange = (e: any, i: number) => {
-        // console.log('checked = ', e.target.checked);
-        // setChecked(e.target.checked);
-        setChecked((prev: any) => {
-            prev[i] = e.target.checked;
-            return [...prev];
-        });
+        if (i === 4) {
+            setChecked([false, false, false, false, e.target.checked]);
+        }
+        if (i !== 4) {
+            setChecked((prev: any) => {
+                prev[i] = e.target.checked;
+                if (e.target.checked) {
+                    prev[4] = false;
+                }
+                return [...prev];
+            });
+        }
     };
 
     const putActiveItems = (e: any) => {
@@ -224,7 +230,7 @@ const rmodynamics = () => {
             }
         })
         let lv = maxMount / 5;
-        if(lv === 0){
+        if (lv === 0) {
             return 'bg-[#232323]'
         }
         if (totalMount < lv) {
@@ -240,7 +246,7 @@ const rmodynamics = () => {
         }
     }
 
-    const getContent = (e: any, i: number) => {
+    const getContent = (e: any, i: number, idx) => {
         if (!e || !checked.includes(true)) return ''
         let strDate = e[5].toString();
         let noStrDate = '';
@@ -248,18 +254,19 @@ const rmodynamics = () => {
             let current_hs = Number(moment(`2023/${week[0]}`).format("x"))
             noStrDate = moment(current_hs + i * 24 * 60 * 60 * 1000).format(`YYYY/MM/DD`)
         }
+        let h = idx < 12 ? `${idx}AM` : `${idx}PM`
         return (
             <div>
                 {
                     e !== 'noData' &&
                     <p className="text-[18px] font-[600]">
-                        {e[5] ? strDate.slice(0, 4) + '/' + strDate.slice(4, 6) + '/' + strDate.slice(6, 8) : ''}
+                        {e[5] ? `${strDate.slice(0, 4)}/${strDate.slice(4, 6)}/${strDate.slice(6, 8)} ${h}` : ''}
                     </p>
                 }
                 {
                     e === 'noData' &&
                     <p className="text-[18px] font-[600]">
-                        {noStrDate}
+                        {`${noStrDate} ${h}`}
                     </p>
                 }
                 {/* <p>Count：{totalMount.toFixed(2)}</p> */}
@@ -314,18 +321,18 @@ const rmodynamics = () => {
             <div className="flex">
                 {
                     tabs.map((t: any, i: number) => (
-                        <div onClick={() => setActiveTab(i)} key={i} className={`px-[30px] pb-[6px] cursor-pointer ${activeTab === i ? 'pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px]' : 'pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px]'}`}>{t}</div>
+                        <div onClick={() => setActiveTab(i)} key={i} className={`px-[30px] pb-[6px] cursor-pointer ${activeTab === i ? 'pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px]' : 'pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px] text-[rgba(255,255,255,0.4)]'}`}>{t}</div>
                     ))
                 }
             </div>
             <div className="flex bg-[#1A1A1A] p-5 w-full">
-                <div className="w-[780px] flex-shrink-0">
+                <div className="w-[780px] flex-shrink-0 mt-[44px]">
                     {
                         loading ?
-                            <LoadingOutlined className="text-2xl block mx-auto my-[130px]" />
+                            <div className="h-[234px] flex items-center"><LoadingOutlined className="text-2xl block mx-auto" /></div>
                             : <>
-                                <div className="text-[18px] mb-[30px] mt-[10px]">Weekly Heat Map</div>
-                                <div>
+                                {/* <div className="text-[18px] mb-[30px] mt-[10px]">Weekly Heat Map</div> */}
+                                <div className="mt">
                                     {
                                         remodyBaseData.map((t: any, i: number) => (
                                             <div className="flex mb-[1px]" key={i}>
@@ -335,7 +342,7 @@ const rmodynamics = () => {
                                                         (!item || !checked.includes(true)) ?
                                                             (
                                                                 <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[28px] w-[28px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
-                                                            ) : (<Popover placement="bottom" content={() => getContent(item, i)}>
+                                                            ) : (<Popover placement="bottom" content={() => getContent(item, i, index)}>
                                                                 <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[28px] w-[28px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
                                                             </Popover>)
 
@@ -345,7 +352,7 @@ const rmodynamics = () => {
                                         ))
                                     }
                                 </div>
-                                <div className="text-[12px] w-[calc(100%-40px)] ml-[40px]">
+                                <div className="text-[12px] w-[calc(100%-40px)] ml-[40px] overflow-hidden">
                                     <div className="w-[180px] float-left">0AM</div>
                                     <div className="w-[175px] float-left">6AM</div>
                                     <div className="w-[180px] float-left">12PM</div>
@@ -356,37 +363,47 @@ const rmodynamics = () => {
                     }
 
                 </div>
-                <div className="ml-5 mr-5 mt-[14px]">
+                <div className="ml-5 mr-5 mt-[10px]">
                     <div className="text-[12px] mt-[20px] ml-[-4px]">High</div>
-                    <div className="h-[45px] w-[16px] bg-[#D13005] mt-[4px]">
+                    <div className="h-[40px] w-[16px] bg-[#D13005] mt-[4px]">
 
                     </div>
-                    <div className="h-[45px] w-[16px] bg-[#A32A0A]">
+                    <div className="h-[40px] w-[16px] bg-[#A32A0A]">
 
                     </div>
-                    <div className="h-[45px] w-[16px] bg-[#75240F]">
+                    <div className="h-[40px] w-[16px] bg-[#75240F]">
 
                     </div>
-                    <div className="h-[45px] w-[16px] bg-[#471F14]">
+                    <div className="h-[40px] w-[16px] bg-[#471F14]">
 
                     </div>
-                    <div className="h-[45px] w-[16px] bg-[#311C17]">
+                    <div className="h-[40px] w-[16px] bg-[#311C17]">
 
                     </div>
                     <div className="text-[12px] mt-[4px] ml-[-4px]">Low</div>
                 </div>
                 <div className="w-[calc(100%-800px)] mt-[10px]">
-                    <div className="flex min-w-50 max-w-100">
+                    <div className="flex min-w-[280px] max-w-100">
                         <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] ${week[0] === '01/30' ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getLastWeek}><LeftOutlined /></div>
                         <div className="w-[calc(100%-100px)] mx-5 h-10 bg-[rgb(41,41,41)] flex items-center justify-center">
                             {
                                 week.length !== 0 &&
-                                <span>{week[0]}-{week[1]}</span>
+                                <>
+                                    {
+                                        weekCount === 0 &&
+                                        <span className="mr-[10px] text-[14px]">This Week</span>
+                                    }
+                                    {
+                                        weekCount === 1 &&
+                                        <span className="mr-[10px] text-[14px]">Last Week</span>
+                                    }
+                                    <span className="text-[14px]">{week[0]}-{week[1]}</span>
+                                </>
                             }
                         </div>
                         <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] ${weekCount == 0 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getNextWeek}><RightOutlined /></div>
                     </div>
-                    <div className="px-6 py-4 bg-[rgb(41,41,41)] mt-10 rounded-[10px]">
+                    <div className="px-6 py-4 bg-[rgb(41,41,41)] mt-[20px] rounded-[10px]">
                         {
                             activeTab == 0 &&
                             <div className="flex mb-2">
