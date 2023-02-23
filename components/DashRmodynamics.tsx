@@ -439,28 +439,28 @@ const rmodynamics = () => {
                 <div>
                     {
                         checked[0] && e == 'noData' &&
-                        <div>Post：0</div>
+                        <div>Posts：0</div>
                     }
                     {
                         checked[1] && e == 'noData' &&
-                        <div>Comment：0</div>
+                        <div>Comments：0</div>
                     }
                     {
                         checked[2] && e == 'noData' &&
-                        <div>Mirror：0</div>
+                        <div>Mirrors：0</div>
                     }
 
                     {
                         checked[0] && filterResPost.length > 0 && e !== 'noData' &&
-                        <div>Post：{filterResPost[0]['count']}</div>
+                        <div>Posts：{filterResPost[0]['count']}</div>
                     }
                     {
                         checked[1] && filterResComment.length > 0 && e !== 'noData' &&
-                        <div>Comment：{filterResComment[0]['count']}</div>
+                        <div>Comments：{filterResComment[0]['count']}</div>
                     }
                     {
                         checked[2] && filterResMirror.length > 0 && e !== 'noData' &&
-                        <div>Mirror：{filterResMirror[0]['count']}</div>
+                        <div>Mirrors：{filterResMirror[0]['count']}</div>
                     }
                 </div>
             </div>
@@ -540,14 +540,14 @@ const rmodynamics = () => {
                                     (!checked[0] || !checked[1] || !checked[2]) &&
                                     <div className="flex items-center h-[25px]">
                                         <div onClick={() => setChecked([true, true, true])} className="h-4 w-4 bg-[#CE3900] flex items-center justify-center rounded-[4px] mr-2 text-[18px] cursor-pointer text-[600]">-</div>
-                                        <div className="text-[#fff] text-[13px]">Publication</div>
+                                        <div className="text-[#fff] text-[13px]">Publications</div>
                                     </div>
                                 }
                                 {
                                     checked[0] && checked[1] && checked[2] &&
                                     <div className="flex items-center h-[25px]">
                                         <Checkbox onChange={(e: any) => onChangePub(e)} checked={checkedPub}>
-                                            <span className="text-[#fff] text-[14px]">Publication</span>
+                                            <span className="text-[#fff] text-[14px]">Publications</span>
                                         </Checkbox>
                                     </div>
                                 }
@@ -586,7 +586,7 @@ const rmodynamics = () => {
                                         />
                                     </div>
                                     <div className="mr-2">{postTotal || postTotal === 0 ? postTotal : '-'}</div>
-                                    <div>Post</div>
+                                    <div>Posts</div>
                                 </div>
                             </div>
                             <div className="ml-[auto]">
@@ -614,7 +614,7 @@ const rmodynamics = () => {
                                         />
                                     </div>
                                     <div className="mr-2">{commentTotal || commentTotal === 0 ? commentTotal : '-'}</div>
-                                    <div>Comment</div>
+                                    <div>Comments</div>
                                 </div>
                             </div>
                             <div className="ml-[auto]">
@@ -642,7 +642,7 @@ const rmodynamics = () => {
                                         />
                                     </div>
                                     <div className="mr-2">{mirrorTotal || mirrorTotal === 0 ? mirrorTotal : '-'}</div>
-                                    <div>Mirror</div>
+                                    <div>Mirrors</div>
                                 </div>
                             </div>
                             <div className="ml-[auto]">

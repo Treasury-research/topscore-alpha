@@ -10,7 +10,7 @@ import { currentProfileState } from "../store/state";
 import { useRecoilState } from "recoil";
 import moment from 'moment'
 
-const tabs = ['Engagement', 'Top Engaged', 'Collections & Fee', 'Top Collected']
+const tabs = ['Engagements', 'Top Engaged', 'Collections & Fee', 'Top Collected']
 
 const tabs1 = ['7D', '14D', '21D', '28D']
 
@@ -239,7 +239,7 @@ const rmodynamics = () => {
                         !loading && dates.length > 0 &&
                         <>
                             <div className="absolute flex items-center justify-center mr-4 right-0 bottom-0">
-                                <span className="mr-2">Post Only</span>
+                                <span className="mr-2">Posts Only</span>
                                 <Switch defaultChecked onChange={setPostSwitch} checked={postSwitch} size="small" />
                             </div>
                             {

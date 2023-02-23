@@ -273,17 +273,17 @@ const rmodynamics = () => {
                 <div>
                     {
                         e === 'noData' && checked[1] && (
-                            <div>Comment：0</div>
+                            <div>Comments {activeTab == 1 ? '(by)' : ''}：0</div>
                         )
                     }
                     {
                         e === 'noData' && checked[2] && (
-                            <div>Mirror：0</div>
+                            <div>Mirrors {activeTab == 1 ? '(by)' : ''}：0</div>
                         )
                     }
                     {
                         e === 'noData' && checked[3] && (
-                            <div>Collect：0</div>
+                            <div>Collections {activeTab == 1 ? '(by)' : ''}：0</div>
                         )
                     }
                     {
@@ -293,19 +293,19 @@ const rmodynamics = () => {
                     }
                     {
                         checked[0] && activeTab === 0 && e !== 'noData' &&
-                        <div>Post：{e[0]}</div>
+                        <div>Posts：{e[0]}</div>
                     }
                     {
                         checked[1] && e !== 'noData' &&
-                        <div>Comment：{e[1]}</div>
+                        <div>Comments {activeTab == 1 ? '(by)' : ''}：{e[1]}</div>
                     }
                     {
                         checked[2] && e !== 'noData' &&
-                        <div>Mirror：{e[2]}</div>
+                        <div>Mirrors {activeTab == 1 ? '(by)' : ''}：{e[2]}</div>
                     }
                     {
                         checked[3] && e !== 'noData' &&
-                        <div>Collect：{e[3]}</div>
+                        <div>Collections {activeTab == 1 ? '(by)' : ''}：{e[3]}</div>
                     }
                     {
                         checked[4] && e !== 'noData' &&
@@ -409,7 +409,7 @@ const rmodynamics = () => {
                             <div className="flex mb-2">
                                 <div>
                                     <Checkbox onChange={(e: any) => onChange(e, 0)} checked={checked[0]}>
-                                        <span className="text-[#fff] text-[16px]">Post</span>
+                                        <span className="text-[#fff] text-[16px]">Posts</span>
                                     </Checkbox>
                                 </div>
                                 <div className="ml-[auto]">{(totalAmount && (totalAmount.postCount || totalAmount.postCount === 0)) ? new BN(totalAmount.postCount).toFormat() : '-'}</div>
@@ -418,7 +418,7 @@ const rmodynamics = () => {
                         <div className="flex mb-2">
                             <div>
                                 <Checkbox onChange={(e: any) => onChange(e, 1)} checked={checked[1]}>
-                                    <span className="text-[#fff] text-[16px]">Comment {activeTab == 1 ? '(by)' : ''}</span>
+                                    <span className="text-[#fff] text-[16px]">Comments {activeTab == 1 ? '(by)' : ''}</span>
                                 </Checkbox>
                             </div>
                             <div className="ml-[auto]">{(totalAmount && (totalAmount.commentCount || totalAmount.commentCount === 0)) ? new BN(totalAmount.commentCount).toFormat() : '-'}</div>
@@ -426,7 +426,7 @@ const rmodynamics = () => {
                         <div className="flex mb-2">
                             <div>
                                 <Checkbox onChange={(e: any) => onChange(e, 2)} checked={checked[2]}>
-                                    <span className="text-[#fff] text-[16px]">Mirror {activeTab == 1 ? '(by)' : ''}</span>
+                                    <span className="text-[#fff] text-[16px]">Mirrors {activeTab == 1 ? '(by)' : ''}</span>
                                 </Checkbox>
                             </div>
                             <div className="ml-[auto]">{(totalAmount && (totalAmount.mirrorCount || totalAmount.mirrorCount === 0)) ? new BN(totalAmount.mirrorCount).toFormat() : '-'}</div>
@@ -434,7 +434,7 @@ const rmodynamics = () => {
                         <div className="flex mb-2">
                             <div>
                                 <Checkbox onChange={(e: any) => onChange(e, 3)} checked={checked[3]}>
-                                    <span className="text-[#fff] text-[16px]">Collect {activeTab == 1 ? '(by)' : ''}</span>
+                                    <span className="text-[#fff] text-[16px]">Collections {activeTab == 1 ? '(by)' : ''}</span>
                                 </Checkbox>
                             </div>
                             <div className="ml-[auto]">{(totalAmount && (totalAmount.collectCount || totalAmount.collectCount === 0)) ? new BN(totalAmount.collectCount).toFormat() : '-'}</div>
