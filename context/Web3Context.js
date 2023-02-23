@@ -148,6 +148,11 @@ export const Web3ContextProvider = ({ children }) => {
       message,
       signature,
     });
+    if(!res){
+      toast.error("You must have a lens handle");
+      return
+    }
+    console.log('rssss', res)
     localStorage.setItem("knn3Token", res.data.accessToken);
     localStorage.setItem("knn3RefreshToken", res.data.refreshToken);
     api.defaults.headers.authorization = `Bearer ${res.data.accessToken}`;

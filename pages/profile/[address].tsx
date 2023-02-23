@@ -11,11 +11,9 @@ import Radar from '../../components/profile/Radar'
 import log from "../../lib/log";
 import Follow from '../../components/Follow'
 import api from "../../api";
-// import ImgGenerate from "../../statics/img/generate-button.gif";
-// import ImgHoverGenerate from "../../statics/img/hover-generate-button.gif";
 import Image from 'next/image'
 import { useRecoilState } from 'recoil';
-import { currentProfileState, profileListState, loadingProfileListState } from '../../store/state'
+import { currentProfileState, profileListState, loadingProfileListState, knn3TokenValidState } from '../../store/state'
 import ImgLenster from '../../statics/img/lest-head.png'
 
 const typeList = [
@@ -50,6 +48,8 @@ const Post = () => {
   const [radarDetailScore, setRadarDetailScore] = useState<any>({});
   const [profileList,] = useRecoilState(profileListState);
   const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [knn3TokenValid, setKnn3TokenValid] =
+  useRecoilState(knn3TokenValidState);
 
   const [rador1, setRador1] = useState([
     { name: "Influence", value: 0 },
@@ -204,21 +204,28 @@ const Post = () => {
   // };
 
   useEffect(() => {
-    if(loadingProfileList){
+    if(loadingProfileList || !knn3TokenValid){
       return
     }
     const { profileId } = currentProfile;
-    if (!profileId) {
-      getUserInfo(defaultKnn3Profile.profileId);
-    } else {
+    if (profileId) {
       getUserInfo(profileId);
+
     }
     if (currentProfile.handle) {
       getProfileByHandle(currentProfile.handle)
-    } else {
-      getProfileByHandle(defaultKnn3Profile.handle)
     }
   }, [currentProfile, loadingProfileList]);
+
+  useEffect(()=>{
+    if(knn3TokenValid){
+      return
+    }
+
+    getUserInfo(defaultKnn3Profile.profileId);
+    getProfileByHandle(defaultKnn3Profile.handle)
+
+  }, [knn3TokenValid])
 
   useEffect(() => {
     log('visit_profile', account)
@@ -228,13 +235,13 @@ const Post = () => {
     setShowList(true)
   }, [])
 
-  useEffect(() => {
-    if (account) {
-      if (profileList.length == 0 && !loadingProfileList) {
-        message.info("You must have a Lens Protocol Profile");
-      }
-    }
-  }, [profileList, account, loadingProfileList]);
+  // useEffect(() => {
+  //   if (account) {
+  //     if (profileList.length == 0 && !loadingProfileList) {
+  //       message.info("You must have a Lens Protocol Profile");
+  //     }
+  //   }
+  // }, [profileList, account, loadingProfileList]);
 
   useEffect(() => {
     if (isLogin && account) {

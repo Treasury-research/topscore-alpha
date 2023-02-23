@@ -76,19 +76,13 @@ const nft = ({
   const getAllNfts = async () => {
     // setLoading(true)
     const res:number[] = (await api.get(`/lens/tokenIds/${address}`)).data;
-
-    const res2: any = (await axios.get("http://35.85.55.16:8084/v1/nft/query_ids", {
+    
+    const res2: any = await api.get("/v1/nft/query_ids", {
       params: {
         ids: res.join(','),
       },
-    })).data
-    // check if claimed
-    // const res2: any = await api.get("/v1/nft/query_ids", {
-    //   params: {
-    //     ids: res.join(','),
-    //   },
-    // });
-    // setLoading(false)
+    });
+    setLoading(false)
     if (res2 && res2.data && res2.data.length > 0) {
       setTotal(res2.data.length);
       let newList: any = [];
