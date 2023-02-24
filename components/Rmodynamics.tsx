@@ -342,8 +342,8 @@ const rmodynamics = () => {
                                                         (!item || !checked.includes(true)) ?
                                                             (
                                                                 <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[28px] w-[28px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
-                                                            ) : (<Popover placement="bottom" content={() => getContent(item, i, index)}>
-                                                                <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[28px] w-[28px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
+                                                            ) : (<Popover key={index} placement="bottom" content={() => getContent(item, i, index)}>
+                                                                <div onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[28px] w-[28px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
                                                             </Popover>)
 
                                                     ))

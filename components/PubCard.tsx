@@ -28,7 +28,9 @@ const PubCard = (props: any) => {
       if (lineData.length == 0) return;
       const s = lineData[lineData.length - 1];
       for (let i = 0; i < s.length; i++) {
-        legendData.push(`${s[i]['pubId']}`)
+        if(s[i]['pubId'] !== 0){
+          legendData.push(`${s[i]['pubId']}`)
+        }
       }
       if (legendData.length > 0) {
         getPubs([legendData])

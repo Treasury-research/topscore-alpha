@@ -274,7 +274,7 @@ const ChartLine = (props: any) => {
           borderColor: 'rgba(255,255,255,0)',
           start: 0,
           end: 100,
-          minValueSpan: 7,
+          minValueSpan: 6,
           xAxisIndex: [0, 1],
           top: '86%',
           zoomOnMouseWheel: false,

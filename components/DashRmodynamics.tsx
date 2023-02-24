@@ -28,7 +28,13 @@ let resComment = []
 
 let resMirror = []
 
-const rmodynamics = () => {
+let lastYearPost = 0
+
+let lastYearComment = 0
+
+let lastYearMirror = 0
+
+const DashRmodynamics = () => {
 
     const [remodyBaseData, setRemodyBaseData] = useState<any>([]);
 
@@ -146,6 +152,9 @@ const rmodynamics = () => {
             prev.last.postTotal = lastWeekTotal
             return { ...prev }
         })
+        if (activeTab === 0) {
+            lastYearPost = total
+        }
         resPost = res.data;
         setPostTotal(total)
     }
@@ -176,6 +185,9 @@ const rmodynamics = () => {
             prev.last.commentTotal = lastWeekTotal
             return { ...prev }
         })
+        if (activeTab === 0) {
+            lastYearComment = total
+        }
         resComment = res.data;
         setCommentTotal(total)
     }
@@ -206,6 +218,9 @@ const rmodynamics = () => {
             prev.last.mirrorTotal = lastWeekTotal
             return { ...prev }
         })
+        if (activeTab === 0) {
+            lastYearMirror = total
+        }
         resMirror = res.data;
         setMirrorTotal(total)
     }
@@ -472,7 +487,7 @@ const rmodynamics = () => {
             <div className="flex">
                 {
                     tabs.map((t: any, i: number) => (
-                        <div onClick={() => setActiveTab(i)} key={i} className={`px-[30px] pb-[6px] cursor-pointer ${activeTab === i ? 'pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px]' : 'pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px] text-[rgba(255,255,255,0.4)]'}`}>{t}</div>
+                        <div key={i} onClick={() => setActiveTab(i)} className={`px-[30px] pb-[6px] cursor-pointer ${activeTab === i ? 'pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px]' : 'pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px] text-[rgba(255,255,255,0.4)]'}`}>{t}</div>
                     ))
                 }
             </div>
@@ -512,8 +527,8 @@ const rmodynamics = () => {
                                                         (!item || (!item[0] && item[0] !== 0) || item === 'hidden') ?
                                                             (
                                                                 <div key={index} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
-                                                            ) : (<Popover placement="bottom" content={() => getContent(item, i, index)}>
-                                                                <div key={index} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
+                                                            ) : (<Popover key={index} placement="bottom" content={() => getContent(item, i, index)}>
+                                                                <div className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
                                                             </Popover>)
                                                         // <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
                                                     ))
@@ -555,24 +570,35 @@ const rmodynamics = () => {
                             {/* <div className="ml-[auto]">{!isNaN(postTotal + commentTotal + mirrorTotal) ? postTotal + commentTotal + mirrorTotal : '-'}</div> */}
                         </div>
                         <div className="flex mb-[10px]">
-                            <div className="flex items-center text-[20px] ml-[22px]">{!isNaN(postTotal + commentTotal + mirrorTotal) ? postTotal + commentTotal + mirrorTotal : '-'}</div>
+                            <div className="flex items-center text-[26px] ml-[22px]">{!isNaN(postTotal + commentTotal + mirrorTotal) ? postTotal + commentTotal + mirrorTotal : '-'}</div>
                             <div className="ml-[auto] text-[14px]">
                                 <div className='flex items-center ml-[auto] w-[fit-content]'>
                                     {
-                                        (weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
-                                        (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal) > 0 &&
-                                        <CaretUpOutlined className="creat-up-icon ml-[auto]" />
+                                        activeTab === 0 ?
+                                            <>
+                                                {
+                                                    (weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
+                                                    (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal) > 0 &&
+                                                    <CaretUpOutlined className="creat-up-icon ml-[auto]" />
+                                                }
+                                                {
+                                                    (weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
+                                                    (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal) < 0 &&
+                                                    <CaretDownOutlined className="creat-down-icon ml-[auto]" />
+                                                }
+                                                {
+                                                    (weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
+                                                    (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal) === 0 &&
+                                                    <span className="mr-1 text-[rgba(255,255,255,0.4)]">-</span>
+                                                }
+                                                <span>{Math.abs((weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
+                                                    (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal))
+                                                }</span>
+                                            </> :
+                                            <span>{lastYearPost + lastYearComment + lastYearMirror}</span>
                                     }
-                                    {
-                                        (weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
-                                        (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal) < 0 &&
-                                        <CaretDownOutlined className="creat-down-icon ml-[auto]" />
-                                    }
-                                    <span>{Math.abs((weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
-                                        (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal))
-                                    }</span>
                                 </div>
-                                <div className="text-[rgba(255,255,255,0.6)]">this week</div>
+                                <div className="text-[rgba(255,255,255,0.6)]">{activeTab === 0 ? 'this week' : 'in 2023'}</div>
                             </div>
                         </div>
                         <div className="flex mb-2 ml-[20px]">
@@ -592,14 +618,24 @@ const rmodynamics = () => {
                             <div className="ml-[auto]">
                                 <div className='flex items-center'>
                                     {
-                                        weekCountChange.current.postTotal - weekCountChange.last.postTotal > 0 &&
-                                        <CaretUpOutlined className="creat-up-icon ml-[auto]" />
+                                        activeTab === 0 ?
+                                            <>
+                                                {
+                                                    weekCountChange.current.postTotal - weekCountChange.last.postTotal > 0 &&
+                                                    <CaretUpOutlined className="creat-up-icon ml-[auto]" />
+                                                }
+                                                {
+                                                    weekCountChange.current.postTotal - weekCountChange.last.postTotal < 0 &&
+                                                    <CaretDownOutlined className="creat-down-icon ml-[auto]" />
+                                                }
+                                                {
+                                                    weekCountChange.current.postTotal - weekCountChange.last.postTotal === 0 &&
+                                                    <span className="mr-1 text-[rgba(255,255,255,0.4)]">-</span>
+                                                }
+                                                <span>{Math.abs(weekCountChange.current.postTotal - weekCountChange.last.postTotal)}</span>
+                                            </> :
+                                            <span>{lastYearPost}</span>
                                     }
-                                    {
-                                        weekCountChange.current.postTotal - weekCountChange.last.postTotal < 0 &&
-                                        <CaretDownOutlined className="creat-down-icon ml-[auto]" />
-                                    }
-                                    <span>{Math.abs(weekCountChange.current.postTotal - weekCountChange.last.postTotal)}</span>
                                 </div>
                             </div>
                         </div>
@@ -620,14 +656,24 @@ const rmodynamics = () => {
                             <div className="ml-[auto]">
                                 <div className='flex items-center'>
                                     {
-                                        weekCountChange.current.commentTotal - weekCountChange.last.commentTotal > 0 &&
-                                        <CaretUpOutlined className="creat-up-icon ml-[auto]" />
+                                        activeTab === 0 ?
+                                        <>
+                                            {
+                                                weekCountChange.current.commentTotal - weekCountChange.last.commentTotal > 0 &&
+                                                <CaretUpOutlined className="creat-up-icon ml-[auto]" />
+                                            }
+                                            {
+                                                weekCountChange.current.commentTotal - weekCountChange.last.commentTotal < 0 &&
+                                                <CaretDownOutlined className="creat-down-icon ml-[auto]" />
+                                            }
+                                            {
+                                                weekCountChange.current.commentTotal - weekCountChange.last.commentTotal === 0 &&
+                                                <span className="mr-1 text-[rgba(255,255,255,0.4)]">-</span>
+                                            }
+                                            <span>{Math.abs(weekCountChange.current.commentTotal - weekCountChange.last.commentTotal)}</span>
+                                        </>:
+                                        <span>{lastYearComment}</span>
                                     }
-                                    {
-                                        weekCountChange.current.commentTotal - weekCountChange.last.commentTotal < 0 &&
-                                        <CaretDownOutlined className="creat-down-icon ml-[auto]" />
-                                    }
-                                    <span>{Math.abs(weekCountChange.current.commentTotal - weekCountChange.last.commentTotal)}</span>
                                 </div>
                             </div>
                         </div>
@@ -648,14 +694,24 @@ const rmodynamics = () => {
                             <div className="ml-[auto]">
                                 <div className='flex items-center'>
                                     {
-                                        weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal > 0 &&
-                                        <CaretUpOutlined className="creat-up-icon ml-[auto]" />
+                                        activeTab === 0 ?
+                                        <>
+                                            {
+                                                weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal > 0 &&
+                                                <CaretUpOutlined className="creat-up-icon ml-[auto]" />
+                                            }
+                                            {
+                                                weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal < 0 &&
+                                                <CaretDownOutlined className="creat-down-icon ml-[auto]" />
+                                            }
+                                            {
+                                                weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal === 0 &&
+                                                <span className="mr-1 text-[rgba(255,255,255,0.4)]">-</span>
+                                            }
+                                            <span>{Math.abs(weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal)}</span>
+                                        </>:
+                                        <span>{lastYearMirror}</span>
                                     }
-                                    {
-                                        weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal < 0 &&
-                                        <CaretDownOutlined className="creat-down-icon ml-[auto]" />
-                                    }
-                                    <span>{Math.abs(weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal)}</span>
                                 </div>
                             </div>
                         </div>
@@ -678,4 +734,4 @@ const rmodynamics = () => {
     )
 }
 
-export default rmodynamics
+export default DashRmodynamics

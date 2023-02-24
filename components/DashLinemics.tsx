@@ -58,7 +58,7 @@ const rmodynamics = () => {
         const end = moment(endDate);
         const day = end.diff(start, "days");
         daysList.push(Number(start.format("YYYYMMDD")));
-        for (let i = 1; i <= day; i++) {
+        for (let i = 1; i < day; i++) {
             daysList.push(Number(start.add(1, "days").format("YYYYMMDD")));
         }
         return daysList;
