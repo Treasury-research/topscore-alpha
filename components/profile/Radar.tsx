@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import * as echarts from 'echarts';
 import radorImg from '../../statics/img/radar.png'
 import Image from 'next/image'
@@ -8,6 +8,7 @@ import Image from 'next/image'
 
 const ChartLine = (props: any) => {
     const { optionsData = null, id = 'default-id', width = '100%', height = '100%', data = [], showTooltip } = props;
+    const [activeName, setActiveName] = useState<any>('Influence');
     let dataBJ = data.map((t: any) => {
         t.max = 10;
         return t.value
@@ -25,6 +26,14 @@ const ChartLine = (props: any) => {
                     backgroundColor: '#232429',
                     padding: [8, 10, 8, 10],
                     clickable: true,
+                    formatter: function (value, indicator) {
+                        console.log(indicator)
+                        if(activeName === indicator.name){
+                            indicator.nameTextStyle.color = '#fff'
+                            indicator.nameTextStyle.fontSize = 16
+                        }
+                        return value;
+                    }
                 },
                 indicator: data,
                 shape: 'circle',
@@ -80,6 +89,9 @@ const ChartLine = (props: any) => {
                 //         borderWidth: 10,
                 //     }
                 // },
+                // label:{
+                //     show:true
+                // },
                 lineStyle: {
                     show: false,
                     color: '#B5EA22',
@@ -105,6 +117,7 @@ const ChartLine = (props: any) => {
         chart.on('click', function (param) {
             if (param.targetType == "axisName") {
                 props.showList(param.name)
+                setActiveName(param.name)
             }
         })
         chart.setOption(option);
@@ -114,7 +127,7 @@ const ChartLine = (props: any) => {
             }
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [optionsData, data]);
+    }, [optionsData, data,activeName]);
     return (
         <div style={{ width: width, height: height, position: "relative" }}>
             <div id={id} style={{ width: width, height: height, zIndex: '99' }}>
