@@ -27,7 +27,6 @@ const ChartLine = (props: any) => {
                     padding: [8, 10, 8, 10],
                     clickable: true,
                     formatter: function (value, indicator) {
-                        console.log(indicator)
                         if(activeName === indicator.name){
                             indicator.nameTextStyle.color = '#fff'
                             indicator.nameTextStyle.fontSize = 16
