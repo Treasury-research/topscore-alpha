@@ -220,6 +220,7 @@ export const Web3ContextProvider = ({ children }) => {
     setKnn3TokenValid(false)
     resetWallet();
     setAutoConnect(false);
+    setCurrentProfile('')
   };
 
   /**

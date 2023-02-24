@@ -3,6 +3,7 @@ import Navbar from '../../components/Navbar'
 import { DownOutlined, CloseOutlined } from "@ant-design/icons";
 import { Dropdown, Space, Menu, Drawer, message } from "antd";
 import BN from "bignumber.js";
+import { useRouter } from "next/router";
 import { formatIPFS } from "../../lib/tool";
 import useWeb3Context from "../../hooks/useWeb3Context";
 import ConnectBtn from '../../components/ConnectBtn'
@@ -33,7 +34,7 @@ const defaultKnn3Profile = {
 }
 
 const Post = () => {
-
+  const router = useRouter();
   const { account, doLogin } = useWeb3Context();
   const [showList, setShowList] = useState(false);
   const [userInfo, setUserInfo] = useState<any>({});
@@ -43,13 +44,10 @@ const Post = () => {
   const [canLoadAvatar, setCanLoadAvatar] = useState<boolean>(true);
   const [rankInfo, setRankInfo] = useState<any>({});
   const [imageURI, setImageURI] = useState<any>("");
-  const [showRadorGif, setShowRadorGif] = useState(false);
   const [openScoreDropdown, setOpenScoreDropdown] = useState(false);
   const [radarDetailScore, setRadarDetailScore] = useState<any>({});
   const [profileList,] = useRecoilState(profileListState);
   const [isLogin, setIsLogin] = useState<boolean>(false);
-  const [knn3TokenValid, setKnn3TokenValid] =
-  useRecoilState(knn3TokenValidState);
 
   const [rador1, setRador1] = useState([
     { name: "Influence", value: 0 },
@@ -199,28 +197,22 @@ const Post = () => {
   };
 
   useEffect(() => {
-    if(loadingProfileList || !knn3TokenValid){
+    if(loadingProfileList){
       return
     }
-    const { profileId } = currentProfile;
-    if (profileId) {
+    if(profileList.length > 0){
+      const { profileId } = currentProfile;
       getUserInfo(profileId);
-
-    }
-    if (currentProfile.handle) {
       getProfileByHandle(currentProfile.handle)
+    }else{
+      // if current route is not knn3, need to redirect
+      if(router.query.address !== defaultKnn3Profile.address){
+        router.push(`/profile/${defaultKnn3Profile.address}`)
+      }
+      getUserInfo(defaultKnn3Profile.profileId);
+      getProfileByHandle(defaultKnn3Profile.handle)
     }
-  }, [currentProfile, loadingProfileList]);
-
-  useEffect(()=>{
-    if(knn3TokenValid){
-      return
-    }
-
-    getUserInfo(defaultKnn3Profile.profileId);
-    getProfileByHandle(defaultKnn3Profile.handle)
-
-  }, [knn3TokenValid])
+  }, [currentProfile, loadingProfileList, profileList]);
 
   useEffect(() => {
     log('visit_profile', account)
