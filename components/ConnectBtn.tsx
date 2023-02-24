@@ -237,7 +237,7 @@ const ConnectBtn = () => {
           onClick={determineLoginModal}
           className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]"
         >
-          Log in
+          {account ? 'Log in' : 'Connect Wallet'}
         </button>
       )}
 
