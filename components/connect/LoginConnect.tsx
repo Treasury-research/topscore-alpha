@@ -44,7 +44,7 @@ const LoginConnect = (props: any) => {
                 </div>
             </div>
             <div className="text-[16px] text-[rgba(255,255,255,0.8)]">
-                <div className="text-[#EEFBFF] text-[20px]">Collect your wallet.</div>
+                <div className="text-[#EEFBFF] text-[20px]">Connect your wallet.</div>
                 <div className="text-[#6C747D] text-[14px]">Connect with one of our available wallet providers or create a new one.</div>
                 <div className="mt-5">
                     <div onClick={()=> connector('injected') } className="flex items-center border-[1px] border-[#4A4A4A] px-[10px] py-[8px] font-[600] rounded-[4px] mb-[10px] cursor-pointer">

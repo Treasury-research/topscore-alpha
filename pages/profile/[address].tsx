@@ -66,6 +66,7 @@ const Post = () => {
 
   const getProfileByHandle = async (handle: string) => {
     const res = await lensApi.getProfileByHandle(handle);
+    setImageURI('')
     if (res && res.picture && res.picture.original && res.picture.original.url) {
       setImageURI(res.picture.original.url)
     }
