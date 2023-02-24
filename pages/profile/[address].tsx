@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Navbar from '../../components/Navbar'
 import { DownOutlined, CloseOutlined } from "@ant-design/icons";
-import { Dropdown, Space, Menu, Drawer, message } from "antd";
+import { Dropdown, Space, Menu, Drawer, message, Popover } from "antd";
 import BN from "bignumber.js";
 import { useRouter } from "next/router";
 import { formatIPFS } from "../../lib/tool";
@@ -16,6 +16,7 @@ import Image from 'next/image'
 import { useRecoilState } from 'recoil';
 import { currentProfileState, profileListState, loadingProfileListState, knn3TokenValidState } from '../../store/state'
 import ImgLenster from '../../statics/img/lest-head.png'
+import ImgPremium from '../../statics/img/premium.gif'
 
 const typeList = [
   "Influence",
@@ -48,6 +49,7 @@ const Post = () => {
   const [radarDetailScore, setRadarDetailScore] = useState<any>({});
   const [profileList,] = useRecoilState(profileListState);
   const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isHaveNft, setIsHaveNft] = useState<boolean>(false);
 
   const [rador1, setRador1] = useState([
     { name: "Influence", value: 0 },
@@ -61,6 +63,20 @@ const Post = () => {
   const onClose = () => {
     setShowList(false);
   };
+
+  const getAllNfts = async () => {
+    const res = (await api.get(`/lens/tokenIds/${account}`));
+    if (res && res.data && res.data.length > 0) {
+      const res2: any = await api.get("/v1/nft/query_ids", {
+        params: {
+          ids: res.data.join(','),
+        },
+      });
+      if (res2 && res2.data && res2.data.length > 0) {
+        setIsHaveNft(true)
+      }
+    }
+  }
 
   const getProfileByHandle = async (handle: string) => {
     const res = await lensApi.getProfileByHandle(handle);
@@ -196,6 +212,14 @@ const Post = () => {
     setShowList(true);
   };
 
+  const getContent = () => {
+    return (
+      <div>
+        <p>Premium user</p>
+      </div>
+    )
+  };
+
   useEffect(() => {
     if(loadingProfileList){
       return
@@ -264,15 +288,26 @@ const Post = () => {
                 </div>
                 <div>@{currentProfile.handle ? currentProfile.handle : defaultKnn3Profile.handle}</div>
               </div>}
-              
+              {
+                isHaveNft && profileList.length > 0 &&
+                <div className='mt-2 ml-1'>
+                  <Popover placement="top" content={() => getContent()}>
+                    <Image
+                      className="h-[40px] w-[40px] object-cover"
+                      alt=''
+                      src={ImgPremium}
+                    />
+                  </Popover>
+                </div>
+              }
             </div>
 
             {/** Show follow button only when it's knn3 */}
             {!currentProfile.handle && account && !loadingProfileList && <Follow
-                profileId={currentProfile.profileId}
-                handle={currentProfile.handle}
+              profileId={currentProfile.profileId}
+              handle={currentProfile.handle}
             />}
-            
+
           </div>
 
           <div className="top-rador">
@@ -419,7 +454,7 @@ const Post = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 
