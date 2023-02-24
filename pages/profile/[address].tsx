@@ -226,6 +226,7 @@ const Post = () => {
     }
     if(profileList.length > 0){
       const { profileId } = currentProfile;
+      getAllNfts();
       getUserInfo(profileId);
       getProfileByHandle(currentProfile.handle)
     }else{
