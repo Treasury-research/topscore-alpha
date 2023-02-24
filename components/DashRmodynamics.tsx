@@ -493,30 +493,30 @@ const DashRmodynamics = () => {
             </div>
             <div className="flex bg-[#1A1A1A] p-5 w-full">
                 <div className="w-[920px] overflow-hidden">
+                    {/* <div className="text-[18px] mb-[20px]">Overview</div> */}
+                    <div className="mb-4 mr-8 flex ml-[auto] w-[fit-content] items-center mt-[60px]">
+                        <div className="text-[12px] ml-[-4px] mr-2">Low</div>
+                        <div className="h-[16px] w-[45px] bg-[#311C17]">
+
+                        </div>
+                        <div className="h-[16px] w-[45px] bg-[#471F14]">
+
+                        </div>
+                        <div className="h-[16px] w-[45px] bg-[#75240F]">
+
+                        </div>
+                        <div className="h-[16px] w-[45px] bg-[#A32A0A]">
+
+                        </div>
+                        <div className="h-[16px] w-[45px] bg-[#D13005]">
+
+                        </div>
+                        <div className="text-[12px] ml-2 ml-2">High</div>
+                    </div>
                     {
                         loading ?
-                            <div className="h-[172px] flex items-center"><LoadingOutlined className="text-2xl block mx-auto" /></div>
+                            <div className="h-[130px] flex items-center"><LoadingOutlined className="text-2xl block mx-auto" /></div>
                             : <>
-                                {/* <div className="text-[18px] mb-[20px]">Overview</div> */}
-                                <div className="mb-4 mr-8 flex ml-[auto] w-[fit-content] items-center mt-[30px]">
-                                    <div className="text-[12px] ml-[-4px] mr-2">Low</div>
-                                    <div className="h-[16px] w-[45px] bg-[#311C17]">
-
-                                    </div>
-                                    <div className="h-[16px] w-[45px] bg-[#471F14]">
-
-                                    </div>
-                                    <div className="h-[16px] w-[45px] bg-[#75240F]">
-
-                                    </div>
-                                    <div className="h-[16px] w-[45px] bg-[#A32A0A]">
-
-                                    </div>
-                                    <div className="h-[16px] w-[45px] bg-[#D13005]">
-
-                                    </div>
-                                    <div className="text-[12px] ml-2 ml-2">High</div>
-                                </div>
                                 <div>
                                     {
                                         remodyBaseData.map((t: any, i: number) => (
@@ -544,6 +544,7 @@ const DashRmodynamics = () => {
                                         ))
                                     }
                                 </div>
+
                             </>
                     }
                 </div>
@@ -589,7 +590,7 @@ const DashRmodynamics = () => {
                                                 {
                                                     (weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
                                                     (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal) === 0 &&
-                                                    <span className="mr-1 text-[rgba(255,255,255,0.4)]">-</span>
+                                                    <div className="mr-1 bg-[rgba(255,255,255,0.4)] h-[2px] w-[8px]"></div>
                                                 }
                                                 <span>{Math.abs((weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
                                                     (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal))
@@ -630,7 +631,7 @@ const DashRmodynamics = () => {
                                                 }
                                                 {
                                                     weekCountChange.current.postTotal - weekCountChange.last.postTotal === 0 &&
-                                                    <span className="mr-1 text-[rgba(255,255,255,0.4)]">-</span>
+                                                    <div className="mr-1 bg-[rgba(255,255,255,0.4)] h-[2px] w-[8px]"></div>
                                                 }
                                                 <span>{Math.abs(weekCountChange.current.postTotal - weekCountChange.last.postTotal)}</span>
                                             </> :
@@ -657,22 +658,22 @@ const DashRmodynamics = () => {
                                 <div className='flex items-center'>
                                     {
                                         activeTab === 0 ?
-                                        <>
-                                            {
-                                                weekCountChange.current.commentTotal - weekCountChange.last.commentTotal > 0 &&
-                                                <CaretUpOutlined className="creat-up-icon ml-[auto]" />
-                                            }
-                                            {
-                                                weekCountChange.current.commentTotal - weekCountChange.last.commentTotal < 0 &&
-                                                <CaretDownOutlined className="creat-down-icon ml-[auto]" />
-                                            }
-                                            {
-                                                weekCountChange.current.commentTotal - weekCountChange.last.commentTotal === 0 &&
-                                                <span className="mr-1 text-[rgba(255,255,255,0.4)]">-</span>
-                                            }
-                                            <span>{Math.abs(weekCountChange.current.commentTotal - weekCountChange.last.commentTotal)}</span>
-                                        </>:
-                                        <span>{lastYearComment}</span>
+                                            <>
+                                                {
+                                                    weekCountChange.current.commentTotal - weekCountChange.last.commentTotal > 0 &&
+                                                    <CaretUpOutlined className="creat-up-icon ml-[auto]" />
+                                                }
+                                                {
+                                                    weekCountChange.current.commentTotal - weekCountChange.last.commentTotal < 0 &&
+                                                    <CaretDownOutlined className="creat-down-icon ml-[auto]" />
+                                                }
+                                                {
+                                                    weekCountChange.current.commentTotal - weekCountChange.last.commentTotal === 0 &&
+                                                    <div className="mr-1 bg-[rgba(255,255,255,0.4)] h-[2px] w-[8px]"></div>
+                                                }
+                                                <span>{Math.abs(weekCountChange.current.commentTotal - weekCountChange.last.commentTotal)}</span>
+                                            </> :
+                                            <span>{lastYearComment}</span>
                                     }
                                 </div>
                             </div>
@@ -695,22 +696,22 @@ const DashRmodynamics = () => {
                                 <div className='flex items-center'>
                                     {
                                         activeTab === 0 ?
-                                        <>
-                                            {
-                                                weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal > 0 &&
-                                                <CaretUpOutlined className="creat-up-icon ml-[auto]" />
-                                            }
-                                            {
-                                                weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal < 0 &&
-                                                <CaretDownOutlined className="creat-down-icon ml-[auto]" />
-                                            }
-                                            {
-                                                weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal === 0 &&
-                                                <span className="mr-1 text-[rgba(255,255,255,0.4)]">-</span>
-                                            }
-                                            <span>{Math.abs(weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal)}</span>
-                                        </>:
-                                        <span>{lastYearMirror}</span>
+                                            <>
+                                                {
+                                                    weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal > 0 &&
+                                                    <CaretUpOutlined className="creat-up-icon ml-[auto]" />
+                                                }
+                                                {
+                                                    weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal < 0 &&
+                                                    <CaretDownOutlined className="creat-down-icon ml-[auto]" />
+                                                }
+                                                {
+                                                    weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal === 0 &&
+                                                    <div className="mr-1 bg-[rgba(255,255,255,0.4)] h-[2px] w-[8px]"></div>
+                                                }
+                                                <span>{Math.abs(weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal)}</span>
+                                            </> :
+                                            <span>{lastYearMirror}</span>
                                     }
                                 </div>
                             </div>

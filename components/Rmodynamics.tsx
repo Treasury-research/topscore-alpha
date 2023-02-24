@@ -364,20 +364,20 @@ const rmodynamics = () => {
 
                 </div>
                 <div className="ml-5 mr-5 mt-[10px]">
-                    <div className="text-[12px] mt-[20px] ml-[-4px]">High</div>
-                    <div className="h-[40px] w-[16px] bg-[#D13005] mt-[4px]">
+                    <div className="text-[12px] mt-[13px] ml-[-4px]">High</div>
+                    <div className="h-[43px] w-[16px] bg-[#D13005] mt-[4px]">
 
                     </div>
-                    <div className="h-[40px] w-[16px] bg-[#A32A0A]">
+                    <div className="h-[43px] w-[16px] bg-[#A32A0A]">
 
                     </div>
-                    <div className="h-[40px] w-[16px] bg-[#75240F]">
+                    <div className="h-[43px] w-[16px] bg-[#75240F]">
 
                     </div>
-                    <div className="h-[40px] w-[16px] bg-[#471F14]">
+                    <div className="h-[43px] w-[16px] bg-[#471F14]">
 
                     </div>
-                    <div className="h-[40px] w-[16px] bg-[#311C17]">
+                    <div className="h-[43px] w-[16px] bg-[#311C17]">
 
                     </div>
                     <div className="text-[12px] mt-[4px] ml-[-4px]">Low</div>
@@ -403,7 +403,7 @@ const rmodynamics = () => {
                         </div>
                         <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] ${weekCount == 0 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getNextWeek}><RightOutlined /></div>
                     </div>
-                    <div className="px-6 py-4 bg-[rgb(41,41,41)] mt-[20px] rounded-[10px]">
+                    <div className="px-6 py-4 bg-[rgb(41,41,41)] mt-[20px] rounded-[10px] h-[190px]">
                         {
                             activeTab == 0 &&
                             <div className="flex mb-2">

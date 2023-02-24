@@ -153,8 +153,8 @@ const Create = () => {
                         <div className="w-[360px] p-4 bg-[#1A1A1A] text-[rgba(255,255,255,0.5)] mr-10 rounded-[10px]">
                             <div className="mb-2">Engagement</div>
                             <div className="mb-1 text-[24px] text-[rgba(255,255,255,0.9)] flex">
-                                <div className="flex-1"><span className="text-[16px] text-[rgba(255,255,255,0.4)]">Score</span> {JSON.stringify(scores) !== '{}' && scores.lastWeek ? scores.now.pr_score_engager.toFixed(2) : '-'}</div>
-                                <div className="flex-1"><span className="text-[16px] text-[rgba(255,255,255,0.4)]">Rank</span> #{JSON.stringify(scores) !== '{}' && scores.lastWeek ? scores.now.pr_rank_engager : '-'}</div>
+                                <div className="flex-1"><span className="text-[16px] text-[rgba(255,255,255,0.4)]">Score</span> {JSON.stringify(scores) !== '{}' && scores.now ? scores.now.pr_score_engager.toFixed(2) : '-'}</div>
+                                <div className="flex-1"><span className="text-[16px] text-[rgba(255,255,255,0.4)]">Rank</span> #{JSON.stringify(scores) !== '{}' && scores.now ? scores.now.pr_rank_engager : '-'}</div>
                             </div>
                             <div className="flex">
                                 <div className="flex-1 flex items-center">
