@@ -166,7 +166,6 @@ const ConnectBtn = () => {
   }, []);
 
   const getImgUrl = (str: string) => {
-
     const imgUrl = str.replace(
       "https://ipfs.infura.io",
       "https://lens.infura-ipfs.io"
@@ -225,7 +224,7 @@ const ConnectBtn = () => {
                 placement="bottom"
               >
                 <button className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]">
-                    <Image
+                    <img
                       className="w-[20px] h-[20px] rounded-[15px] mr-2"
                       src={imageURI ? getImgUrl(imageURI) : ImgLenster}
                       alt=""
