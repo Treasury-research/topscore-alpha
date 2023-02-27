@@ -394,7 +394,7 @@ const DashRmodynamics = () => {
 
     const getItemStyle = (e: any) => {
         if (e === 'hidden') return ''
-        if (!e || (!e[0] && e[0] !== 0) || e === 'noData') return 'bg-[#232323]'
+        if (!e || (!e[0] && e[0] !== 0) || e === 'noData' || e[0] === 0) return 'bg-[#232323]'
         let lv = maxRemoData / 5;
         if (lv === 0) {
             return 'bg-[#232323]'
