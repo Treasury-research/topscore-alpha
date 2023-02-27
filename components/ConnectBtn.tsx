@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import config from "../config";
+import { formatIPFS } from "../lib/tool";
 import { shortenAddr, switchChain } from "../lib/tool";
 import { useRecoilState } from "recoil";
 import lensApi from "../api/lensApi";
@@ -165,11 +166,14 @@ const ConnectBtn = () => {
   }, []);
 
   const getImgUrl = (str: string) => {
+
     const imgUrl = str.replace(
       "https://ipfs.infura.io",
       "https://lens.infura-ipfs.io"
     );
-    return imgUrl;
+    console.log('11111111', str, imgUrl)
+
+    return formatIPFS(imgUrl)
   };
 
   return (
