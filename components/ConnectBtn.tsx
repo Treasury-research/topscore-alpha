@@ -76,7 +76,7 @@ const ConnectBtn = () => {
   const handleLogout = async () => {
     await doLogout();
     if (router.pathname === "/profile/[address]") {
-      router.push(`/profile/0x09c85610154a276a71eb8a887e73c16072029b20`);
+      location.href = `/profile/0x09c85610154a276a71eb8a887e73c16072029b20`;
     }
   }
 
