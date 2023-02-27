@@ -229,6 +229,7 @@ const rmodynamics = () => {
                 totalMount += e[i]
             }
         })
+        if (totalMount === 0) return 'bg-[#232323]'
         let lv = maxMount / 5;
         if (lv === 0) {
             return 'bg-[#232323]'
@@ -272,6 +273,11 @@ const rmodynamics = () => {
                 {/* <p>Count：{totalMount.toFixed(2)}</p> */}
                 <div>
                     {
+                        e === 'noData' && checked[0] && (
+                            <div>Posts {activeTab == 1 ? '(by)' : ''}：0</div>
+                        )
+                    }
+                    {
                         e === 'noData' && checked[1] && (
                             <div>Comments {activeTab == 1 ? '(by)' : ''}：0</div>
                         )
@@ -288,7 +294,7 @@ const rmodynamics = () => {
                     }
                     {
                         e === 'noData' && checked[4] && (
-                            <div>Volume：0</div>
+                            <div>Volume：0.00</div>
                         )
                     }
                     {
