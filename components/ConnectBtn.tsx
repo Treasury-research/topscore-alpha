@@ -73,6 +73,13 @@ const ConnectBtn = () => {
     console.log("profile info", res);
   };
 
+  const handleLogout = async () => {
+    await doLogout();
+    if (router.pathname === "/profile/[address]") {
+      router.push(`/profile/0x09c85610154a276a71eb8a887e73c16072029b20`);
+    }
+  }
+
   const getLensHandle = async () => {
     setLoadingProfileList(true);
     const res: any = await api.get(`/lens/handles/${account}`);
@@ -165,10 +172,6 @@ const ConnectBtn = () => {
     return imgUrl;
   };
 
-  // useEffect(()=>{
-  //   determineLoginModal();
-  // }, [])
-
   return (
     <div className="w-full h-10 flex gap-3 justify-end ">
       <>
@@ -207,7 +210,7 @@ const ConnectBtn = () => {
                         Switch Profile
                       </div>
                       <div
-                        onClick={doLogout}
+                        onClick={handleLogout}
                         className="cursor-pointer flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]"
                       >
                         Logout
