@@ -319,6 +319,7 @@ const Post = () => {
                 width={"100%"}
                 height={"100%"}
                 showTooltip={true}
+                open={showList}
                 showList={(name: string) => showRank(name)}
               />
             </div>

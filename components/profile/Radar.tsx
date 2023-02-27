@@ -7,7 +7,7 @@ import Image from 'next/image'
 // ];
 
 const ChartLine = (props: any) => {
-    const { optionsData = null, id = 'default-id', width = '100%', height = '100%', data = [], showTooltip } = props;
+    const { optionsData = null, id = 'default-id', width = '100%', height = '100%', data = [], showTooltip,open } = props;
     const [activeName, setActiveName] = useState<any>('Influence');
     let dataBJ = data.map((t: any) => {
         t.max = 10;
@@ -17,7 +17,7 @@ const ChartLine = (props: any) => {
         const option = {
             tooltip: {
                 trigger: 'item',
-                show: true
+                show: false
             },
             radar: {
                 axisName: {
@@ -27,7 +27,7 @@ const ChartLine = (props: any) => {
                     padding: [8, 10, 8, 10],
                     clickable: true,
                     formatter: function (value, indicator) {
-                        if(activeName === indicator.name){
+                        if(activeName === indicator.name && open){
                             indicator.nameTextStyle.color = '#fff'
                             indicator.nameTextStyle.fontSize = 16
                         }
@@ -126,7 +126,7 @@ const ChartLine = (props: any) => {
             }
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [optionsData, data,activeName]);
+    }, [optionsData, data,activeName,open]);
     return (
         <div style={{ width: width, height: height, position: "relative" }}>
             <div id={id} style={{ width: width, height: height, zIndex: '99' }}>
