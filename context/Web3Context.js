@@ -274,11 +274,11 @@ export const Web3ContextProvider = ({ children }) => {
     return await web3.eth.personal.sign(message, account);
   };
 
-  useEffect(() => {
-    if(autoConnect){
-      connectWallet();
-    }
-  }, [autoConnect]);
+  // useEffect(() => {
+  //   if(autoConnect){
+  //     connectWallet();
+  //   }
+  // }, [autoConnect]);
 
   return (
     <Web3Context.Provider
