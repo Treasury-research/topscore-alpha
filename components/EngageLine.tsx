@@ -151,6 +151,7 @@ const ChartLine = (props: any) => {
             idx = 1
           }
           params.forEach((v: any, i: number) => {
+            htmlDate = `<div class="engage-head-right-date">${v.axisValue}</div>`
             if (!v.name || v.seriesName === 'amount') return false;
             if (type == 0 || type == 1) {
               htmlCon += `<div class="engage-items">
@@ -196,8 +197,6 @@ const ChartLine = (props: any) => {
                           `
 
             }
-
-            htmlDate = `<div class="engage-head-right-date">${v.axisValue}</div>`
           })
 
           let t = params.filter((h: any) => {
