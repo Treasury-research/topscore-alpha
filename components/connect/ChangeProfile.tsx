@@ -37,7 +37,7 @@ const ChangeProfile = (props: any) => {
 
     const getImgUrl = (str: string) => {
         const imgUrl = str.replace("https://ipfs.infura.io", "https://lens.infura-ipfs.io")
-        return imgUrl
+        return formatIPFS(imgUrl);
     }
 
     return (
