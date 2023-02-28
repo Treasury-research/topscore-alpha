@@ -56,20 +56,20 @@ export const Web3ContextProvider = ({ children }) => {
   const [currentProfile, setCurrentProfile] = useRecoilState(currentProfileState)
 
   const listenProvider = () => {
-    window.ethereum.on("close", () => {
-      resetWallet();
-    });
-    window.ethereum.on("accountsChanged", async (accounts) => {
-      setAccount(accounts[0]);
-      localStorage.removeItem("knn3Token");
-      localStorage.removeItem("knn3RefreshToken");
-      api.defaults.headers.authorization = "";
-      setKnn3TokenValid(false);
-      setCurrentProfile('')
-    });
-    window.ethereum.on("chainChanged", (chainId) => {
-      setChainId(parseInt(chainId, 16));
-    });
+    // window.ethereum.on("close", () => {
+    //   resetWallet();
+    // });
+    // window.ethereum.on("accountsChanged", async (accounts) => {
+    //   setAccount(accounts[0]);
+    //   localStorage.removeItem("knn3Token");
+    //   localStorage.removeItem("knn3RefreshToken");
+    //   api.defaults.headers.authorization = "";
+    //   setKnn3TokenValid(false);
+    //   setCurrentProfile('')
+    // });
+    // window.ethereum.on("chainChanged", (chainId) => {
+    //   setChainId(parseInt(chainId, 16));
+    // });
   };
 
   const connectWallet = useCallback(async (walletName) => {
@@ -274,11 +274,11 @@ export const Web3ContextProvider = ({ children }) => {
     return await web3.eth.personal.sign(message, account);
   };
 
-  // useEffect(() => {
-  //   if(autoConnect){
-  //     connectWallet();
-  //   }
-  // }, [autoConnect]);
+  useEffect(() => {
+    if(autoConnect){
+      connectWallet();
+    }
+  }, [autoConnect]);
 
   return (
     <Web3Context.Provider
