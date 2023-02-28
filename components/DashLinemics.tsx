@@ -69,7 +69,7 @@ const rmodynamics = () => {
         setPubAll([])
         resData = []
         resAmountData = []
-        const mdy = dayjs(new Date().getTime() - ((activeTab1 + 1) * 7 - 1) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
+        const mdy = dayjs(new Date().getTime() - ((activeTab1 + 1) * 7) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
         const ndy = dayjs(new Date()).format('YYYYMMDD') // 当前日期
         if (activeTab === 0 || activeTab === 1) {
             const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${activeTab === 0 ? 1 : 4}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
