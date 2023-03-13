@@ -135,7 +135,7 @@ const Create = () => {
                                         JSON.stringify(scores) !== '{}' && scores.lastWeek && scores.lastWeek.pr_score_creator - scores.now.pr_score_creator > 0 &&
                                         <CaretDownOutlined className="creat-down-icon" />
                                     }
-                                    <span>{JSON.stringify(scores) !== '{}' && scores.lastWeek ? Math.abs(scores.lastWeek.pr_score_creator.toFixed(2) - scores.now.pr_score_creator.toFixed(2)) : '-'} this week</span>
+                                    <span>{JSON.stringify(scores) !== '{}' && scores.lastWeek ? Math.abs(scores.lastWeek.pr_score_creator - scores.now.pr_score_creator).toFixed(2) : '-'} this week</span>
                                 </div>
                                 <div className="flex-1 flex items-center">
                                     {
@@ -166,7 +166,7 @@ const Create = () => {
                                         JSON.stringify(scores) !== '{}' && scores.lastWeek && scores.lastWeek.pr_score_engager - scores.now.pr_score_engager > 0 &&
                                         <CaretDownOutlined className="creat-down-icon" />
                                     }
-                                    <span>{JSON.stringify(scores) !== '{}' && scores.lastWeek ? Math.abs(scores.lastWeek.pr_score_engager.toFixed(2) - scores.now.pr_score_engager.toFixed(2)) : '-'} this week</span>
+                                    <span>{JSON.stringify(scores) !== '{}' && scores.lastWeek ? Math.abs(scores.lastWeek.pr_score_engager - scores.now.pr_score_engager).toFixed(2) : '-'} this week</span>
                                 </div>
                                 <div className="flex-1 flex items-center">
                                     {
@@ -197,7 +197,7 @@ const Create = () => {
                                         JSON.stringify(scores) !== '{}' && scores.lastWeek && scores.lastWeek.pr_score_compaign - scores.now.pr_score_compaign > 0 &&
                                         <CaretDownOutlined className="creat-down-icon" />
                                     }
-                                    <span>{JSON.stringify(scores) !== '{}' && scores.lastWeek ? Math.abs(scores.lastWeek.pr_score_compaign.toFixed(2) - scores.now.pr_score_compaign.toFixed(2)) : '-'} this week</span>
+                                    <span>{JSON.stringify(scores) !== '{}' && scores.lastWeek ? Math.abs(scores.lastWeek.pr_score_compaign - scores.now.pr_score_compaign).toFixed(2) : '-'} this week</span>
                                 </div>
                                 <div className="flex-1 flex items-center">
                                     {

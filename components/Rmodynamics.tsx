@@ -65,21 +65,31 @@ const rmodynamics = () => {
     //     }
     // }, [checked])
 
+    const localToUtc = (date) => {
+        const fmt = 'YYYYMMDDHH'
+        return moment(date, fmt).utc().format(fmt)
+    }
+
+    const utcToLocal = (date) => {
+        const fmt = 'YYYYMMDDHH'
+        return moment.utc(date, fmt).local().format(fmt)
+    }
+    
     const getGlobalHeatmapData = async () => {
         setLoading(true);
         let res: any;
         if (activeTab === 0) {
             res = await api.get(`/thermal-map/global`, {
                 params: {
-                    from: `${currentDate[0]}00`,
-                    to: `${currentDate[1]}23`,
+                    from: `${localToUtc(currentDate[0].toString() + '00')}`,
+                    to: `${localToUtc(currentDate[1].toString() + '23')}`,
                 }
             })
         } else {
             res = await api.get(`/thermal-map/personal/${currentProfile.profileId}`, {
                 params: {
-                    from: `${currentDate[0]}00`,
-                    to: `${currentDate[1]}23`,
+                    from: `${localToUtc(currentDate[0].toString() + '00')}`,
+                    to: `${localToUtc(currentDate[0].toString() + '23')}`,
                 }
             })
         }
@@ -112,7 +122,8 @@ const rmodynamics = () => {
             return false;
         }
         res.data.forEach((t: any) => {
-            let week = moment(t.timePeriod.toString().slice(0, 8)).weekday()
+            const timePeriod = utcToLocal(t.timePeriod)
+            let week = moment(timePeriod.toString().slice(0, 8)).weekday()
             if (activeTab === 0) {
                 totalAmount.postCount += t.postCount;
             }
@@ -137,9 +148,9 @@ const rmodynamics = () => {
                 maxRemoData[4] = Number(t.collectFee)
             }
             if (week == 0) {
-                rem[6][Number(t.timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), t.timePeriod];
+                rem[6][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), timePeriod];
             } else {
-                rem[week - 1][Number(t.timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), t.timePeriod];
+                rem[week - 1][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), timePeriod];
             }
         })
         setRemodyBaseData(rem)

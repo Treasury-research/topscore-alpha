@@ -4,7 +4,7 @@ import { formatIPFS } from "../lib/tool";
 import { shortenAddr, switchChain } from "../lib/tool";
 import { useRecoilState } from "recoil";
 import lensApi from "../api/lensApi";
-import Image from 'next/image'
+import Image from "next/image";
 import {
   currentProfileState,
   profileListState,
@@ -17,13 +17,12 @@ import { useRouter } from "next/router";
 import api from "../api";
 import LoginConnect from "./connect/LoginConnect";
 import SignLens from "./connect/SignLens";
-import ImgLenster from '../statics/img/lest-head.png'
+import ImgLenster from "../statics/img/lest-head.png";
 import ChangeProfile from "./connect/ChangeProfile";
 
 const ConnectBtn = () => {
   const router = useRouter();
-  const { account, chainId, doLogout } =
-    useWeb3Context();
+  const { account, chainId, doLogout } = useWeb3Context();
   const [knn3TokenValid, setKnn3TokenValid] =
     useRecoilState(knn3TokenValidState);
   const [imageURI, setImageURI] = useState("");
@@ -60,6 +59,7 @@ const ConnectBtn = () => {
 
   const getProfileByHandle = async (handle: string) => {
     const res = await lensApi.getProfileByHandle(handle);
+    let hasPic = false;
     if (
       res &&
       res.picture &&
@@ -67,11 +67,16 @@ const ConnectBtn = () => {
       res.picture.original.url
     ) {
       setImageURI(res.picture.original.url);
+      hasPic = true;
     }
     if (res && res.picture && res.picture.uri) {
       setImageURI(res.picture.uri);
+      hasPic = true;
     }
-    console.log("profile info", res);
+
+    if(!hasPic){
+      setImageURI('')
+    }
   };
 
   const handleLogout = async () => {
@@ -79,7 +84,7 @@ const ConnectBtn = () => {
     if (router.pathname === "/profile/[address]") {
       location.href = `/profile/0x09c85610154a276a71eb8a887e73c16072029b20`;
     }
-  }
+  };
 
   const getLensHandle = async () => {
     setLoadingProfileList(true);
@@ -170,9 +175,7 @@ const ConnectBtn = () => {
       "https://ipfs.infura.io",
       "https://lens.infura-ipfs.io"
     );
-    console.log('11111111', str, imgUrl)
-
-    return formatIPFS(imgUrl)
+    return formatIPFS(imgUrl);
   };
 
   return (
@@ -224,11 +227,19 @@ const ConnectBtn = () => {
                 placement="bottom"
               >
                 <button className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]">
+                  {imageURI ? (
                     <img
                       className="w-[20px] h-[20px] rounded-[15px] mr-2"
-                      src={imageURI ? getImgUrl(imageURI) : ImgLenster}
+                      src={getImgUrl(imageURI)}
                       alt=""
                     />
+                  ) : (
+                    <Image
+                      className="w-[20px] h-[20px] rounded-[15px] mr-2"
+                      src={ImgLenster}
+                      alt=""
+                    />
+                  )}
 
                   {currentProfile.handle}
                 </button>
@@ -243,7 +254,7 @@ const ConnectBtn = () => {
           onClick={determineLoginModal}
           className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]"
         >
-          {account ? 'Log in' : 'Connect Wallet'}
+          {account ? "Log in" : "Connect Wallet"}
         </button>
       )}
 
@@ -281,7 +292,9 @@ const ConnectBtn = () => {
       {showModal[0] && (
         <LoginConnect
           onCancel={() => handleShowModal(false, 0)}
-          onConnect={() =>{handleShowModal(true, 1)} }
+          onConnect={() => {
+            handleShowModal(true, 1);
+          }}
         />
       )}
 
