@@ -12,13 +12,15 @@ import {
   knn3TokenValidState,
 } from "../store/state";
 import useWeb3Context from "../hooks/useWeb3Context";
-import { Popover } from "antd";
+import { Popover, Dropdown, Space, Menu, Drawer, Input } from "antd";
 import { useRouter } from "next/router";
 import api from "../api";
 import LoginConnect from "./connect/LoginConnect";
 import SignLens from "./connect/SignLens";
 import ImgLenster from "../statics/img/lest-head.png";
+import ImgHome from "../statics/img/home.svg";
 import ChangeProfile from "./connect/ChangeProfile";
+import { DownOutlined } from "@ant-design/icons";
 
 const ConnectBtn = () => {
   const router = useRouter();
@@ -31,6 +33,7 @@ const ConnectBtn = () => {
     loadingProfileListState
   );
   const [showModal, setShowModal] = useState([false, false, false]);
+  const [openLensDrop, setOpenLensDrop] = useState(false);
   const [currentProfile, setCurrentProfile] =
     useRecoilState<any>(currentProfileState);
 
@@ -74,7 +77,7 @@ const ConnectBtn = () => {
       hasPic = true;
     }
 
-    if(!hasPic){
+    if (!hasPic) {
       setImageURI('')
     }
   };
@@ -179,12 +182,67 @@ const ConnectBtn = () => {
   };
 
   return (
-    <div className="w-full h-10 flex gap-3 justify-end ">
-      <>
+    <div className="w-full h-10 flex gap-3 items-center">
+      <div className="h-8 flex gap-2 items-center">
+        <div>Profile of</div>
+        <div className="h-full">
+          <Dropdown
+            open={openLensDrop}
+            onOpenChange={(e: any) => setOpenLensDrop(e)}
+            overlay={
+              <Menu className="lens-switch-component">
+                <div className="py-1 w-[90%] mx-[5%] text-[#fff]">
+                  <Input className="connect-component-input" placeholder="Search" allowClear/>
+                  <p className="text-xl my-3">Yours</p>
+                  <div className="flex items-center gap-1 mb-2">
+                    <Image
+                      className="w-[20px] h-[20px] rounded-[10px] mr-2"
+                      src={ImgLenster}
+                      alt=""
+                    />
+                    stani1.lens
+                  </div>
+                  <p className="text-xl my-3">Recommened</p>
+                  <div className="flex items-center gap-1 mb-2">
+                    <Image
+                      className="w-[20px] h-[20px] rounded-[10px] mr-2"
+                      src={ImgLenster}
+                      alt=""
+                    />
+                    stani1.lens
+                  </div>
+                </div>
+              </Menu>
+            }
+          >
+            <div onClick={(e) => e.preventDefault()} className="flex h-full">
+              <button className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px]">
+                <Image
+                  className="w-[20px] h-[20px] rounded-[10px] mr-2"
+                  src={ImgLenster}
+                  alt=""
+                />
+
+                {currentProfile.handle}
+                <DownOutlined className='ml-3' />
+              </button>
+            </div>
+          </Dropdown>
+        </div>
+        <div className="flex items-center justify-center bg-[#272727] rounded-[4px] h-8 w-8 cursor-pointer">
+          <Image
+            className="w-[18px] h-[18px]"
+            src={ImgHome}
+            alt=""
+          />
+        </div>
+      </div>
+
+      <div className="h-full ml-auto">
         {account && chainId && config.chainId !== chainId ? (
           <button
             onClick={() => switchChain(config.chainId)}
-            className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]"
+            className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]"
           >
             Switch to polygon
           </button>
@@ -195,7 +253,7 @@ const ConnectBtn = () => {
                 router.pathname === "/nft/[address]" &&
                 profileList.length > 0 && (
                   <button
-                    className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]"
+                    className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]"
                     onClick={() => gotoMyNft()}
                   >
                     Check My NFT
@@ -226,7 +284,7 @@ const ConnectBtn = () => {
                 }
                 placement="bottom"
               >
-                <button className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]">
+                <button className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]">
                   {imageURI ? (
                     <img
                       className="w-[20px] h-[20px] rounded-[15px] mr-2"
@@ -247,19 +305,20 @@ const ConnectBtn = () => {
             </>
           )
         )}
-      </>
+        {!knn3TokenValid && (
+          <button
+            onClick={determineLoginModal}
+            className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]"
+          >
+            {account ? "Log in" : "Connect Wallet"}
+          </button>
+        )}
+      </div>
 
-      {!knn3TokenValid && (
-        <button
-          onClick={determineLoginModal}
-          className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]"
-        >
-          {account ? "Log in" : "Connect Wallet"}
-        </button>
-      )}
+
 
       {/* {knn3TokenValid && profileList.length === 0 && (
-        <button className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]">
+        <button className="h-full px-4 flex justify-center items-center bg-[#272727] text-[#fff]">
           No profile detected
         </button>
       )} */}
@@ -283,7 +342,7 @@ const ConnectBtn = () => {
             </Menu>
           }
         >
-          <button className="h-full px-4 flex justify-center items-center bg-[#4D0F00] text-[rgba(255,255,255,0.8)]">
+          <button className="h-full px-4 flex justify-center items-center bg-[#272727] text-[#fff]">
             {currentProfile.handle}
           </button>
         </Dropdown>

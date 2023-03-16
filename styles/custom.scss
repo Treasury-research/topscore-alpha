@@ -301,17 +301,6 @@
   }
 }
 
-.drop-menu {
-  cursor: pointer;
-  width: 100%;
-  padding: 4px 10px;
-}
-
-.ant-dropdown-menu {
-  background: #505050 !important;
-  color: rgba(255, 255, 255, 0.8);
-}
-
 .ant-drawer-content-wrapper {
   width: 260px !important;
   height: 600px;
@@ -881,4 +870,53 @@
   border: 1px solid #fff;
   color: rgba(255, 255, 255, 0.8);;
 }
+
+.profile-bg1{
+  background: url("../statics/img/bg-pro1.svg") no-repeat center center;
+  background-size: cover;
+}
+
+.profile-v2 img{
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.chart-rotate-animation:hover {
+  transform: rotate(90deg);
+  animation: all 0.4s ease 0s;
+}
+
+.chart-rotate-animation {
+  transition: all 0.4s ease 0s;
+}
+
+.chartText-scale-animation:hover{
+  transform: scale(1.3);
+  animation: all 0.8s linear 0s;
+}
+
+.chartText-scale-animation{
+  animation: all 0.8s linear 0s;
+}
+
+.profile-nft div{
+  // height: fit-content !important;
+  .slick-dots{
+    display: none !important;
+  }
+  .slick-list{
+    height: 200px !important;
+  }
+  .slick-slider{
+    height: 200px !important;
+  }
+  .ant-carousel{
+    height: 200px !important;
+  }
+}
+
+// .profile-fixed{
+//   top:50%;
+//   left:50%;
+//   transform: translate(-50%,-50%);
+// }
 // permission-modal-content absolute left-[50%] top-[40%] z-100 text-[#fff] bg-[#292929] w-[500px] translate-[-50%,-50%]

@@ -25,11 +25,11 @@
 }
 
 .ant-popover-arrow::before {
-  background: #292929 !important;
+  background: #3C3C3C !important;
 }
 
 .ant-popover-inner {
-  background: #292929 !important;
+  background: #3C3C3C !important;
 }
 
 .ant-popover-inner-content {
@@ -37,7 +37,7 @@
 }
 
 .ant-modal-content {
-  background: #292929 !important;
+  background: #3C3C3C !important;
 }
 
 .ant-modal-header {
@@ -59,6 +59,10 @@
 .default-input {
   border: 1px solid #4A4A4A !important;
   background: none !important;
+}
+
+.connect-component-input {
+  background: #3C3C3C !important;
 }
 
 .ant-select-selector {
@@ -136,4 +140,29 @@
 }
 .ant-checkbox-checked:after{
   border: none !important;
+}
+
+.drop-menu {
+  cursor: pointer;
+  width: 100%;
+  padding: 4px 10px;
+}
+
+.ant-dropdown-menu {
+  background: #272727 !important;
+  border-radius: 4px !important;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.connect-component-input .ant-input-clear-icon{
+  display: flex;
+    align-items: center;
+}
+
+.connect-component-input{
+  border:none !important;
+}
+
+.connect-component-input .ant-input{
+  background: none !important;
 }

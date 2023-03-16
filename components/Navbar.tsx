@@ -22,7 +22,7 @@ import { currentProfileState } from "../store/state";
 import { useRecoilState } from "recoil";
 import { toast } from "react-toastify";
 
-const headerTabs = ['Profile', 'Creation', 'Gallery', 'Circle', 'NFT']
+const headerTabs = ['Profile', 'Creation', 'Gallery', 'Circle']
 
 const imgSelectUrl = [IconSelect1, IconSelect2, IconSelect3, IconSelect4, IconSelect5]
 
