@@ -263,7 +263,7 @@ const profile = () => {
                   grades.map((t: any, i: number) => (
                     <div key={i} className="w-1/2 h-[148px] float-left flex items-center justify-center">
                       <div className="h-[90%] w-[90%]">
-                        <DonutChart info={t} isHaveText={true}/>
+                        <DonutChart info={t}/>
                       </div>
 
                     </div>

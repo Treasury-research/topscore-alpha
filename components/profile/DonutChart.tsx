@@ -101,7 +101,7 @@ const content = (
 );
 
 const DonutChart = (props: any) => {
-    const { level, text, isHaveText } = props.info
+    const { level, text } = props.info
     console.log(props)
     return (
         <Popover placement="bottom" title={''} content={content} trigger="hover">
@@ -124,7 +124,7 @@ const DonutChart = (props: any) => {
                         />
                     </div>
                     {
-                        isHaveText &&
+                        text &&
                         <div className="h-[24px] leading-[20px] px-2 text-[12px] radius-btn-shadow rounded-[20px] cursor-pointer hover:opacity-70">{text}</div>
                     }
                 </div>
