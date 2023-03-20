@@ -284,10 +284,10 @@ const profile = () => {
                           <div className="hover:-translate-y-1 transition-all relative" key={index}>
                             <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item.id}.png`} className="cursor-pointer w-[150px] h-[160px] rounded-tl-[12px] rounded-tr-[12px]" 
                             onMouseEnter={() => setActiveHoverIndex(`${i}${index}`)}
-                            onMouseLeave={() => setActiveHoverIndex(`${i}${index}`)}/>
+                            />
                             {
                               activeHoverIndex === `${i}${index}` &&
-                              <div className="absolute left-0 top-0 w-[150px] h-[160px] bg-[rgba(0,0,0,0.4)] flex items-center justify-center">
+                              <div className="absolute left-0 top-0 w-[150px] h-[160px] bg-[rgba(0,0,0,0.4)] flex items-center justify-center" onMouseLeave={() => setActiveHoverIndex('')}>
                                 <div className="cursor-pointer">
                                   <div className="flex items-center justify-center">
                                     <Image
