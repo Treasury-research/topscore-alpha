@@ -484,72 +484,77 @@ const DashRmodynamics = () => {
 
     return (
         <div className="text-[#fff] mb-10">
-            <div className="flex">
-                {
-                    tabs.map((t: any, i: number) => (
-                        <div key={i} onClick={() => setActiveTab(i)} className={`px-[30px] pb-[6px] cursor-pointer ${activeTab === i ? 'pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px]' : 'pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px] text-[rgba(255,255,255,0.4)]'}`}>{t}</div>
-                    ))
-                }
-            </div>
-            <div className="flex bg-[#1A1A1A] p-5 w-full">
-                <div className="w-[920px] overflow-hidden">
-                    {/* <div className="text-[18px] mb-[20px]">Overview</div> */}
-                    <div className="mb-4 mr-8 flex ml-[auto] w-[fit-content] items-center mt-[60px]">
-                        <div className="text-[12px] ml-[-4px] mr-2">Low</div>
-                        <div className="h-[16px] w-[45px] bg-[#311C17]">
 
-                        </div>
-                        <div className="h-[16px] w-[45px] bg-[#471F14]">
 
+            <div className="flex mb-20">
+                <div className="w-[880px] mr-[10px]">
+                    <div className="flex jusitify-between h-[54px] items-center bg-[#1A1A1A] rounded-[10px] mb-[10px]">
+                        <div className="flex ml-8">
+                            {
+                                tabs.map((t: any, i: number) => (
+                                    <div key={i} onClick={() => setActiveTab(i)} className={`cursor-pointer px-2 py-1 mr-4 text-[18px] ${activeTab === i ? 'text-[#fff] border-b-[2px] border-[#fff]' : 'text-[rgba(255,255,255,0.4)]'}`}>{t}</div>
+                                ))
+                            }
                         </div>
-                        <div className="h-[16px] w-[45px] bg-[#75240F]">
+                        <div className="mr-8 flex ml-[auto] w-[fit-content] items-center">
+                            <div className="text-[12px] ml-[-4px] mr-2">Low</div>
+                            <div className="h-[16px] w-[45px] bg-[#311C17]">
 
-                        </div>
-                        <div className="h-[16px] w-[45px] bg-[#A32A0A]">
+                            </div>
+                            <div className="h-[16px] w-[45px] bg-[#471F14]">
 
-                        </div>
-                        <div className="h-[16px] w-[45px] bg-[#D13005]">
+                            </div>
+                            <div className="h-[16px] w-[45px] bg-[#75240F]">
 
+                            </div>
+                            <div className="h-[16px] w-[45px] bg-[#A32A0A]">
+
+                            </div>
+                            <div className="h-[16px] w-[45px] bg-[#D13005]">
+
+                            </div>
+                            <div className="text-[12px] ml-2 ml-2">High</div>
                         </div>
-                        <div className="text-[12px] ml-2 ml-2">High</div>
                     </div>
-                    {
-                        loading ?
-                            <div className="h-[130px] flex items-center"><LoadingOutlined className="text-2xl block mx-auto" /></div>
-                            : <>
-                                <div>
-                                    {
-                                        remodyBaseData.map((t: any, i: number) => (
-                                            <div className="flex mb-[2px]" key={i}>
-                                                <div className="text-[10px] w-[40px] h-[14px] flex items-center day-liber">{dys[i]}</div>
-                                                {
-                                                    t.map((item: any, index: number) => (
-                                                        (!item || (!item[0] && item[0] !== 0) || item === 'hidden') ?
-                                                            (
-                                                                <div key={index} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
-                                                            ) : (<Popover key={index} placement="bottom" content={() => getContent(item, i, index)}>
-                                                                <div className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
-                                                            </Popover>)
-                                                        // <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
-                                                    ))
-                                                }
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                                <div className="flex">
-                                    {
-                                        month.map((t: any, i: number) => (
-                                            <div key={i} className="flex-1 text-[12px] flex justify-center">{t}</div>
-                                        ))
-                                    }
-                                </div>
+                    <div className="w-full overflow-hidden bg-[#1A1A1A] rounded-[10px] p-4 pt-6">
+                        {
+                            loading ?
+                                <div className="h-[122px] flex items-center"><LoadingOutlined className="text-2xl block mx-auto" /></div>
+                                : <>
+                                    <div>
+                                        {
+                                            remodyBaseData.map((t: any, i: number) => (
+                                                <div className="flex mb-[1px]" key={i}>
+                                                    <div className="text-[10px] w-[40px] h-[14px] flex items-center day-liber">{dys[i]}</div>
+                                                    {
+                                                        t.map((item: any, index: number) => (
+                                                            (!item || (!item[0] && item[0] !== 0) || item === 'hidden') ?
+                                                                (
+                                                                    <div key={index} className={`${getBorderStyle([i, index])} box-border h-[13px] w-[13px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
+                                                                ) : (<Popover key={index} placement="bottom" content={() => getContent(item, i, index)}>
+                                                                    <div className={`${getBorderStyle([i, index])} box-border h-[13px] w-[13px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
+                                                                </Popover>)
+                                                            // <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
+                                                        ))
+                                                    }
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                    <div className="flex">
+                                        {
+                                            month.map((t: any, i: number) => (
+                                                <div key={i} className="flex-1 text-[12px] flex justify-center">{t}</div>
+                                            ))
+                                        }
+                                    </div>
 
-                            </>
-                    }
+                                </>
+                        }
+                    </div>
                 </div>
-                <div className="w-[calc(100%-920px)]">
-                    <div className="px-6 py-4 pb-2 rounded-[10px] bg-[rgb(41,41,41)]">
+                <div className="w-[calc(100%-890px)]">
+                    <div className="h-full px-6 pt-7 pb-2 rounded-[10px] bg-[#1A1A1A]">
                         <div className="flex mb-2">
                             <div>
                                 {
@@ -716,18 +721,6 @@ const DashRmodynamics = () => {
                                 </div>
                             </div>
                         </div>
-                        {/* <div className="flex mb-2 ml-[20px]">
-                            <div>
-                            </div>
-                            <div className="ml-[auto]">{commentTotal || commentTotal === 0 ? commentTotal : '-'}</div>
-                        </div>
-                        <div className="flex mb-2 ml-[20px]">
-                            <div>
-                            </div>
-                            <div className="ml-[auto]">
-                                {mirrorTotal || mirrorTotal === 0 ? mirrorTotal : '-'}
-                            </div>
-                        </div> */}
                     </div>
                 </div>
             </div>

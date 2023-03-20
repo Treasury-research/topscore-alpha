@@ -14,6 +14,7 @@ import ImgNamexp from "../../statics/img/profileV2/name-xp.svg";
 import ImgPolygonpath from "../../statics/img/profileV2/polygon-path.svg";
 import ImgLenster from "../../statics/img/profileV2/lenster.png";
 import ImgOpensea from "../../statics/img/profileV2/opensea.png"
+import ImgFollow from "../../statics/img/profileV2/follow.svg"
 import ImgEdit from "../../statics/img/profileV2/edit.svg"
 import ImgCopy from "../../statics/img/profileV2/copy.svg"
 import ImgDownLoad from "../../statics/img/profileV2/downLoad.svg"
@@ -28,21 +29,7 @@ import ImgMirrorsby from "../../statics/img/profileV2/mirrorsby.svg"
 import ImgCollections from "../../statics/img/profileV2/collections.svg"
 import ImgCollectedby from "../../statics/img/profileV2/collectedby.svg"
 import ImgPremium from '../../statics/img/premium.gif'
-
-const operateBtns = [
-  {
-    src: ImgEdit,
-    link: ''
-  },
-  {
-    src: ImgCopy,
-    link: ''
-  },
-  {
-    src: ImgDownLoad,
-    link: ''
-  }
-]
+import ImgHuman from "../../statics/img/profileV2/human.svg"
 
 const des = 'KNN3 is one-stop Web3 User-centric #DataFi solution for d/Apps and smart contracts.  💬 DC: http://discord.gg/UKzFVpHk4J 🔗 Link3: http://link3.to/knn3network'
 
@@ -167,6 +154,8 @@ const profile = () => {
 
   const [showNftBtn, setShowNftBtn] = useState<boolean>(false)
 
+  const [activeHoverIndex,setActiveHoverIndex] = useState<any>('')
+
   return (
     <div className="w-full h-full bg-[#000] flex profile-v2">
       <Navbar />
@@ -174,7 +163,7 @@ const profile = () => {
         <ConnectBtn />
         <div className="w-full overflow-y-auto h-[calc(100%-40px)]">
           <div className="mx-auto mt-16 w-[722px]">
-            <div className="h-[512px] mb-10 profile-bg1 flex">
+            <div className="h-[512px] mb-4 profile-bg1 flex">
               <div className="w-1/2 h-full">
                 <div className="flex gap-8">
                   <div>
@@ -225,17 +214,30 @@ const profile = () => {
                       </button>
                     </div>
                     <div className="flex gap-3">
-                      {
-                        operateBtns.map((t: any, i: number) => (
-                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" key={i}>
-                            <Image
-                              src={t.src}
-                              alt=""
-                            />
-                          </button>
-                        ))
-                      }
-
+                      <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]">
+                        <Image
+                          src={ImgFollow}
+                          alt=""
+                        />
+                      </button>
+                      <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]">
+                        <Image
+                          src={ImgEdit}
+                          alt=""
+                        />
+                      </button>
+                      <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]">
+                        <Image
+                          src={ImgCopy}
+                          alt=""
+                        />
+                      </button>
+                      <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]">
+                        <Image
+                          src={ImgDownLoad}
+                          alt=""
+                        />
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -263,7 +265,7 @@ const profile = () => {
                   grades.map((t: any, i: number) => (
                     <div key={i} className="w-1/2 h-[148px] float-left flex items-center justify-center">
                       <div className="h-[90%] w-[90%]">
-                        <DonutChart info={t}/>
+                        <DonutChart info={t} />
                       </div>
 
                     </div>
@@ -271,15 +273,33 @@ const profile = () => {
                 }
               </div>
             </div>
+            <div className="w-[fit-content] h-[fit-content] px-4 py-2 nft-bg mb-2">NFT</div>
             <div className="h-[200px] relative profile-nft" onMouseEnter={() => setShowNftBtn(true)} onMouseLeave={() => setShowNftBtn(false)}>
               <Carousel dotPosition={'bottom'} ref={carouselRef}>
                 {
                   nftList.map((t: any, i: number) => (
-                    <div>
+                    <div key={i}>
                       <div className="flex items-center justify-left gap-10">
-                        {t.map((item: any) =>
-                          <div className="hover:-translate-y-1 transition-all">
-                            <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item.id}.png`} className="cursor-pointer w-[150px] h-[160px] rounded-tl-[12px] rounded-tr-[12px]" />
+                        {t.map((item: any, index: number) =>
+                          <div className="hover:-translate-y-1 transition-all relative" key={index}>
+                            <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item.id}.png`} className="cursor-pointer w-[150px] h-[160px] rounded-tl-[12px] rounded-tr-[12px]" 
+                            onMouseEnter={() => setActiveHoverIndex(`${i}${index}`)}
+                            onMouseLeave={() => setActiveHoverIndex(`${i}${index}`)}/>
+                            {
+                              activeHoverIndex === `${i}${index}` &&
+                              <div className="absolute left-0 top-0 w-[150px] h-[160px] bg-[rgba(0,0,0,0.4)] flex items-center justify-center">
+                                <div className="cursor-pointer">
+                                  <div className="flex items-center justify-center">
+                                    <Image
+                                      src={ImgHuman}
+                                      className="w-[40px] h-[40px]"
+                                      alt=""
+                                    />
+                                  </div>
+                                  <p className="text-[18px] text-[#fff]">Set as avatar</p>
+                                </div>
+                              </div>
+                            }
                             <div className="flex justify-between items-center bg-[#1A1A1A] h-[40px] px-3 rounded-bl-[12px] rounded-br-[12px]">
                               <div className="text-[#fff]">No.{item.id}</div>
                               <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
