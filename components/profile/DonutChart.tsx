@@ -101,33 +101,34 @@ const content = (
 );
 
 const DonutChart = (props: any) => {
-    const { level, text } = props.info
+    const { level, text, isHaveText } = props.info
     console.log(props)
     return (
         <Popover placement="bottom" title={''} content={content} trigger="hover">
-        <div className='w-full h-full rounded-[50%] radius-btn-shadow relative flex items-center justify-center'
-        >
-            {
-                level !== 0 &&
-                <Image
-                    className="w-[calc(100%-4px)] h-[calc(100%-4px)] rounded-[10px] chart-rotate-animation"
-                    src={level ? donutConfig[level]['chartImgUrl'] : ''}
-                    alt=""
-                />
-            }
-            <div className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
-                <div className="flex items-center justify-center mb-3">
+            <div className='w-full h-full rounded-[50%] radius-btn-shadow relative flex items-center justify-center'
+            >
+                {
+                    level !== 0 &&
                     <Image
-                        className="chartText-scale-animation"
-                        src={level || level === 0 ? donutConfig[level]['textImgUrl'] : ''}
+                        className="w-[calc(100%-4px)] h-[calc(100%-4px)] rounded-[10px] chart-rotate-animation"
+                        src={level ? donutConfig[level]['chartImgUrl'] : ''}
                         alt=""
                     />
+                }
+                <div className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
+                    <div className="flex items-center justify-center mb-3">
+                        <Image
+                            className="chartText-scale-animation"
+                            src={level || level === 0 ? donutConfig[level]['textImgUrl'] : ''}
+                            alt=""
+                        />
+                    </div>
+                    {
+                        isHaveText &&
+                        <div className="h-[24px] leading-[20px] px-2 text-[12px] radius-btn-shadow rounded-[20px] cursor-pointer hover:opacity-70">{text}</div>
+                    }
                 </div>
-                
-                    <div className="h-[24px] leading-[20px] px-2 text-[12px] radius-btn-shadow rounded-[20px] cursor-pointer hover:opacity-70">{text}</div>
-                
             </div>
-        </div>
         </Popover>
     )
 }
