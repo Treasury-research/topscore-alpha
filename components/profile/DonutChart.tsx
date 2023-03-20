@@ -3,18 +3,17 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Router, { useRouter } from "next/router";
 import { Popover } from 'antd';
-import Img0 from "../../statics/img/profileV2/donut/7.png"
-import Img1 from "../../statics/img/profileV2/donut/7.png"
-import Img2 from "../../statics/img/profileV2/donut/7.png"
-import Img3 from "../../statics/img/profileV2/donut/7.png"
-import Img4 from "../../statics/img/profileV2/donut/7.png"
-import Img5 from "../../statics/img/profileV2/donut/7.png"
-import Img6 from "../../statics/img/profileV2/donut/7.png"
+import Img1 from "../../statics/img/profileV2/donut/1.png"
+import Img2 from "../../statics/img/profileV2/donut/2.png"
+import Img3 from "../../statics/img/profileV2/donut/3.png"
+import Img4 from "../../statics/img/profileV2/donut/4.png"
+import Img5 from "../../statics/img/profileV2/donut/5.png"
+import Img6 from "../../statics/img/profileV2/donut/6.png"
 import Img7 from "../../statics/img/profileV2/donut/7.png"
-import Img8 from "../../statics/img/profileV2/donut/7.png"
-import Img9 from "../../statics/img/profileV2/donut/7.png"
-import Img10 from "../../statics/img/profileV2/donut/7.png"
-import Img11 from "../../statics/img/profileV2/donut/7.png"
+import Img8 from "../../statics/img/profileV2/donut/8.png"
+import Img9 from "../../statics/img/profileV2/donut/9.png"
+import Img10 from "../../statics/img/profileV2/donut/10.png"
+import Img11 from "../../statics/img/profileV2/donut/11.png"
 
 import Text0 from "../../statics/img/profileV2/text/0.svg"
 import Text1 from "../../statics/img/profileV2/text/1.svg"
@@ -30,66 +29,67 @@ import Text10 from "../../statics/img/profileV2/text/10.svg"
 import Text11 from "../../statics/img/profileV2/text/11.svg"
 
 
-const donutConfig = [{
-    level: 0,
-    chartImgUrl: Img0,
-    textImgUrl: Text0
-},
-{
-    level: 1,
-    chartImgUrl: Img1,
-    textImgUrl: Text1
-},
-{
-    level: 2,
-    chartImgUrl: Img2,
-    textImgUrl: Text2
-},
-{
-    level: 3,
-    chartImgUrl: Img3,
-    textImgUrl: Text3
-},
-{
-    level: 4,
-    chartImgUrl: Img4,
-    textImgUrl: Text4
-},
-{
-    level: 5,
-    chartImgUrl: Img5,
-    textImgUrl: Text5
-},
-{
-    level: 6,
-    chartImgUrl: Img6,
-    textImgUrl: Text6
-},
-{
-    level: 7,
-    chartImgUrl: Img7,
-    textImgUrl: Text7
-},
-{
-    level: 8,
-    chartImgUrl: Img8,
-    textImgUrl: Text8
-},
-{
-    level: 9,
-    chartImgUrl: Img9,
-    textImgUrl: Text9
-},
-{
-    level: 10,
-    chartImgUrl: Img10,
-    textImgUrl: Text10
-},
-{
-    level: 11,
-    chartImgUrl: Img11,
-    textImgUrl: Text11
-}]
+const donutConfig = [
+    {
+        level: 0,
+        chartImgUrl: '',
+        textImgUrl: Text0
+    },
+    {
+        level: 1,
+        chartImgUrl: Img1,
+        textImgUrl: Text1
+    },
+    {
+        level: 2,
+        chartImgUrl: Img2,
+        textImgUrl: Text2
+    },
+    {
+        level: 3,
+        chartImgUrl: Img3,
+        textImgUrl: Text3
+    },
+    {
+        level: 4,
+        chartImgUrl: Img4,
+        textImgUrl: Text4
+    },
+    {
+        level: 5,
+        chartImgUrl: Img5,
+        textImgUrl: Text5
+    },
+    {
+        level: 6,
+        chartImgUrl: Img6,
+        textImgUrl: Text6
+    },
+    {
+        level: 7,
+        chartImgUrl: Img7,
+        textImgUrl: Text7
+    },
+    {
+        level: 8,
+        chartImgUrl: Img8,
+        textImgUrl: Text8
+    },
+    {
+        level: 9,
+        chartImgUrl: Img9,
+        textImgUrl: Text9
+    },
+    {
+        level: 10,
+        chartImgUrl: Img10,
+        textImgUrl: Text10
+    },
+    {
+        level: 11,
+        chartImgUrl: Img11,
+        textImgUrl: Text11
+    }]
 
 const content = (
     <div>
@@ -104,12 +104,17 @@ const DonutChart = (props: any) => {
     const { level, text } = props.info
     console.log(props)
     return (
-        <div className='w-full h-full rounded-[50%] radius-btn-shadow relative flex items-center justify-center'>
-            <Image
-                className="w-[calc(100%-4px)] h-[calc(100%-4px)] rounded-[10px] chart-rotate-animation"
-                src={level || level === 0 ? donutConfig[level]['chartImgUrl'] : ''}
-                alt=""
-            />
+        <Popover placement="bottom" title={''} content={content} trigger="hover">
+        <div className='w-full h-full rounded-[50%] radius-btn-shadow relative flex items-center justify-center'
+        >
+            {
+                level !== 0 &&
+                <Image
+                    className="w-[calc(100%-4px)] h-[calc(100%-4px)] rounded-[10px] chart-rotate-animation"
+                    src={level ? donutConfig[level]['chartImgUrl'] : ''}
+                    alt=""
+                />
+            }
             <div className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
                 <div className="flex items-center justify-center mb-3">
                     <Image
@@ -118,11 +123,12 @@ const DonutChart = (props: any) => {
                         alt=""
                     />
                 </div>
-                <Popover placement="bottom" title={''} content={content} trigger="click">
+                
                     <div className="h-[24px] leading-[20px] px-2 text-[12px] radius-btn-shadow rounded-[20px] cursor-pointer hover:opacity-70">{text}</div>
-                </Popover>
+                
             </div>
         </div>
+        </Popover>
     )
 }
 

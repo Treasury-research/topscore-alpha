@@ -98,27 +98,27 @@ const baseImgInfo = [{
 }]
 
 const grades = [{
-  level: 1,
+  level: 11,
   text: 'Influence'
 },
 {
-  level: 2,
+  level: 10,
   text: 'Creation'
 },
 {
-  level: 3,
+  level: 9,
   text: 'Campaign'
 },
 {
-  level: 4,
+  level: 8,
   text: 'Collection'
 },
 {
-  level: 5,
+  level: 7,
   text: 'Engagement'
 },
 {
-  level: 0,
+  level: 6,
   text: 'Curation'
 }]
 
@@ -278,7 +278,7 @@ const profile = () => {
                     <div>
                       <div className="flex items-center justify-left gap-10">
                         {t.map((item: any) =>
-                          <div>
+                          <div className="hover:-translate-y-1 transition-all">
                             <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item.id}.png`} className="cursor-pointer w-[150px] h-[160px] rounded-tl-[12px] rounded-tr-[12px]" />
                             <div className="flex justify-between items-center bg-[#1A1A1A] h-[40px] px-3 rounded-bl-[12px] rounded-br-[12px]">
                               <div className="text-[#fff]">No.{item.id}</div>
