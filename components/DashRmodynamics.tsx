@@ -483,7 +483,7 @@ const DashRmodynamics = () => {
     };
 
     return (
-        <div className="text-[#fff]">
+        <div className="text-[#fff] mb-10">
             <div className="flex">
                 {
                     tabs.map((t: any, i: number) => (

@@ -194,8 +194,8 @@ const Create = () => {
                         </div>
                     </>}
                 </div>
-                <Rmodynamics></Rmodynamics>
                 <DashRmodynamics></DashRmodynamics>
+                <Rmodynamics></Rmodynamics>
                 <DashLinemics></DashLinemics>
             </div>
         </>

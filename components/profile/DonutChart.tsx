@@ -116,7 +116,7 @@ const DonutChart = (props: any) => {
                     />
                 }
                 <div className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
-                    <div className="flex items-center justify-center mb-3">
+                    <div className="flex items-center justify-center">
                         <Image
                             className="chartText-scale-animation"
                             src={level || level === 0 ? donutConfig[level]['textImgUrl'] : ''}
@@ -125,7 +125,7 @@ const DonutChart = (props: any) => {
                     </div>
                     {
                         text &&
-                        <div className="h-[24px] leading-[20px] px-2 text-[12px] radius-btn-shadow rounded-[20px] cursor-pointer hover:opacity-70">{text}</div>
+                        <div className=" mt-3 h-[24px] leading-[20px] px-2 text-[12px] radius-btn-shadow rounded-[20px] cursor-pointer hover:opacity-70">{text}</div>
                     }
                 </div>
             </div>
