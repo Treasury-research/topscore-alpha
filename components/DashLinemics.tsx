@@ -10,7 +10,7 @@ import { currentProfileState } from "../store/state";
 import { useRecoilState } from "recoil";
 import moment from 'moment'
 
-const tabs = ['Engagements', 'Top Engaged', 'Collections & Fee', 'Top Collected']
+const tabs = ['Overview', 'Engagements', 'Collections']
 
 const tabs1 = ['7D', '14D', '21D', '28D']
 
@@ -50,6 +50,8 @@ const rmodynamics = () => {
 
     const [loading, setLoading] = useState(false);
 
+    const [topRecentSwitch,setTopRecentSwitch] = useState(false)
+
     const [currentProfile] = useRecoilState<any>(currentProfileState);
 
     const enumerateDaysBetweenDates = (startDate, endDate) => {
@@ -71,18 +73,22 @@ const rmodynamics = () => {
         resAmountData = []
         const mdy = dayjs(new Date().getTime() - ((activeTab1 + 1) * 7) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
         const ndy = dayjs(new Date()).format('YYYYMMDD') // 当前日期
-        if (activeTab === 0 || activeTab === 1) {
-            const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${activeTab === 0 ? 1 : 4}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
-            const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
+        if (activeTab === 1) {
+            // const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
+            // const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
+            const res: any = await api.get(`/lens/publicationStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
+            const res1: any = await api.get(`/lens/followStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}`);
             if (!res || !res.data || !res1 || !res1.data) {
                 setLoading(false);
                 return false;
             }
             resData = res.data;
             resAmountData = res1.data;
-        } else {
-            const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${activeTab - 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
-            const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
+        } else if(activeTab === 2) {
+            // const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 1 : 2}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
+            // const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
+            const res: any = await api.get(`/lens/collectStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 1 : 2}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
+            const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}`);
             if (!res || !res.data || !res1 || !res1.data) {
                 setLoading(false);
                 return false;
@@ -167,16 +173,16 @@ const rmodynamics = () => {
         if (currentProfile && currentProfile.profileId) {
             getEngageLineData()
         }
-    }, [activeTab, chargeSwitch, activeTab1, currentProfile, postSwitch])
+    }, [activeTab, chargeSwitch, activeTab1, currentProfile, postSwitch,topRecentSwitch])
 
     return (
         <>
-            <div className="text-[#fff] bg-[#1A1A1A] p-5 my-10">
+            <div className="text-[#fff] bg-[#1A1A1A] p-5 my-10 rounded-[10px]">
                 <div className="flex">
                     <div className="flex">
                         {
                             tabs.map((t: any, i: number) =>
-                                <div key={i} onClick={() => setActiveTab(i)} className={`mr-4 box-border rounded-[20px] border-[1px] border-[#fff] w-[190px] h-[40px] flex items-center justify-center text-[14px] cursor-pointer ${activeTab == i ? 'bg-[rgb(206,57,0)] border-[0px]' : 'bg-[#000]'}`}>
+                                <div key={i} onClick={() => setActiveTab(i)} className={`mr-4 box-border rounded-[20px] w-[120px] h-[40px] flex items-center justify-center text-[14px] cursor-pointer hover:opacity-70 ${activeTab == i ? 'bg-[#fff] text-[#000]' : 'radius-btn-shadow text-[#fff]'}`}>
                                     {t}
                                 </div>
                             )
@@ -185,15 +191,24 @@ const rmodynamics = () => {
                     <div className="ml-[auto] h-12 bg-[rgb(41,41,41)] flex items-center justify-center pl-2">
                         {
                             tabs1.map((t: any, i: number) =>
-                                <div key={i} onClick={() => setActiveTab1(i)} className={`h-8 mr-2 flex items-center justify-center w-[60px] rounded-[4px] cursor-pointer ${activeTab1 == i ? 'bg-[rgb(206,57,0)]' : ''}`}>{t}</div>
+                                <div key={i} onClick={() => setActiveTab1(i)} className={`h-8 mr-2 flex items-center justify-center w-[60px] rounded-[4px] cursor-pointer ${activeTab1 == i ? 'bg-[#fff] text-[#000]' : ''}`}>{t}</div>
                             )
                         }
                     </div>
                 </div>
                 <div className="flex mt-4">
-                    <div className="text-[20px]">{lineDes[activeTab]}</div>
+                    <div>
+                        {
+                            (activeTab == 1 || activeTab == 2) &&
+                            <div className="flex items-center justify-center mr-4">
+                                <span className="mr-2">Top</span>
+                                <Switch defaultChecked onChange={setTopRecentSwitch} checked={topRecentSwitch} size="small" className="mr-2" />
+                                <span className="mr-2">Recent</span>
+                            </div>
+                        }
+                    </div>
                     {
-                        (activeTab === 0 || activeTab === 1) &&
+                        activeTab === 1 &&
                         <div className="ml-[auto] flex">
                             <div className="flex items-center justify-center mr-4">
                                 <span className="mr-2">Comments (by)</span>
@@ -243,7 +258,7 @@ const rmodynamics = () => {
                                 <Switch defaultChecked onChange={setPostSwitch} checked={postSwitch} size="small" />
                             </div>
                             {
-                                (activeTab == 2 || activeTab == 3) &&
+                                activeTab == 2 &&
                                 <div className="absolute flex items-center justify-center mr-4 right-[120px] bottom-0">
                                     <span className="mr-2">Charged Only</span>
                                     <Switch defaultChecked onChange={setChargeSwitch} checked={chargeSwitch} size="small" />
@@ -253,7 +268,7 @@ const rmodynamics = () => {
                     }
                 </div>
             </div>
-            <PubCard lineData={lindData}></PubCard>
+            <PubCard lineData={lindData} topRecentSwitch={topRecentSwitch} activeLineTab={activeTab}></PubCard>
         </>
     )
 }

@@ -91,45 +91,64 @@ const donutConfig = [
         textImgUrl: Text11
     }]
 
-const content = (
-    <div>
-        <p className="text-[12px] text-[rgba(255,255,255,0.8)]">Score</p>
-        <p className="text-[16px] font-bold mb-3">12,251.12</p>
-        <p className="text-[12px] text-[rgba(255,255,255,0.8)]">Rank</p>
-        <p className="text-[16px] font-bold">#12,251</p>
-    </div>
-);
-
-const DonutChart = (props: any) => {
-    const { level, text } = props.info
-    console.log(props)
+const getToolTipContent = (score: any, rank: any) => {
     return (
-        <Popover placement="bottom" title={''} content={content} trigger="hover">
-            <div className='w-full h-full rounded-[50%] radius-btn-shadow relative flex items-center justify-center'
-            >
-                {
-                    level !== 0 &&
+        <div>
+            <p className="text-[12px] text-[rgba(255,255,255,0.8)]">Score</p>
+            <p className="text-[16px] font-bold mb-3">{score.toFixed(2)}</p>
+            <p className="text-[12px] text-[rgba(255,255,255,0.8)]">Rank</p>
+            <p className="text-[16px] font-bold">#{rank}</p>
+        </div>
+    )
+}
+
+const getContent = (props: any) => {
+    const { level, text, score, rank } = props.info
+    const { showToolTip } = props
+    return (
+        <div className='w-full h-full rounded-[50%] radius-btn-shadow relative flex items-center justify-center'
+        >
+            {
+                level !== 0 &&
+                <Image
+                    className="w-[calc(100%-4px)] h-[calc(100%-4px)] rounded-[10px] chart-rotate-animation"
+                    src={level ? donutConfig[level]['chartImgUrl'] : ''}
+                    alt=""
+                />
+            }
+            <div className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
+                <div className="flex items-center justify-center">
                     <Image
-                        className="w-[calc(100%-4px)] h-[calc(100%-4px)] rounded-[10px] chart-rotate-animation"
-                        src={level ? donutConfig[level]['chartImgUrl'] : ''}
+                        className="chartText-scale-animation"
+                        src={level || level === 0 ? donutConfig[level]['textImgUrl'] : ''}
                         alt=""
                     />
-                }
-                <div className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
-                    <div className="flex items-center justify-center">
-                        <Image
-                            className="chartText-scale-animation"
-                            src={level || level === 0 ? donutConfig[level]['textImgUrl'] : ''}
-                            alt=""
-                        />
-                    </div>
-                    {
-                        text &&
-                        <div className=" mt-3 h-[24px] leading-[20px] px-2 text-[12px] radius-btn-shadow rounded-[20px] cursor-pointer hover:opacity-70">{text}</div>
-                    }
                 </div>
+                {
+                    text &&
+                    <div className=" mt-3 h-[24px] leading-[20px] px-2 text-[12px] radius-btn-shadow rounded-[20px] cursor-pointer hover:opacity-70">{text}</div>
+                }
             </div>
-        </Popover>
+        </div>
+    )
+}
+
+const DonutChart = (props: any) => {
+    const { score, rank } = props.info
+    const { showToolTip } = props
+    return (
+        <>
+            {
+                showToolTip ? (
+                    <Popover placement="bottom" title={''} content={getToolTipContent(score, rank)} trigger="hover">
+                        {getContent(props)}
+                    </Popover>
+                ) : (
+                    <>{getContent(props)}</>
+                )
+            }
+        </>
+
     )
 }
 

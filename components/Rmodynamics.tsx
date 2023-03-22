@@ -37,33 +37,36 @@ const rmodynamics = () => {
 
     const [loading, setLoading] = useState<boolean>(false);
 
+    // const [isFirstRefresh, setIsFirstRefresh] = useState<boolean>(true);
+
     const [currentProfile] = useRecoilState<any>(currentProfileState);
 
     useEffect(() => {
         if (currentDate.length !== 0) {
             if (currentProfile && currentProfile.profileId) {
-                getGlobalHeatmapData();
+                if (weekCount === 0) {
+                    getGlobalAvgHeatmapData()
+                } else {
+                    getGlobalHeatmapData()
+                }
             }
         }
-    }, [currentDate, activeTab, currentProfile])
+    }, [currentDate,currentProfile,activeTab])
+
+    // useEffect(() => {
+    //     // setIsFirstRefresh(true)
+    //     getGlobalAvgHeatmapData()
+    // }, [currentProfile,activeTab])
 
     useEffect(() => {
         getCurrentWeek()
     }, [])
 
-    useEffect(() => {
+    const togglTab = (idx) => {
+        setActiveTab(idx)
         setChecked([true, true, true, true, false])
         setActiveItems([])
-    }, [activeTab])
-
-    // useEffect(() => {
-    //     if (checked.length !== 0) {
-    //         let checkedIndex = [];
-    //         checked.forEach((t: any, i: number) => {
-    //             if (t) checkedIndex.push(i)
-    //         })
-    //     }
-    // }, [checked])
+    }
 
     const localToUtc = (date) => {
         const fmt = 'YYYYMMDDHH'
@@ -74,9 +77,109 @@ const rmodynamics = () => {
         const fmt = 'YYYYMMDDHH'
         return moment.utc(date, fmt).local().format(fmt)
     }
-    
+
+    const getGlobalAvgHeatmapData = async () => {
+        setLoading(true);
+        setTotalAmount({})
+        let res: any;
+        if (activeTab === 0) {
+            res = await api.get(`/lens/queryGlobalAvgByWeek`)
+        } else {
+            res = await api.get(`/lens/queryProfileAvgByWeek/${currentProfile.profileId}`)
+        }
+        let totalAmount = {
+            postCount: 0,
+            commentCount: 0,
+            mirrorCount: 0,
+            collectCount: 0,
+            collectFee: 0
+        }
+        let weekOfDay = parseInt(moment().format('E'));
+        let rem: any = [[], [], [], [], [], [], []]
+        const dWeek = weekOfDay === 0 ? 6 : weekOfDay
+        const dHour = parseInt(moment().format('HH'))
+        for (let i = 0; i < 7; i++) {
+            for (let j = 0; j < 24; j++) {
+                rem[i].push('noData')
+            }
+        }
+        maxRemoData = [0, 0, 0, 0, 0]
+        setLoading(false);
+        if (!res || !res.data) {
+            setRemodyBaseData(rem)
+            return false;
+        }
+        res.data.forEach((t: any) => {
+            let week:any
+            let avgPostCount,avgCommentCount,avgMirrorCount,avgCollectCount
+            if (activeTab === 0) {
+                avgPostCount = Number(t.avgPostCount);
+            }
+            avgCommentCount = Number(t.avgCommentCount);
+            avgMirrorCount = Number(t.avgMirrorCount);
+            avgCollectCount = Number(t.avgCollectCount);
+            if(t.date.includes('Monday')){
+                week = 0
+            }
+            if(t.date.includes('Tuesday')){
+                week = 1
+            }
+            if(t.date.includes('Wednesday')){
+                week = 2
+            }
+            if(t.date.includes('Thursday')){
+                week = 3
+            }
+            if(t.date.includes('Friday')){
+                week = 4
+            }
+            if(t.date.includes('Saturday')){
+                week = 5
+            }
+            if(t.date.includes('Sunday')){
+                week = 6
+            }
+            if (activeTab === 0) {
+                totalAmount.postCount += avgPostCount;
+            }
+            totalAmount.commentCount += avgCommentCount;
+            totalAmount.mirrorCount += avgMirrorCount;
+            totalAmount.collectCount += avgCollectCount;
+            // totalAmount.collectFee += Number(t.collectFee);
+            totalAmount.collectFee += 0;
+
+            if ((activeTab === 0) && (avgPostCount > maxRemoData[0])) {
+                maxRemoData[0] = avgPostCount
+            }
+            if (avgCommentCount > maxRemoData[1]) {
+                maxRemoData[1] = avgCommentCount
+            }
+            if (avgMirrorCount > maxRemoData[2]) {
+                maxRemoData[2] = avgMirrorCount
+            }
+            if (avgCollectCount > maxRemoData[3]) {
+                maxRemoData[3] = avgCollectCount
+            }
+            // if (Number(t.collectFee) > maxRemoData[4]) {
+            //     maxRemoData[4] = Number(t.collectFee)
+            // }
+            // if (week == 0) {
+            //     rem[6][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), timePeriod];
+            // } else {
+            //     rem[week - 1][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), timePeriod];
+            // }
+            rem[week][Number(t.date.split('_')[1])] = [avgPostCount || 0, avgCommentCount, avgMirrorCount, avgCollectCount, 0, ''];
+        })
+        console.log('rem',rem)
+        console.log('totalAmount',totalAmount)
+        setRemodyBaseData(rem)
+        setTotalAmount(totalAmount)
+        setLoading(false);
+    }
+
     const getGlobalHeatmapData = async () => {
         setLoading(true);
+        setTotalAmount({})
         let res: any;
         if (activeTab === 0) {
             res = await api.get(`/thermal-map/global`, {
@@ -89,7 +192,7 @@ const rmodynamics = () => {
             res = await api.get(`/thermal-map/personal/${currentProfile.profileId}`, {
                 params: {
                     from: `${localToUtc(currentDate[0].toString() + '00')}`,
-                    to: `${localToUtc(currentDate[0].toString() + '23')}`,
+                    to: `${localToUtc(currentDate[1].toString() + '23')}`,
                 }
             })
         }
@@ -153,6 +256,7 @@ const rmodynamics = () => {
                 rem[week - 1][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), timePeriod];
             }
         })
+        console.log('rem', rem)
         setRemodyBaseData(rem)
         setTotalAmount(totalAmount)
         setLoading(false);
@@ -160,8 +264,8 @@ const rmodynamics = () => {
 
     const getCurrentWeek = () => {
         let weekOfDay = parseInt(moment().format('E'));//计算今天是这周第几天
-        let last_monday = moment().startOf('day').subtract(weekOfDay + 7 * weekCount - 1, 'days').toDate();//周一日期
-        let last_sunday = moment().startOf('day').subtract(weekOfDay + 7 * (weekCount - 1), 'days').toDate();//周日日期
+        let last_monday = moment().startOf('day').subtract(weekOfDay + 7 * (weekCount === -1 ? 0 : weekCount) - 1, 'days').toDate();//周一日期
+        let last_sunday = moment().startOf('day').subtract(weekOfDay + 7 * ((weekCount === -1 ? 0 : weekCount) - 1), 'days').toDate();//周日日期
         setWeek([moment(last_monday).format('MM/DD'), moment(last_sunday).format('MM/DD')])
         setCurrentDate([`20${moment(last_monday).format('YYMMDD')}`, `20${moment(last_sunday).format('YYMMDD')}`])
         setActiveItems([]);
@@ -208,16 +312,18 @@ const rmodynamics = () => {
     }
 
     const getNextWeek = () => {
-        if (weekCount >= 1) {
+        if (weekCount >= 0) {
             weekCount--;
             getCurrentWeek();
+            // getGlobalHeatmapData()
         }
     }
 
     const getLastWeek = () => {
-        if (week[0] !== '01/30') {
+        if (weekCount !== 4) {
             weekCount++;
             getCurrentWeek();
+            // getGlobalHeatmapData()
         }
     }
 
@@ -285,192 +391,217 @@ const rmodynamics = () => {
                 <div>
                     {
                         e === 'noData' && checked[0] && (
-                            <div>Posts {activeTab == 1 ? '(by)' : ''}：0</div>
+                            <div>Posts {activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：0</div>
                         )
                     }
                     {
                         e === 'noData' && checked[1] && (
-                            <div>Comments {activeTab == 1 ? '(by)' : ''}：0</div>
+                            <div>Comments {activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：0</div>
                         )
                     }
                     {
                         e === 'noData' && checked[2] && (
-                            <div>Mirrors {activeTab == 1 ? '(by)' : ''}：0</div>
+                            <div>Mirrors {activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：0</div>
                         )
                     }
                     {
                         e === 'noData' && checked[3] && (
-                            <div>Collections {activeTab == 1 ? '(by)' : ''}：0</div>
+                            <div>Collections {activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：0</div>
                         )
                     }
                     {
                         e === 'noData' && checked[4] && (
-                            <div>Volume：0.00</div>
+                            <div>Volume {weekCount === 0 ? '(Avg)' : ''}：0.00</div>
                         )
                     }
                     {
                         checked[0] && activeTab === 0 && e !== 'noData' &&
-                        <div>Posts：{e[0]}</div>
+                        <div>Posts {weekCount === 0 ? '(Avg)' : ''}：{e[0]}</div>
                     }
                     {
                         checked[1] && e !== 'noData' &&
-                        <div>Comments {activeTab == 1 ? '(by)' : ''}：{e[1]}</div>
+                        <div>Comments{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：{e[1]}</div>
                     }
                     {
                         checked[2] && e !== 'noData' &&
-                        <div>Mirrors {activeTab == 1 ? '(by)' : ''}：{e[2]}</div>
+                        <div>Mirrors{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：{e[2]}</div>
                     }
                     {
                         checked[3] && e !== 'noData' &&
-                        <div>Collections {activeTab == 1 ? '(by)' : ''}：{e[3]}</div>
+                        <div>Collections{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：{e[3]}</div>
                     }
                     {
                         checked[4] && e !== 'noData' &&
-                        <div>Volume：{e[4].toFixed(2)}</div>
+                        <div>Volume {weekCount === 0 ? '(Avg)' : ''}：{e[4].toFixed(2)}</div>
                     }
                 </div>
             </div>
         )
     };
+    
+    const getMount = (mount:number) => {
+        if(weekCount == 0){
+            return new BN((mount / 168).toFixed(2)).toFormat()
+        }else{
+            return new BN(mount).toFormat()
+        }
+    }
 
     return (
         <div className="text-[#fff] mb-10">
-            <div className="flex">
-                {
-                    tabs.map((t: any, i: number) => (
-                        <div onClick={() => setActiveTab(i)} key={i} className={`px-[30px] pb-[6px] cursor-pointer ${activeTab === i ? 'pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px]' : 'pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px] text-[rgba(255,255,255,0.4)]'}`}>{t}</div>
-                    ))
-                }
-            </div>
-            <div className="flex bg-[#1A1A1A] p-5 w-full">
-                <div className="w-[780px] flex-shrink-0 mt-[44px]">
-                    {
-                        loading ?
-                            <div className="h-[234px] flex items-center"><LoadingOutlined className="text-2xl block mx-auto" /></div>
-                            : <>
-                                {/* <div className="text-[18px] mb-[30px] mt-[10px]">Weekly Heat Map</div> */}
-                                <div className="mt">
-                                    {
-                                        remodyBaseData.map((t: any, i: number) => (
-                                            <div className="flex mb-[1px]" key={i}>
-                                                <div className="text-[12px] w-[40px] h-[30px] flex items-center day-liber">{dys[i]}</div>
-                                                {
-                                                    t.map((item: any, index: number) => (
-                                                        (!item || !checked.includes(true)) ?
-                                                            (
-                                                                <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[28px] w-[28px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
-                                                            ) : (<Popover key={index} placement="bottom" content={() => getContent(item, i, index)}>
-                                                                <div onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[28px] w-[28px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
-                                                            </Popover>)
+            <div className="flex mb-20">
+                <div className="w-[880px] mr-[10px]">
+                    <div className="flex jusitify-between h-[54px] items-center bg-[#1A1A1A] rounded-[10px] mb-[10px]">
+                        <div className="flex ml-8">
+                            {
+                                tabs.map((t: any, i: number) => (
+                                    <div key={i} onClick={() => togglTab(i)} className={`cursor-pointer px-2 py-1 mr-4 text-[18px] ${activeTab === i ? 'text-[#fff] border-b-[2px] border-[#fff]' : 'text-[rgba(255,255,255,0.4)]'}`}>{t}</div>
+                                ))
+                            }
+                        </div>
+                        <div className="mr-8 flex ml-[auto] w-[fit-content] items-center">
+                            <div className="text-[12px] ml-[-4px] mr-2">Low</div>
+                            <div className="h-[16px] w-[45px] bg-[#311C17]">
 
-                                                    ))
-                                                }
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                                <div className="text-[12px] w-[calc(100%-40px)] ml-[40px] overflow-hidden">
-                                    <div className="w-[180px] float-left">0AM</div>
-                                    <div className="w-[175px] float-left">6AM</div>
-                                    <div className="w-[180px] float-left">12PM</div>
-                                    <div className="float-left">18PM</div>
-                                    <div className="float-right mr-0">24PM</div>
-                                </div>
-                            </>
-                    }
+                            </div>
+                            <div className="h-[16px] w-[45px] bg-[#471F14]">
 
+                            </div>
+                            <div className="h-[16px] w-[45px] bg-[#75240F]">
+
+                            </div>
+                            <div className="h-[16px] w-[45px] bg-[#A32A0A]">
+
+                            </div>
+                            <div className="h-[16px] w-[45px] bg-[#D13005]">
+
+                            </div>
+                            <div className="text-[12px] ml-2 ml-2">High</div>
+                        </div>
+                    </div>
+                    <div className="w-full overflow-hidden bg-[#1A1A1A] rounded-[10px] p-4 pt-6">
+                        {
+                            loading ?
+                                <div className="h-[234px] flex items-center"><LoadingOutlined className="text-2xl block mx-auto" /></div>
+                                : <>
+                                    <div className="mt flex justify-center w-full">
+                                        <div className="w-[fit-content]">
+                                            {
+                                                remodyBaseData.map((t: any, i: number) => (
+                                                    <div className="flex mb-[1px]" key={i}>
+                                                        <div className="text-[12px] w-[40px] h-[30px] flex items-center day-liber">{dys[i]}</div>
+                                                        {
+                                                            t.map((item: any, index: number) => (
+                                                                (!item || !checked.includes(true)) ?
+                                                                    (
+                                                                        <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[28px] w-[28px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
+                                                                    ) : (<Popover key={index} placement="bottom" content={() => getContent(item, i, index)}>
+                                                                        <div onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[28px] w-[28px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
+                                                                    </Popover>)
+
+                                                            ))
+                                                        }
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className="text-[12px] w-full flex justify-center overflow-hidden">
+                                        <div className="w-[718px] ml-[42px]">
+                                            <div className="w-[180px] float-left">0AM</div>
+                                            <div className="w-[175px] float-left">6AM</div>
+                                            <div className="w-[180px] float-left">12PM</div>
+                                            <div className="float-left">18PM</div>
+                                            <div className="float-right mr-0">24PM</div>
+                                        </div>
+
+                                    </div>
+                                </>
+                        }
+
+                    </div>
                 </div>
-                <div className="ml-5 mr-5 mt-[10px]">
-                    <div className="text-[12px] mt-[13px] ml-[-4px]">High</div>
-                    <div className="h-[43px] w-[16px] bg-[#D13005] mt-[4px]">
-
-                    </div>
-                    <div className="h-[43px] w-[16px] bg-[#A32A0A]">
-
-                    </div>
-                    <div className="h-[43px] w-[16px] bg-[#75240F]">
-
-                    </div>
-                    <div className="h-[43px] w-[16px] bg-[#471F14]">
-
-                    </div>
-                    <div className="h-[43px] w-[16px] bg-[#311C17]">
-
-                    </div>
-                    <div className="text-[12px] mt-[4px] ml-[-4px]">Low</div>
-                </div>
-                <div className="w-[calc(100%-800px)] mt-[10px]">
-                    <div className="flex min-w-[280px] max-w-100">
-                        <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] ${week[0] === '01/30' ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getLastWeek}><LeftOutlined /></div>
-                        <div className="w-[calc(100%-100px)] mx-5 h-10 bg-[rgb(41,41,41)] flex items-center justify-center">
+                <div className="w-[calc(100%-890px)]">
+                    <div className="flex min-w-[280px] max-w-100 mt-[26px]">
+                        <div className={`rounded-[4px] h-10 w-10 bg-[#1A1A1A] flex items-center justify-center text-[24px] ${weekCount === 4 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getLastWeek}><LeftOutlined /></div>
+                        <div className="rounded-[10px] w-[calc(100%-100px)] mx-[10px] h-10 bg-[#1A1A1A] flex items-center justify-center">
                             {
                                 week.length !== 0 &&
                                 <>
                                     {
-                                        weekCount === 0 &&
+                                        weekCount === -1 &&
                                         <span className="mr-[10px] text-[14px]">This Week</span>
                                     }
                                     {
                                         weekCount === 1 &&
                                         <span className="mr-[10px] text-[14px]">Last Week</span>
                                     }
-                                    <span className="text-[14px]">{week[0]}-{week[1]}</span>
+                                    {
+                                        weekCount !== 0 ? (
+                                            <span className="text-[14px]">{week[0]}-{week[1]}</span>
+                                        ):(
+                                            <span className="text-[14px]">Average of Last 28 Days</span>
+                                        )
+                                    }
                                 </>
                             }
                         </div>
-                        <div className={`h-10 w-10 bg-[rgb(41,41,41)] flex items-center justify-center text-[24px] ${weekCount == 0 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getNextWeek}><RightOutlined /></div>
+                        <div className={`rounded-[4px] h-10 w-10 bg-[#1A1A1A] flex items-center justify-center text-[24px] ${weekCount == -1 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getNextWeek}><RightOutlined /></div>
                     </div>
-                    <div className="px-6 py-4 bg-[rgb(41,41,41)] mt-[20px] rounded-[10px] h-[190px]">
-                        {
-                            activeTab == 0 &&
+                    <div className="px-6 py-4 bg-[#1A1A1A] mt-[10px] rounded-[10px] h-[262px] flex items-center">
+                        <div className="h-[fit-content] w-full">
+                            {
+                                activeTab == 0 &&
+                                <div className="flex mb-2">
+                                    <div>
+                                        <Checkbox onChange={(e: any) => onChange(e, 0)} checked={checked[0]}>
+                                            <span className="text-[#fff] text-[16px]">Posts {weekCount === 0 ? '(Avg)' : ''}</span>
+                                        </Checkbox>
+                                    </div>
+                                    <div className="ml-[auto]">{(totalAmount && (totalAmount.postCount || totalAmount.postCount === 0)) ? getMount(totalAmount.postCount) : '-'}</div>
+                                </div>
+                            }
                             <div className="flex mb-2">
                                 <div>
-                                    <Checkbox onChange={(e: any) => onChange(e, 0)} checked={checked[0]}>
-                                        <span className="text-[#fff] text-[16px]">Posts</span>
+                                    <Checkbox onChange={(e: any) => onChange(e, 1)} checked={checked[1]}>
+                                        <span className="text-[#fff] text-[16px]">Comments{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}</span>
                                     </Checkbox>
                                 </div>
-                                <div className="ml-[auto]">{(totalAmount && (totalAmount.postCount || totalAmount.postCount === 0)) ? new BN(totalAmount.postCount).toFormat() : '-'}</div>
+                                <div className="ml-[auto]">{(totalAmount && (totalAmount.commentCount || totalAmount.commentCount === 0)) ? getMount(totalAmount.commentCount) : '-'}</div>
                             </div>
-                        }
-                        <div className="flex mb-2">
-                            <div>
-                                <Checkbox onChange={(e: any) => onChange(e, 1)} checked={checked[1]}>
-                                    <span className="text-[#fff] text-[16px]">Comments {activeTab == 1 ? '(by)' : ''}</span>
-                                </Checkbox>
+                            <div className="flex mb-2">
+                                <div>
+                                    <Checkbox onChange={(e: any) => onChange(e, 2)} checked={checked[2]}>
+                                        <span className="text-[#fff] text-[16px]">Mirrors{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}</span>
+                                    </Checkbox>
+                                </div>
+                                <div className="ml-[auto]">{(totalAmount && (totalAmount.mirrorCount || totalAmount.mirrorCount === 0)) ? getMount(totalAmount.mirrorCount) : '-'}</div>
                             </div>
-                            <div className="ml-[auto]">{(totalAmount && (totalAmount.commentCount || totalAmount.commentCount === 0)) ? new BN(totalAmount.commentCount).toFormat() : '-'}</div>
-                        </div>
-                        <div className="flex mb-2">
-                            <div>
-                                <Checkbox onChange={(e: any) => onChange(e, 2)} checked={checked[2]}>
-                                    <span className="text-[#fff] text-[16px]">Mirrors {activeTab == 1 ? '(by)' : ''}</span>
-                                </Checkbox>
+                            <div className="flex mb-2">
+                                <div>
+                                    <Checkbox onChange={(e: any) => onChange(e, 3)} checked={checked[3]}>
+                                        <span className="text-[#fff] text-[16px]">Collections{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}</span>
+                                    </Checkbox>
+                                </div>
+                                <div className="ml-[auto]">{(totalAmount && (totalAmount.collectCount || totalAmount.collectCount === 0)) ? getMount(totalAmount.collectCount) : '-'}</div>
                             </div>
-                            <div className="ml-[auto]">{(totalAmount && (totalAmount.mirrorCount || totalAmount.mirrorCount === 0)) ? new BN(totalAmount.mirrorCount).toFormat() : '-'}</div>
-                        </div>
-                        <div className="flex mb-2">
-                            <div>
-                                <Checkbox onChange={(e: any) => onChange(e, 3)} checked={checked[3]}>
-                                    <span className="text-[#fff] text-[16px]">Collections {activeTab == 1 ? '(by)' : ''}</span>
-                                </Checkbox>
-                            </div>
-                            <div className="ml-[auto]">{(totalAmount && (totalAmount.collectCount || totalAmount.collectCount === 0)) ? new BN(totalAmount.collectCount).toFormat() : '-'}</div>
-                        </div>
-                        <div className="flex">
-                            <div>
-                                <Checkbox onChange={(e: any) => onChange(e, 4)} checked={checked[4]}>
-                                    <span className="text-[#fff] text-[16px]">Volume</span>
-                                </Checkbox>
-                            </div>
-                            <div className="ml-[auto] flex items-center">
-                                <Image
-                                    className="mr-1 h-5 w-5 mr-2"
-                                    src={IconVolume}
-                                    alt=""
-                                /><span>{(totalAmount && (totalAmount.collectFee || totalAmount.collectFee === 0)) ? Number(totalAmount.collectFee).toFixed(2) : '-'}
-                                </span>
+                            <div className="flex">
+                                <div>
+                                    <Checkbox onChange={(e: any) => onChange(e, 4)} checked={checked[4]}>
+                                        <span className="text-[#fff] text-[16px]">Volume{weekCount === 0 ? '(Avg)' : ''}</span>
+                                    </Checkbox>
+                                </div>
+                                <div className="ml-[auto] flex items-center">
+                                    <Image
+                                        className="mr-1 h-5 w-5 mr-2"
+                                        src={IconVolume}
+                                        alt=""
+                                    /><span>{(totalAmount && (totalAmount.collectFee || totalAmount.collectFee === 0)) ? Number(totalAmount.collectFee).toFixed(2) : '-'}
+                                    </span>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>

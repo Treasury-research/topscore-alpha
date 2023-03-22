@@ -14,6 +14,18 @@ export const currentProfileState = atom({
   // effects_UNSTABLE: [persistAtom],
 });
 
+export const currentLoginProfileState = atom({
+  key: "currentLoginProfile",
+  default: {
+    address: "",
+    handle: "",
+    imageURI: "",
+    metadata: "",
+    profileId: "",
+  },
+  // effects_UNSTABLE: [persistAtom],
+});
+
 export const profileListState = atom({
   key: "profileList",
   default: [],

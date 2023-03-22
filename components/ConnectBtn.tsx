@@ -7,6 +7,7 @@ import lensApi from "../api/lensApi";
 import Image from "next/image";
 import {
   currentProfileState,
+  currentLoginProfileState,
   profileListState,
   loadingProfileListState,
   knn3TokenValidState,
@@ -20,7 +21,44 @@ import SignLens from "./connect/SignLens";
 import ImgLenster from "../statics/img/lest-head.png";
 import ImgHome from "../statics/img/home.svg";
 import ChangeProfile from "./connect/ChangeProfile";
-import { DownOutlined } from "@ant-design/icons";
+import { ConsoleSqlOutlined, DownOutlined, LoadingOutlined } from "@ant-design/icons";
+
+const comments = [
+  {
+    "handle": "stani.lens",
+    "imageURI": "ipfs://bafybeiewog3iscltj6uvus6iut5kerbbkyxovjhvnikrc4luy5sap6w3zu",
+    "address": "0x7241dddec3a6af367882eaf9651b87e1c7549dff",
+    "profileId": 5,
+    "metadata": "https://arweave.net/rfuMUXzqkzBBQPSUFi2gwUdQCW2i1r7LzjHPOtI8ALA",
+    "name": "Stani"
+  },
+  {
+    "handle": "yoginth.lens",
+    "imageURI": "ipfs://bafybeigcmbs2wfkccazb5xifosfxymrt33j7u2smgfhxt7khlzwtddxl4m",
+    "address": "0x3a5bd1e37b099ae3386d13947b6a90d97675e5e3",
+    "profileId": 13,
+    "metadata": "https://arweave.net/dmGsnN2_TUvOzJ-9uLyFjET-4vs7yPJargIdLu2MekQ",
+    "name": "Yoginth"
+  },
+  {
+    "handle": "lenster.lens",
+    "imageURI": "https://ipfs.infura.io/ipfs/QmPbLKZ1cZumURPLDm6VU4NhNWEFU3r33eTxarYpUB7TQW",
+    "address": "0xd3b307753097430faedfdb89809610bf8e8f3203",
+    "profileId": 12,
+    "metadata": "https://ipfs.infura.io/ipfs/QmWJmGjnTtjBVeCA67b8p1StAsGP27bVQg7Jgs6n6mxszr",
+    "name": ""
+  },
+  {
+    "handle": "lensprotocol",
+    "imageURI": "ipfs://bafkreice45jmlvhctbt2nsygitnt3jphbahcq5hlx7vrlav63hmjacb5ea",
+    "address": "0xd28e808647d596f33dcc3436e193a9566fc7ac07",
+    "profileId": 1,
+    "metadata": "https://arweave.net/3mZX8U54ZAJggQIUcLLEo9f83g8L22Ev58-JHejOIx8",
+    "name": "Lens Protocol 🌿"
+  }
+]
+
+let timer = null;
 
 const ConnectBtn = () => {
   const router = useRouter();
@@ -34,8 +72,18 @@ const ConnectBtn = () => {
   );
   const [showModal, setShowModal] = useState([false, false, false]);
   const [openLensDrop, setOpenLensDrop] = useState(false);
+  // const [commentUsers, setCommentUsers] = useState<any>([]);
   const [currentProfile, setCurrentProfile] =
     useRecoilState<any>(currentProfileState);
+
+  const [currentLoginProfile, setCurrentLoginProfile] =
+    useRecoilState<any>(currentLoginProfileState);
+
+  const [searchHandles, setSearchHandles] = useState<any>([]);
+
+  const [searchLoading, setSearchLoading] = useState<any>(false);
+
+  const [inputValue, setInputValue] = useState<any>('');
 
   useEffect(() => {
     if (!account || profileList.length > 0 || !knn3TokenValid) {
@@ -48,17 +96,17 @@ const ConnectBtn = () => {
     if (!knn3TokenValid) {
       return;
     }
-    if (router.pathname === "/profile/[address]") {
-      goProfile();
-    }
+    // if (router.pathname === "/profile/[address]") {
+    //   goProfile();
+    // }
   }, [profileList, knn3TokenValid]);
 
   useEffect(() => {
-    if (!currentProfile.handle) {
+    if (!currentLoginProfile.handle) {
       return;
     }
-    getProfileByHandle(currentProfile.handle);
-  }, [currentProfile.handle]);
+    getProfileByHandle(currentLoginProfile.handle);
+  }, [currentLoginProfile.handle]);
 
   const getProfileByHandle = async (handle: string) => {
     const res = await lensApi.getProfileByHandle(handle);
@@ -84,9 +132,7 @@ const ConnectBtn = () => {
 
   const handleLogout = async () => {
     await doLogout();
-    if (router.pathname === "/profile/[address]") {
-      location.href = `/profile/0x09c85610154a276a71eb8a887e73c16072029b20`;
-    }
+    setProfileList([])
   };
 
   const getLensHandle = async () => {
@@ -95,17 +141,10 @@ const ConnectBtn = () => {
     setProfileList(res.data);
     if (res.data.length > 0 && !currentProfile.handle) {
       setCurrentProfile(res.data[0]);
+      setCurrentLoginProfile(res.data[0])
     }
     setLoadingProfileList(false);
-  };
-
-  const goProfile = () => {
-    if (profileList.length > 0) {
-      router.push(`/profile/${account}`);
-    } else {
-      router.push(`/profile/0x09c85610154a276a71eb8a887e73c16072029b20`);
-    }
-  };
+  }
 
   const handleShowModal = (show: boolean, i: number) => {
     setShowModal((pre) => {
@@ -147,12 +186,6 @@ const ConnectBtn = () => {
     }
   };
 
-  const gotoMyNft = () => {
-    if (account && currentProfile.profileId) {
-      router.push(`/nft/${account}?profileId=${currentProfile.profileId}`);
-    }
-  };
-
   const determineLoginModal = async () => {
     if (account) {
       handleShowModal(true, 1);
@@ -173,6 +206,37 @@ const ConnectBtn = () => {
     };
   }, []);
 
+  const searchInputChange = (e) => {
+    setInputValue(e.target.value)
+
+    if (!e.target.value) return
+    setSearchLoading(true)
+    if (timer !== null) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+      searchHandle(e.target.value)
+    }, 1000);
+  }
+
+  const searchHandle = async (str: any) => {
+    setSearchLoading(true)
+    const res = await api.get(`/lens/handles/byHandles/${str}`)
+    setSearchLoading(false)
+    if (res && res.data) {
+      setSearchHandles(res.data)
+    } else {
+      setSearchHandles([])
+    }
+    // console.log(res)
+  }
+
+  // useEffect(() => {
+  //   if (currentProfile && currentProfile.profileId) {
+  //     getAllNfts()
+  //   }
+  // }, [currentProfile])
+
   const getImgUrl = (str: string) => {
     const imgUrl = str.replace(
       "https://ipfs.infura.io",
@@ -192,52 +256,134 @@ const ConnectBtn = () => {
             overlay={
               <Menu className="lens-switch-component">
                 <div className="py-1 w-[90%] mx-[5%] text-[#fff]">
-                  <Input className="connect-component-input" placeholder="Search" allowClear/>
-                  <p className="text-xl my-3">Yours</p>
-                  <div className="flex items-center gap-1 mb-2">
-                    <Image
-                      className="w-[20px] h-[20px] rounded-[10px] mr-2"
-                      src={ImgLenster}
-                      alt=""
-                    />
-                    stani1.lens
-                  </div>
-                  <p className="text-xl my-3">Recommened</p>
-                  <div className="flex items-center gap-1 mb-2">
-                    <Image
-                      className="w-[20px] h-[20px] rounded-[10px] mr-2"
-                      src={ImgLenster}
-                      alt=""
-                    />
-                    stani1.lens
-                  </div>
+                  <Input className="connect-component-input" placeholder="Search" allowClear onChange={(e) => searchInputChange(e)} value={inputValue} />
+                  {
+                    !searchLoading && !inputValue &&
+                    <>
+                      {
+                        profileList.length > 0 &&
+                        <p className="text-xl my-3">Yours</p>
+                      }
+                      {
+                        profileList.map((t: any, i: number) => (
+                          <div className="flex text-[16px] items-center gap-1 mb-2 hover:opacity-70 cursor-pointer" key={i} onClick={() => { setCurrentProfile(t); setOpenLensDrop(false) }}>
+                            {
+                              t.imageURI &&
+                              <img
+                                className="w-[26px] h-[26px] rounded-[13px] mr-2"
+                                src={getImgUrl(t.imageURI)}
+                                alt="" />
+                            }
+                            {
+                              !t.imageURI &&
+                              <Image
+                                className="w-[26px] h-[26px] rounded-[13px] mr-2"
+                                src={ImgLenster}
+                                alt="" />
+                            }
+                            {t.handle}
+                          </div>
+                        ))
+                      }
+                      <p className="text-xl my-3">Recommened</p>
+                      {
+                        comments.map((t: any, i: number) => (
+                          <div className="flex text-[16px] items-center gap-1 mb-2 hover:opacity-70 cursor-pointer" key={i} onClick={() => { setCurrentProfile(t); setOpenLensDrop(false) }}>
+                            <img
+                              className="w-[26px] h-[26px] rounded-[13px] mr-2"
+                              src={getImgUrl(t.imageURI)}
+                              alt=""
+                            />
+                            {t.handle}
+                          </div>
+                        ))
+                      }
+                    </>
+                  }
+                  {
+                    searchLoading &&
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className=" my-[80px]">
+                        <LoadingOutlined className="text-2xl block mx-auto" />
+                        <div>Searching users</div>
+                      </div>
+
+                    </div>
+                  }
+                  {
+                    !searchLoading && inputValue &&
+                    <>
+                      {
+                        searchHandles.map((t: any, i: number) => (
+                          <div className="flex items-center text-[16px] gap-1 mb-2 mt-2 hover:opacity-70 cursor-pointer" key={i} onClick={() => { setCurrentProfile(t); setOpenLensDrop(false) }}>
+                            {
+                              t.imageURI &&
+                              // <img
+                              //   className="w-[26px] h-[26px] rounded-[13px] mr-2"
+                              //   src={getImgUrl(t.imageURI)}
+                              //   alt="" />
+                              <img
+                                className="w-[26px] h-[26px] rounded-[50%] mr-2"
+                                src={getImgUrl(t.imageURI)}
+                                alt=""
+                              />
+                            }
+                            {
+                              !t.imageURI &&
+                              <Image
+                                className="w-[26px] h-[26px] rounded-[13px] mr-2"
+                                src={ImgLenster}
+                                alt="" />
+                            }
+                            {t.handle}
+                          </div>
+                        ))
+                      }
+                    </>
+                  }
                 </div>
               </Menu>
             }
           >
             <div onClick={(e) => e.preventDefault()} className="flex h-full">
-              <button className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px]">
-                <Image
-                  className="w-[20px] h-[20px] rounded-[10px] mr-2"
-                  src={ImgLenster}
-                  alt=""
-                />
-
-                {currentProfile.handle}
-                <DownOutlined className='ml-3' />
+              <button className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] min-w-[100px]">
+                {
+                  account && currentProfile.handle &&
+                  <>
+                    {
+                      currentProfile.imageURI ? (
+                        <img
+                          className="w-[20px] h-[20px] rounded-[10px] mr-2"
+                          src={getImgUrl(currentProfile.imageURI)}
+                          alt=""
+                        />
+                      ) : (
+                        <Image
+                          className="w-[20px] h-[20px] rounded-[10px] mr-2"
+                          src={ImgLenster}
+                          alt=""
+                        />
+                      )
+                    }
+                  </>
+                }
+                <span className="mr-3">{currentProfile.handle}</span>
+                <DownOutlined className='ml-auto' />
               </button>
             </div>
           </Dropdown>
         </div>
-        <div className="flex items-center justify-center bg-[#272727] rounded-[4px] h-8 w-8 cursor-pointer">
-          <Image
-            className="w-[18px] h-[18px]"
-            src={ImgHome}
-            alt=""
-          />
-        </div>
+        {
+          account &&
+          <div className="flex items-center justify-center bg-[#272727] rounded-[4px] h-8 w-8 cursor-pointer" onClick={() => setCurrentProfile(profileList[0])}>
+            <Image
+              className="w-[18px] h-[18px]"
+              src={ImgHome}
+              alt=""
+            />
+          </div>
+        }
       </div>
-
       <div className="h-full ml-auto">
         {account && chainId && config.chainId !== chainId ? (
           <button
@@ -249,16 +395,17 @@ const ConnectBtn = () => {
         ) : (
           knn3TokenValid && (
             <>
-              {router.query.address !== account &&
+              {/* {router.query.address !== account &&
                 router.pathname === "/nft/[address]" &&
                 profileList.length > 0 && (
-                  <button
-                    className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]"
-                    onClick={() => gotoMyNft()}
-                  >
-                    Check My NFT
-                  </button>
-                )}
+                  <></>
+                  // <button
+                  //   className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]"
+                  //   onClick={() => gotoMyNft()}
+                  // >
+                  //   Check My NFT
+                  // </button>
+                )} */}
               <Popover
                 content={
                   <div>
@@ -267,12 +414,12 @@ const ConnectBtn = () => {
                       {shortenAddr(account)}
                     </div>
                     <div>
-                      <div
+                      {/* <div
                         onClick={() => handleShowModal(true, 2)}
                         className="cursor-pointer my-[10px] flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]"
                       >
                         Switch Profile
-                      </div>
+                      </div> */}
                       <div
                         onClick={handleLogout}
                         className="cursor-pointer flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]"
@@ -285,21 +432,25 @@ const ConnectBtn = () => {
                 placement="bottom"
               >
                 <button className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]">
-                  {imageURI ? (
-                    <img
-                      className="w-[20px] h-[20px] rounded-[15px] mr-2"
-                      src={getImgUrl(imageURI)}
-                      alt=""
-                    />
-                  ) : (
-                    <Image
-                      className="w-[20px] h-[20px] rounded-[15px] mr-2"
-                      src={ImgLenster}
-                      alt=""
-                    />
-                  )}
-
-                  {currentProfile.handle}
+                  {
+                    currentLoginProfile.handle &&
+                    <>
+                      {imageURI ? (
+                        <img
+                          className="w-[20px] h-[20px] rounded-[15px] mr-2"
+                          src={getImgUrl(imageURI)}
+                          alt=""
+                        />
+                      ) : (
+                        <Image
+                          className="w-[20px] h-[20px] rounded-[15px] mr-2"
+                          src={ImgLenster}
+                          alt=""
+                        />
+                      )}
+                    </>
+                  }
+                  {currentLoginProfile.handle || shortenAddr(account)}
                 </button>
               </Popover>
             </>

@@ -100,6 +100,10 @@
   color: #fff !important;
 }
 
+.ant-message-notice-content .anticon{
+  color: #52c41a !important;
+}
+
 .ant-input-number-group-addon {
   border: 1px solid #4A4A4A !important;
   color: #fff !important;
@@ -114,8 +118,7 @@
 }
 
 .ant-switch-checked .ant-switch-inner {
-  background: #CE3900 !important;
-  ;
+  background: #979797 !important;
 }
 
 .ant-switch-checked .ant-switch-handle::before {
@@ -125,12 +128,11 @@
 
 
 .ant-switch-inner {
-  background: #fff !important;
-  ;
+  background: #979797 !important;
 }
 
 .ant-switch-handle::before {
-  background: #CE3900 !important;
+  background: #fff !important;
   ;
 }
 
@@ -146,12 +148,19 @@
   cursor: pointer;
   width: 100%;
   padding: 4px 10px;
+  img{
+    image-rendering: -webkit-optimize-contrast;
+  }  
 }
 
 .ant-dropdown-menu {
   background: #272727 !important;
   border-radius: 4px !important;
   color: rgba(255, 255, 255, 0.8);
+  img{
+    image-rendering: -webkit-optimize-contrast;
+  }
+  
 }
 
 .connect-component-input .ant-input-clear-icon{

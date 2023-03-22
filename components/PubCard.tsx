@@ -14,69 +14,89 @@ import { ethers } from 'ethers'
 import moment from 'moment'
 import { currentProfileState } from "../store/state";
 import { useRecoilState } from "recoil";
+import dayjs from 'dayjs';
 
+// const tab1 = ['Top Engaged', 'Top Collect']
+// const tab2 = ['Top Engaged', 'Recent']
+// const tab3 = ['Top Collected', 'Recent']
+const tab = [
+  ['Top Engaged', 'Top Collect'],
+  ['Top Engaged', 'Recent'],
+  ['Top Collected', 'Recent']
+]
 const PubCard = (props: any) => {
   const [pubData, setPubData] = useState<any>([]);
-  const { lineData } = props;
+  const { lineData, topRecentSwitch, activeLineTab } = props;
   const [loading, setLoading] = useState(false);
   const [currentProfile] = useRecoilState<any>(currentProfileState);
+  const [tabs, setTabs] = useState<any>(tab[0]);
+  const [activeTab, setActiveTab] = useState<any>(0);
 
   useEffect(() => {
     setLoading(true)
-    if (lineData.length > 0) {
-      let legendData = [];
-      if (lineData.length == 0) return;
-      const s = lineData[lineData.length - 1];
-      for (let i = 0; i < s.length; i++) {
-        if(s[i]['pubId'] !== 0){
-          legendData.push(`${s[i]['pubId']}`)
+
+    if ((topRecentSwitch && activeTab === 1) || (!topRecentSwitch && activeTab === 0)) {
+      if (lineData.length > 0) {
+        let legendData = [];
+        if (lineData.length == 0) return;
+        const s = lineData[lineData.length - 1];
+        for (let i = 0; i < s.length; i++) {
+          if (s[i]['pubId'] !== 0) {
+            legendData.push(`${s[i]['pubId']}`)
+          }
         }
-      }
-      if (legendData.length > 0) {
-        getPubs([legendData])
+        if (legendData.length > 0) {
+          getPubs([legendData])
+        } else {
+          setLoading(false)
+          setPubData([])
+        }
       } else {
         setLoading(false)
-        setPubData([])
       }
     } else {
-      setLoading(false)
+      getBaseLineData()
     }
-  }, [lineData])
+  }, [lineData, activeTab])
+
+  useEffect(() => {
+    setTabs(tab[activeLineTab])
+  }, [activeLineTab])
+
+  useEffect(() => {
+    setActiveTab(topRecentSwitch ? 1 : 0)
+  }, [topRecentSwitch])
+
+  const getBaseLineData = async () => {
+    let resData = []
+    const mdy = dayjs(new Date().getTime() - 28 * 24 * 60 * 60 * 1000).format('YYYYMMDD')
+    const ndy = dayjs(new Date()).format('YYYYMMDD') // 当前日期
+    if (activeLineTab == 1) {
+      const res: any = await api.get(`/lens/publicationStsByDay?start=${20230101}&end=${20230301}&profileId=${currentProfile.profileId}&category=${activeTab === 0 ? 4 : 1}&type=${'Post,Comment'}`);
+      resData = res.data;
+    }
+    if (activeLineTab == 2) {
+      const res: any = await api.get(`/lens/collectStsByDay?start=${20230101}&end=${20230301}&profileId=${currentProfile.profileId}&category=${activeTab === 0 ? 1 : 2}&type=${'Post,Comment'}&isFee=${''}`);
+      resData = res.data;
+    }
+    let pubAllData: any = []
+    if (resData.length !== 0) {
+      resData.map((t: any) => {
+        if (!pubAllData.includes(t.pubId) && t.pubId !== 0) {
+          pubAllData.push(t.pubId)
+        }
+      })
+    }
+    getPubs(pubAllData)
+  }
 
   const getPubs = async (ids: any) => {
     const res = await api.get(`/lens/pubByLatest?profileId=${currentProfile.profileId}&pubIds=${ids.join(',')}`);
     setLoading(false)
     if (res && res.data) {
-      let newList: any = [];
-      for (var i = 0; i < res.data.length; i += 3) {
-        newList.push(res.data.slice(i, i + 3));
-      }
-      const data: any = DivideArrayEquallyInto4Parts(res.data)
-      console.log(data)
-      setPubData(data)
+      setPubData(res.data)
     }
   };
-
-  const DivideArrayEquallyInto4Parts = (s: any) => {
-    if (s.length >= 4) {
-      let arr1, arr2, arr3, arr4;
-      arr1 = s.slice(0, Math.ceil(s.length / 4));
-      arr2 = s.slice(Math.round(s.length / 4), Math.round(s.length / 4) * 2);
-      arr3 = s.slice(Math.round(s.length / 4) * 2, Math.round(s.length / 4) * 3);
-      arr4 = s.slice(Math.round(s.length / 4) * 3);
-      return [arr4, arr3, arr2, arr1];
-    } else if (s.length == 3) {
-      return [[s[0]], [s[1]], [s[2]]];
-    }
-    else if (s.length == 2) {
-      return [[s[0]], [s[1]]];
-    }
-    else if (s.length == 1) {
-      return [[s[0]]];
-    } else {
-      return []
-    }
-  }
 
   const toLesnter = (t: any) => {
     const proId = ethers.utils.hexlify(t.profileId)
@@ -84,29 +104,69 @@ const PubCard = (props: any) => {
     window.open(`https://lenster.xyz/posts/${proId}-${pubId}`)
   }
 
-  const getHours = (t: any) => {
-    let diff = new Date().getTime() - t.timestamp * 1000
-    if (diff < 60 * 60 * 1000) { // 1小时内
-      const h = Math.floor(diff / (1000 * 60));
-      return `${h} m`
-    }else if(diff > 60 * 60 * 1000 && diff < 24 * 60 * 60 * 1000){ // 1天内
-      const h = Math.floor(diff / (1000 * 60 * 60));
-      return `${h} h`
-    }else if(diff > 24 * 60 * 60 * 1000 && diff < 365 * 24 * 60 * 60 * 1000){ // 1年内
-      return `${moment(t.timestamp * 1000).format('MM/DD')}`
-    }else{
-      return `${moment(t.timestamp * 1000).format('YY/MM/DD')}` // 往年
-    }
-  }
+  // const getHours = (t: any) => {
+  //   let diff = new Date().getTime() - t.timestamp * 1000
+  //   if (diff < 60 * 60 * 1000) { // 1小时内
+  //     const h = Math.floor(diff / (1000 * 60));
+  //     return `${h} m`
+  //   } else if (diff > 60 * 60 * 1000 && diff < 24 * 60 * 60 * 1000) { // 1天内
+  //     const h = Math.floor(diff / (1000 * 60 * 60));
+  //     return `${h} h`
+  //   } else if (diff > 24 * 60 * 60 * 1000 && diff < 365 * 24 * 60 * 60 * 1000) { // 1年内
+  //     return `${moment(t.timestamp * 1000).format('MM/DD')}`
+  //   } else {
+  //     return `${moment(t.timestamp * 1000).format('YY/MM/DD')}` // 往年
+  //   }
+  // }
 
   return (
     <div className="w-full bg-[#000] text-[#fff] p-5 my-10">
-      {
-        loading ?
-          <LoadingOutlined className="text-2xl block mx-auto my-[80px]" />
-          : (
-            <div className="flex flex-row overflow-hidden">
-              {
+      <div>
+        <div className='bg-[#1A1A1A] rounded-[10px] mb-[10px] py-3 flex mb-4'>
+          <div className="flex w-[60%] ml-6">
+            {
+              tabs.map((t: any, i: number) => (
+                <div key={i} onClick={() => setActiveTab(i)} className={`cursor-pointer w-[140px] flex items-center justify-center px-2 py-1 ${activeTab === i ? 'text-[#fff] border-b-[2px] border-[#fff] text-[18px]' : 'text-[rgba(255,255,255,0.4)] text-[16px]'}`}>{t}</div>
+              ))
+            }
+          </div>
+          <div className='flex items-center text-[rgba(255,255,255,0.4)] text-[18px] w-[30%] ml-[auto]'>
+            <div className='w-[160px] flex justify-center'>Comments</div>
+            <div className='w-[160px] flex justify-center'>Mirrors</div>
+            <div className='w-[160px] flex justify-center'>Collects</div>
+          </div>
+        </div>
+        {
+          loading ?
+            <div className='h-[200px]'>
+              <LoadingOutlined className="text-2xl block mx-auto my-[80px]" />
+            </div>
+            : (
+              <div className='min-h-[200px]'>
+                {
+                  pubData.map((t: any, i: number) => (
+                    <div className='bg-[#1A1A1A] rounded-[10px] mb-[10px] py-3 flex mb-4' key={i}>
+                      <div className="flex w-[60%]">
+                        <div className='w-[100px] flex items-center justify-center'>#{t.pubId}</div>
+                        <div className='w-[calc(100%-100px)] text-[14px]'>
+                          {t.content}
+                        </div>
+                      </div>
+                      <div className='flex items-center text-[18px] w-[30%] flex ml-[auto]'>
+                        <div className='w-[160px] flex justify-center'>{t.commentByCount}</div>
+                        <div className='w-[160px] flex justify-center'>{t.mirrorByCount}</div>
+                        <div className='w-[160px] flex justify-center'>{t.collectByCount}</div>
+                      </div>
+                    </div>
+                  ))
+                }
+              </div>
+            )
+        }
+
+
+
+        {/* {
                 pubData.map((t: any, i: number) => (
                   <div key={i} className={`flex flex-col ${i === 3 ? 'mr-[0px]' : 'mr-[20px]'} pub-items`}>
                     {
@@ -188,10 +248,8 @@ const PubCard = (props: any) => {
                     }
                   </div>
                 ))
-              }
-            </div>
-          )
-      }
+              } */}
+      </div>
     </div>
   )
 }

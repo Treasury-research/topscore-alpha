@@ -484,9 +484,7 @@ const DashRmodynamics = () => {
 
     return (
         <div className="text-[#fff] mb-10">
-
-
-            <div className="flex mb-20">
+            <div className="flex">
                 <div className="w-[880px] mr-[10px]">
                     <div className="flex jusitify-between h-[54px] items-center bg-[#1A1A1A] rounded-[10px] mb-[10px]">
                         <div className="flex ml-8">
@@ -562,6 +560,7 @@ const DashRmodynamics = () => {
                                     <div className="flex items-center h-[25px]">
                                         <div onClick={() => setChecked([true, true, true])} className="h-4 w-4 bg-[#CE3900] flex items-center justify-center rounded-[4px] mr-2 text-[18px] cursor-pointer text-[600]">-</div>
                                         <div className="text-[#fff] text-[13px]">Publications</div>
+                                        <div className="text-[#fff] text-[12px] ml-2">{activeTab === 0 ? 'in 2023' : 'in 2022'}</div>
                                     </div>
                                 }
                                 {
@@ -569,6 +568,7 @@ const DashRmodynamics = () => {
                                     <div className="flex items-center h-[25px]">
                                         <Checkbox onChange={(e: any) => onChangePub(e)} checked={checkedPub}>
                                             <span className="text-[#fff] text-[14px]">Publications</span>
+                                            <span className="text-[#fff] text-[12px] ml-2">{activeTab === 0 ? 'in 2023' : 'in 2022'}</span>
                                         </Checkbox>
                                     </div>
                                 }
@@ -604,7 +604,7 @@ const DashRmodynamics = () => {
                                             <span>{lastYearPost + lastYearComment + lastYearMirror}</span>
                                     }
                                 </div>
-                                <div className="text-[rgba(255,255,255,0.6)]">{activeTab === 0 ? 'this week' : 'in 2023'}</div>
+                                <div className="text-[rgba(255,255,255,0.6)]">Total</div>
                             </div>
                         </div>
                         <div className="flex mb-2 ml-[20px]">

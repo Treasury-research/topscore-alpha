@@ -44,14 +44,9 @@ const Navbar = () => {
     const getAddress = (item: any) => {
         console.log('address', item)
         if (item === 'Profile') {
-            router.push(`/${item.toLocaleLowerCase()}/${currentProfile.address ? currentProfile.address : knn3Address}`)
-        } else if (item === 'NFT') {
-            if (account && currentProfile.profileId) {
-                router.push(`/${item.toLocaleLowerCase()}/${account}?profileId=${currentProfile.profileId}`)
-            } else {
-                router.push(`/${item.toLocaleLowerCase()}/${knn3Address}?profileId=${knn3ProfileId}`)
-            }
-        } else {
+            // router.push(`/${item.toLocaleLowerCase()}/${currentProfile.address ? currentProfile.address : knn3Address}`)
+            router.push(`/${item.toLocaleLowerCase()}/v2`)
+        }else {
             router.push(`/${item.toLocaleLowerCase()}`)
         }
     }
