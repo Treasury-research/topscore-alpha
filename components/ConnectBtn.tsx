@@ -132,7 +132,21 @@ const ConnectBtn = () => {
 
   const handleLogout = async () => {
     await doLogout();
-    setProfileList([])
+    setProfileList([]);
+    setCurrentProfile({
+      address: "",
+      handle: "",
+      imageURI: "",
+      metadata: "",
+      profileId: "",
+    })
+    setCurrentLoginProfile({
+      address: "",
+      handle: "",
+      imageURI: "",
+      metadata: "",
+      profileId: "",
+    })
   };
 
   const getLensHandle = async () => {
@@ -374,7 +388,7 @@ const ConnectBtn = () => {
           </Dropdown>
         </div>
         {
-          account &&
+          account && profileList.length > 0 &&
           <div className="flex items-center justify-center bg-[#272727] rounded-[4px] h-8 w-8 cursor-pointer" onClick={() => setCurrentProfile(profileList[0])}>
             <Image
               className="w-[18px] h-[18px]"
@@ -393,7 +407,7 @@ const ConnectBtn = () => {
             Switch to polygon
           </button>
         ) : (
-          knn3TokenValid && (
+          knn3TokenValid && account && (
             <>
               {/* {router.query.address !== account &&
                 router.pathname === "/nft/[address]" &&
@@ -456,7 +470,7 @@ const ConnectBtn = () => {
             </>
           )
         )}
-        {!knn3TokenValid && (
+        {(!knn3TokenValid || !account) && (
           <button
             onClick={determineLoginModal}
             className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]"

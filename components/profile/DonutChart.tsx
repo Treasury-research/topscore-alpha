@@ -104,9 +104,10 @@ const getToolTipContent = (score: any, rank: any) => {
 
 const getContent = (props: any) => {
     const { level, text, score, rank } = props.info
-    const { showToolTip } = props
+    const { showToolTip,background } = props
+    const bg = `bg-[${background}]`
     return (
-        <div className='w-full h-full rounded-[50%] radius-btn-shadow relative flex items-center justify-center'
+        <div className={`w-full h-full rounded-[50%] radius-btn-shadow relative flex items-center justify-center ${background ? bg : ''}`}
         >
             {
                 level !== 0 &&

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Navbar from '../../components/Navbar'
-import { DownOutlined, CloseOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { DownOutlined, CloseOutlined, LeftOutlined, RightOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Dropdown, Space, Menu, Drawer, message, Popover, Carousel } from "antd";
 import BN from "bignumber.js";
 import { useRouter } from "next/router";
@@ -143,6 +143,16 @@ const profile = () => {
 
   const [rate, setRate] = useState<any>(grades)
 
+  const [indicatorLoading, setIndicatorLoading] = useState<boolean>(false)
+
+  const [ratingLoading, setRatingLoading] = useState<boolean>(false)
+
+  const [scoreLoading, setScoreLoading] = useState<boolean>(false)
+
+  const [creatorLevel, setCreatorLevel] = useState<any>(0)
+
+  const [rateHoveActive, setRateHoveActive] = useState<any>('')
+
   const [currentProfile, setCurrentProfile] =
     useRecoilState<any>(currentProfileState);
 
@@ -173,7 +183,9 @@ const profile = () => {
   }
 
   const getIndicators = async () => {
+    setIndicatorLoading(true)
     const res: any = await api.get(`/lens/indicators/${currentProfile.profileId}`);
+    setIndicatorLoading(false)
     if (res && res.data) {
       const data = res.data;
       setCurrentIndicators((prev: any) => {
@@ -193,9 +205,12 @@ const profile = () => {
   };
 
   const getRating = async () => {
+    setRatingLoading(true)
     const res = await api.get(`/lens/queryRating/?profileId=${currentProfile.profileId}`)
+    setRatingLoading(false)
     if (res && res.data) {
       const data = res.data
+      setCreatorLevel(res.data.creator_level)
       setRate((prev: any) => {
         prev[0]['level'] = data.influ_level
         prev[1]['level'] = data.creator_level
@@ -209,7 +224,9 @@ const profile = () => {
   }
 
   const getScore = async () => {
+    setScoreLoading(true)
     const res = await api.get(`/lens/scores/${currentProfile.profileId}`)
+    setScoreLoading(false)
     if (res && res.data) {
       const data = res.data
       setRate((prev: any) => {
@@ -238,6 +255,18 @@ const profile = () => {
     return formatIPFS(imgUrl);
   };
 
+  const getBgStyle = (i: number) => {
+    if ((rateHoveActive === 0 && (i === 0 || i === 1)) ||
+      (rateHoveActive === 1 && (i === 9)) ||
+      (rateHoveActive === 2 && (i === 6 || i === 7)) ||
+      (rateHoveActive === 3 && (i === 8)) ||
+      (rateHoveActive === 4 && (i === 4 || i === 5)) ||
+      (rateHoveActive === 5 && (i === 5))
+    ) {
+      return 'bg-[#303030]'
+    }
+
+  }
 
   useEffect(() => {
     if (currentProfile && currentProfile.profileId) {
@@ -254,200 +283,210 @@ const profile = () => {
       <div className='p-5 w-full text-[#fff]'>
         <ConnectBtn />
         <div className="w-full overflow-y-auto h-[calc(100%-40px)]">
-          <div className="mx-auto mt-16 w-[722px]">
-            <div className="h-[512px] mb-4 profile-bg1 flex">
-              <div className="w-1/2 h-full">
-                <div className="flex gap-8">
-                  <div>
-                    {
-                      currentProfile.imageURI ? (
-                        <img src={getImgUrl(currentProfile.imageURI)} className="w-[140px] h-[140px] rounded-[10px]" />
-                      ) : (
-                        <Image
-                          className="w-[140px] h-[140px] rounded-[10px]"
-                          src={ImgLensterHead}
-                          alt="" />
-                      )
-                    }
+          {
+            indicatorLoading && ratingLoading && scoreLoading ? (
+              <div className="h-full w-full flex items-center justify-center">
+                <LoadingOutlined className="text-2xl block mx-auto my-4" />
+              </div>
+            ) : (
+              <div className="mx-auto mt-16 w-[722px]">
+                <div className="h-[512px] mb-4 profile-bg1 flex">
+                  <div className="w-1/2 h-full">
+                    <div className="flex gap-8">
+                      <div className="relative">
+                        {
+                          currentProfile.imageURI ? (
+                            <img src={getImgUrl(currentProfile.imageURI)} className="w-[140px] h-[140px] rounded-[10px]" />
+                          ) : (
+                            <Image
+                              className="w-[140px] h-[140px] rounded-[10px]"
+                              src={ImgLensterHead}
+                              alt="" />
+                          )
+                        }
+                        <div className="h-12 w-12 absolute right-[-8px] bottom-[-8px]"><DonutChart info={{ level: creatorLevel }} showToolTip={false} background={'#1A1A1A'} /></div>
 
-                  </div>
-                  <div className="pt-5">
-                    <div className="flex gap-2">
-                      <div className="text-[16px] font-bold">{currentProfile.handle}</div>
-                      {/* <Image
+                      </div>
+                      <div className="pt-5">
+                        <div className="flex gap-2">
+                          <div className="text-[16px] font-bold">{currentProfile.handle}</div>
+                          {/* <Image
                         className="rounded-[10px]"
                         src={ImgNamexp}
                         alt=""
                       /> */}
-                      {
-                        nftList.length > 0 &&
-                        <Image
-                          className="h-[20px] w-[20px] object-cover"
-                          alt=''
-                          src={ImgPremium}
-                        />
-                      }
-                    </div>
-                    <p className="text-sm text-gray mb-[10px]">@{currentProfile.handle}</p>
-                    <div className="flex gap-3 mb-[10px]">
-                      <button className="flex py-1 px-2 items-center justify-center gap-2 radius-btn-shadow rounded-[12px]" onClick={() => window.open(`https://polygonscan.com/address/${currentProfile.address}`, '_blank')}>
-                        <div className="text-gray text-[12px]">{shortenAddr(currentProfile.address)}</div>
-                        <div className="h-[14px] w-[14px] rounded-[50%] bg-[#8247E5] flex items-center justify-center hover:opacity-70">
-                          <Image
-                            src={ImgPolygonpath}
-                            alt=""
-                          />
+                          {
+                            nftList.length > 0 &&
+                            <Image
+                              className="h-[20px] w-[20px] object-cover"
+                              alt=''
+                              src={ImgPremium}
+                            />
+                          }
                         </div>
-                      </button>
-                      <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
-                        <div className="h-[18px] w-[18px] rounded-[50%] bg-[#8247E5] flex items-center justify-center" onClick={() => window.open(`https://lenster.xyz/u/${currentProfile.handle}`, '_blank')}>
-                          <Image
-                            src={ImgLenster}
-                            className="h-[12px] w-[12px] object-cover"
-                            alt=""
-                          />
+                        <p className="text-sm text-gray mb-[10px]">@{currentProfile.handle}</p>
+                        <div className="flex gap-3 mb-[10px]">
+                          <button className="flex py-1 px-2 items-center justify-center gap-2 radius-btn-shadow rounded-[12px]" onClick={() => window.open(`https://polygonscan.com/address/${currentProfile.address}`, '_blank')}>
+                            <div className="text-gray text-[12px]">{shortenAddr(currentProfile.address)}</div>
+                            <div className="h-[14px] w-[14px] rounded-[50%] bg-[#8247E5] flex items-center justify-center hover:opacity-70">
+                              <Image
+                                src={ImgPolygonpath}
+                                alt=""
+                              />
+                            </div>
+                          </button>
+                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
+                            <div className="h-[18px] w-[18px] rounded-[50%] bg-[#8247E5] flex items-center justify-center" onClick={() => window.open(`https://lenster.xyz/u/${currentProfile.handle}`, '_blank')}>
+                              <Image
+                                src={ImgLenster}
+                                className="h-[12px] w-[12px] object-cover"
+                                alt=""
+                              />
+                            </div>
+                          </button>
+                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
+                            <div className="h-[18px] w-[18px] rounded-[50%] bg-[#2081E2] flex items-center justify-center" onClick={() => window.open(`https://opensea.io/assets/matic/0xdb46d1dc155634fbc732f92e853b10b288ad5a1d/${currentProfile.profileId}`, '_blank')}>
+                              <Image
+                                src={ImgOpensea}
+                                className="h-[12px] w-[12px] object-cover"
+                                alt=""
+                              />
+                            </div>
+                          </button>
                         </div>
-                      </button>
-                      <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
-                        <div className="h-[18px] w-[18px] rounded-[50%] bg-[#2081E2] flex items-center justify-center" onClick={() => window.open(`https://opensea.io/assets/matic/0xdb46d1dc155634fbc732f92e853b10b288ad5a1d/${currentProfile.profileId}`, '_blank')}>
-                          <Image
-                            src={ImgOpensea}
-                            className="h-[12px] w-[12px] object-cover"
-                            alt=""
-                          />
-                        </div>
-                      </button>
-                    </div>
-                    <div className="flex gap-3">
-                      {
-                        currentProfile.address !== currentLoginProfile.address &&
-                        <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]">
-                          <Image
-                            src={ImgFollow}
-                            alt=""
-                          />
-                        </button>
-                      }
-                      {
-                        currentProfile.address === currentLoginProfile.address &&
-                        <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" onClick={() => window.open(`https://www.lensfrens.xyz/${currentProfile.handle}`, '_blank')}>
-                          <Image
-                            src={ImgEdit}
-                            alt=""
-                          />
-                        </button>
-                      }
-                      <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" onClick={() => copyToClipboard(currentProfile.address)}>
-                        <Image
-                          src={ImgCopy}
-                          alt=""
-                        />
-                      </button>
-                      <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" onClick={() => downLoadImg(getImgUrl(currentProfile.imageURI || 'ipfs://bafkreice45jmlvhctbt2nsygitnt3jphbahcq5hlx7vrlav63hmjacb5ea'))}>
-                        <Image
-                          src={ImgDownLoad}
-                          alt=""
-                        />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-[14px] text-gray pl-8 mt-3 mb-3">{des}</div>
-                <div className="flex items-center w-full flex-wrap justify-between pl-8">
-                  {
-                    currentIndicators.map((t: any, i: number) => (
-                      <div key={i} className="w-1/2 mb-[10px] h-[40px] flex items-center gap-2">
-                        <Image
-                          src={t.imgUrl}
-                          className="w-[24px] h-[24px]"
-                          alt=""
-                        />
-                        <div>
-                          <div className="text-[18px] block h-[20px]">{t.acount}</div>
-                          <div className="text-[14px] text-gray block">{t.text}</div>
+                        <div className="flex gap-3">
+                          {
+                            currentProfile.address !== currentLoginProfile.address &&
+                            <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]">
+                              <Image
+                                src={ImgFollow}
+                                alt=""
+                              />
+                            </button>
+                          }
+                          {
+                            currentProfile.address === currentLoginProfile.address &&
+                            <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" onClick={() => window.open(`https://www.lensfrens.xyz/${currentProfile.handle}`, '_blank')}>
+                              <Image
+                                src={ImgEdit}
+                                alt=""
+                              />
+                            </button>
+                          }
+                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" onClick={() => copyToClipboard(currentProfile.address)}>
+                            <Image
+                              src={ImgCopy}
+                              alt=""
+                            />
+                          </button>
+                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" onClick={() => downLoadImg(getImgUrl(currentProfile.imageURI || 'ipfs://bafkreice45jmlvhctbt2nsygitnt3jphbahcq5hlx7vrlav63hmjacb5ea'))}>
+                            <Image
+                              src={ImgDownLoad}
+                              alt=""
+                            />
+                          </button>
                         </div>
                       </div>
-                    ))
+                    </div>
+                    <div className="text-[14px] text-gray pl-8 mt-3 mb-3">{des}</div>
+                    <div className="flex items-center w-full flex-wrap justify-between pl-8">
+                      {
+                        currentIndicators.map((t: any, i: number) => (
+                          <div key={i} className={`w-[calc(50%-10px)] mr-[10px] mb-[10px] h-[40px] flex items-center gap-2 ${getBgStyle(i)} rounded-[10px]`}>
+                            <Image
+                              src={t.imgUrl}
+                              className="w-[24px] h-[24px]"
+                              alt=""
+                            />
+                            <div>
+                              <div className="text-[18px] block h-[20px]">{t.acount}</div>
+                              <div className="text-[14px] text-gray block">{t.text}</div>
+                            </div>
+                          </div>
+                        ))
+                      }
+                    </div>
+                  </div>
+                  <div className="w-1/2 h-full px-8 py-4">
+                    {
+                      rate.map((t: any, i: number) => (
+                        <div key={i} className="w-1/2 h-[148px] float-left flex items-center justify-center"
+                          onMouseEnter={() => setRateHoveActive(i)}
+                          onMouseLeave={() => setRateHoveActive('')}>
+                          <div className="h-[90%] w-[90%]">
+                            <DonutChart info={t} showToolTip={true} />
+                          </div>
+                        </div>
+                      ))
+                    }
+                  </div>
+                </div>
+                {
+                  nftList.length > 0 &&
+                  <div className="w-[fit-content] h-[fit-content] px-4 py-2 nft-bg mb-2">NFT</div>
+                }
+                <div className="h-[200px] relative profile-nft" onMouseEnter={() => setShowNftBtn(true)} onMouseLeave={() => setShowNftBtn(false)}>
+                  <Carousel dotPosition={'bottom'} ref={carouselRef}>
+                    {
+                      nftList.map((t: any, i: number) => (
+                        <div key={i}>
+                          <div className="flex items-center justify-left gap-10">
+                            {t.map((item: any, index: number) =>
+                              <div className="hover:-translate-y-1 transition-all relative" key={index}>
+                                <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item.id}.png`} className="cursor-pointer w-[150px] h-[160px] rounded-tl-[12px] rounded-tr-[12px]"
+                                  onMouseEnter={() => setActiveHoverIndex(`${i}${index}`)}
+                                />
+                                {
+                                  activeHoverIndex === `${i}${index}` &&
+                                  <div className="absolute left-0 top-0 w-[150px] h-[160px] bg-[rgba(0,0,0,0.4)] flex items-center justify-center" onMouseLeave={() => setActiveHoverIndex('')}>
+                                    <div className="cursor-pointer">
+                                      <div className="flex items-center justify-center">
+                                        <Image
+                                          src={ImgHuman}
+                                          className="w-[40px] h-[40px]"
+                                          alt=""
+                                        />
+                                      </div>
+                                      <p className="text-[18px] text-[#fff]">Set as avatar</p>
+                                    </div>
+                                  </div>
+                                }
+                                <div className="flex justify-between items-center bg-[#1A1A1A] h-[40px] px-3 rounded-bl-[12px] rounded-br-[12px]">
+                                  <div className="text-[#fff]">No.{item.id}</div>
+                                  <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
+                                    <div className="h-[18px] w-[18px] rounded-[50%] bg-[#2081E2] flex items-center justify-center">
+                                      <Image
+                                        src={ImgOpensea}
+                                        className="h-[12px] w-[12px] object-cover"
+                                        alt=""
+                                      />
+                                    </div>
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))
+                    }
+                  </Carousel>
+                  {
+                    showNftBtn && nftList.length > 4 &&
+                    <>
+                      <button className="h-12 w-12 rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-0 translate-x-[-24px] translate-y-[-50%] hover:opacity-80" onClick={() => carouselRef.current?.prev()}>
+                        <LeftOutlined className="text-[18px] text-[700]" />
+                      </button>
+                      <button className="h-12 w-12 rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-0 translate-x-[24px] translate-y-[-50%] hover:opacity-80" onClick={() => carouselRef.current?.next()}>
+                        <RightOutlined className="text-[18px] text-[700]" />
+                      </button>
+                    </>
                   }
                 </div>
               </div>
-              <div className="w-1/2 h-full px-8 py-4">
-                {
-                  rate.map((t: any, i: number) => (
-                    <div key={i} className="w-1/2 h-[148px] float-left flex items-center justify-center">
-                      <div className="h-[90%] w-[90%]">
-                        <DonutChart info={t} showToolTip={true} />
-                      </div>
+            )
 
-                    </div>
-                  ))
-                }
-              </div>
-            </div>
-            {
-              nftList.length > 0 &&
-              <div className="w-[fit-content] h-[fit-content] px-4 py-2 nft-bg mb-2">NFT</div>
-            }
+          }
 
-            <div className="h-[200px] relative profile-nft" onMouseEnter={() => setShowNftBtn(true)} onMouseLeave={() => setShowNftBtn(false)}>
-              <Carousel dotPosition={'bottom'} ref={carouselRef}>
-                {
-                  nftList.map((t: any, i: number) => (
-                    <div key={i}>
-                      <div className="flex items-center justify-left gap-10">
-                        {t.map((item: any, index: number) =>
-                          <div className="hover:-translate-y-1 transition-all relative" key={index}>
-                            <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item.id}.png`} className="cursor-pointer w-[150px] h-[160px] rounded-tl-[12px] rounded-tr-[12px]"
-                              onMouseEnter={() => setActiveHoverIndex(`${i}${index}`)}
-                            />
-                            {
-                              activeHoverIndex === `${i}${index}` &&
-                              <div className="absolute left-0 top-0 w-[150px] h-[160px] bg-[rgba(0,0,0,0.4)] flex items-center justify-center" onMouseLeave={() => setActiveHoverIndex('')}>
-                                <div className="cursor-pointer">
-                                  <div className="flex items-center justify-center">
-                                    <Image
-                                      src={ImgHuman}
-                                      className="w-[40px] h-[40px]"
-                                      alt=""
-                                    />
-                                  </div>
-                                  <p className="text-[18px] text-[#fff]">Set as avatar</p>
-                                </div>
-                              </div>
-                            }
-                            <div className="flex justify-between items-center bg-[#1A1A1A] h-[40px] px-3 rounded-bl-[12px] rounded-br-[12px]">
-                              <div className="text-[#fff]">No.{item.id}</div>
-                              <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
-                                <div className="h-[18px] w-[18px] rounded-[50%] bg-[#2081E2] flex items-center justify-center">
-                                  <Image
-                                    src={ImgOpensea}
-                                    className="h-[12px] w-[12px] object-cover"
-                                    alt=""
-                                  />
-                                </div>
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))
-                }
-              </Carousel>
-              {
-                showNftBtn && nftList.length > 4 &&
-                <>
-                  <button className="h-12 w-12 rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-0 translate-x-[-24px] translate-y-[-50%] hover:opacity-80" onClick={() => carouselRef.current?.prev()}>
-                    <LeftOutlined className="text-[18px] text-[700]" />
-                  </button>
-                  <button className="h-12 w-12 rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-0 translate-x-[24px] translate-y-[-50%] hover:opacity-80" onClick={() => carouselRef.current?.next()}>
-                    <RightOutlined className="text-[18px] text-[700]" />
-                  </button>
-                </>
-
-              }
-            </div>
-          </div>
         </div>
       </div>
     </div >
