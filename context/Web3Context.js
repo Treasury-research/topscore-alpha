@@ -5,18 +5,21 @@ import config from "../config";
 import { ethers } from "ethers";
 import lensApi from "../api/lensApi";
 import api from "../api";
-import { knn3TokenValidState, currentProfileState , autoConnectState} from "../store/state";
+import { knn3TokenValidState, currentProfileState, autoConnectState } from "../store/state";
 import { useRecoilState } from "recoil";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { switchChain } from "../lib/tool";
 import { LoadingOutlined } from "@ant-design/icons";
 import useWeb3Modal from "../hooks/useWeb3Modal";
+import { message } from "antd";
 
 const actionMapping = [
   "Transaction being processed",
   "Transaction Success",
   "Transaction Failed",
 ];
+
+const errorMsg = `Metamask plugin not found or not active. Please check your browser's plugin list.`
 
 export const Web3Context = createContext({
   web3: null,
@@ -29,15 +32,15 @@ export const Web3Context = createContext({
   connectWallet: async (walletName) => {
     return "";
   },
-  resetWallet: async () => {},
-  estimateGas: async () => {},
+  resetWallet: async () => { },
+  estimateGas: async () => { },
   signMessage: async (message) => {
     return "";
   },
-  sendTx: async () => {},
-  doLogin: async () => {},
-  doLogout: async () => {},
-  
+  sendTx: async () => { },
+  doLogin: async () => { },
+  doLogout: async () => { },
+
 });
 
 export const Web3ContextProvider = ({ children }) => {
@@ -56,6 +59,9 @@ export const Web3ContextProvider = ({ children }) => {
   const [currentProfile, setCurrentProfile] = useRecoilState(currentProfileState)
 
   const listenProvider = () => {
+    if (!window.ethereum) {
+      return
+    }
     window.ethereum.on("close", () => {
       resetWallet();
     });
@@ -73,6 +79,10 @@ export const Web3ContextProvider = ({ children }) => {
   };
 
   const connectWallet = useCallback(async (walletName) => {
+    if (!window.ethereum) {
+      toast.info(errorMsg)
+      return
+    }
     try {
 
       let web3Raw = null;
@@ -89,8 +99,6 @@ export const Web3ContextProvider = ({ children }) => {
         setConnector("injected");
         web3Raw = new Web3(window.ethereum);
       }
-
-      console.log('connected', )
 
       setWeb3(web3Raw);
 
@@ -115,8 +123,7 @@ export const Web3ContextProvider = ({ children }) => {
 
       // init block number
       setBlockNumber(await web3Raw.eth.getBlockNumber());
-
-
+      
       switchChain(config.chainId);
 
       return accounts[0];
@@ -127,8 +134,8 @@ export const Web3ContextProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [web3Modal]);
 
-  useEffect(()=>{
-    if(chainId !== config.chainId){
+  useEffect(() => {
+    if (chainId !== config.chainId && window.ethereum) {
       switchChain(config.chainId)
     }
   }, [chainId])
@@ -160,7 +167,7 @@ export const Web3ContextProvider = ({ children }) => {
   //   }
   // }, [web3Modal]);
 
-  useEffect(()=>{
+  useEffect(() => {
     listenProvider();
   }, [])
 
@@ -185,7 +192,7 @@ export const Web3ContextProvider = ({ children }) => {
       signature,
       address: account,
     });
-    if(!res){
+    if (!res) {
       toast.error("You must have a lens handle");
       return
     }
@@ -275,7 +282,7 @@ export const Web3ContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if(autoConnect){
+    if (autoConnect) {
       connectWallet();
     }
   }, [autoConnect]);
