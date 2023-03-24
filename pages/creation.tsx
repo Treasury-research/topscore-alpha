@@ -16,7 +16,7 @@ const Post = () => {
     <div className="w-full h-full bg-[#000] flex">
       <Navbar />
       <div className="p-5 w-full text-[#fff] relative">
-        <ConnectBtn />
+        <ConnectBtn type={2} seis={2323}/>
         <Create></Create>
       </div>
     </div>

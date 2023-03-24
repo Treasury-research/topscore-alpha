@@ -25,6 +25,8 @@ let resData: any = [];
 
 let resAmountData: any = [];
 
+let resPc: any = [];
+
 const rmodynamics = () => {
     const [activeTab, setActiveTab] = useState(0)
 
@@ -35,6 +37,8 @@ const rmodynamics = () => {
     const [lindData, setLindData] = useState([])
 
     const [sigleData, setSigleData] = useState([])
+
+    const [overviewPostData, setOverviewPostData] = useState([])
 
     const [pubAll, setPubAll] = useState([])
 
@@ -50,7 +54,7 @@ const rmodynamics = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const [topRecentSwitch,setTopRecentSwitch] = useState(false)
+    const [topRecentSwitch, setTopRecentSwitch] = useState(false)
 
     const [currentProfile] = useRecoilState<any>(currentProfileState);
 
@@ -71,9 +75,21 @@ const rmodynamics = () => {
         setPubAll([])
         resData = []
         resAmountData = []
+        resPc = []
         const mdy = dayjs(new Date().getTime() - ((activeTab1 + 1) * 7) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
         const ndy = dayjs(new Date()).format('YYYYMMDD') // 当前日期
-        if (activeTab === 1) {
+        if (activeTab === 0) {
+            const res: any = await api.get(`/lens/publicationStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}&category=5&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
+            const res1: any = await api.get(`/lens/followStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}`);
+            const res2: any = await api.get(`/lens/publicationStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}&category=6&type=Post,Comment`);
+            if (!res || !res.data || !res1 || !res1.data || !res2 || !res2.data) {
+                setLoading(false);
+                return false;
+            }
+            resData = res.data;
+            resAmountData = res1.data;
+            resPc = res2.data;
+        } else if (activeTab === 1) {
             // const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
             // const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
             const res: any = await api.get(`/lens/publicationStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
@@ -84,7 +100,7 @@ const rmodynamics = () => {
             }
             resData = res.data;
             resAmountData = res1.data;
-        } else if(activeTab === 2) {
+        } else if (activeTab === 2) {
             // const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 1 : 2}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
             // const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
             const res: any = await api.get(`/lens/collectStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 1 : 2}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
@@ -96,61 +112,98 @@ const rmodynamics = () => {
             resData = res.data;
             resAmountData = res1.data;
         }
-        let pubAllData: any = []
-        if (resData.length !== 0) {
-            resData.map((t: any) => {
-                if (!pubAllData.includes(t.pubId)) {
-                    pubAllData.push(t.pubId)
-                }
-            })
+        if (activeTab === 1 || activeTab === 2) {
+            let pubAllData: any = []
+            if (resData.length !== 0) {
+                resData.map((t: any) => {
+                    if (!pubAllData.includes(t.pubId)) {
+                        pubAllData.push(t.pubId)
+                    }
+                })
+            }
+            let newPubAllData = pubAllData.sort((a, b) => { return a - b })
+            let idx = newPubAllData.indexOf(0)
+            if (idx > -1) {
+                newPubAllData.splice(idx, 1)
+                newPubAllData.unshift(0)
+            }
+            setPubAll(newPubAllData);
         }
-        let newPubAllData = pubAllData.sort((a, b) => { return a - b })
-        let idx = newPubAllData.indexOf(0)
-        if (idx > -1) {
-            newPubAllData.splice(idx, 1)
-            newPubAllData.unshift(0)
-        }
-        setPubAll(newPubAllData);
         setLoading(false);
-        setDates(enumerateDaysBetweenDates(mdy, ndy))
+        // setDates(enumerateDaysBetweenDates(mdy, ndy))
+        setDates(enumerateDaysBetweenDates(`20230101`, `20230301`))
     }
 
     useEffect(() => {
         if (dates.length > 0) {
-            let s: any = []; // 区域数据
-            let h: any = []; // 单独线数据
+            let s: any = []; // area data
+            let h: any = []; // single line
+            let j: any = []; // overview posts & comments
             for (let i = 0; i < dates.length; i++) {
-                let b = [];
-                for (let j = 0; j < pubAll.length; j++) {
-                    let filterPub = resData.filter((t: any) => {
-                        return (pubAll[j] === t.pubId && t.day === dates[i])
-                    })
-                    // && filterPub[0]['day'] === dates[i]
-                    if (filterPub && filterPub.length > 0) {
-                        b.push(filterPub[0])
-                    } else {
-                        let filterByID = resData.filter((t: any) => {
-                            return pubAll[j] === t.pubId
+                if (activeTab === 1 || activeTab === 2) {
+                    let b = [];
+                    for (let j = 0; j < pubAll.length; j++) {
+                        let filterPub = resData.filter((t: any) => {
+                            return (pubAll[j] === t.pubId && t.day === dates[i])
                         })
-                        if (activeTab == 0 || activeTab == 1) {
-                            let obj = { ...filterByID[0] }
-                            obj.commentByCount = '0'
-                            obj.day = dates[i]
-                            obj.isFee = '0'
-                            obj.mirrorByCount = '0'
-                            obj.totalByCount = '0'
-                            b.push({
-                                ...obj
-                            })
+                        // && filterPub[0]['day'] === dates[i]
+                        if (filterPub && filterPub.length > 0) {
+                            b.push(filterPub[0])
                         } else {
-                            let obj = { ...filterByID[0] }
-                            obj.collectByCount = '0'
-                            obj.day = dates[i]
-                            b.push({
-                                ...obj
+                            let filterByID = resData.filter((t: any) => {
+                                return pubAll[j] === t.pubId
                             })
-                        }
+                            if (activeTab === 1) {
+                                let obj = { ...filterByID[0] }
+                                obj.commentByCount = '0'
+                                obj.day = dates[i]
+                                obj.isFee = '0'
+                                obj.mirrorByCount = '0'
+                                obj.totalByCount = '0'
+                                b.push({
+                                    ...obj
+                                })
+                            } else {
+                                let obj = { ...filterByID[0] }
+                                obj.collectByCount = '0'
+                                obj.day = dates[i]
+                                b.push({
+                                    ...obj
+                                })
+                            }
 
+                        }
+                    }
+                    s.push(b)
+                } else {
+                    // line data
+                    let selData = resData.filter((t) => {
+                        return t.day === dates[i]
+                    })
+                    if (selData.length > 0) {
+                        s.push(selData[0])
+                    } else {
+                        s.push({
+                            collectByCount: "0",
+                            commentByCount: "0",
+                            day: dates[i],
+                            mirrorByCount: "0",
+                            totalByCount: "0"
+                        })
+                    }
+
+                    // overview
+                    let postData = resPc.filter((t) => {
+                        return t.day == dates[i]
+                    })
+                    if (postData.length > 0) {
+                        j.push(postData[0])
+                    } else {
+                        j.push({
+                            day: dates[i],
+                            postCount: 0,
+                            commentCount: 0
+                        })
                     }
                 }
                 for (let j = 0; j < resAmountData.length; j++) {
@@ -162,10 +215,11 @@ const rmodynamics = () => {
                         }
                     }
                 }
-                s.push(b)
             }
+            console.log(s)
             setLindData(s)
             setSigleData(h)
+            setOverviewPostData(j)
         }
     }, [dates, pubAll])
 
@@ -173,7 +227,7 @@ const rmodynamics = () => {
         if (currentProfile && currentProfile.profileId) {
             getEngageLineData()
         }
-    }, [activeTab, chargeSwitch, activeTab1, currentProfile, postSwitch,topRecentSwitch])
+    }, [activeTab, chargeSwitch, activeTab1, currentProfile, postSwitch, topRecentSwitch])
 
     return (
         <>
@@ -241,6 +295,7 @@ const rmodynamics = () => {
                                         dayType={activeTab1}
                                         type={activeTab}
                                         sigleData={sigleData}
+                                        overviewPostData={overviewPostData}
                                     />
                                 }
                                 {

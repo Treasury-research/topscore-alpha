@@ -23,7 +23,7 @@ const rmodynamics = () => {
 
     const [remodyBaseData, setRemodyBaseData] = useState<any>([]);
 
-    const [checked, setChecked] = useState([true, true, true, true, false]);
+    const [checked, setChecked] = useState([true, true, true, true, false, false]);
 
     const [week, setWeek] = useState<any>([]);
 
@@ -92,18 +92,19 @@ const rmodynamics = () => {
             commentCount: 0,
             mirrorCount: 0,
             collectCount: 0,
-            collectFee: 0
+            collectFee: 0,
+            pubCount:0
         }
         let weekOfDay = parseInt(moment().format('E'));
         let rem: any = [[], [], [], [], [], [], []]
-        const dWeek = weekOfDay === 0 ? 6 : weekOfDay
-        const dHour = parseInt(moment().format('HH'))
+        // const dWeek = weekOfDay === 0 ? 6 : weekOfDay
+        // const dHour = parseInt(moment().format('HH'))
         for (let i = 0; i < 7; i++) {
             for (let j = 0; j < 24; j++) {
                 rem[i].push('noData')
             }
         }
-        maxRemoData = [0, 0, 0, 0, 0]
+        maxRemoData = [0, 0, 0, 0, 0,0]
         setLoading(false);
         if (!res || !res.data) {
             setRemodyBaseData(rem)
@@ -111,9 +112,12 @@ const rmodynamics = () => {
         }
         res.data.forEach((t: any) => {
             let week:any
-            let avgPostCount,avgCommentCount,avgMirrorCount,avgCollectCount
+            let avgPostCount,avgCommentCount,avgMirrorCount,avgCollectCount,avgPubCount
             if (activeTab === 0) {
                 avgPostCount = Number(t.avgPostCount);
+            }
+            if (activeTab === 1) {
+                avgPubCount = Number(t.avgPubCount);
             }
             avgCommentCount = Number(t.avgCommentCount);
             avgMirrorCount = Number(t.avgMirrorCount);
@@ -142,6 +146,9 @@ const rmodynamics = () => {
             if (activeTab === 0) {
                 totalAmount.postCount += avgPostCount;
             }
+            if (activeTab === 1) {
+                totalAmount.pubCount += avgPubCount;
+            }
             totalAmount.commentCount += avgCommentCount;
             totalAmount.mirrorCount += avgMirrorCount;
             totalAmount.collectCount += avgCollectCount;
@@ -150,6 +157,9 @@ const rmodynamics = () => {
 
             if ((activeTab === 0) && (avgPostCount > maxRemoData[0])) {
                 maxRemoData[0] = avgPostCount
+            }
+            if ((activeTab === 1) && (avgPubCount > maxRemoData[0])) {
+                maxRemoData[4] = avgPubCount
             }
             if (avgCommentCount > maxRemoData[1]) {
                 maxRemoData[1] = avgCommentCount
@@ -160,15 +170,7 @@ const rmodynamics = () => {
             if (avgCollectCount > maxRemoData[3]) {
                 maxRemoData[3] = avgCollectCount
             }
-            // if (Number(t.collectFee) > maxRemoData[4]) {
-            //     maxRemoData[4] = Number(t.collectFee)
-            // }
-            // if (week == 0) {
-            //     rem[6][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), timePeriod];
-            // } else {
-            //     rem[week - 1][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), timePeriod];
-            // }
-            rem[week][Number(t.date.split('_')[1])] = [avgPostCount || 0, avgCommentCount, avgMirrorCount, avgCollectCount, 0, ''];
+            rem[week][Number(t.date.split('_')[1])] = [avgPostCount || 0, avgCommentCount, avgMirrorCount, avgCollectCount, 0, avgPubCount || 0, ''];
         })
         console.log('rem',rem)
         console.log('totalAmount',totalAmount)
@@ -279,18 +281,29 @@ const rmodynamics = () => {
     }
 
     const onChange = (e: any, i: number) => {
-        if (i === 4) {
-            setChecked([false, false, false, false, e.target.checked]);
-        }
-        if (i !== 4) {
+        if (i === 4 || i === 5) {
+            let preChecked = [false, false, false, false, false,false]
+            preChecked[i] = e.target.checked
+            setChecked(preChecked);
+        }else{
             setChecked((prev: any) => {
                 prev[i] = e.target.checked;
                 if (e.target.checked) {
                     prev[4] = false;
+                    prev[5] = false;
                 }
                 return [...prev];
-            });
+            }); 
         }
+        // if (i !== 4) {
+        //     setChecked((prev: any) => {
+        //         prev[i] = e.target.checked;
+        //         if (e.target.checked) {
+        //             prev[4] = false;
+        //         }
+        //         return [...prev];
+        //     });
+        // }
     };
 
     const putActiveItems = (e: any) => {
@@ -341,6 +354,7 @@ const rmodynamics = () => {
         let maxMount = 0;
         let totalMount = 0;
         checked.forEach((t: any, i: number) => {
+            // if(activeTab === 1 && i === 5 && weekCount !== 0) return false
             if (t) {
                 maxMount += maxRemoData[i]
                 totalMount += e[i]
@@ -378,7 +392,7 @@ const rmodynamics = () => {
                 {
                     e !== 'noData' &&
                     <p className="text-[18px] font-[600]">
-                        {e[5] ? `${strDate.slice(0, 4)}/${strDate.slice(4, 6)}/${strDate.slice(6, 8)} ${h}` : ''}
+                        {e[5] ? `${strDate.slice(0, 4)}/${strDate.slice(4, 6)}/${strDate.slice(6, 8)} ${h}` : `${dys[i]}  ${h}`}
                     </p>
                 }
                 {
@@ -392,6 +406,11 @@ const rmodynamics = () => {
                     {
                         e === 'noData' && checked[0] && (
                             <div>Posts {activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：0</div>
+                        )
+                    }
+                    {
+                        e === 'noData' && checked[5] && weekCount === 0 && activeTab === 1  && (
+                            <div>Publications ：0</div>
                         )
                     }
                     {
@@ -414,9 +433,14 @@ const rmodynamics = () => {
                             <div>Volume {weekCount === 0 ? '(Avg)' : ''}：0.00</div>
                         )
                     }
+
                     {
                         checked[0] && activeTab === 0 && e !== 'noData' &&
                         <div>Posts {weekCount === 0 ? '(Avg)' : ''}：{e[0]}</div>
+                    }
+                    {
+                        checked[5] && activeTab === 1 && e !== 'noData' && weekCount === 0 &&
+                        <div>Publications ：{e[5]}</div>
                     }
                     {
                         checked[1] && e !== 'noData' &&
@@ -559,6 +583,17 @@ const rmodynamics = () => {
                                         </Checkbox>
                                     </div>
                                     <div className="ml-[auto]">{(totalAmount && (totalAmount.postCount || totalAmount.postCount === 0)) ? getMount(totalAmount.postCount) : '-'}</div>
+                                </div>
+                            }
+                            {
+                                activeTab == 1 && weekCount == 0 &&
+                                <div className="flex mb-2">
+                                    <div>
+                                        <Checkbox onChange={(e: any) => onChange(e, 5)} checked={checked[5]}>
+                                            <span className="text-[#fff] text-[16px]">Publications</span>
+                                        </Checkbox>
+                                    </div>
+                                    <div className="ml-[auto]">{(totalAmount && (totalAmount.pubCount || totalAmount.pubCount === 0)) ? getMount(totalAmount.pubCount) : '-'}</div>
                                 </div>
                             }
                             <div className="flex mb-2">

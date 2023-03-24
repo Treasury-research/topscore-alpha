@@ -539,7 +539,7 @@ const DashRmodynamics = () => {
                                             ))
                                         }
                                     </div>
-                                    <div className="flex">
+                                    <div className="flex pl-[14px]">
                                         {
                                             month.map((t: any, i: number) => (
                                                 <div key={i} className="flex-1 text-[12px] flex justify-center">{t}</div>

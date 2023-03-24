@@ -14,14 +14,13 @@ import useErc721Contract from "../contract/useErc721Contract";
 import config from "../config";
 import { LoadingOutlined, CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import useWeb3Context from "../hooks/useWeb3Context";
-import { currentProfileState, profileListState, loadingProfileListState } from "../store/state";
+import { currentProfileState, profileListState } from "../store/state";
 import DonutChart from '../components/profile/DonutChart'
 
 const Create = () => {
     const [scores, setScores] = useState<any>({});
     const [loadingScores, setLoadingScores] = useState<boolean>(false);
     const [currentProfile] = useRecoilState<any>(currentProfileState);
-    const [loadingProfileList] = useRecoilState<any>(loadingProfileListState)
     const [profileList,] = useRecoilState(profileListState);
     const { account, connectWallet } = useWeb3Context();
     const [loadingNftBalance, setLoadingNftBalance] = useState(true)

@@ -32,15 +32,15 @@ import ImgLensterHead from "../../statics/img/lest-head.png";
 import ImgPremium from '../../statics/img/premium.gif'
 import ImgHuman from "../../statics/img/profileV2/human.svg"
 import api from "../../api";
+import lensApi from "../../api/lensApi";
+
 import {
   currentProfileState,
-  currentLoginProfileState
+  currentLoginProfileState,
+  routerHandleState
 } from "../../store/state";
 import { useRecoilState } from "recoil";
 import { shortenAddr, switchChain, copyToClipboard, downLoadImg } from "../../lib/tool";
-
-const des = 'KNN3 is one-stop Web3 User-centric #DataFi solution for d/Apps and smart contracts.  💬 DC: http://discord.gg/UKzFVpHk4J 🔗 Link3: http://link3.to/knn3network'
-
 const baseImgInfo = [{
   text: 'Followers',
   acount: 0,
@@ -143,21 +143,30 @@ const profile = () => {
 
   const [rate, setRate] = useState<any>(grades)
 
-  const [indicatorLoading, setIndicatorLoading] = useState<boolean>(false)
+  const [indicatorLoading, setIndicatorLoading] = useState<boolean>(true)
 
-  const [ratingLoading, setRatingLoading] = useState<boolean>(false)
+  const [ratingLoading, setRatingLoading] = useState<boolean>(true)
 
-  const [scoreLoading, setScoreLoading] = useState<boolean>(false)
+  const [scoreLoading, setScoreLoading] = useState<boolean>(true)
 
   const [creatorLevel, setCreatorLevel] = useState<any>(0)
 
   const [rateHoveActive, setRateHoveActive] = useState<any>('')
+
+  const [introduce, setIntroduce] = useState<any>('')
+
+  const [nftTotal, setNftTotal] = useState<any>(0)
+
+  const router = useRouter();
 
   const [currentProfile, setCurrentProfile] =
     useRecoilState<any>(currentProfileState);
 
   const [currentLoginProfile, setCurrentLoginProfile] =
     useRecoilState<any>(currentLoginProfileState);
+  const [loadingRouterHandle, setLoadingRouterHandle] = useRecoilState(
+    routerHandleState
+  );
 
   const getAllNfts = async () => {
     const res = (await api.get(`/lens/tokenIds/${currentProfile.address}`));
@@ -174,8 +183,10 @@ const profile = () => {
           newList.push(res2.data.slice(i, i + 4));
         }
         setNftList(newList);
+        setNftTotal(res2.data.length)
       } else {
         setNftList([]);
+        setNftTotal(0)
       }
     } else {
       setNftList([]);
@@ -247,6 +258,27 @@ const profile = () => {
     }
   }
 
+  const getIntroduce = async () => {
+    const res = await lensApi.getProfileByHandle(currentProfile.handle);
+    if (res && res.bio) {
+      setIntroduce(res.bio)
+    } else {
+      setIntroduce('')
+    }
+  }
+
+  const getCurrentProfileByRouter = async (str: any) => {
+    setLoadingRouterHandle(true)
+    const res = await api.get(`/lens/handles/byHandles/${str}`)
+    setTimeout(() => {
+      setLoadingRouterHandle(false)
+    }, 1000)
+
+    if (res && res.data) {
+      setCurrentProfile(res.data[0])
+    }
+  }
+
   const getImgUrl = (str: string) => {
     const imgUrl = str.replace(
       "https://ipfs.infura.io",
@@ -265,7 +297,6 @@ const profile = () => {
     ) {
       return 'bg-[#303030]'
     }
-
   }
 
   useEffect(() => {
@@ -274,21 +305,25 @@ const profile = () => {
       getIndicators()
       getRating()
       getScore()
+      getIntroduce()
     }
   }, [currentProfile])
+
+  useEffect(() => {
+    console.log(window.location)
+    if(router && router.query && router.query.handle){
+      getCurrentProfileByRouter(router.query.handle)
+    }
+  }, [router])
 
   return (
     <div className="w-full h-full bg-[#000] flex profile-v2">
       <Navbar />
       <div className='p-5 w-full text-[#fff]'>
-        <ConnectBtn />
+        <ConnectBtn type={1}/>
         <div className="w-full overflow-y-auto h-[calc(100%-40px)]">
           {
-            indicatorLoading && ratingLoading && scoreLoading ? (
-              <div className="h-full w-full flex items-center justify-center">
-                <LoadingOutlined className="text-2xl block mx-auto my-4" />
-              </div>
-            ) : (
+            !indicatorLoading && !ratingLoading && !scoreLoading && !loadingRouterHandle ? (
               <div className="mx-auto mt-16 w-[722px]">
                 <div className="h-[512px] mb-4 profile-bg1 flex">
                   <div className="w-1/2 h-full">
@@ -309,12 +344,12 @@ const profile = () => {
                       </div>
                       <div className="pt-5">
                         <div className="flex gap-2">
-                          <div className="text-[16px] font-bold">{currentProfile.handle}</div>
+                          <div className="text-[16px] font-bold">{currentProfile.name ? currentProfile.name : currentProfile.handle ? currentProfile.handle.split('.')[0] : ''}</div>
                           {/* <Image
-                        className="rounded-[10px]"
-                        src={ImgNamexp}
-                        alt=""
-                      /> */}
+                      className="rounded-[10px]"
+                      src={ImgNamexp}
+                      alt=""
+                    /> */}
                           {
                             nftList.length > 0 &&
                             <Image
@@ -373,7 +408,7 @@ const profile = () => {
                               />
                             </button>
                           }
-                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" onClick={() => copyToClipboard(currentProfile.address)}>
+                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" onClick={() => copyToClipboard(`${window.location.origin}${window.location.pathname}?handle=${currentProfile.handle}`)}>
                             <Image
                               src={ImgCopy}
                               alt=""
@@ -388,7 +423,9 @@ const profile = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="text-[14px] text-gray pl-8 mt-3 mb-3">{des}</div>
+                    <div className="text-[14px] text-gray pl-8 mt-3 mb-3 h-[80px] overflow-y-auto flex items-center">
+                      <p>{introduce}</p>
+                    </div>
                     <div className="flex items-center w-full flex-wrap justify-between pl-8">
                       {
                         currentIndicators.map((t: any, i: number) => (
@@ -436,25 +473,25 @@ const profile = () => {
                                 <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item.id}.png`} className="cursor-pointer w-[150px] h-[160px] rounded-tl-[12px] rounded-tr-[12px]"
                                   onMouseEnter={() => setActiveHoverIndex(`${i}${index}`)}
                                 />
-                                {
-                                  activeHoverIndex === `${i}${index}` &&
-                                  <div className="absolute left-0 top-0 w-[150px] h-[160px] bg-[rgba(0,0,0,0.4)] flex items-center justify-center" onMouseLeave={() => setActiveHoverIndex('')}>
-                                    <div className="cursor-pointer">
-                                      <div className="flex items-center justify-center">
-                                        <Image
-                                          src={ImgHuman}
-                                          className="w-[40px] h-[40px]"
-                                          alt=""
-                                        />
-                                      </div>
-                                      <p className="text-[18px] text-[#fff]">Set as avatar</p>
+                                {/* {
+                                activeHoverIndex === `${i}${index}` &&
+                                <div className="absolute left-0 top-0 w-[150px] h-[160px] bg-[rgba(0,0,0,0.4)] flex items-center justify-center" onMouseLeave={() => setActiveHoverIndex('')}>
+                                  <div className="cursor-pointer">
+                                    <div className="flex items-center justify-center">
+                                      <Image
+                                        src={ImgHuman}
+                                        className="w-[40px] h-[40px]"
+                                        alt=""
+                                      />
                                     </div>
+                                    <p className="text-[18px] text-[#fff]">Set as avatar</p>
                                   </div>
-                                }
+                                </div>
+                              } */}
                                 <div className="flex justify-between items-center bg-[#1A1A1A] h-[40px] px-3 rounded-bl-[12px] rounded-br-[12px]">
                                   <div className="text-[#fff]">No.{item.id}</div>
                                   <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
-                                    <div className="h-[18px] w-[18px] rounded-[50%] bg-[#2081E2] flex items-center justify-center">
+                                    <div className="h-[18px] w-[18px] rounded-[50%] bg-[#2081E2] flex items-center justify-center" onClick={() => window.open(`https://opensea.io/assets/matic/0xa803aabd68dd0fcf9eabc25f71f155222805e9e0/${item.id}`, '_blank')}>
                                       <Image
                                         src={ImgOpensea}
                                         className="h-[12px] w-[12px] object-cover"
@@ -471,7 +508,7 @@ const profile = () => {
                     }
                   </Carousel>
                   {
-                    showNftBtn && nftList.length > 4 &&
+                    showNftBtn && nftTotal > 4 &&
                     <>
                       <button className="h-12 w-12 rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-0 translate-x-[-24px] translate-y-[-50%] hover:opacity-80" onClick={() => carouselRef.current?.prev()}>
                         <LeftOutlined className="text-[18px] text-[700]" />
@@ -482,6 +519,10 @@ const profile = () => {
                     </>
                   }
                 </div>
+              </div>
+            ) : (
+              <div className="h-full w-full flex items-center justify-center">
+                <LoadingOutlined className="text-2xl block mx-auto my-4" />
               </div>
             )
 

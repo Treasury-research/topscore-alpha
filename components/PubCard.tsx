@@ -70,7 +70,7 @@ const PubCard = (props: any) => {
   const getBaseLineData = async () => {
     let resData = []
     const mdy = dayjs(new Date().getTime() - 28 * 24 * 60 * 60 * 1000).format('YYYYMMDD')
-    const ndy = dayjs(new Date()).format('YYYYMMDD') // 当前日期
+    const ndy = dayjs(new Date()).format('YYYYMMDD')
     if (activeLineTab == 1) {
       const res: any = await api.get(`/lens/publicationStsByDay?start=${20230101}&end=${20230301}&profileId=${currentProfile.profileId}&category=${activeTab === 0 ? 4 : 1}&type=${'Post,Comment'}`);
       resData = res.data;
@@ -87,7 +87,9 @@ const PubCard = (props: any) => {
         }
       })
     }
-    getPubs(pubAllData)
+    if(pubAllData.length > 0){
+      getPubs(pubAllData)
+    }
   }
 
   const getPubs = async (ids: any) => {
@@ -163,8 +165,6 @@ const PubCard = (props: any) => {
               </div>
             )
         }
-
-
 
         {/* {
                 pubData.map((t: any, i: number) => (
