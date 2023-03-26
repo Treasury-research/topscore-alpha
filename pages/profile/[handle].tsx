@@ -8,6 +8,7 @@ import { formatIPFS } from "../../lib/tool";
 import useWeb3Context from "../../hooks/useWeb3Context";
 import ConnectBtn from '../../components/ConnectBtn'
 import DonutChart from '../../components/profile/DonutChart'
+import Follow from '../../components/Follow'
 import Image from "next/image";
 import ImgCardHead from "../../statics/img/profileV2/card-head.svg";
 import ImgNamexp from "../../statics/img/profileV2/name-xp.svg";
@@ -33,6 +34,7 @@ import ImgPremium from '../../statics/img/premium.gif'
 import ImgHuman from "../../statics/img/profileV2/human.svg"
 import api from "../../api";
 import lensApi from "../../api/lensApi";
+import html2canvas from 'html2canvas';
 
 import {
   currentProfileState,
@@ -131,6 +133,8 @@ let grades = [{
 
 const profile = () => {
 
+  const { account, chainId, doLogout } = useWeb3Context();
+
   const carouselRef = useRef(null)
 
   const [showNftBtn, setShowNftBtn] = useState<boolean>(false)
@@ -206,8 +210,8 @@ const profile = () => {
         prev[3]['acount'] = data.post
         prev[4]['acount'] = data.comment
         prev[5]['acount'] = data.mirror
-        prev[6]['acount'] = 0
-        prev[7]['acount'] = 0
+        prev[6]['acount'] = data.commentBy
+        prev[7]['acount'] = data.mirrorBy
         prev[8]['acount'] = data.collect
         prev[9]['acount'] = data.collectBy
         return [...prev];
@@ -269,12 +273,12 @@ const profile = () => {
 
   const getCurrentProfileByRouter = async (str: any) => {
     setLoadingRouterHandle(true)
-    const res = await api.get(`/lens/handles/byHandles/${str}`)
+    const res = await api.get(`/lens/handles/byHandles/${str}.lens`)
     setTimeout(() => {
       setLoadingRouterHandle(false)
     }, 1000)
 
-    if (res && res.data) {
+    if (res && res.data && res.data.length > 0) {
       setCurrentProfile(res.data[0])
     }
   }
@@ -299,6 +303,19 @@ const profile = () => {
     }
   }
 
+  const downLoadHtml2Img = () => {
+    html2canvas(document.getElementById('aphoto'), {
+      allowTaint: false,
+      useCORS: true, 
+    }).then(canvas => {
+      const link = document.createElement('a');
+      const event = new MouseEvent('click');
+      link.download = `TopScore_${currentProfile.handle}.jpg`; 
+      link.href = canvas.toDataURL();
+      link.dispatchEvent(event);
+    })
+  }
+
   useEffect(() => {
     if (currentProfile && currentProfile.profileId) {
       getAllNfts()
@@ -309,8 +326,13 @@ const profile = () => {
     }
   }, [currentProfile])
 
+//   useEffect(() => {
+//     console.log(account,chainId)
+//   }, [account,chainId])
+
+  
   useEffect(() => {
-    console.log(window.location)
+    console.log(router)
     if(router && router.query && router.query.handle){
       getCurrentProfileByRouter(router.query.handle)
     }
@@ -325,7 +347,7 @@ const profile = () => {
           {
             !indicatorLoading && !ratingLoading && !scoreLoading && !loadingRouterHandle ? (
               <div className="mx-auto mt-16 w-[722px]">
-                <div className="h-[512px] mb-4 profile-bg1 flex">
+                <div className="h-[512px] mb-4 profile-bg1 flex" id="aphoto">
                   <div className="w-1/2 h-full">
                     <div className="flex gap-8">
                       <div className="relative">
@@ -391,11 +413,11 @@ const profile = () => {
                         </div>
                         <div className="flex gap-3">
                           {
-                            currentProfile.address !== currentLoginProfile.address &&
+                            account && currentProfile.address !== currentLoginProfile.address &&
                             <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]">
-                              <Image
-                                src={ImgFollow}
-                                alt=""
+                              <Follow
+                                profileId={currentProfile.profileId}
+                                handle={currentProfile.handle}
                               />
                             </button>
                           }
@@ -414,7 +436,7 @@ const profile = () => {
                               alt=""
                             />
                           </button>
-                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" onClick={() => downLoadImg(getImgUrl(currentProfile.imageURI || 'ipfs://bafkreice45jmlvhctbt2nsygitnt3jphbahcq5hlx7vrlav63hmjacb5ea'))}>
+                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" onClick={() => downLoadHtml2Img()}>
                             <Image
                               src={ImgDownLoad}
                               alt=""

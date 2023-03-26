@@ -6,6 +6,10 @@ import { currentProfileState } from "../store/state";
 import { useRecoilState } from "recoil";
 import Image from 'next/image'
 import IconVolume from '../statics/img/volume.svg'
+import Mirror from '../statics/img/mirror_1.svg'
+import Comment from '../statics/img/pubIcon/commentBig.svg'
+import Post from '../statics/img/post_icon.svg'
+import Collect from '../statics/img/collect-line.svg'
 
 import moment from 'moment'
 
@@ -51,7 +55,7 @@ const rmodynamics = () => {
                 }
             }
         }
-    }, [currentDate,currentProfile,activeTab])
+    }, [currentDate, currentProfile, activeTab])
 
     // useEffect(() => {
     //     // setIsFirstRefresh(true)
@@ -93,7 +97,7 @@ const rmodynamics = () => {
             mirrorCount: 0,
             collectCount: 0,
             collectFee: 0,
-            pubCount:0
+            pubCount: 0
         }
         let weekOfDay = parseInt(moment().format('E'));
         let rem: any = [[], [], [], [], [], [], []]
@@ -104,15 +108,15 @@ const rmodynamics = () => {
                 rem[i].push('noData')
             }
         }
-        maxRemoData = [0, 0, 0, 0, 0,0]
+        maxRemoData = [0, 0, 0, 0, 0, 0]
         setLoading(false);
         if (!res || !res.data) {
             setRemodyBaseData(rem)
             return false;
         }
         res.data.forEach((t: any) => {
-            let week:any
-            let avgPostCount,avgCommentCount,avgMirrorCount,avgCollectCount,avgPubCount
+            let week: any
+            let avgPostCount, avgCommentCount, avgMirrorCount, avgCollectCount, avgPubCount
             if (activeTab === 0) {
                 avgPostCount = Number(t.avgPostCount);
             }
@@ -122,25 +126,25 @@ const rmodynamics = () => {
             avgCommentCount = Number(t.avgCommentCount);
             avgMirrorCount = Number(t.avgMirrorCount);
             avgCollectCount = Number(t.avgCollectCount);
-            if(t.date.includes('Monday')){
+            if (t.date.includes('Monday')) {
                 week = 0
             }
-            if(t.date.includes('Tuesday')){
+            if (t.date.includes('Tuesday')) {
                 week = 1
             }
-            if(t.date.includes('Wednesday')){
+            if (t.date.includes('Wednesday')) {
                 week = 2
             }
-            if(t.date.includes('Thursday')){
+            if (t.date.includes('Thursday')) {
                 week = 3
             }
-            if(t.date.includes('Friday')){
+            if (t.date.includes('Friday')) {
                 week = 4
             }
-            if(t.date.includes('Saturday')){
+            if (t.date.includes('Saturday')) {
                 week = 5
             }
-            if(t.date.includes('Sunday')){
+            if (t.date.includes('Sunday')) {
                 week = 6
             }
             if (activeTab === 0) {
@@ -172,8 +176,8 @@ const rmodynamics = () => {
             }
             rem[week][Number(t.date.split('_')[1])] = [avgPostCount || 0, avgCommentCount, avgMirrorCount, avgCollectCount, 0, avgPubCount || 0, ''];
         })
-        console.log('rem',rem)
-        console.log('totalAmount',totalAmount)
+        console.log('rem', rem)
+        console.log('totalAmount', totalAmount)
         setRemodyBaseData(rem)
         setTotalAmount(totalAmount)
         setLoading(false);
@@ -203,7 +207,8 @@ const rmodynamics = () => {
             commentCount: 0,
             mirrorCount: 0,
             collectCount: 0,
-            collectFee: 0
+            collectFee: 0,
+            pubCount: 0
         }
         let weekOfDay = parseInt(moment().format('E'));//计算今天是这周第几天
         let rem: any = [[], [], [], [], [], [], []]
@@ -232,6 +237,9 @@ const rmodynamics = () => {
             if (activeTab === 0) {
                 totalAmount.postCount += t.postCount;
             }
+            if (activeTab === 1) {
+                totalAmount.pubCount += t.pubCount;
+            }
             totalAmount.commentCount += t.commentCount;
             totalAmount.mirrorCount += t.mirrorCount;
             totalAmount.collectCount += t.collectCount;
@@ -253,9 +261,9 @@ const rmodynamics = () => {
                 maxRemoData[4] = Number(t.collectFee)
             }
             if (week == 0) {
-                rem[6][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), timePeriod];
+                rem[6][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), t.pubCount, timePeriod];
             } else {
-                rem[week - 1][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), timePeriod];
+                rem[week - 1][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), t.pubCount, timePeriod];
             }
         })
         console.log('rem', rem)
@@ -280,30 +288,22 @@ const rmodynamics = () => {
         setRemodyBaseData(rem)
     }
 
-    const onChange = (e: any, i: number) => {
+    const onCheckChange = (i: number) => {
+        let target = !checked[i]
         if (i === 4 || i === 5) {
-            let preChecked = [false, false, false, false, false,false]
-            preChecked[i] = e.target.checked
+            let preChecked = [false, false, false, false, false, false]
+            preChecked[i] = target
             setChecked(preChecked);
-        }else{
+        } else {
             setChecked((prev: any) => {
-                prev[i] = e.target.checked;
-                if (e.target.checked) {
+                prev[i] = target;
+                if (target) {
                     prev[4] = false;
                     prev[5] = false;
                 }
                 return [...prev];
-            }); 
+            });
         }
-        // if (i !== 4) {
-        //     setChecked((prev: any) => {
-        //         prev[i] = e.target.checked;
-        //         if (e.target.checked) {
-        //             prev[4] = false;
-        //         }
-        //         return [...prev];
-        //     });
-        // }
     };
 
     const putActiveItems = (e: any) => {
@@ -360,6 +360,8 @@ const rmodynamics = () => {
                 totalMount += e[i]
             }
         })
+        console.log('maxMount', maxMount)
+        console.log('totalMount', totalMount)
         if (totalMount === 0) return 'bg-[#232323]'
         let lv = maxMount / 5;
         if (lv === 0) {
@@ -409,7 +411,7 @@ const rmodynamics = () => {
                         )
                     }
                     {
-                        e === 'noData' && checked[5] && weekCount === 0 && activeTab === 1  && (
+                        e === 'noData' && checked[5] && activeTab === 1 && (
                             <div>Publications ：0</div>
                         )
                     }
@@ -462,14 +464,18 @@ const rmodynamics = () => {
             </div>
         )
     };
-    
-    const getMount = (mount:number) => {
-        if(weekCount == 0){
-            return new BN((mount / 168).toFixed(2)).toFormat()
-        }else{
-            return new BN(mount).toFormat()
-        }
+
+    const getMount = (mount: number) => {
+        return new BN((mount).toFixed(2)).toFormat()
     }
+
+    // const onCheckChange = (i: number) => {
+    //     let target = !checked[i]
+    //     setChecked((prev: any) => {
+    //         prev[i] = target;
+    //         return [...prev];
+    //     });
+    // };
 
     return (
         <div className="text-[#fff] mb-10">
@@ -563,7 +569,7 @@ const rmodynamics = () => {
                                     {
                                         weekCount !== 0 ? (
                                             <span className="text-[14px]">{week[0]}-{week[1]}</span>
-                                        ):(
+                                        ) : (
                                             <span className="text-[14px]">Average of Last 28 Days</span>
                                         )
                                     }
@@ -576,51 +582,119 @@ const rmodynamics = () => {
                         <div className="h-[fit-content] w-full">
                             {
                                 activeTab == 0 &&
-                                <div className="flex mb-2">
-                                    <div>
-                                        <Checkbox onChange={(e: any) => onChange(e, 0)} checked={checked[0]}>
-                                            <span className="text-[#fff] text-[16px]">Posts {weekCount === 0 ? '(Avg)' : ''}</span>
-                                        </Checkbox>
+                                // <div className="flex mb-2">
+                                //     <div>
+                                //         <Checkbox onChange={(e: any) => onChange(e, 0)} checked={checked[0]}>
+                                //             <span className="text-[#fff] text-[16px]">Posts {weekCount === 0 ? '(Avg)' : ''}</span>
+                                //         </Checkbox>
+                                //     </div>
+                                //     <div className="ml-[auto]">{(totalAmount && (totalAmount.postCount || totalAmount.postCount === 0)) ? getMount(totalAmount.postCount) : '-'}</div>
+
+                                // </div>
+
+                                <div className="flex items-center cursor-pointer text-[16px] mb-2" onClick={() => onCheckChange(0)}>
+                                    <div className={`${checked[0] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
+                                        <Image
+                                            className="h-[fit-content] w-[16px] h-[16px]"
+                                            src={Post}
+                                            alt=""
+                                        />
                                     </div>
+                                    
+                                    <div>Posts {weekCount === 0 ? '(Avg)' : ''}</div>
                                     <div className="ml-[auto]">{(totalAmount && (totalAmount.postCount || totalAmount.postCount === 0)) ? getMount(totalAmount.postCount) : '-'}</div>
                                 </div>
+
                             }
                             {
-                                activeTab == 1 && weekCount == 0 &&
-                                <div className="flex mb-2">
-                                    <div>
-                                        <Checkbox onChange={(e: any) => onChange(e, 5)} checked={checked[5]}>
-                                            <span className="text-[#fff] text-[16px]">Publications</span>
-                                        </Checkbox>
+                                activeTab == 1 &&
+                                // <div className="flex mb-2">
+                                //     <div>
+                                //         <Checkbox onChange={(e: any) => onChange(e, 5)} checked={checked[5]}>
+                                //             <span className="text-[#fff] text-[16px]">Publications</span>
+                                //         </Checkbox>
+                                //     </div>
+                                //     <div className="ml-[auto]">{(totalAmount && (totalAmount.pubCount || totalAmount.pubCount === 0)) ? getMount(totalAmount.pubCount) : '-'}</div>
+                                // </div>
+
+                                <div className="flex items-center cursor-pointer text-[16px] mb-2" onClick={() => onCheckChange(5)}>
+                                    <div className={`${checked[5] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
+                                        <Image
+                                            className="h-[fit-content] w-[16px] h-[16px]"
+                                            src={Post}
+                                            alt=""
+                                        />
                                     </div>
+                                    
+                                    <div>Publications</div>
                                     <div className="ml-[auto]">{(totalAmount && (totalAmount.pubCount || totalAmount.pubCount === 0)) ? getMount(totalAmount.pubCount) : '-'}</div>
                                 </div>
                             }
-                            <div className="flex mb-2">
+                            {/* <div className="flex mb-2">
                                 <div>
                                     <Checkbox onChange={(e: any) => onChange(e, 1)} checked={checked[1]}>
                                         <span className="text-[#fff] text-[16px]">Comments{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}</span>
                                     </Checkbox>
                                 </div>
                                 <div className="ml-[auto]">{(totalAmount && (totalAmount.commentCount || totalAmount.commentCount === 0)) ? getMount(totalAmount.commentCount) : '-'}</div>
+                            </div> */}
+                            <div className="flex items-center cursor-pointer text-[16px] mb-2" onClick={() => onCheckChange(1)}>
+                                <div className={`${checked[1] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
+                                    <Image
+                                        className="h-[fit-content] w-[16px] h-[16px]"
+                                        src={Comment}
+                                        alt=""
+                                    />
+                                </div>
+                                
+                                <div>Comments {activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}</div>
+                                <div className="ml-[auto]">{(totalAmount && (totalAmount.commentCount || totalAmount.commentCount === 0)) ? getMount(totalAmount.commentCount) : '-'}</div>
                             </div>
-                            <div className="flex mb-2">
+
+                            {/* <div className="flex mb-2">
                                 <div>
                                     <Checkbox onChange={(e: any) => onChange(e, 2)} checked={checked[2]}>
                                         <span className="text-[#fff] text-[16px]">Mirrors{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}</span>
                                     </Checkbox>
                                 </div>
                                 <div className="ml-[auto]">{(totalAmount && (totalAmount.mirrorCount || totalAmount.mirrorCount === 0)) ? getMount(totalAmount.mirrorCount) : '-'}</div>
+                            </div> */}
+
+                            <div className="flex items-center cursor-pointer text-[16px] mb-2" onClick={() => onCheckChange(2)}>
+                                <div className={`${checked[2] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
+                                    <Image
+                                        className="h-[fit-content] w-[16px] h-[16px]"
+                                        src={Mirror}
+                                        alt=""
+                                    />
+                                </div>
+                                <div>Mirrors {activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}</div>
+                                <div className="ml-[auto]">{(totalAmount && (totalAmount.mirrorCount || totalAmount.mirrorCount === 0)) ? getMount(totalAmount.mirrorCount) : '-'}</div>
                             </div>
-                            <div className="flex mb-2">
+
+                            {/* <div className="flex mb-2">
                                 <div>
                                     <Checkbox onChange={(e: any) => onChange(e, 3)} checked={checked[3]}>
                                         <span className="text-[#fff] text-[16px]">Collections{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}</span>
                                     </Checkbox>
                                 </div>
                                 <div className="ml-[auto]">{(totalAmount && (totalAmount.collectCount || totalAmount.collectCount === 0)) ? getMount(totalAmount.collectCount) : '-'}</div>
+                            </div> */}
+
+                            <div className="flex items-center cursor-pointer text-[16px] mb-2" onClick={() => onCheckChange(3)}>
+                                <div className={`${checked[3] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
+                                    <Image
+                                        className="h-[fit-content] w-[16px] h-[16px]"
+                                        src={Collect}
+                                        alt=""
+                                    />
+                                </div>
+                                
+                                <div>Collections {activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}</div>
+                                <div className="ml-[auto]">{(totalAmount && (totalAmount.collectCount || totalAmount.collectCount === 0)) ? getMount(totalAmount.collectCount) : '-'}</div>
                             </div>
-                            <div className="flex">
+
+                            {/* <div className="flex">
                                 <div>
                                     <Checkbox onChange={(e: any) => onChange(e, 4)} checked={checked[4]}>
                                         <span className="text-[#fff] text-[16px]">Volume{weekCount === 0 ? '(Avg)' : ''}</span>
@@ -634,9 +708,27 @@ const rmodynamics = () => {
                                     /><span>{(totalAmount && (totalAmount.collectFee || totalAmount.collectFee === 0)) ? Number(totalAmount.collectFee).toFixed(2) : '-'}
                                     </span>
                                 </div>
+                            </div> */}
+
+                            <div className="flex items-center cursor-pointer text-[16px] mb-2" onClick={() => onCheckChange(4)}>
+                                <div className={`${checked[4] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
+                                    <Image
+                                        className="h-[fit-content] w-[16px] h-[16px]"
+                                        src={Post}
+                                        alt=""
+                                    />
+                                </div>
+                                <div>Volume {weekCount === 0 ? '(Avg)' : ''}</div>
+                                <div className="ml-[auto] flex items-centeer">
+                                    <Image
+                                        className="mr-1 h-5 w-5 mr-2"
+                                        src={IconVolume}
+                                        alt=""
+                                    /><span>{(totalAmount && (totalAmount.collectFee || totalAmount.collectFee === 0)) ? Number(totalAmount.collectFee).toFixed(2) : '-'}
+                                    </span>
+                                </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

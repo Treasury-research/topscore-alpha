@@ -28,9 +28,6 @@ const imgSelectUrl = [IconSelect1, IconSelect2, IconSelect3, IconSelect4, IconSe
 
 const imgNoSelectUrl = [IconNoSelect1, IconNoSelect2, IconNoSelect3, IconNoSelect4, IconNoSelect5]
 
-const knn3Address = '0x09c85610154a276a71eb8a887e73c16072029b20'
-const knn3ProfileId = 101548
-
 const Navbar = () => {
 
     const { account } = useWeb3Context();
@@ -45,7 +42,7 @@ const Navbar = () => {
         console.log('address', item)
         if (item === 'Profile') {
             // router.push(`/${item.toLocaleLowerCase()}/${currentProfile.address ? currentProfile.address : knn3Address}`)
-            router.push(`/${item.toLocaleLowerCase()}/v2`)
+            router.push(`/${item.toLocaleLowerCase()}/${currentProfile.handle ? currentProfile.handle.split('.')[0] : 'stani'}`)
         }else {
             router.push(`/${item.toLocaleLowerCase()}`)
         }

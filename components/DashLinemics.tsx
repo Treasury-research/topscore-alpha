@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import api from "../api";
 import EngageLine from './EngageLine'
 import PubCard from './PubCard'
-import { currentProfileState } from "../store/state";
+import { currentProfileState,topRecentState } from "../store/state";
 import { useRecoilState } from "recoil";
 import moment from 'moment'
 
@@ -54,7 +54,7 @@ const rmodynamics = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const [topRecentSwitch, setTopRecentSwitch] = useState(false)
+    const [topRecentSwitch, setTopRecentSwitch] = useRecoilState<any>(topRecentState);
 
     const [currentProfile] = useRecoilState<any>(currentProfileState);
 

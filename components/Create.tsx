@@ -14,19 +14,20 @@ import useErc721Contract from "../contract/useErc721Contract";
 import config from "../config";
 import { LoadingOutlined, CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import useWeb3Context from "../hooks/useWeb3Context";
-import { currentProfileState, profileListState } from "../store/state";
+import { currentProfileState, profileListState, loadingProfileListState } from "../store/state";
 import DonutChart from '../components/profile/DonutChart'
-
 const Create = () => {
     const [scores, setScores] = useState<any>({});
     const [loadingScores, setLoadingScores] = useState<boolean>(false);
     const [currentProfile] = useRecoilState<any>(currentProfileState);
     const [profileList,] = useRecoilState(profileListState);
     const { account, connectWallet } = useWeb3Context();
-    const [loadingNftBalance, setLoadingNftBalance] = useState(true)
     const [rate, setRate] = useState<any>({})
     const [nftList, setNftList] = useState<any>([]);
     const erc721Contract = useErc721Contract();
+    const [loadingProfileList, setLoadingProfileList] = useRecoilState(
+        loadingProfileListState
+      );
     // get this from global store
 
     const getScores = async () => {
@@ -54,35 +55,16 @@ const Create = () => {
         }
     }
 
-    const getAllNfts = async () => {
-        setLoadingNftBalance(true)
-        const res = await erc721Contract.getAll(config.contracts.nft);
-        // check if claimed
-        const res2: any = await api.get("/v1/nft/query_ids", {
-            params: {
-                ids: res.join(','),
-            },
-        })
-        if (res2 && res2.data && res2.data.length > 0) {
-            setNftList(res2);
-        }
-        setLoadingNftBalance(false);
-    }
-
     useEffect(() => {
-        if (!account) {
-            return;
-        }
-        getAllNfts();
-    }, [account]);
-
-    useEffect(() => {
-        if (currentProfile && currentProfile.profileId) {
+        if (currentProfile && currentProfile.profileId && !loadingProfileList) {
             getScores();
             getRating();
         }
     }, [currentProfile]);
 
+    if(loadingProfileList){
+        return (<></>)
+    }
     return (
         <>
             <div className="absolute top-[20px] text-[24px]"></div>

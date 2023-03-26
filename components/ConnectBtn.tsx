@@ -12,7 +12,8 @@ import {
   profileListState,
   knn3TokenValidState,
   isHaveNftState,
-  isHaveLensNftState
+  isHaveLensNftState,
+  loadingProfileListState
 } from "../store/state";
 import useWeb3Context from "../hooks/useWeb3Context";
 import { Popover, Dropdown, Space, Menu, Drawer, Input } from "antd";
@@ -98,11 +99,15 @@ const ConnectBtn = (props: any) => {
   const [inputValue, setInputValue] = useState<any>('');
 
   const [isHaveNft, setIsHaveNft] = useRecoilState<any>(isHaveNftState);
-  
+
   // const [werNftStatus, setOwerNftStatus] =
   // useRecoilState<any>(ownerNftState);
 
   const [isHaveLensHandle, setIsHaveLensHandle] = useRecoilState<any>(isHaveLensNftState);
+
+  const [loadingProfileList, setLoadingProfileList] = useRecoilState(
+    loadingProfileListState
+  );
 
   const [showPermission, setShowPermission] = useState<boolean>(false);
 
@@ -112,29 +117,42 @@ const ConnectBtn = (props: any) => {
   });
 
   useEffect(() => {
-    console.log(props)
-    if (!account) {
+    console.log('2323',account)
+    if (!account || !knn3TokenValid) {
+      setInputValue('')
+      setIsHaveNft(false)
+      setIsHaveLensHandle(false)
+      setCurrentProfile({
+        ...initHandle
+      })
+      setProfileList([]);
       return;
     }
-    setCurrentLoginProfile({
-      address: "",
-      handle: "",
-      imageURI: "",
-      metadata: "",
-      profileId: "",
-    })
     getLensHandle();
     getAllNfts()
   }, [account, knn3TokenValid]);
 
-  useEffect(() => {
-    if (!knn3TokenValid) {
-      return;
-    }
-    // if (router.pathname === "/profile/[address]") {
-    //   goProfile();
-    // }
-  }, [profileList, knn3TokenValid]);
+  // useEffect(() => {
+  //   setCurrentLoginProfile({})
+  //   if (!account || profileList.length == 0) {
+  //     setCurrentProfile({
+  //       ...initHandle
+  //     })
+  //   } else {
+  //     if(profileList && profileList.length > 0){
+  //       setCurrentProfile(profileList[0])
+  //     }
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   if (!knn3TokenValid) {
+  //     return;
+  //   }
+  //   // if (router.pathname === "/profile/[address]") {
+  //   //   goProfile();
+  //   // }
+  // }, [profileList, knn3TokenValid]);
 
   useEffect(() => {
     if (!currentLoginProfile.handle) {
@@ -179,17 +197,25 @@ const ConnectBtn = (props: any) => {
   };
 
   const getLensHandle = async () => {
+    setLoadingProfileList(true);
     const res: any = await api.get(`/lens/handles/${account}`);
-    setProfileList(res.data);
-    if (res.data.length > 0) {
-      setIsHaveLensHandle(true)
-      if (props.type === 1) {
-        setCurrentProfile(res.data[0])
+    debugger
+    if (res && res.data) {
+      setProfileList(res.data);
+      if (res.data.length > 0) {
+        setIsHaveLensHandle(true)
+        if(props.type === 2){
+          setCurrentProfile(res.data[0])
+        }
+        setCurrentLoginProfile(res.data[0])
+      } else {
+        setCurrentProfile({
+          ...initHandle
+        })
+        setIsHaveLensHandle(false)
       }
-      setCurrentLoginProfile(res.data[0])
-    } else {
-      setIsHaveLensHandle(false)
     }
+    setLoadingProfileList(false);
   }
 
   const handleShowModal = (show: boolean, i: number) => {
@@ -303,7 +329,11 @@ const ConnectBtn = (props: any) => {
 
   const goHome = () => {
     if (props.type === 1) {
-      setCurrentProfile(profileList[0])
+      if (isHaveLensHandle) {
+        setCurrentProfile(profileList[0])
+      } else {
+        showLensMsg()
+      }
     }
     if (props.type === 2) {
       if (isHaveNft && isHaveLensHandle) {
@@ -330,7 +360,7 @@ const ConnectBtn = (props: any) => {
   const switchMyProfile = (item: any) => {
     if (props.type === 2 && (isHaveLensHandle && !isHaveNft)) {
       showLensMsg()
-    }else{
+    } else {
       setCurrentProfile(item);
       setOpenLensDrop(false)
     }
@@ -464,7 +494,7 @@ const ConnectBtn = (props: any) => {
           </Dropdown>
         </div>
         {
-          ((account && profileList.length > 0 && props.type === 1) || (account && props.type === 2)) &&
+          account &&
           <div className="flex items-center justify-center bg-[#272727] rounded-[4px] h-8 w-8 cursor-pointer" onClick={() => goHome()}>
             <Image
               className="w-[18px] h-[18px]"
@@ -554,7 +584,7 @@ const ConnectBtn = (props: any) => {
             </>
           )
         )}
-        {(!knn3TokenValid || !account) && (
+        {(!knn3TokenValid || !account) && !loadingProfileList && (
           <button
             onClick={determineLoginModal}
             className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]"
