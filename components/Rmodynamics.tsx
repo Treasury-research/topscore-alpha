@@ -11,7 +11,7 @@ import Comment from '../statics/img/pubIcon/commentBig.svg'
 import Post from '../statics/img/post_icon.svg'
 import Collect from '../statics/img/collect-line.svg'
 import Volume from '../statics/img/volume-head.svg'
-import ImgPublitions from "../statics/img/profileV2/publitions.svg"
+import ImgPublitions from "../statics/img/profileV2/remo-publication.svg"
 
 import moment from 'moment'
 
@@ -624,9 +624,9 @@ const rmodynamics = () => {
                                 // </div>
 
                                 <div className="flex items-center cursor-pointer text-[14px] mb-2" onClick={() => onCheckChange(5)}>
-                                    <div className={`${checked[5] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
+                                    <div className={`${checked[5] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px] w-[16px] h-[16px] flex items-center justify-center`}>
                                         <Image
-                                            className="h-[fit-content] w-[16px] h-[16px]"
+                                            className="h-[fit-content] w-[14px] h-[14px]"
                                             src={ImgPublitions}
                                             alt=""
                                         />
