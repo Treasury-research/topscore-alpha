@@ -16,12 +16,7 @@ const nextConfig = {
         source: '/profile',
         destination: '/profile/stani',
         permanent: true,
-      },
-      {
-        source: '/nft',
-        destination: '/nft/0x09c85610154a276a71eb8a887e73c16072029b20?profileId=101548',
-        permanent: true,
-      },
+      }
     ]
   }
 }

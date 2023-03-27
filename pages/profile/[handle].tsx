@@ -430,7 +430,10 @@ const profile = () => {
                               />
                             </button>
                           }
-                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" onClick={() => copyToClipboard(`${window.location.origin}${window.location.pathname}?handle=${currentProfile.handle}`)}>
+                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" 
+                          onClick={() => 
+                          copyToClipboard(`${window.location.origin}/profile/${currentProfile.handle ? currentProfile.handle.split('.')[0] : 'stani'}`)
+                          }>
                             <Image
                               src={ImgCopy}
                               alt=""

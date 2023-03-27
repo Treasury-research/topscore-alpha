@@ -362,8 +362,6 @@ const rmodynamics = () => {
                 totalMount += e[i]
             }
         })
-        console.log('maxMount', maxMount)
-        console.log('totalMount', totalMount)
         if (totalMount === 0) return 'bg-[#232323]'
         let lv = maxMount / 5;
         if (lv === 0) {
@@ -383,12 +381,18 @@ const rmodynamics = () => {
     }
 
     const getContent = (e: any, i: number, idx) => {
+        console.log(e)
         if (!e || !checked.includes(true)) return ''
-        let strDate = e[5].toString();
+        let strDate = '';
+        // if(activeTab === 0){
+        //     strDate = e[6].toString();
+        // }
         let noStrDate = '';
         if (e === 'noData') {
             let current_hs = Number(moment(`2023/${week[0]}`).format("x"))
             noStrDate = moment(current_hs + i * 24 * 60 * 60 * 1000).format(`YYYY/MM/DD`)
+        }else if(e && e[6]){
+            strDate = e[6].toString();
         }
         let h = idx < 12 ? `${idx}AM` : `${idx}PM`
         return (
@@ -396,7 +400,7 @@ const rmodynamics = () => {
                 {
                     e !== 'noData' &&
                     <p className="text-[18px] font-[600]">
-                        {e[5] ? `${strDate.slice(0, 4)}/${strDate.slice(4, 6)}/${strDate.slice(6, 8)} ${h}` : `${dys[i]}  ${h}`}
+                        {e[6] ? `${strDate.slice(0, 4)}/${strDate.slice(4, 6)}/${strDate.slice(6, 8)} ${h}` : `${dys[i]}  ${h}`}
                     </p>
                 }
                 {
@@ -408,7 +412,7 @@ const rmodynamics = () => {
                 {/* <p>Count：{totalMount.toFixed(2)}</p> */}
                 <div>
                     {
-                        e === 'noData' && checked[0] && (
+                        e === 'noData' && checked[0] && activeTab === 0 && (
                             <div>Posts {activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：0</div>
                         )
                     }
