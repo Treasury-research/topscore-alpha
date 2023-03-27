@@ -101,19 +101,18 @@ const DashRmodynamics = () => {
         }
     }, [checkedPub])
 
-    // 判断日期属于这一周or上一周
     const judgeDatetoWeek = (dateStr: any) => {
-        let weekOfDay = parseInt(moment().format('E'));//计算今天是这周第几天
-        let current_monday = new Date(moment().startOf('day').subtract(weekOfDay - 1, 'days').toDate()).getTime();//本周周一日期毫秒
-        let current_sunday = new Date(moment().startOf('day').subtract(weekOfDay - 7, 'days').toDate()).getTime();//本周周日日期毫秒
-        let last_monday = new Date(moment().startOf('day').subtract(weekOfDay + 6, 'days').toDate()).getTime();//上周周一日期毫秒
-        let last_sunday = new Date(moment().startOf('day').subtract(weekOfDay, 'days').toDate()).getTime();//上周周日日期毫秒
+        let weekOfDay = parseInt(moment().format('E'));
+        let current_monday = new Date(moment().startOf('day').subtract(weekOfDay - 1, 'days').toDate()).getTime();
+        let current_sunday = new Date(moment().startOf('day').subtract(weekOfDay - 7, 'days').toDate()).getTime();
+        let last_monday = new Date(moment().startOf('day').subtract(weekOfDay + 6, 'days').toDate()).getTime();
+        let last_sunday = new Date(moment().startOf('day').subtract(weekOfDay, 'days').toDate()).getTime();
         let dateStrHs = new Date(dateStr).getTime()
 
         if (current_monday < dateStrHs && dateStrHs < current_sunday) {
-            return 1 // 日期属于当前周
+            return 1 
         } else if (last_monday < dateStrHs && dateStrHs < last_sunday) {
-            return 2 // 日期属于上一周
+            return 2 
         } else {
             return 3
         }

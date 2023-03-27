@@ -541,12 +541,12 @@ const ConnectBtn = (props: any) => {
                       {shortenAddr(account)}
                     </div>
                     <div>
-                      {/* <div
+                      <div
                         onClick={() => handleShowModal(true, 2)}
                         className="cursor-pointer my-[10px] flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]"
                       >
                         Switch Profile
-                      </div> */}
+                      </div>
                       <div
                         onClick={handleLogout}
                         className="cursor-pointer flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]"

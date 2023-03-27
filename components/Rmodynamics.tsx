@@ -591,14 +591,14 @@ const rmodynamics = () => {
                                 // <div className="flex mb-2">
                                 //     <div>
                                 //         <Checkbox onChange={(e: any) => onChange(e, 0)} checked={checked[0]}>
-                                //             <span className="text-[#fff] text-[16px]">Posts {weekCount === 0 ? '(Avg)' : ''}</span>
+                                //             <span className="text-[#fff] text-[14px]">Posts {weekCount === 0 ? '(Avg)' : ''}</span>
                                 //         </Checkbox>
                                 //     </div>
                                 //     <div className="ml-[auto]">{(totalAmount && (totalAmount.postCount || totalAmount.postCount === 0)) ? getMount(totalAmount.postCount) : '-'}</div>
 
                                 // </div>
 
-                                <div className="flex items-center cursor-pointer text-[16px] mb-2" onClick={() => onCheckChange(0)}>
+                                <div className="flex items-center cursor-pointer text-[14px] mb-2" onClick={() => onCheckChange(0)}>
                                     <div className={`${checked[0] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
                                         <Image
                                             className="h-[fit-content] w-[16px] h-[16px]"
@@ -617,13 +617,13 @@ const rmodynamics = () => {
                                 // <div className="flex mb-2">
                                 //     <div>
                                 //         <Checkbox onChange={(e: any) => onChange(e, 5)} checked={checked[5]}>
-                                //             <span className="text-[#fff] text-[16px]">Publications</span>
+                                //             <span className="text-[#fff] text-[14px]">Publications</span>
                                 //         </Checkbox>
                                 //     </div>
                                 //     <div className="ml-[auto]">{(totalAmount && (totalAmount.pubCount || totalAmount.pubCount === 0)) ? getMount(totalAmount.pubCount) : '-'}</div>
                                 // </div>
 
-                                <div className="flex items-center cursor-pointer text-[16px] mb-2" onClick={() => onCheckChange(5)}>
+                                <div className="flex items-center cursor-pointer text-[14px] mb-2" onClick={() => onCheckChange(5)}>
                                     <div className={`${checked[5] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
                                         <Image
                                             className="h-[fit-content] w-[16px] h-[16px]"
@@ -639,12 +639,12 @@ const rmodynamics = () => {
                             {/* <div className="flex mb-2">
                                 <div>
                                     <Checkbox onChange={(e: any) => onChange(e, 1)} checked={checked[1]}>
-                                        <span className="text-[#fff] text-[16px]">Comments{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}</span>
+                                        <span className="text-[#fff] text-[14px]">Comments{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}</span>
                                     </Checkbox>
                                 </div>
                                 <div className="ml-[auto]">{(totalAmount && (totalAmount.commentCount || totalAmount.commentCount === 0)) ? getMount(totalAmount.commentCount) : '-'}</div>
                             </div> */}
-                            <div className="flex items-center cursor-pointer text-[16px] mb-2" onClick={() => onCheckChange(1)}>
+                            <div className="flex items-center cursor-pointer text-[14px] mb-2" onClick={() => onCheckChange(1)}>
                                 <div className={`${checked[1] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
                                     <Image
                                         className="h-[fit-content] w-[16px] h-[16px]"
@@ -660,13 +660,13 @@ const rmodynamics = () => {
                             {/* <div className="flex mb-2">
                                 <div>
                                     <Checkbox onChange={(e: any) => onChange(e, 2)} checked={checked[2]}>
-                                        <span className="text-[#fff] text-[16px]">Mirrors{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}</span>
+                                        <span className="text-[#fff] text-[14px]">Mirrors{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}</span>
                                     </Checkbox>
                                 </div>
                                 <div className="ml-[auto]">{(totalAmount && (totalAmount.mirrorCount || totalAmount.mirrorCount === 0)) ? getMount(totalAmount.mirrorCount) : '-'}</div>
                             </div> */}
 
-                            <div className="flex items-center cursor-pointer text-[16px] mb-2" onClick={() => onCheckChange(2)}>
+                            <div className="flex items-center cursor-pointer text-[14px] mb-2" onClick={() => onCheckChange(2)}>
                                 <div className={`${checked[2] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
                                     <Image
                                         className="h-[fit-content] w-[16px] h-[16px]"
@@ -681,13 +681,13 @@ const rmodynamics = () => {
                             {/* <div className="flex mb-2">
                                 <div>
                                     <Checkbox onChange={(e: any) => onChange(e, 3)} checked={checked[3]}>
-                                        <span className="text-[#fff] text-[16px]">Collections{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}</span>
+                                        <span className="text-[#fff] text-[14px]">Collections{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}</span>
                                     </Checkbox>
                                 </div>
                                 <div className="ml-[auto]">{(totalAmount && (totalAmount.collectCount || totalAmount.collectCount === 0)) ? getMount(totalAmount.collectCount) : '-'}</div>
                             </div> */}
 
-                            <div className="flex items-center cursor-pointer text-[16px] mb-2" onClick={() => onCheckChange(3)}>
+                            <div className="flex items-center cursor-pointer text-[14px] mb-2" onClick={() => onCheckChange(3)}>
                                 <div className={`${checked[3] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
                                     <Image
                                         className="h-[fit-content] w-[16px] h-[16px]"
@@ -703,7 +703,7 @@ const rmodynamics = () => {
                             {/* <div className="flex">
                                 <div>
                                     <Checkbox onChange={(e: any) => onChange(e, 4)} checked={checked[4]}>
-                                        <span className="text-[#fff] text-[16px]">Volume{weekCount === 0 ? '(Avg)' : ''}</span>
+                                        <span className="text-[#fff] text-[14px]">Volume{weekCount === 0 ? '(Avg)' : ''}</span>
                                     </Checkbox>
                                 </div>
                                 <div className="ml-[auto] flex items-center">
@@ -716,7 +716,7 @@ const rmodynamics = () => {
                                 </div>
                             </div> */}
 
-                            <div className="flex items-center cursor-pointer text-[16px] mb-2" onClick={() => onCheckChange(4)}>
+                            <div className="flex items-center cursor-pointer text-[14px] mb-2" onClick={() => onCheckChange(4)}>
                                 <div className={`${checked[4] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
                                     <Image
                                         className="h-[fit-content] w-[16px] h-[16px]"
