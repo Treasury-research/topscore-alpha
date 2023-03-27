@@ -7,6 +7,8 @@ import useErc721Contract from "../../contract/useErc721Contract";
 import useFeeFollowContract from "../../contract/useFeeFollowContract";
 import lensApi from "../../lib/lensApi";
 import ImgFollow from "../../statics/img/profileV2/follow.svg"
+import ImgUnFollow from "../../statics/img/profileV2/preson-unfollow.svg"
+
 import Image from "next/image";
 
 export default function Lens({ profileId, handle }: any) {
@@ -94,7 +96,10 @@ export default function Lens({ profileId, handle }: any) {
       alt=""
     />
   ) : (
-    // <div className="bg-[#4D0F00] px-4 py-2">Following</div>
-    <></>
+    <Image
+      src={ImgUnFollow}
+      onClick={doUnfollow}
+      alt=""
+    />
   );
 }

@@ -79,9 +79,9 @@ const rmodynamics = () => {
         const mdy = dayjs(new Date().getTime() - ((activeTab1 + 1) * 7) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
         const ndy = dayjs(new Date()).format('YYYYMMDD') // 当前日期
         if (activeTab === 0) {
-            const res: any = await api.get(`/lens/publicationStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}&category=5&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
-            const res1: any = await api.get(`/lens/followStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}`);
-            const res2: any = await api.get(`/lens/publicationStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}&category=6&type=Post,Comment`);
+            const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=5&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
+            const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
+            const res2: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=6&type=Post,Comment`);
             if (!res || !res.data || !res1 || !res1.data || !res2 || !res2.data) {
                 setLoading(false);
                 return false;
@@ -92,8 +92,8 @@ const rmodynamics = () => {
         } else if (activeTab === 1) {
             // const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
             // const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
-            const res: any = await api.get(`/lens/publicationStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
-            const res1: any = await api.get(`/lens/followStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}`);
+            const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
+            const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
             if (!res || !res.data || !res1 || !res1.data) {
                 setLoading(false);
                 return false;
@@ -103,8 +103,8 @@ const rmodynamics = () => {
         } else if (activeTab === 2) {
             // const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 1 : 2}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
             // const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
-            const res: any = await api.get(`/lens/collectStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 1 : 2}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
-            const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${`20230101`}&end=${`20230301`}&profileId=${currentProfile.profileId}`);
+            const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 1 : 2}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
+            const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
             if (!res || !res.data || !res1 || !res1.data) {
                 setLoading(false);
                 return false;
@@ -131,7 +131,7 @@ const rmodynamics = () => {
         }
         setLoading(false);
         // setDates(enumerateDaysBetweenDates(mdy, ndy))
-        setDates(enumerateDaysBetweenDates(`20230101`, `20230301`))
+        setDates(enumerateDaysBetweenDates(mdy, ndy))
     }
 
     useEffect(() => {

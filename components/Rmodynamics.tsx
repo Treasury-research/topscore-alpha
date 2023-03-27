@@ -10,6 +10,8 @@ import Mirror from '../statics/img/mirror_1.svg'
 import Comment from '../statics/img/pubIcon/commentBig.svg'
 import Post from '../statics/img/post_icon.svg'
 import Collect from '../statics/img/collect-line.svg'
+import Volume from '../statics/img/volume-head.svg'
+import ImgPublitions from "../statics/img/profileV2/publitions.svg"
 
 import moment from 'moment'
 
@@ -621,7 +623,7 @@ const rmodynamics = () => {
                                     <div className={`${checked[5] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
                                         <Image
                                             className="h-[fit-content] w-[16px] h-[16px]"
-                                            src={Post}
+                                            src={ImgPublitions}
                                             alt=""
                                         />
                                     </div>
@@ -714,7 +716,7 @@ const rmodynamics = () => {
                                 <div className={`${checked[4] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
                                     <Image
                                         className="h-[fit-content] w-[16px] h-[16px]"
-                                        src={Post}
+                                        src={Volume}
                                         alt=""
                                     />
                                 </div>

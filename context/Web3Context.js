@@ -19,6 +19,8 @@ const actionMapping = [
   "Transaction Failed",
 ];
 
+const errorMsg = `Metamask plugin not found or not active. Please check your browser's plugin list.`
+
 export const Web3Context = createContext({
   web3: null,
   signer: null,
@@ -60,6 +62,9 @@ export const Web3ContextProvider = ({ children }) => {
     useRecoilState(currentLoginProfileState);
 
   const listenProvider = () => {
+    if (!window.ethereum) {
+      return
+    }
     window.ethereum.on("close", () => {
       resetWallet();
     });
@@ -87,6 +92,10 @@ export const Web3ContextProvider = ({ children }) => {
   };
 
   const connectWallet = useCallback(async (walletName) => {
+    if (!window.ethereum) {
+      toast.info(errorMsg)
+      return
+    }
     try {
 
       let web3Raw = null;
@@ -142,7 +151,7 @@ export const Web3ContextProvider = ({ children }) => {
   }, [web3Modal]);
 
   useEffect(() => {
-    if (chainId !== config.chainId) {
+    if (chainId !== config.chainId && window.ethereum) {
       switchChain(config.chainId)
     }
   }, [chainId])

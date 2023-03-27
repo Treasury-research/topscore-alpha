@@ -43,7 +43,7 @@ const PubCard = (props: any) => {
     const ndy = dayjs(new Date()).format('YYYYMMDD')
     if (activeLineTab == 0) {
       if (!topRecentSwitch) {
-        const res: any = await api.get(`/lens/publicationStsByDay?start=${20230101}&end=${20230301}&profileId=${currentProfile.profileId}&category=4&type=${'Post,Comment'}`);
+        const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=4&type=${'Post,Comment'}`);
         if (!res || !res.data) {
           resData = []
           setPubData([])
@@ -51,7 +51,7 @@ const PubCard = (props: any) => {
         }
         resData = res.data;
       } else {
-        const res: any = await api.get(`/lens/collectStsByDay?start=${20230101}&end=${20230301}&profileId=${currentProfile.profileId}&category=1&type=${'Post,Comment'}&isFee=${''}`);
+        const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=1&type=${'Post,Comment'}&isFee=${''}`);
         if (!res || !res.data) {
           resData = []
           setPubData([])
@@ -61,7 +61,7 @@ const PubCard = (props: any) => {
       }
     }
     if (activeLineTab == 1) {
-      const res: any = await api.get(`/lens/publicationStsByDay?start=${20230101}&end=${20230301}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${'Post,Comment'}`);
+      const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${'Post,Comment'}`);
       if (!res || !res.data) {
         resData = []
         setPubData([])
@@ -70,7 +70,7 @@ const PubCard = (props: any) => {
       resData = res.data;
     }
     if (activeLineTab == 2) {
-      const res: any = await api.get(`/lens/collectStsByDay?start=${20230101}&end=${20230301}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 1 : 2}&type=${'Post,Comment'}&isFee=${''}`);
+      const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 1 : 2}&type=${'Post,Comment'}&isFee=${''}`);
       if (!res || !res.data) {
         resData = []
         setPubData([])
