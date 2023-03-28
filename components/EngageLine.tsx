@@ -23,7 +23,7 @@ const ChartLine = (props: any) => {
 
   const getSeriesData = (s: any, i: number) => {
     let seriesObj: any = {
-      name: `${s[i]['pubId'] === 0 ? 'Others' : `Pub#${s[i]['pubId']}`}`,
+      name: `${s[i]['pubId'] === 0 ? 'Others' : type === 2 ? `#${s[i]['pubId']}` : `Pub#${s[i]['pubId']}`}`,
       type: 'line',
       stack: 'Total',
       yAxisIndex: 0,
@@ -123,7 +123,7 @@ const ChartLine = (props: any) => {
       if (lineData.length == 0) return;
       const s = lineData[lineData.length - 1];
       for (let i = 0; i < s.length; i++) {
-        legendData.push(`${s[i]['pubId'] === 0 ? 'Others' : `Pub#${s[i]['pubId']}`}`)
+        legendData.push(`${s[i]['pubId'] === 0 ? 'Others' : type === 2 ? `#${s[i]['pubId']}` : `Pub#${s[i]['pubId']}`}`)
         seriesData.push(getSeriesData(s, i))
       }
     } else {
@@ -306,7 +306,7 @@ const ChartLine = (props: any) => {
                   </div>` : ``}
                   
                   <div class="engage-content">${htmlCon}</div>
-                  <div>${htmlDate}<div>
+                  <div class="dash-line-date">${htmlDate}<div>
                 </div>
               `
           } else if (type == 1) {
@@ -321,7 +321,7 @@ const ChartLine = (props: any) => {
                     
                   </div>
                   <div class="engage-content">${htmlCon}</div>
-                  <div>${htmlDate}<div>
+                  <div class="dash-line-date">${htmlDate}<div>
                 </div>
               `
           } else if (type == 2) {
@@ -336,7 +336,7 @@ const ChartLine = (props: any) => {
                   </div>
                 </div>
                 <div class="engage-content">${htmlCon}</div>
-                <div>${htmlDate}<div>
+                <div class="dash-line-date">${htmlDate}<div>
               </div>
             `
           }

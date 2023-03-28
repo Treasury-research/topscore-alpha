@@ -349,7 +349,7 @@ const profile = () => {
               <div className="mx-auto mt-16 w-[722px]">
                 <div className="h-[512px] mb-4 profile-bg1 flex" id="aphoto">
                   <div className="w-1/2 h-full">
-                    <div className="flex gap-8">
+                    <div className="flex gap-8"> 
                       <div className="relative">
                         {
                           currentProfile.imageURI ? (
@@ -392,20 +392,20 @@ const profile = () => {
                               />
                             </div>
                           </button>
-                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
-                            <div className="h-[18px] w-[18px] rounded-[50%] bg-[#8247E5] flex items-center justify-center" onClick={() => window.open(`https://lenster.xyz/u/${currentProfile.handle}`, '_blank')}>
+                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[28px] w-[28px] rounded-[50%]">
+                            <div className="h-[22px] w-[22px] rounded-[50%] bg-[#8247E5] flex items-center justify-center" onClick={() => window.open(`https://lenster.xyz/u/${currentProfile.handle}`, '_blank')}>
                               <Image
                                 src={ImgLenster}
-                                className="h-[12px] w-[12px] object-cover"
+                                className="h-[14px] w-[14px] object-cover"
                                 alt=""
                               />
                             </div>
                           </button>
-                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
-                            <div className="h-[18px] w-[18px] rounded-[50%] bg-[#2081E2] flex items-center justify-center" onClick={() => window.open(`https://opensea.io/assets/matic/0xdb46d1dc155634fbc732f92e853b10b288ad5a1d/${currentProfile.profileId}`, '_blank')}>
+                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[28px] w-[28px] rounded-[50%]">
+                            <div className="h-[22px] w-[22px] rounded-[50%] bg-[#2081E2] flex items-center justify-center" onClick={() => window.open(`https://opensea.io/assets/matic/0xdb46d1dc155634fbc732f92e853b10b288ad5a1d/${currentProfile.profileId}`, '_blank')}>
                               <Image
                                 src={ImgOpensea}
-                                className="h-[12px] w-[12px] object-cover"
+                                className="h-[14px] w-[14px] object-cover"
                                 alt=""
                               />
                             </div>
@@ -448,13 +448,13 @@ const profile = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="text-[14px] text-gray pl-8 mt-3 mb-3 h-[80px] overflow-y-auto flex items-center">
-                      <p>{introduce}</p>
+                    <div className="text-[14px] text-gray pl-8 mt-3 mb-3 h-[80px] overflow-y-auto">
+                      <p className="mt-3">{introduce}</p>
                     </div>
                     <div className="flex items-center w-full flex-wrap justify-between pl-8">
                       {
                         currentIndicators.map((t: any, i: number) => (
-                          <div key={i} className={`w-[calc(50%-10px)] mr-[10px] mb-[10px] h-[40px] flex items-center gap-2 ${getBgStyle(i)} rounded-[10px]`}>
+                          <div key={i} className={`w-[calc(50%-10px)] mr-[10px] mb-[10px] pl-[8px] h-[40px] flex items-center gap-2 ${getBgStyle(i)} rounded-[10px]`}>
                             <Image
                               src={t.imgUrl}
                               className="w-[24px] h-[24px]"
@@ -485,16 +485,16 @@ const profile = () => {
                 </div>
                 {
                   nftList.length > 0 &&
-                  <div className="w-[fit-content] h-[fit-content] px-4 py-2 nft-bg mb-2">NFT</div>
+                  <div className="w-[fit-content] h-[fit-content] px-4 py-2 nft-bg text-[18px] font-[600]">NFT</div>
                 }
-                <div className="h-[200px] relative profile-nft" onMouseEnter={() => setShowNftBtn(true)} onMouseLeave={() => setShowNftBtn(false)}>
+                <div className="h-[260px] w-[722px] relative profile-nft mb-16" onMouseEnter={() => setShowNftBtn(true)} onMouseLeave={() => setShowNftBtn(false)}>
                   <Carousel dotPosition={'bottom'} ref={carouselRef}>
                     {
                       nftList.map((t: any, i: number) => (
                         <div key={i}>
                           <div className="flex items-center justify-left gap-10">
                             {t.map((item: any, index: number) =>
-                              <div className="hover:-translate-y-1 transition-all relative" key={index}>
+                              <div className={`hover:scale-110 transition-all relative ${index === 0 ? 'ml-[20px]' : index === 3 ? 'mr-[20px]' : ''}`} key={index}>
                                 <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item.id}.png`} className="cursor-pointer w-[150px] h-[160px] rounded-tl-[12px] rounded-tr-[12px]"
                                   onMouseEnter={() => setActiveHoverIndex(`${i}${index}`)}
                                 />
@@ -535,10 +535,10 @@ const profile = () => {
                   {
                     showNftBtn && nftTotal > 4 &&
                     <>
-                      <button className="h-12 w-12 rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-0 translate-x-[-24px] translate-y-[-50%] hover:opacity-80" onClick={() => carouselRef.current?.prev()}>
+                      <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[20px] translate-x-[-24px] translate-y-[-50%]" onClick={() => carouselRef.current?.prev()}>
                         <LeftOutlined className="text-[18px] text-[700]" />
                       </button>
-                      <button className="h-12 w-12 rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-0 translate-x-[24px] translate-y-[-50%] hover:opacity-80" onClick={() => carouselRef.current?.next()}>
+                      <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[20px] translate-x-[24px] translate-y-[-50%]" onClick={() => carouselRef.current?.next()}>
                         <RightOutlined className="text-[18px] text-[700]" />
                       </button>
                     </>

@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import api from "../api";
 import EngageLine from './EngageLine'
 import PubCard from './PubCard'
-import { currentProfileState,topRecentState } from "../store/state";
+import { currentProfileState,topRecentState,postSwitchState } from "../store/state";
 import { useRecoilState } from "recoil";
 import moment from 'moment'
 
@@ -46,7 +46,7 @@ const rmodynamics = () => {
 
     const [mirrorSwitch, setMirrorSwitch] = useState(true)
 
-    const [postSwitch, setPostSwitch] = useState(false)
+    const [postSwitch, setPostSwitch] = useRecoilState<any>(postSwitchState);
 
     const [chargeSwitch, setChargeSwitch] = useState(false)
 
@@ -103,7 +103,7 @@ const rmodynamics = () => {
         } else if (activeTab === 2) {
             // const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 1 : 2}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
             // const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
-            const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 1 : 2}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
+            const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 2 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
             const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
             if (!res || !res.data || !res1 || !res1.data) {
                 setLoading(false);
@@ -132,6 +132,18 @@ const rmodynamics = () => {
         setLoading(false);
         // setDates(enumerateDaysBetweenDates(mdy, ndy))
         setDates(enumerateDaysBetweenDates(mdy, ndy))
+    }
+
+    const commentChange = (e) => {
+        if(e || (!e && mirrorSwitch)){
+            setCommentSwitch(e)
+        }
+    }
+
+    const mirrorChange = (e) => {
+        if(e || (!e && commentSwitch)){
+            setMirrorSwitch(e)
+        }
     }
 
     useEffect(() => {
@@ -229,6 +241,10 @@ const rmodynamics = () => {
         }
     }, [activeTab, chargeSwitch, activeTab1, currentProfile, postSwitch, topRecentSwitch])
 
+    useEffect(() => {
+        setTopRecentSwitch(false)
+    }, [activeTab])
+
     return (
         <>
             <div className="text-[#fff] bg-[#1A1A1A] p-5 my-10 rounded-[10px]">
@@ -242,7 +258,7 @@ const rmodynamics = () => {
                             )
                         }
                     </div>
-                    <div className="ml-[auto] h-12 bg-[rgb(41,41,41)] flex items-center justify-center pl-2">
+                    <div className="ml-[auto] h-12 bg-[rgb(41,41,41)] flex items-center justify-center pl-2 rounded-[4px]">
                         {
                             tabs1.map((t: any, i: number) =>
                                 <div key={i} onClick={() => setActiveTab1(i)} className={`h-8 mr-2 flex items-center justify-center w-[60px] rounded-[4px] cursor-pointer ${activeTab1 == i ? 'bg-[#fff] text-[#000]' : ''}`}>{t}</div>
@@ -266,11 +282,11 @@ const rmodynamics = () => {
                         <div className="ml-[auto] flex">
                             <div className="flex items-center justify-center mr-4">
                                 <span className="mr-2">Comments (by)</span>
-                                <Switch defaultChecked onChange={setCommentSwitch} checked={commentSwitch} size="small" />
+                                <Switch defaultChecked onChange={(e) => commentChange(e)} checked={commentSwitch} size="small" />
                             </div>
                             <div className="flex items-center justify-center">
                                 <span className="mr-2">Mirrors (by)</span>
-                                <Switch defaultChecked onChange={setMirrorSwitch} checked={mirrorSwitch} size="small" />
+                                <Switch defaultChecked onChange={(e) => mirrorChange(e)} checked={mirrorSwitch} size="small" />
                             </div>
                         </div>
                     }

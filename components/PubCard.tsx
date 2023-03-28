@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import api from "../api";
 import Image from 'next/image'
-import { topRecentState } from "../store/state";
+import { postSwitchState } from "../store/state";
 import { LoadingOutlined } from '@ant-design/icons';
 import { ethers } from 'ethers'
 import { currentProfileState } from "../store/state";
@@ -23,15 +23,16 @@ const PubCard = (props: any) => {
   const [loading, setLoading] = useState(false);
   const [currentProfile] = useRecoilState<any>(currentProfileState);
   const [tabs, setTabs] = useState<any>(tab[0]);
+  const [postSwitch, setPostSwitch] = useRecoilState<any>(postSwitchState);
   // const [activeTab, setActiveTab] = useState<any>(0);
-  const [topRecentSwitch, setTopRecentSwitch] = useRecoilState<any>(topRecentState);
+  const [topRecentSwitch, setTopRecentSwitch] = useState(false);
 
   useEffect(() => {
     if (currentProfile.profileId) {
       setLoading(true)
       getBaseLineData()
     }
-  }, [activeLineTab, topRecentSwitch, currentProfile])
+  }, [activeLineTab, topRecentSwitch, currentProfile,postSwitch])
 
   useEffect(() => {
     setTabs(tab[activeLineTab])
@@ -43,7 +44,7 @@ const PubCard = (props: any) => {
     const ndy = dayjs(new Date()).format('YYYYMMDD')
     if (activeLineTab == 0) {
       if (!topRecentSwitch) {
-        const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=4&type=${'Post,Comment'}`);
+        const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=4&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
         if (!res || !res.data) {
           resData = []
           setPubData([])
@@ -51,7 +52,7 @@ const PubCard = (props: any) => {
         }
         resData = res.data;
       } else {
-        const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=1&type=${'Post,Comment'}&isFee=${''}`);
+        const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=1&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${''}`);
         if (!res || !res.data) {
           resData = []
           setPubData([])
@@ -61,7 +62,7 @@ const PubCard = (props: any) => {
       }
     }
     if (activeLineTab == 1) {
-      const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${'Post,Comment'}`);
+      const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
       if (!res || !res.data) {
         resData = []
         setPubData([])
@@ -70,7 +71,7 @@ const PubCard = (props: any) => {
       resData = res.data;
     }
     if (activeLineTab == 2) {
-      const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 1 : 2}&type=${'Post,Comment'}&isFee=${''}`);
+      const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 2 : 1}&type=${'Post,Comment'}&isFee=${''}`);
       if (!res || !res.data) {
         resData = []
         setPubData([])
@@ -97,8 +98,16 @@ const PubCard = (props: any) => {
   const getPubs = async (ids: any) => {
     const res = await api.get(`/lens/pubByLatest?profileId=${currentProfile.profileId}&pubIds=${ids.join(',')}`);
     setLoading(false)
-    if (res && res.data) {
-      setPubData(res.data)
+    if (res && res.data && res.data.length > 0) {
+      let pub = []
+      ids.forEach(t => {
+        res.data.forEach(tem => {
+          if(t == tem.pubId){
+            pub.push(tem)
+          }
+        });
+      });
+      setPubData(pub)
     }else{
       setPubData([])
     }
@@ -138,7 +147,7 @@ const PubCard = (props: any) => {
                   pubData.map((t: any, i: number) => (
                     <div className='bg-[#1A1A1A] rounded-[10px] mb-[10px] py-3 flex mb-4' key={i}>
                       <div className="flex w-[60%]">
-                        <div className='w-[100px] flex items-center justify-center'>#{t.pubId}</div>
+                        <div className='w-[100px] flex items-center justify-center cursor-pointer' onClick={() => toLesnter(t)}>#{t.pubId}</div>
                         <div className='w-[calc(100%-100px)] text-[14px]'>
                           {t.content}
                         </div>

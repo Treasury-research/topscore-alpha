@@ -127,7 +127,7 @@ const getContent = (props: any) => {
                 </div>
                 {
                     text &&
-                    <div className=" mt-3 h-[24px] leading-[20px] px-2 text-[12px] radius-btn-shadow rounded-[20px] cursor-pointer hover:opacity-70">{text}</div>
+                    <div className=" mt-5 h-[24px] leading-[20px] px-2 text-[12px] radius-btn-shadow rounded-[20px] cursor-pointer hover:opacity-70">{text}</div>
                 }
             </div>
         </div>

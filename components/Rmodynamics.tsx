@@ -12,6 +12,7 @@ import Post from '../statics/img/post_icon.svg'
 import Collect from '../statics/img/collect-line.svg'
 import Volume from '../statics/img/volume-head.svg'
 import ImgPublitions from "../statics/img/profileV2/remo-publication.svg"
+import Imgcommentsby from '../statics/img/commentsby.svg'
 
 import moment from 'moment'
 
@@ -83,6 +84,10 @@ const rmodynamics = () => {
         const fmt = 'YYYYMMDDHH'
         return moment.utc(date, fmt).local().format(fmt)
     }
+
+    // const getHourUtcByNum = (num) => {
+
+    // }
 
     const getGlobalAvgHeatmapData = async () => {
         setLoading(true);
@@ -176,6 +181,7 @@ const rmodynamics = () => {
             if (avgCollectCount > maxRemoData[3]) {
                 maxRemoData[3] = avgCollectCount
             }
+            // const toUtcHour = getHourUtcByNum(Number(t.date.split('_')[1]))
             rem[week][Number(t.date.split('_')[1])] = [avgPostCount || 0, avgCommentCount, avgMirrorCount, avgCollectCount, 0, avgPubCount || 0, ''];
         })
         console.log('rem', rem)
@@ -436,11 +442,11 @@ const rmodynamics = () => {
                             <div>Collections {activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：0</div>
                         )
                     }
-                    {
+                    {/* {
                         e === 'noData' && checked[4] && (
                             <div>Volume {weekCount === 0 ? '(Avg)' : ''}：0.00</div>
                         )
-                    }
+                    } */}
 
                     {
                         checked[0] && activeTab === 0 && e !== 'noData' &&
@@ -452,20 +458,20 @@ const rmodynamics = () => {
                     }
                     {
                         checked[1] && e !== 'noData' &&
-                        <div>Comments{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：{e[1]}</div>
+                        <div>Comments {activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：{e[1]}</div>
                     }
                     {
                         checked[2] && e !== 'noData' &&
-                        <div>Mirrors{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：{e[2]}</div>
+                        <div>Mirrors {activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：{e[2]}</div>
                     }
                     {
                         checked[3] && e !== 'noData' &&
-                        <div>Collections{activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：{e[3]}</div>
+                        <div>Collections {activeTab == 1 ? '(by)' : ''} {weekCount === 0 ? '(Avg)' : ''}：{e[3]}</div>
                     }
-                    {
+                    {/* {
                         checked[4] && e !== 'noData' &&
                         <div>Volume {weekCount === 0 ? '(Avg)' : ''}：{e[4].toFixed(2)}</div>
-                    }
+                    } */}
                 </div>
             </div>
         )
@@ -598,7 +604,7 @@ const rmodynamics = () => {
 
                                 // </div>
 
-                                <div className="flex items-center cursor-pointer text-[14px] mb-2" onClick={() => onCheckChange(0)}>
+                                <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(0)}>
                                     <div className={`${checked[0] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
                                         <Image
                                             className="h-[fit-content] w-[16px] h-[16px]"
@@ -623,7 +629,7 @@ const rmodynamics = () => {
                                 //     <div className="ml-[auto]">{(totalAmount && (totalAmount.pubCount || totalAmount.pubCount === 0)) ? getMount(totalAmount.pubCount) : '-'}</div>
                                 // </div>
 
-                                <div className="flex items-center cursor-pointer text-[14px] mb-2" onClick={() => onCheckChange(5)}>
+                                <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(5)}>
                                     <div className={`${checked[5] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px] w-[16px] h-[16px] flex items-center justify-center`}>
                                         <Image
                                             className="h-[fit-content] w-[14px] h-[14px]"
@@ -644,11 +650,11 @@ const rmodynamics = () => {
                                 </div>
                                 <div className="ml-[auto]">{(totalAmount && (totalAmount.commentCount || totalAmount.commentCount === 0)) ? getMount(totalAmount.commentCount) : '-'}</div>
                             </div> */}
-                            <div className="flex items-center cursor-pointer text-[14px] mb-2" onClick={() => onCheckChange(1)}>
+                            <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(1)}>
                                 <div className={`${checked[1] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
                                     <Image
                                         className="h-[fit-content] w-[16px] h-[16px]"
-                                        src={Comment}
+                                        src={activeTab == 0 ? Comment : Imgcommentsby}
                                         alt=""
                                     />
                                 </div>
@@ -666,7 +672,7 @@ const rmodynamics = () => {
                                 <div className="ml-[auto]">{(totalAmount && (totalAmount.mirrorCount || totalAmount.mirrorCount === 0)) ? getMount(totalAmount.mirrorCount) : '-'}</div>
                             </div> */}
 
-                            <div className="flex items-center cursor-pointer text-[14px] mb-2" onClick={() => onCheckChange(2)}>
+                            <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(2)}>
                                 <div className={`${checked[2] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
                                     <Image
                                         className="h-[fit-content] w-[16px] h-[16px]"
@@ -687,7 +693,7 @@ const rmodynamics = () => {
                                 <div className="ml-[auto]">{(totalAmount && (totalAmount.collectCount || totalAmount.collectCount === 0)) ? getMount(totalAmount.collectCount) : '-'}</div>
                             </div> */}
 
-                            <div className="flex items-center cursor-pointer text-[14px] mb-2" onClick={() => onCheckChange(3)}>
+                            <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(3)}>
                                 <div className={`${checked[3] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
                                     <Image
                                         className="h-[fit-content] w-[16px] h-[16px]"
@@ -716,7 +722,7 @@ const rmodynamics = () => {
                                 </div>
                             </div> */}
 
-                            <div className="flex items-center cursor-pointer text-[14px] mb-2" onClick={() => onCheckChange(4)}>
+                            {/* <div className="flex items-center cursor-pointer text-[14px]" onClick={() => onCheckChange(4)}>
                                 <div className={`${checked[4] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
                                     <Image
                                         className="h-[fit-content] w-[16px] h-[16px]"
@@ -733,7 +739,7 @@ const rmodynamics = () => {
                                     /><span>{(totalAmount && (totalAmount.collectFee || totalAmount.collectFee === 0)) ? Number(totalAmount.collectFee).toFixed(2) : '-'}
                                     </span>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

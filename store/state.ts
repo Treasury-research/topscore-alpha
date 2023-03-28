@@ -69,3 +69,8 @@ export const topRecentState = atom({
   default: false
 });
 
+export const postSwitchState = atom({
+  key: "postSwitch",
+  default: false
+});
+

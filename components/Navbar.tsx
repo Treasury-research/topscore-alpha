@@ -61,7 +61,7 @@ const Navbar = () => {
             </div>
             {
                 headerTabs.map((t: string, i: number) => (
-                    <div key={i} className={`${router.pathname.includes(t.toLocaleLowerCase()) ? 'bg-[rgb(46,35,28)] text-[rgba(255,255,255,0.9)]' : 'text-[rgba(255,255,255,0.5)]'} text-[#fff] h-14 flex items-center cursor-pointer hover:bg-[rgb(46,35,28)] w-[160px]`} onClick={() => setActiveTab(i)}>
+                    <div key={i} className={`${router.pathname.includes(t.toLocaleLowerCase()) ? 'bg-[#272727] text-[rgba(255,255,255,0.9)]' : 'text-[rgba(255,255,255,0.5)]'} text-[#fff] h-12 flex items-center cursor-pointer hover:bg-[#272727] w-[160px] rounded-[6px] mb-4`} onClick={() => setActiveTab(i)}>
                         {
                             t === 'Creation' || t === 'Profile' || t === 'NFT' ? (
                                 <div className="w-full h-full flex items-center" onClick={() => getAddress(t)}>

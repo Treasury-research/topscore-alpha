@@ -302,7 +302,7 @@
 }
 
 .ant-drawer-content-wrapper {
-  width: 260px !important;
+  width: 280px !important;
   height: 600px;
   top: 200px !important;
 }
@@ -363,7 +363,7 @@
   justify-content: left;
   align-items: center;
   padding-bottom: 10px;
-  border-bottom: 2px solid rgba(255, 255, 255, .1);
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
 }
 
 .engage-head-left {
@@ -435,7 +435,7 @@
 }
 
 .overview-border-b{
-  border-bottom: 1px solid rgba(255, 255, 255,0.6);
+  border-bottom: 1px solid rgba(255, 255, 255,0.1);
   padding-bottom: 10px;
 }
 .overflow-items-head-pubName{
@@ -880,7 +880,7 @@
 }
 
 .slick-track {
-  height: 300px !important;
+  height: 240px !important;
 }
 
 .creat-up-icon svg {
@@ -958,20 +958,30 @@
   animation: all 0.8s linear 0s;
 }
 
+.profile-nft{
+  width: 760px;
+  margin-left: -20px;
+}
+
 .profile-nft div{
   // height: fit-content !important;
   .slick-dots{
     display: none !important;
   }
   .slick-list{
-    height: 200px !important;
+    height: 280px !important;
   }
   .slick-slider{
-    height: 200px !important;
+    height: 280px !important;
   }
   .ant-carousel{
-    height: 200px !important;
+    height: 280px !important;
   }
+}
+
+.slick-slide{
+  display: flex !important;
+  align-items: center !important;
 }
 
 .creation-bg{
@@ -981,6 +991,10 @@
 
 .nft-bg{
   background: linear-gradient(to right,#1A1A1A,#000);
+}
+
+.dash-line-date{
+  margin-top: 14px;
 }
 
 // .profile-fixed{

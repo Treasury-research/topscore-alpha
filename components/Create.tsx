@@ -72,7 +72,7 @@ const Create = () => {
                 <div className="flex mb-10 mt-[60px]">
                     {loadingScores ? <LoadingOutlined className="text-2xl block mx-auto my-4" /> : <>
                         <div className="w-[360px] h-[164px] px-4 creation-bg text-[#fff] mr-10 rounded-[10px]">
-                            <div className="mb-2 text-[18px]">Creation</div>
+                            <div className="mb-2 text-[19px]">Creation</div>
                             <div className="flex justify-between gap-5 h-[120px]">
                                 <div className="w-[60%]">
                                     <div className="text-[24px] mt-2"><span className="text-[14px] text-[rgba(255,255,255,0.4)]">Rank</span> #{JSON.stringify(scores) !== '{}' && scores.now ? scores.now.pr_rank_creator : '-'}</div>
@@ -113,7 +113,7 @@ const Create = () => {
                             </div>
                         </div>
                         <div className="w-[360px] h-[164px] px-4 creation-bg text-[#fff] mr-10 rounded-[10px]">
-                            <div className="mb-2 text-[18px]">Engagement</div>
+                            <div className="mb-2 text-[19px]">Engagement</div>
                             <div className="flex justify-between gap-5 h-[120px]">
                                 <div className="w-[60%]">
                                     <div className="text-[24px] mt-2"><span className="text-[14px] text-[rgba(255,255,255,0.4)]">Rank</span> #{JSON.stringify(scores) !== '{}' && scores.now ? scores.now.pr_rank_engager : '-'}</div>
@@ -156,7 +156,7 @@ const Create = () => {
                         </div>
 
                         <div className="w-[360px] h-[164px] px-4 creation-bg text-[#fff] mr-10 rounded-[10px]">
-                            <div className="mb-2 text-[18px]">Campaign</div>
+                            <div className="mb-2 text-[19px]">Campaign</div>
                             <div className="flex justify-between gap-5 h-[120px]">
                                 <div className="w-[60%]">
                                     <div className="text-[24px] mt-2"><span className="text-[14px] text-[rgba(255,255,255,0.4)]">Rank</span> #{JSON.stringify(scores) !== '{}' && scores.now ? scores.now.pr_rank_compaign : '-'}</div>

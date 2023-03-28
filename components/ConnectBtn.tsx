@@ -75,7 +75,7 @@ let timer = null;
 
 const ConnectBtn = (props: any) => {
   const router = useRouter();
-  const { account, chainId, doLogout } = useWeb3Context();
+  const { account, chainId, doLogout, doLogin, connectWallet } = useWeb3Context();
   const [knn3TokenValid, setKnn3TokenValid] =
     useRecoilState(knn3TokenValidState);
   const [imageURI, setImageURI] = useState("");
@@ -99,6 +99,8 @@ const ConnectBtn = (props: any) => {
   const [inputValue, setInputValue] = useState<any>('');
 
   const [isHaveNft, setIsHaveNft] = useRecoilState<any>(isHaveNftState);
+
+  const [loadingNft, setLoadingNft] = useState<any>(true);
 
   // const [werNftStatus, setOwerNftStatus] =
   // useRecoilState<any>(ownerNftState);
@@ -161,7 +163,9 @@ const ConnectBtn = (props: any) => {
   }, [currentLoginProfile.handle]);
 
   const getAllNfts = async () => {
+    setLoadingNft(true)
     const res = (await api.get(`/lens/tokenIds/${account}`));
+    setLoadingNft(false)
     if (res && res.data && res.data.length > 0) {
       setIsHaveNft(true)
     } else {
@@ -198,12 +202,11 @@ const ConnectBtn = (props: any) => {
   const getLensHandle = async () => {
     setLoadingProfileList(true);
     const res: any = await api.get(`/lens/handles/${account}`);
-    debugger
     if (res && res.data) {
       setProfileList(res.data);
       if (res.data.length > 0) {
         setIsHaveLensHandle(true)
-        if(props.type === 2){
+        if (props.type === 2) {
           setCurrentProfile(res.data[0])
         }
         setCurrentLoginProfile(res.data[0])
@@ -348,10 +351,8 @@ const ConnectBtn = (props: any) => {
   const toSearchPermission = () => {
     console.log(props.type)
     if (props.type === 2) {
-      if ((isHaveLensHandle && !isHaveNft) || (!isHaveNft && !isHaveLensHandle)) {
+      if (!isHaveNft) {
         showCampNftMsg()
-      } else if (!isHaveLensHandle && isHaveNft) {
-        setCurrentProfile(profileList[0])
       }
     }
   }
@@ -365,6 +366,20 @@ const ConnectBtn = (props: any) => {
     }
   }
 
+  useEffect(() => {
+    if (account && !isHaveNft && knn3TokenValid && !loadingNft && props.type === 2) {
+      showCampNftMsg()
+    }
+  }, [loadingNft]);
+
+  const connectOrLogin = () => {
+    if (account) {
+      doLogin()
+    } else {
+      connectWallet()
+    }
+  }
+
   return (
     <div className="w-full h-10 flex gap-3 items-center">
       <div className="h-8 flex gap-2 items-center">
@@ -375,8 +390,18 @@ const ConnectBtn = (props: any) => {
             onOpenChange={(e: any) => setOpenLensDrop(e)}
             overlay={
               <Menu className="lens-switch-component">
-                <div className="py-1 w-[90%] mx-[5%] text-[#fff]">
-                  <Input className="connect-component-input" placeholder="Search" allowClear onClick={() => { toSearchPermission() }} onChange={(e) => searchInputChange(e)} value={inputValue} />
+                <div className={`py-1 mx-[5%] text-[#fff] ${props.type == 2 && !knn3TokenValid ? 'w-[200px]' : 'w-[90%]'}`}>
+                  {
+                    ((props.type == 2 && knn3TokenValid && account) || props.type === 1) &&
+                    <Input className="connect-component-input" placeholder="Search" allowClear onClick={() => { toSearchPermission() }} onChange={(e) => searchInputChange(e)} value={inputValue} />
+                  }
+                  {
+                    props.type == 2 && !knn3TokenValid &&
+                    <div className="w-[90%] text-center py-1 bg-[#fff] rounded-[4px] text-[#000] text-[14px] font-[600] cursor-pointer" onClick={() => connectOrLogin()}>
+                      {account ? 'Log in' : 'Connect'} to view more
+                    </div>
+                  }
+
                   {
                     !searchLoading && !inputValue &&
                     <>
@@ -405,7 +430,7 @@ const ConnectBtn = (props: any) => {
                           </div>
                         ))
                       }
-                      <p className="text-xl my-3">Recommened</p>
+                      <p className="text-xl my-3">Recommend</p>
                       {
                         comments.map((t: any, i: number) => (
                           <div className="flex text-[16px] items-center gap-1 mb-2 hover:opacity-70 cursor-pointer" key={i} onClick={() => { setCurrentProfile(t); setOpenLensDrop(false) }}>
@@ -493,7 +518,7 @@ const ConnectBtn = (props: any) => {
           </Dropdown>
         </div>
         {
-          account &&
+          account && knn3TokenValid &&
           <div className="flex items-center justify-center bg-[#272727] rounded-[4px] h-8 w-8 cursor-pointer" onClick={() => goHome()}>
             <Image
               className="w-[18px] h-[18px]"
@@ -511,6 +536,8 @@ const ConnectBtn = (props: any) => {
           ></PermissionMsg>
         }
       </div>
+
+
       <div className="h-full ml-auto">
         {account && chainId && config.chainId !== chainId ? (
           <button
@@ -583,7 +610,7 @@ const ConnectBtn = (props: any) => {
             </>
           )
         )}
-        {(!knn3TokenValid || !account) && !loadingProfileList && (
+        {!knn3TokenValid && (
           <button
             onClick={determineLoginModal}
             className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]"
