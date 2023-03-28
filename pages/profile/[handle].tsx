@@ -13,7 +13,7 @@ import Image from "next/image";
 import ImgCardHead from "../../statics/img/profileV2/card-head.svg";
 import ImgNamexp from "../../statics/img/profileV2/name-xp.svg";
 import ImgPolygonpath from "../../statics/img/profileV2/polygon-path.svg";
-import ImgLenster from "../../statics/img/profileV2/lenster.png";
+import ImgLenster from "../../statics/img/profileV2/lenster.svg";
 import ImgOpensea from "../../statics/img/profileV2/opensea.png"
 import ImgFollow from "../../statics/img/profileV2/follow.svg"
 import ImgEdit from "../../statics/img/profileV2/edit.svg"
@@ -405,7 +405,7 @@ const profile = () => {
                             <div className="h-[22px] w-[22px] rounded-[50%] bg-[#2081E2] flex items-center justify-center" onClick={() => window.open(`https://opensea.io/assets/matic/0xdb46d1dc155634fbc732f92e853b10b288ad5a1d/${currentProfile.profileId}`, '_blank')}>
                               <Image
                                 src={ImgOpensea}
-                                className="h-[14px] w-[14px] object-cover"
+                                className="h-[14px] w-[14px] object-cover ml-[1px]"
                                 alt=""
                               />
                             </div>

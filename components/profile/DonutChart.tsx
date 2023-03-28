@@ -120,7 +120,7 @@ const getContent = (props: any) => {
             <div className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
                 <div className="flex items-center justify-center">
                     <Image
-                        className="chartText-scale-animation"
+                        className={`chartText-scale-animation ${level == 1 ? 'ml-[4px]' : ''}`}
                         src={level || level === 0 ? donutConfig[level]['textImgUrl'] : ''}
                         alt=""
                     />

@@ -67,7 +67,7 @@ const noLensMsg = 'You need to hold Lens Handle, please go to Opensea to open it
 
 const noNftMsg = 'You need Campagin NFT, please go to Opensea settings, all our functions can be achieved.'
 
-const lensCollectionLink = 'https://opensea.io/zh-CN/collection/lens-protocol-profiles'
+const lensCollectionLink = 'https://opensea.io/collection/lens-protocol-profiles'
 
 const campignNftLink = 'https://opensea.io/collection/your-2022-wrapped-on-lens'
 

@@ -115,7 +115,7 @@ const rmodynamics = () => {
                 rem[i].push('noData')
             }
         }
-        maxRemoData = [0, 0, 0, 0, 0, 0]
+        maxRemoData = [0, 0, 0, 0, 0]
         setLoading(false);
         if (!res || !res.data) {
             setRemodyBaseData(rem)
@@ -169,7 +169,7 @@ const rmodynamics = () => {
             if ((activeTab === 0) && (avgPostCount > maxRemoData[0])) {
                 maxRemoData[0] = avgPostCount
             }
-            if ((activeTab === 1) && (avgPubCount > maxRemoData[0])) {
+            if ((activeTab === 1) && (avgPubCount > maxRemoData[4])) {
                 maxRemoData[4] = avgPubCount
             }
             if (avgCommentCount > maxRemoData[1]) {
@@ -182,11 +182,12 @@ const rmodynamics = () => {
                 maxRemoData[3] = avgCollectCount
             }
             // const toUtcHour = getHourUtcByNum(Number(t.date.split('_')[1]))
-            rem[week][Number(t.date.split('_')[1])] = [avgPostCount || 0, avgCommentCount, avgMirrorCount, avgCollectCount, 0, avgPubCount || 0, ''];
+            rem[week][Number(t.date.split('_')[1])] = [avgPostCount || 0, avgCommentCount, avgMirrorCount, avgCollectCount, avgPubCount || 0, ''];
         })
         console.log('rem', rem)
         console.log('totalAmount', totalAmount)
         setRemodyBaseData(rem)
+        console.log('maxRemoData',maxRemoData)
         setTotalAmount(totalAmount)
         setLoading(false);
     }
@@ -256,6 +257,9 @@ const rmodynamics = () => {
             if ((activeTab === 0) && (t.postCount > maxRemoData[0])) {
                 maxRemoData[0] = t.postCount
             }
+            if ((activeTab === 1) && (t.pubCount > maxRemoData[4])) {
+                maxRemoData[4] = t.pubCount
+            }
             if (t.commentCount > maxRemoData[1]) {
                 maxRemoData[1] = t.commentCount
             }
@@ -269,9 +273,9 @@ const rmodynamics = () => {
                 maxRemoData[4] = Number(t.collectFee)
             }
             if (week == 0) {
-                rem[6][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), t.pubCount, timePeriod];
+                rem[6][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount,  t.pubCount, timePeriod];
             } else {
-                rem[week - 1][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, Number(t.collectFee), t.pubCount, timePeriod];
+                rem[week - 1][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, t.pubCount, timePeriod];
             }
         })
         console.log('rem', rem)
@@ -307,7 +311,7 @@ const rmodynamics = () => {
                 prev[i] = target;
                 if (target) {
                     prev[4] = false;
-                    prev[5] = false;
+                    // prev[5] = false;
                 }
                 return [...prev];
             });
@@ -368,6 +372,7 @@ const rmodynamics = () => {
                 totalMount += e[i]
             }
         })
+        console.log(maxMount)
         if (totalMount === 0) return 'bg-[#232323]'
         let lv = maxMount / 5;
         if (lv === 0) {
@@ -423,7 +428,7 @@ const rmodynamics = () => {
                         )
                     }
                     {
-                        e === 'noData' && checked[5] && activeTab === 1 && (
+                        e === 'noData' && checked[4] && activeTab === 1 && (
                             <div>Publications ：0</div>
                         )
                     }
@@ -453,8 +458,8 @@ const rmodynamics = () => {
                         <div>Posts {weekCount === 0 ? '(Avg)' : ''}：{e[0]}</div>
                     }
                     {
-                        checked[5] && activeTab === 1 && e !== 'noData' && weekCount === 0 &&
-                        <div>Publications ：{e[5]}</div>
+                        checked[4] && activeTab === 1 && e !== 'noData' &&
+                        <div>Publications ：{e[4]}</div>
                     }
                     {
                         checked[1] && e !== 'noData' &&
@@ -629,8 +634,8 @@ const rmodynamics = () => {
                                 //     <div className="ml-[auto]">{(totalAmount && (totalAmount.pubCount || totalAmount.pubCount === 0)) ? getMount(totalAmount.pubCount) : '-'}</div>
                                 // </div>
 
-                                <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(5)}>
-                                    <div className={`${checked[5] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px] w-[16px] h-[16px] flex items-center justify-center`}>
+                                <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(4)}>
+                                    <div className={`${checked[4] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px] w-[16px] h-[16px] flex items-center justify-center`}>
                                         <Image
                                             className="h-[fit-content] w-[14px] h-[14px]"
                                             src={ImgPublitions}
