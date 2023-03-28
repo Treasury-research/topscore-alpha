@@ -1,6 +1,10 @@
 import { useEffect } from 'react';
 import * as echarts from 'echarts';
 
+const overLineColor = ['#009589', '#830000', '#001FB9']
+
+const overAreaColor = ['#A1C3BE', '#FF3300', '#3B5CFF']
+
 const lineColor = ['#FF33FF', '#001FB9', '#009589', '#C70011', '#007EB8', '#932D00', '#4400D0', '#9A0040', '#00DEA8', '#FFD891', '#830000']
 
 const areaColor = ['#FF33CC', '#3B5CFF', '#A1C3BE', '#F95D6A', '#003F5C', '#FF7C43', '#665191', '#D45087', '#4A8073', '#FFA600', '#FF3300']
@@ -143,10 +147,10 @@ const ChartLine = (props: any) => {
           },
           areaStyle: {
             opacity: 0.6,
-            color: areaColor[i]
+            color: overAreaColor[i]
           },
           itemStyle: {
-            color: lineColor[i]
+            color: overLineColor[i]
           },
           lineStyle: {
             width: 1
@@ -215,10 +219,10 @@ const ChartLine = (props: any) => {
               htmlCon += `<div class="overflow-items">
               <div class="overflow-items-head">
                 ${v.seriesIndex === 0 ?
-                  `<div class="engage-items-head-comment-icon" style="background-color: ${lineColor[i - idx]};"><div class="comment-icon"></div></div>` :
+                  `<div class="engage-items-head-comment-icon" style="background-color: ${overLineColor[i - idx]};"><div class="comment-icon"></div></div>` :
                   v.seriesIndex === 1 ?
-                    `<div class="engage-items-head-comment-icon" style="background-color: ${lineColor[i - idx]};"><div class="mirrors-icon"></div></div>` :
-                    `<div class="engage-items-head-comment-icon" style="background-color: ${lineColor[i - idx]};"><div class="collect-icon"></div></div>`}
+                    `<div class="engage-items-head-comment-icon" style="background-color: ${overLineColor[i - idx]};"><div class="mirrors-icon"></div></div>` :
+                    `<div class="engage-items-head-comment-icon" style="background-color: ${overLineColor[i - idx]};"><div class="collect-icon"></div></div>`}
                 <div class="overflow-items-head-pubName">${v.seriesName}</div>
               </div>
               <div class="overflow-items-content">
