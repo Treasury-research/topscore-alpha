@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Navbar from '../../components/Navbar'
-import { DownOutlined, CloseOutlined, LeftOutlined, RightOutlined, LoadingOutlined } from "@ant-design/icons";
-import { Dropdown, Space, Menu, Drawer, message, Popover, Carousel } from "antd";
-import BN from "bignumber.js";
+import { LeftOutlined, RightOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Carousel } from "antd";
 import { useRouter } from "next/router";
 import { formatIPFS } from "../../lib/tool";
 import useWeb3Context from "../../hooks/useWeb3Context";
@@ -10,12 +9,9 @@ import ConnectBtn from '../../components/ConnectBtn'
 import DonutChart from '../../components/profile/DonutChart'
 import Follow from '../../components/Follow'
 import Image from "next/image";
-import ImgCardHead from "../../statics/img/profileV2/card-head.svg";
-import ImgNamexp from "../../statics/img/profileV2/name-xp.svg";
 import ImgPolygonpath from "../../statics/img/profileV2/polygon-path.svg";
 import ImgLenster from "../../statics/img/profileV2/lenster.svg";
-import ImgOpensea from "../../statics/img/profileV2/opensea.png"
-import ImgFollow from "../../statics/img/profileV2/follow.svg"
+import ImgOpensea from "../../statics/img/profileV2/opensea.svg"
 import ImgEdit from "../../statics/img/profileV2/edit.svg"
 import ImgCopy from "../../statics/img/profileV2/copy.svg"
 import ImgDownLoad from "../../statics/img/profileV2/downLoad.svg"
@@ -31,11 +27,9 @@ import ImgCollections from "../../statics/img/profileV2/collections.svg"
 import ImgCollectedby from "../../statics/img/profileV2/collectedby.svg"
 import ImgLensterHead from "../../statics/img/lest-head.png";
 import ImgPremium from '../../statics/img/premium.gif'
-import ImgHuman from "../../statics/img/profileV2/human.svg"
 import api from "../../api";
 import lensApi from "../../api/lensApi";
-import html2canvas from 'html2canvas';
-import canvg from "canvg";
+import domtoimage from 'dom-to-image';
 
 import {
   currentProfileState,
@@ -312,16 +306,35 @@ const profile = () => {
   }
 
   const downLoadHtml2Img = () => {
-    html2canvas(document.getElementById('aphoto'), {
-      allowTaint: false,
-      useCORS: true,
-    }).then(canvas => {
-      const link = document.createElement('a');
-      const event = new MouseEvent('click');
-      link.download = `TopScore_${currentProfile.handle}.jpg`;
-      link.href = canvas.toDataURL();
-      link.dispatchEvent(event);
-    })
+    // html2canvas(document.getElementById('aphoto'), {
+    //   allowTaint: false,
+    //   useCORS: true,
+    // }).then(canvas => {
+    //   const link = document.createElement('a');
+    //   const event = new MouseEvent('click');
+    //   link.download = `TopScore_${currentProfile.handle}.jpg`;
+    //   link.href = canvas.toDataURL();
+    //   link.dispatchEvent(event);
+    // })
+
+    // domtoimage.toBlob(document.getElementById('aphoto'))
+    // .then(function (blob) {
+    //   console.log(blob)
+    //         const link = document.createElement('a');
+    //   const event = new MouseEvent('click');
+    //   link.download = `TopScore_${currentProfile.handle}.jpg`;
+    //   link.href = blob;
+    //   link.dispatchEvent(event);
+    // });
+
+    domtoimage.toJpeg(document.getElementById('aphoto'), { quality: 0.95 })
+    .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'my-image-name.jpeg';
+        link.href = dataUrl;
+        link.click();
+    });
+
   }
 
   useEffect(() => {
