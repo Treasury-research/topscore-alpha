@@ -182,3 +182,21 @@ a {
 .web3modal-modal-lightbox{
   z-index: 9999 !important;
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+  background-color: #efeff4;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset000pxrgba(240, 240, 240, 0.5);
+  border-radius: 10px;
+  background: rgba(240, 240, 240, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset000pxrgba(240, 240, 240, 0.5);
+  background: rgba(0, 0, 0, .5);
+}

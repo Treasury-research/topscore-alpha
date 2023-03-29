@@ -68,7 +68,7 @@ const Create = () => {
     return (
         <>
             <div className="absolute top-[20px] text-[24px]"></div>
-            <div className="h-[calc(100vh-60px)] overflow-y-auto">
+            <div className="h-[calc(100vh-60px)] overflow-x-hidden hidden-scrollbar">
                 <div className="flex mb-10 mt-[60px]">
                     {loadingScores ? <LoadingOutlined className="text-2xl block mx-auto my-4" /> : <>
                         <div className="w-[360px] h-[164px] px-4 creation-bg text-[#fff] mr-10 rounded-[10px]">

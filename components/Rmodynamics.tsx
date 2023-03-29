@@ -496,7 +496,7 @@ const rmodynamics = () => {
 
     return (
         <div className="text-[#fff] mb-10">
-            <div className="flex mb-20">
+            <div className="flex mb-20 overflow-y-hidden">
                 <div className="w-[880px] mr-[10px]">
                     <div className="flex jusitify-between h-[54px] items-center bg-[#1A1A1A] rounded-[10px] mb-[10px]">
                         <div className="flex ml-8">
@@ -568,7 +568,7 @@ const rmodynamics = () => {
 
                     </div>
                 </div>
-                <div className="w-[calc(100%-890px)]">
+                <div className="w-[calc(100%-890px)] min-w-[280px]">
                     <div className="flex min-w-[280px] max-w-100 mt-[26px]">
                         <div className={`rounded-[4px] h-10 w-10 bg-[#1A1A1A] flex items-center justify-center text-[24px] ${weekCount === 4 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getLastWeek}><LeftOutlined /></div>
                         <div className="rounded-[10px] w-[calc(100%-100px)] mx-[10px] h-10 bg-[#1A1A1A] flex items-center justify-center">

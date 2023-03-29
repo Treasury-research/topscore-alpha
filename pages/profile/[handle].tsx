@@ -351,7 +351,7 @@ const profile = () => {
       <Navbar />
       <div className='p-5 w-full text-[#fff]'>
         <ConnectBtn type={1} />
-        <div className="w-full overflow-y-auto h-[calc(100%-40px)]">
+        <div className="w-full overflow-y-auto h-[calc(100%-40px)] hidden-scrollbar">
           {
             !indicatorLoading && !ratingLoading && !scoreLoading && !loadingRouterHandle ? (
               <div className="mx-auto mt-16 w-[762px]">
