@@ -75,18 +75,14 @@ const rmodynamics = () => {
         setActiveItems([])
     }
 
-    const localToUtc = (date) => {
-        const fmt = 'YYYYMMDDHH'
-        return moment(date, fmt).utc().format(fmt)
-    }
+    // const localToUtc = (date) => {
+    //     const fmt = 'YYYYMMDDHH'
+    //     return moment(date, fmt).utc().format(fmt)
+    // }
 
-    const utcToLocal = (date) => {
-        const fmt = 'YYYYMMDDHH'
-        return moment.utc(date, fmt).local().format(fmt)
-    }
-
-    // const getHourUtcByNum = (num) => {
-
+    // const utcToLocal = (date) => {
+    //     const fmt = 'YYYYMMDDHH'
+    //     return moment.utc(date, fmt).local().format(fmt)
     // }
 
     const getGlobalAvgHeatmapData = async () => {
@@ -199,15 +195,19 @@ const rmodynamics = () => {
         if (activeTab === 0) {
             res = await api.get(`/thermal-map/global`, {
                 params: {
-                    from: `${localToUtc(currentDate[0].toString() + '00')}`,
-                    to: `${localToUtc(currentDate[1].toString() + '23')}`,
+                    // from: `${localToUtc(currentDate[0].toString() + '00')}`,
+                    // to: `${localToUtc(currentDate[1].toString() + '23')}`,
+                    from: `${currentDate[0].toString() + '00'}`,
+                    to: `${currentDate[1].toString() + '23'}`,
                 }
             })
         } else {
             res = await api.get(`/thermal-map/personal/${currentProfile.profileId}`, {
                 params: {
-                    from: `${localToUtc(currentDate[0].toString() + '00')}`,
-                    to: `${localToUtc(currentDate[1].toString() + '23')}`,
+                    // from: `${localToUtc(currentDate[0].toString() + '00')}`,
+                    // to: `${localToUtc(currentDate[1].toString() + '23')}`,
+                    from: `${currentDate[0].toString() + '00'}`,
+                    to: `${currentDate[1].toString() + '23'}`,
                 }
             })
         }
@@ -241,7 +241,8 @@ const rmodynamics = () => {
             return false;
         }
         res.data.forEach((t: any) => {
-            const timePeriod = utcToLocal(t.timePeriod)
+            // const timePeriod = utcToLocal(t.timePeriod)
+            const timePeriod = t.timePeriod
             let week = moment(timePeriod.toString().slice(0, 8)).weekday()
             if (activeTab === 0) {
                 totalAmount.postCount += t.postCount;
@@ -278,7 +279,6 @@ const rmodynamics = () => {
                 rem[week - 1][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, t.pubCount, timePeriod];
             }
         })
-        console.log('rem', rem)
         setRemodyBaseData(rem)
         setTotalAmount(totalAmount)
         setLoading(false);

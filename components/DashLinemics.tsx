@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import api from "../api";
 import EngageLine from './EngageLine'
 import PubCard from './PubCard'
-import { currentProfileState,topRecentState,postSwitchState } from "../store/state";
+import { currentProfileState, topRecentState, postSwitchState } from "../store/state";
 import { useRecoilState } from "recoil";
 import moment from 'moment'
 
@@ -135,13 +135,13 @@ const rmodynamics = () => {
     }
 
     const commentChange = (e) => {
-        if(e || (!e && mirrorSwitch)){
+        if (e || (!e && mirrorSwitch)) {
             setCommentSwitch(e)
         }
     }
 
     const mirrorChange = (e) => {
-        if(e || (!e && commentSwitch)){
+        if (e || (!e && commentSwitch)) {
             setMirrorSwitch(e)
         }
     }
@@ -321,22 +321,19 @@ const rmodynamics = () => {
                             </>
                         )
                     }
-                    {
-                        !loading && dates.length > 0 &&
-                        <>
-                            <div className="absolute flex items-center justify-center mr-4 right-0 bottom-0">
-                                <span className="mr-2">Posts Only</span>
-                                <Switch defaultChecked onChange={setPostSwitch} checked={postSwitch} size="small" />
+                    <>
+                        <div className="absolute flex items-center justify-center mr-4 right-0 bottom-0">
+                            <span className="mr-2">Posts Only</span>
+                            <Switch defaultChecked onChange={setPostSwitch} checked={postSwitch} size="small" />
+                        </div>
+                        {
+                            activeTab == 2 &&
+                            <div className="absolute flex items-center justify-center mr-4 right-[120px] bottom-0">
+                                <span className="mr-2">Charged Only</span>
+                                <Switch defaultChecked onChange={setChargeSwitch} checked={chargeSwitch} size="small" />
                             </div>
-                            {
-                                activeTab == 2 &&
-                                <div className="absolute flex items-center justify-center mr-4 right-[120px] bottom-0">
-                                    <span className="mr-2">Charged Only</span>
-                                    <Switch defaultChecked onChange={setChargeSwitch} checked={chargeSwitch} size="small" />
-                                </div>
-                            }
-                        </>
-                    }
+                        }
+                    </>
                 </div>
             </div>
             <PubCard lineData={lindData} topRecentSwitch={topRecentSwitch} activeLineTab={activeTab}></PubCard>

@@ -49,7 +49,7 @@ export default function Lens({ profileId, handle }: any) {
 
   const getProfile = async () => {
     setLoading(true);
-    const profileInfoRaw = await lensApi.getProfileByHandle(handle);
+    const profileInfoRaw = await lensApi.getProfileByHandle(handle === 'lensprotocol.lens' ? 'lensprotocol' : handle);
     setProfileInfo(profileInfoRaw);
     setLoading(false);
 

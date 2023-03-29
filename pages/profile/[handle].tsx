@@ -35,6 +35,7 @@ import ImgHuman from "../../statics/img/profileV2/human.svg"
 import api from "../../api";
 import lensApi from "../../api/lensApi";
 import html2canvas from 'html2canvas';
+import canvg from "canvg";
 
 import {
   currentProfileState,
@@ -193,6 +194,7 @@ const profile = () => {
         setNftTotal(0)
       }
     } else {
+      setNftTotal(0)
       setNftList([]);
     }
   }
@@ -264,6 +266,7 @@ const profile = () => {
 
   const getIntroduce = async () => {
     const res = await lensApi.getProfileByHandle(currentProfile.handle);
+    console.log(res)
     if (res && res.bio) {
       setIntroduce(res.bio)
     } else {
@@ -274,12 +277,17 @@ const profile = () => {
   const getCurrentProfileByRouter = async (str: any) => {
     setLoadingRouterHandle(true)
     const res = await api.get(`/lens/handles/byHandles/${str}.lens`)
+    console.log('search.lens',res)
     setTimeout(() => {
       setLoadingRouterHandle(false)
-    }, 1000)
-
+    },500)
     if (res && res.data && res.data.length > 0) {
-      setCurrentProfile(res.data[0])
+      let list = res.data.filter((t) => {
+        return t.handle === `${str}.lens`
+      })
+      if(list.length > 0){
+        setCurrentProfile(list[0])
+      }
     }
   }
 
@@ -306,11 +314,11 @@ const profile = () => {
   const downLoadHtml2Img = () => {
     html2canvas(document.getElementById('aphoto'), {
       allowTaint: false,
-      useCORS: true, 
+      useCORS: true,
     }).then(canvas => {
       const link = document.createElement('a');
       const event = new MouseEvent('click');
-      link.download = `TopScore_${currentProfile.handle}.jpg`; 
+      link.download = `TopScore_${currentProfile.handle}.jpg`;
       link.href = canvas.toDataURL();
       link.dispatchEvent(event);
     })
@@ -324,16 +332,16 @@ const profile = () => {
       getScore()
       getIntroduce()
     }
-  }, [currentProfile])
+  }, [currentProfile.profileId])
 
-//   useEffect(() => {
-//     console.log(account,chainId)
-//   }, [account,chainId])
 
-  
+
   useEffect(() => {
-    console.log(router)
-    if(router && router.query && router.query.handle){
+    if (router && router.query && router.query.handle) {
+      setCurrentProfile({
+        ...currentProfile,
+        handle:router.query.handle + '.lens'
+      })
       getCurrentProfileByRouter(router.query.handle)
     }
   }, [router])
@@ -342,14 +350,15 @@ const profile = () => {
     <div className="w-full h-full bg-[#000] flex profile-v2">
       <Navbar />
       <div className='p-5 w-full text-[#fff]'>
-        <ConnectBtn type={1}/>
+        <ConnectBtn type={1} />
         <div className="w-full overflow-y-auto h-[calc(100%-40px)]">
           {
             !indicatorLoading && !ratingLoading && !scoreLoading && !loadingRouterHandle ? (
-              <div className="mx-auto mt-16 w-[722px]">
-                <div className="h-[512px] mb-4 profile-bg1 flex" id="aphoto">
+              <div className="mx-auto mt-16 w-[762px]">
+                <div className="rounded-[20px] bg-[#000] h-[552px] w-[762px] flex items-center justify-center" id="aphoto">
+                <div className="h-[512px] w-[722px] mb-4 profile-bg1 flex">
                   <div className="w-1/2 h-full">
-                    <div className="flex gap-8"> 
+                    <div className="flex gap-8">
                       <div className="relative">
                         {
                           currentProfile.imageURI ? (
@@ -430,10 +439,10 @@ const profile = () => {
                               />
                             </button>
                           }
-                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" 
-                          onClick={() => 
-                          copyToClipboard(`${window.location.origin}/profile/${currentProfile.handle ? currentProfile.handle.split('.')[0] : 'stani'}`)
-                          }>
+                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]"
+                            onClick={() =>
+                              copyToClipboard(`${window.location.origin}/profile/${currentProfile.handle ? currentProfile.handle.split('.')[0] : 'stani'}`)
+                            }>
                             <Image
                               src={ImgCopy}
                               alt=""
@@ -483,11 +492,13 @@ const profile = () => {
                     }
                   </div>
                 </div>
+                </div>
                 {
                   nftList.length > 0 &&
-                  <div className="w-[fit-content] h-[fit-content] px-4 py-2 nft-bg text-[18px] font-[600]">NFT</div>
+                  <div className="w-[fit-content] h-[fit-content] px-4 py-2 nft-bg text-[18px] font-[600] ml-5">NFT</div>
                 }
-                <div className="h-[260px] w-[722px] relative profile-nft mb-16" onMouseEnter={() => setShowNftBtn(true)} onMouseLeave={() => setShowNftBtn(false)}>
+                <div className=" w-[762px] flex items-center justify-center">
+                <div className="h-[260px] w-[722px] ml-[auto] relative profile-nft mb-16" onMouseEnter={() => setShowNftBtn(true)} onMouseLeave={() => setShowNftBtn(false)}>
                   <Carousel dotPosition={'bottom'} ref={carouselRef}>
                     {
                       nftList.map((t: any, i: number) => (
@@ -543,6 +554,7 @@ const profile = () => {
                       </button>
                     </>
                   }
+                </div>
                 </div>
               </div>
             ) : (

@@ -572,8 +572,7 @@ const DashRmodynamics = () => {
                                     </div>
                                 }
                             </div>
-                            {/* <div className="ml-[auto]">{!isNaN(postTotal + commentTotal + mirrorTotal) ? postTotal + commentTotal + mirrorTotal : '-'}</div> */}
-                        </div>
+                         </div>
                         <div className="flex mb-[10px]">
                             <div className="flex items-center text-[26px] ml-[22px]">{!isNaN(postTotal + commentTotal + mirrorTotal) ? postTotal + commentTotal + mirrorTotal : '-'}</div>
                             <div className="ml-[auto] text-[14px]">
@@ -581,7 +580,7 @@ const DashRmodynamics = () => {
                                     {
                                         activeTab === 0 ?
                                             <>
-                                                {
+                                                {/* {
                                                     (weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
                                                     (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal) > 0 &&
                                                     <CaretUpOutlined className="creat-up-icon ml-[auto]" />
@@ -595,15 +594,16 @@ const DashRmodynamics = () => {
                                                     (weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
                                                     (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal) === 0 &&
                                                     <div className="mr-1 bg-[rgba(255,255,255,0.4)] h-[2px] w-[8px]"></div>
-                                                }
-                                                <span>{Math.abs((weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
+                                                } */}
+                                                {/* <span>{Math.abs((weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
                                                     (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal))
-                                                }</span>
+                                                }</span> */}
+                                                <span>{weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal}</span>
                                             </> :
                                             <span>{lastYearPost + lastYearComment + lastYearMirror}</span>
                                     }
                                 </div>
-                                <div className="text-[rgba(255,255,255,0.6)]">Total</div>
+                                <div className="text-[rgba(255,255,255,0.6)]">{activeTab === 0 ? 'This week' : 'Total'}</div>
                             </div>
                         </div>
                         <div className="flex mb-2 ml-[20px]">
@@ -625,7 +625,7 @@ const DashRmodynamics = () => {
                                     {
                                         activeTab === 0 ?
                                             <>
-                                                {
+                                                {/* {
                                                     weekCountChange.current.postTotal - weekCountChange.last.postTotal > 0 &&
                                                     <CaretUpOutlined className="creat-up-icon ml-[auto]" />
                                                 }
@@ -636,8 +636,9 @@ const DashRmodynamics = () => {
                                                 {
                                                     weekCountChange.current.postTotal - weekCountChange.last.postTotal === 0 &&
                                                     <div className="mr-1 bg-[rgba(255,255,255,0.4)] h-[2px] w-[8px]"></div>
-                                                }
-                                                <span>{Math.abs(weekCountChange.current.postTotal - weekCountChange.last.postTotal)}</span>
+                                                } */}
+                                                {/* <span>{Math.abs(weekCountChange.current.postTotal - weekCountChange.last.postTotal)}</span> */}
+                                                <span>{weekCountChange.current.postTotal}</span>
                                             </> :
                                             <span>{lastYearPost}</span>
                                     }
@@ -663,7 +664,7 @@ const DashRmodynamics = () => {
                                     {
                                         activeTab === 0 ?
                                             <>
-                                                {
+                                                {/* {
                                                     weekCountChange.current.commentTotal - weekCountChange.last.commentTotal > 0 &&
                                                     <CaretUpOutlined className="creat-up-icon ml-[auto]" />
                                                 }
@@ -674,8 +675,9 @@ const DashRmodynamics = () => {
                                                 {
                                                     weekCountChange.current.commentTotal - weekCountChange.last.commentTotal === 0 &&
                                                     <div className="mr-1 bg-[rgba(255,255,255,0.4)] h-[2px] w-[8px]"></div>
-                                                }
-                                                <span>{Math.abs(weekCountChange.current.commentTotal - weekCountChange.last.commentTotal)}</span>
+                                                } */}
+                                                {/* <span>{Math.abs(weekCountChange.current.commentTotal - weekCountChange.last.commentTotal)}</span> */}
+                                                <span>{weekCountChange.current.commentTotal}</span>
                                             </> :
                                             <span>{lastYearComment}</span>
                                     }
@@ -701,7 +703,7 @@ const DashRmodynamics = () => {
                                     {
                                         activeTab === 0 ?
                                             <>
-                                                {
+                                                {/* {
                                                     weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal > 0 &&
                                                     <CaretUpOutlined className="creat-up-icon ml-[auto]" />
                                                 }
@@ -712,8 +714,9 @@ const DashRmodynamics = () => {
                                                 {
                                                     weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal === 0 &&
                                                     <div className="mr-1 bg-[rgba(255,255,255,0.4)] h-[2px] w-[8px]"></div>
-                                                }
-                                                <span>{Math.abs(weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal)}</span>
+                                                } */}
+                                                {/* <span>{Math.abs(weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal)}</span> */}
+                                                <span>{weekCountChange.current.mirrorTotal}</span>
                                             </> :
                                             <span>{lastYearMirror}</span>
                                     }

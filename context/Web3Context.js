@@ -5,13 +5,12 @@ import config from "../config";
 import { ethers } from "ethers";
 import lensApi from "../api/lensApi";
 import api from "../api";
-import { knn3TokenValidState, currentProfileState, autoConnectState, profileListState, currentLoginProfileState } from "../store/state";
+import { knn3TokenValidState, currentProfileState, autoConnectState, profileListState, currentLoginProfileState,commendProfileListState } from "../store/state";
 import { useRecoilState } from "recoil";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { switchChain } from "../lib/tool";
 import { LoadingOutlined } from "@ant-design/icons";
 import useWeb3Modal from "../hooks/useWeb3Modal";
-import initHandle from './../config/initHandle'
 
 const actionMapping = [
   "Transaction being processed",
@@ -60,6 +59,7 @@ export const Web3ContextProvider = ({ children }) => {
   const [profileList, setProfileList] = useRecoilState(profileListState);
   const [currentLoginProfile, setCurrentLoginProfile] =
     useRecoilState(currentLoginProfileState);
+  const [commendProfileList, setCommendProfileList] = useRecoilState(commendProfileListState);
 
   const listenProvider = () => {
     if (!window.ethereum) {
@@ -74,9 +74,9 @@ export const Web3ContextProvider = ({ children }) => {
       localStorage.removeItem("knn3RefreshToken");
       api.defaults.headers.authorization = "";
       setKnn3TokenValid(false);
-      setCurrentProfile({
-        ...initHandle
-      })
+      if(commendProfileList.length > 0){
+        setCurrentProfile(commendProfileList[0])
+      }
       setProfileList([])
       setCurrentLoginProfile({
         address: "",
@@ -243,9 +243,9 @@ export const Web3ContextProvider = ({ children }) => {
     setKnn3TokenValid(false)
     resetWallet();
     setAutoConnect(false);
-    setCurrentProfile({
-      ...initHandle
-    })
+    if(commendProfileList.length > 0){
+      setCurrentProfile(commendProfileList[0])
+    }
     setProfileList([])
     setCurrentLoginProfile({
       address: "",

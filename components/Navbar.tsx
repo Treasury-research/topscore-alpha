@@ -42,7 +42,7 @@ const Navbar = () => {
         console.log('address', item)
         if (item === 'Profile') {
             // router.push(`/${item.toLocaleLowerCase()}/${currentProfile.address ? currentProfile.address : knn3Address}`)
-            router.push(`/${item.toLocaleLowerCase()}/${currentProfile.handle ? currentProfile.handle.split('.')[0] : 'stani'}`)
+            router.push(`/profile/stani`)
         }else {
             router.push(`/${item.toLocaleLowerCase()}`)
         }

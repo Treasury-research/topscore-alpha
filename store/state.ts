@@ -1,6 +1,5 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import initHandle from './../config/initHandle'
 const { persistAtom } = recoilPersist();
 
 export const currentProfileState = atom({
@@ -35,6 +34,11 @@ export const loadingProfileListState = atom({
 
 export const profileListState = atom({
   key: "profileList",
+  default: [],
+});
+
+export const commendProfileListState = atom({
+  key: "commendProfileList",
   default: [],
 });
 

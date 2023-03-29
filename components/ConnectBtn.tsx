@@ -13,7 +13,8 @@ import {
   knn3TokenValidState,
   isHaveNftState,
   isHaveLensNftState,
-  loadingProfileListState
+  loadingProfileListState,
+  commendProfileListState
 } from "../store/state";
 import useWeb3Context from "../hooks/useWeb3Context";
 import { Popover, Dropdown, Space, Menu, Drawer, Input } from "antd";
@@ -25,43 +26,7 @@ import ImgLenster from "../statics/img/lest-head.png";
 import ImgHome from "../statics/img/home.svg";
 import ChangeProfile from "./connect/ChangeProfile";
 import { ConsoleSqlOutlined, DownOutlined, LoadingOutlined } from "@ant-design/icons";
-import initHandle from './../config/initHandle'
 import PermissionMsg from './connect/PermissionMsg'
-
-const comments = [
-  {
-    "handle": "stani.lens",
-    "imageURI": "ipfs://bafybeiewog3iscltj6uvus6iut5kerbbkyxovjhvnikrc4luy5sap6w3zu",
-    "address": "0x7241dddec3a6af367882eaf9651b87e1c7549dff",
-    "profileId": 5,
-    "metadata": "https://arweave.net/rfuMUXzqkzBBQPSUFi2gwUdQCW2i1r7LzjHPOtI8ALA",
-    "name": "Stani"
-  },
-  {
-    "handle": "yoginth.lens",
-    "imageURI": "ipfs://bafybeigcmbs2wfkccazb5xifosfxymrt33j7u2smgfhxt7khlzwtddxl4m",
-    "address": "0x3a5bd1e37b099ae3386d13947b6a90d97675e5e3",
-    "profileId": 13,
-    "metadata": "https://arweave.net/dmGsnN2_TUvOzJ-9uLyFjET-4vs7yPJargIdLu2MekQ",
-    "name": "Yoginth"
-  },
-  {
-    "handle": "lenster.lens",
-    "imageURI": "https://ipfs.infura.io/ipfs/QmPbLKZ1cZumURPLDm6VU4NhNWEFU3r33eTxarYpUB7TQW",
-    "address": "0xd3b307753097430faedfdb89809610bf8e8f3203",
-    "profileId": 12,
-    "metadata": "https://ipfs.infura.io/ipfs/QmWJmGjnTtjBVeCA67b8p1StAsGP27bVQg7Jgs6n6mxszr",
-    "name": ""
-  },
-  {
-    "handle": "lensprotocol",
-    "imageURI": "ipfs://bafkreice45jmlvhctbt2nsygitnt3jphbahcq5hlx7vrlav63hmjacb5ea",
-    "address": "0xd28e808647d596f33dcc3436e193a9566fc7ac07",
-    "profileId": 1,
-    "metadata": "https://arweave.net/3mZX8U54ZAJggQIUcLLEo9f83g8L22Ev58-JHejOIx8",
-    "name": "Lens Protocol 🌿"
-  }
-]
 
 const noLensMsg = 'You need to hold Lens Handle, please go to Opensea to open it, all our functions can be realized.'
 
@@ -72,6 +37,8 @@ const lensCollectionLink = 'https://opensea.io/collection/lens-protocol-profiles
 const campignNftLink = 'https://opensea.io/collection/your-2022-wrapped-on-lens'
 
 let timer = null;
+
+let refreshNum = 0
 
 const ConnectBtn = (props: any) => {
   const router = useRouter();
@@ -102,10 +69,9 @@ const ConnectBtn = (props: any) => {
 
   const [loadingNft, setLoadingNft] = useState<any>(true);
 
-  // const [werNftStatus, setOwerNftStatus] =
-  // useRecoilState<any>(ownerNftState);
-
   const [isHaveLensHandle, setIsHaveLensHandle] = useRecoilState<any>(isHaveLensNftState);
+
+  const [commendProfileList, setCommendProfileList] = useRecoilState<any>(commendProfileListState);
 
   const [loadingProfileList, setLoadingProfileList] = useRecoilState(
     loadingProfileListState
@@ -119,13 +85,14 @@ const ConnectBtn = (props: any) => {
   });
 
   useEffect(() => {
+    console.log(currentProfile)
     if (!account || !knn3TokenValid) {
       setInputValue('')
       setIsHaveNft(false)
       setIsHaveLensHandle(false)
-      setCurrentProfile({
-        ...initHandle
-      })
+      if (commendProfileList.length > 0) {
+        setCurrentProfile(commendProfileList[0])
+      }
       setProfileList([]);
       return;
     }
@@ -133,27 +100,26 @@ const ConnectBtn = (props: any) => {
     getAllNfts()
   }, [account, knn3TokenValid]);
 
-  // useEffect(() => {
-  //   setCurrentLoginProfile({})
-  //   if (!account || profileList.length == 0) {
-  //     setCurrentProfile({
-  //       ...initHandle
-  //     })
-  //   } else {
-  //     if(profileList && profileList.length > 0){
-  //       setCurrentProfile(profileList[0])
-  //     }
-  //   }
-  // }, []);
+  useEffect(() => {
+    console.log(currentProfile)
+   
+  }, [currentProfile]);
 
-  // useEffect(() => {
-  //   if (!knn3TokenValid) {
-  //     return;
-  //   }
-  //   // if (router.pathname === "/profile/[address]") {
-  //   //   goProfile();
-  //   // }
-  // }, [profileList, knn3TokenValid]);
+  const setCurrentProfileByRouter = (t:any) => {
+    setInputValue('')
+    if (props.type === 1) {
+      const handle = t.handle ? t.handle.split('.')[0] : 'stani'
+      router.push(`/profile/${handle}`)
+    }else{
+      setCurrentProfile(t)
+    }
+  }
+
+  useEffect(() => {
+    if (commendProfileList.length == 0) {
+      getCommentsProfileList()
+    }
+  }, []);
 
   useEffect(() => {
     if (!currentLoginProfile.handle) {
@@ -161,6 +127,30 @@ const ConnectBtn = (props: any) => {
     }
     getProfileByHandle(currentLoginProfile.handle);
   }, [currentLoginProfile.handle]);
+
+  const getCommentsProfileList = async () => {
+    const comments = [
+      'stani.lens',
+      'yoginth.lens',
+      'lenster.lens',
+      'lensprotocol.lens'
+    ]
+
+    let clist: any = []
+    const res = (await api.get(`/lens/recommend`));
+    if (res && res.data && res.data.length > 0) {
+      res.data.forEach((t: any) => {
+        let idx = comments.indexOf(t.handle)
+        clist[idx] = t
+      })
+      if (!account || !knn3TokenValid) {
+        setCurrentProfile(clist[0])
+      }
+      setCommendProfileList(clist)
+    } else {
+      setCommendProfileList([])
+    }
+  }
 
   const getAllNfts = async () => {
     setLoadingNft(true)
@@ -211,9 +201,9 @@ const ConnectBtn = (props: any) => {
         }
         setCurrentLoginProfile(res.data[0])
       } else {
-        setCurrentProfile({
-          ...initHandle
-        })
+        if(commendProfileList.length > 0){
+          setCurrentProfile(commendProfileList[0])
+        }
         setIsHaveLensHandle(false)
       }
     }
@@ -332,14 +322,16 @@ const ConnectBtn = (props: any) => {
   const goHome = () => {
     if (props.type === 1) {
       if (isHaveLensHandle) {
-        setCurrentProfile(profileList[0])
+        setCurrentProfileByRouter(profileList[0])
+        // setCurrentProfile(profileList[0])
       } else {
         showLensMsg()
       }
     }
     if (props.type === 2) {
       if (isHaveNft && isHaveLensHandle) {
-        setCurrentProfile(profileList[0])
+        // setCurrentProfile(profileList[0])
+        setCurrentProfileByRouter(profileList[0])
       } else if ((isHaveNft && !isHaveLensHandle) || (!isHaveNft && !isHaveLensHandle)) {
         showLensMsg()
       } else if (!isHaveNft && isHaveLensHandle) {
@@ -361,7 +353,8 @@ const ConnectBtn = (props: any) => {
     if (props.type === 2 && (isHaveLensHandle && !isHaveNft)) {
       showLensMsg()
     } else {
-      setCurrentProfile(item);
+      // setCurrentProfile(item);
+      setCurrentProfileByRouter(item)
       setOpenLensDrop(false)
     }
   }
@@ -393,7 +386,9 @@ const ConnectBtn = (props: any) => {
                 <div className={`py-1 mx-[5%] text-[#fff] ${props.type == 2 && !knn3TokenValid ? 'w-[200px]' : 'w-[90%]'}`}>
                   {
                     ((props.type == 2 && knn3TokenValid && account) || props.type === 1) &&
-                    <Input className="connect-component-input" placeholder="Search" allowClear onClick={() => { toSearchPermission() }} onChange={(e) => searchInputChange(e)} value={inputValue} />
+                    <Input className="connect-component-input" placeholder="Search" allowClear onClick={() => { toSearchPermission() }} onChange={(e) => searchInputChange(e)} value=
+
+                      {inputValue} />
                   }
                   {
                     props.type == 2 && !knn3TokenValid &&
@@ -432,8 +427,10 @@ const ConnectBtn = (props: any) => {
                       }
                       <p className="text-xl my-3">Recommend</p>
                       {
-                        comments.map((t: any, i: number) => (
-                          <div className="flex text-[16px] items-center gap-1 mb-2 hover:opacity-70 cursor-pointer" key={i} onClick={() => { setCurrentProfile(t); setOpenLensDrop(false) }}>
+                        commendProfileList.map((t: any, i: number) => (
+                          <div className="flex text-[16px] items-center gap-1 mb-2 hover:opacity-70 cursor-pointer" key={i} onClick={() => {
+                            setCurrentProfileByRouter(t); setOpenLensDrop(false)
+                          }}>
                             <img
                               className="w-[26px] h-[26px] rounded-[13px] mr-2"
                               src={getImgUrl(t.imageURI)}
@@ -459,7 +456,9 @@ const ConnectBtn = (props: any) => {
                     <>
                       {
                         searchHandles.map((t: any, i: number) => (
-                          <div className="flex items-center text-[16px] gap-1 mb-2 mt-2 hover:opacity-70 cursor-pointer" key={i} onClick={() => { setCurrentProfile(t); setOpenLensDrop(false) }}>
+                          <div className="flex items-center text-[16px] gap-1 mb-2 mt-2 hover:opacity-70 cursor-pointer" key={i} onClick={() => {
+                            setCurrentProfileByRouter(t); setOpenLensDrop(false)
+                          }}>
                             {
                               t.imageURI &&
                               // <img
@@ -492,7 +491,7 @@ const ConnectBtn = (props: any) => {
             <div onClick={(e) => e.preventDefault()} className="flex h-full">
               <button className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] min-w-[100px]">
                 {
-                  currentProfile.handle &&
+                  currentProfile && currentProfile.handle &&
                   <>
                     {
                       currentProfile.imageURI ? (
@@ -511,7 +510,7 @@ const ConnectBtn = (props: any) => {
                     }
                   </>
                 }
-                <span className="mr-3">{currentProfile.handle}</span>
+                <span className="mr-3">{currentProfile?.handle}</span>
                 <DownOutlined className='ml-auto' />
               </button>
             </div>
@@ -610,12 +609,19 @@ const ConnectBtn = (props: any) => {
             </>
           )
         )}
-        {!knn3TokenValid && (
+        {!knn3TokenValid ? (
           <button
             onClick={determineLoginModal}
             className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]"
           >
             {account ? "Log in" : "Connect Wallet"}
+          </button>
+        ) : !account && (
+          <button
+            onClick={determineLoginModal}
+            className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]"
+          >
+            Connect Wallet
           </button>
         )}
       </div>
