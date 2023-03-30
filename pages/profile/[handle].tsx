@@ -70,12 +70,12 @@ const baseImgInfo = [{
   imgUrl: ImgMirrors
 },
 {
-  text: 'Comments(by)',
+  text: 'Comments (by)',
   acount: 0,
   imgUrl: ImgCommentsby
 },
 {
-  text: 'Mirrors(by)',
+  text: 'Mirrors (by)',
   acount: 0,
   imgUrl: ImgMirrorsby
 },
@@ -85,7 +85,7 @@ const baseImgInfo = [{
   imgUrl: ImgCollections
 },
 {
-  text: 'Collected(by)',
+  text: 'Collected (by)',
   acount: 0,
   imgUrl: ImgCollectedby
 }]

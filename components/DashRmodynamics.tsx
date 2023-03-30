@@ -603,7 +603,7 @@ const DashRmodynamics = () => {
                                             <span>{lastYearPost + lastYearComment + lastYearMirror}</span>
                                     }
                                 </div>
-                                <div className="text-[rgba(255,255,255,0.6)]">{activeTab === 0 ? 'This week' : 'Total'}</div>
+                                <div className="text-[rgba(255,255,255,0.6)]">{activeTab === 0 ? 'This week' : 'In 2023'}</div>
                             </div>
                         </div>
                         <div className="flex mb-2 ml-[20px]">

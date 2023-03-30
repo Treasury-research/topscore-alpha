@@ -5,15 +5,12 @@ import Image from 'next/image'
 import { postSwitchState } from "../store/state";
 import { LoadingOutlined } from '@ant-design/icons';
 import { ethers } from 'ethers'
-import { currentProfileState } from "../store/state";
+import { currentProfileState,topRecentState } from "../store/state";
 import { useRecoilState } from "recoil";
 import dayjs from 'dayjs';
 
-// const tab1 = ['Top Engaged', 'Top Collect']
-// const tab2 = ['Top Engaged', 'Recent']
-// const tab3 = ['Top Collected', 'Recent']
 const tab = [
-  ['Top Engaged', 'Top Collect'],
+  ['Top Engaged', 'Top Collected'],
   ['Top Engaged', 'Recent'],
   ['Top Collected', 'Recent']
 ]
@@ -25,7 +22,7 @@ const PubCard = (props: any) => {
   const [tabs, setTabs] = useState<any>(tab[0]);
   const [postSwitch, setPostSwitch] = useRecoilState<any>(postSwitchState);
   // const [activeTab, setActiveTab] = useState<any>(0);
-  const [topRecentSwitch, setTopRecentSwitch] = useState(false);
+  const [topRecentSwitch, setTopRecentSwitch] = useRecoilState<any>(topRecentState);
 
   useEffect(() => {
     if (currentProfile.profileId) {
@@ -52,7 +49,7 @@ const PubCard = (props: any) => {
         }
         resData = res.data;
       } else {
-        const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=1&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${''}`);
+        const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=2&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${''}`);
         if (!res || !res.data) {
           resData = []
           setPubData([])

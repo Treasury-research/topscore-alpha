@@ -27,7 +27,7 @@ const ChartLine = (props: any) => {
 
   const getSeriesData = (s: any, i: number) => {
     let seriesObj: any = {
-      name: `${s[i]['pubId'] === 0 ? 'Others' : type === 2 ? `#${s[i]['pubId']}` : `Pub#${s[i]['pubId']}`}`,
+      name: `${s[i]['pubId'] === 0 ? 'Others' : `#${s[i]['pubId']}`}`,
       type: 'line',
       stack: 'Total',
       yAxisIndex: 0,
@@ -127,7 +127,7 @@ const ChartLine = (props: any) => {
       if (lineData.length == 0) return;
       const s = lineData[lineData.length - 1];
       for (let i = 0; i < s.length; i++) {
-        legendData.push(`${s[i]['pubId'] === 0 ? 'Others' : type === 2 ? `#${s[i]['pubId']}` : `Pub#${s[i]['pubId']}`}`)
+        legendData.push(`${s[i]['pubId'] === 0 ? 'Others' : `#${s[i]['pubId']}`}`)
         seriesData.push(getSeriesData(s, i))
       }
     } else {
@@ -331,14 +331,6 @@ const ChartLine = (props: any) => {
           } else if (type == 2) {
             return `
               <div class="engage-tooltip">
-                <div class="engage-head">
-                  <div class="engage-head-left">
-                    <div class="engage-head-fee-left-icon"></div>
-                    <div class="engage-head-fee-left-des">Revenue：</div>
-                    <div class="engage-head-fee-score-icon"></div>
-                    <div class="engage-head-fee-score-num">${t.length !== 0 ? t[0]['value'] : 0}</div>
-                  </div>
-                </div>
                 <div class="engage-content">${htmlCon}</div>
                 <div class="dash-line-date">${htmlDate}<div>
               </div>

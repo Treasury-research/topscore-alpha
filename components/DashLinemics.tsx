@@ -76,8 +76,11 @@ const rmodynamics = () => {
         resData = []
         resAmountData = []
         resPc = []
-        const mdy = dayjs(new Date().getTime() - ((activeTab1 + 1) * 7) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
-        const ndy = dayjs(new Date()).format('YYYYMMDD') // 当前日期
+        const mdyLocal = dayjs(new Date().getTime() - ((activeTab1 + 1) * 7) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
+        const ndyLocal = dayjs(new Date()).format('YYYYMMDD') // 当前日期
+        const mdy = localToUtc(mdyLocal)
+        const ndy = localToUtc(ndyLocal)
+        console.log(mdy, ndy)
         if (activeTab === 0) {
             const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=5&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
             const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
@@ -104,13 +107,13 @@ const rmodynamics = () => {
             // const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 1 : 2}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
             // const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
             const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 2 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
-            const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
-            if (!res || !res.data || !res1 || !res1.data) {
+            // const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
+            if (!res || !res.data) {
                 setLoading(false);
                 return false;
             }
             resData = res.data;
-            resAmountData = res1.data;
+            // resAmountData = res1.data;
         }
         if (activeTab === 1 || activeTab === 2) {
             let pubAllData: any = []
@@ -131,7 +134,7 @@ const rmodynamics = () => {
         }
         setLoading(false);
         // setDates(enumerateDaysBetweenDates(mdy, ndy))
-        setDates(enumerateDaysBetweenDates(mdy, ndy))
+        setDates(enumerateDaysBetweenDates(mdyLocal, ndyLocal))
     }
 
     const commentChange = (e) => {
@@ -146,6 +149,17 @@ const rmodynamics = () => {
         }
     }
 
+
+    const localToUtc = (date) => {
+        const fmt = 'YYYYMMDD'
+        return moment(date, fmt).utc().format(fmt)
+    }
+
+    const utcToLocal = (date) => {
+        const fmt = 'YYYYMMDD'
+        return moment.utc(date, fmt).local().format(fmt)
+    }
+
     useEffect(() => {
         if (dates.length > 0) {
             let s: any = []; // area data
@@ -156,11 +170,14 @@ const rmodynamics = () => {
                     let b = [];
                     for (let j = 0; j < pubAll.length; j++) {
                         let filterPub = resData.filter((t: any) => {
-                            return (pubAll[j] === t.pubId && t.day === dates[i])
+                            return (pubAll[j] === t.pubId && utcToLocal(t.day) == dates[i])
                         })
                         // && filterPub[0]['day'] === dates[i]
                         if (filterPub && filterPub.length > 0) {
-                            b.push(filterPub[0])
+                            b.push({
+                                ...filterPub[0],
+                                day: utcToLocal(filterPub[0]['day'])
+                            })
                         } else {
                             let filterByID = resData.filter((t: any) => {
                                 return pubAll[j] === t.pubId
@@ -190,10 +207,13 @@ const rmodynamics = () => {
                 } else {
                     // line data
                     let selData = resData.filter((t) => {
-                        return t.day === dates[i]
+                        return utcToLocal(t.day) == dates[i]
                     })
                     if (selData.length > 0) {
-                        s.push(selData[0])
+                        s.push({
+                            ...selData[0],
+                            day: utcToLocal(selData[0]['day'])
+                        })
                     } else {
                         s.push({
                             collectByCount: "0",
@@ -206,10 +226,13 @@ const rmodynamics = () => {
 
                     // overview
                     let postData = resPc.filter((t) => {
-                        return t.day == dates[i]
+                        return utcToLocal(t.day) == dates[i]
                     })
                     if (postData.length > 0) {
-                        j.push(postData[0])
+                        j.push({
+                            ...postData[0],
+                            day: utcToLocal(postData[0]['day'])
+                        })
                     } else {
                         j.push({
                             day: dates[i],
@@ -219,7 +242,7 @@ const rmodynamics = () => {
                     }
                 }
                 for (let j = 0; j < resAmountData.length; j++) {
-                    if (resAmountData[j]['day'] === dates[i]) {
+                    if (resAmountData[j]['day'] == dates[i]) {
                         if (activeTab === 0 || activeTab === 1) {
                             h.push(resAmountData[j]['followCount'])
                         } else {
@@ -239,7 +262,13 @@ const rmodynamics = () => {
         if (currentProfile && currentProfile.profileId) {
             getEngageLineData()
         }
-    }, [activeTab, chargeSwitch, activeTab1, currentProfile, postSwitch, topRecentSwitch])
+    }, [activeTab, chargeSwitch, activeTab1, currentProfile, postSwitch])
+
+    useEffect(() => {
+        if (currentProfile && currentProfile.profileId && activeTab !== 0) {
+            getEngageLineData()
+        }
+    }, [topRecentSwitch])
 
     useEffect(() => {
         setTopRecentSwitch(false)
@@ -261,7 +290,9 @@ const rmodynamics = () => {
                     <div className="ml-[auto] h-12 bg-[rgb(41,41,41)] flex items-center justify-center pl-2 rounded-[4px]">
                         {
                             tabs1.map((t: any, i: number) =>
-                                <div key={i} onClick={() => setActiveTab1(i)} className={`h-8 mr-2 flex items-center justify-center w-[60px] rounded-[4px] cursor-pointer ${activeTab1 == i ? 'bg-[#fff] text-[#000]' : ''}`}>{t}</div>
+                                <div key={i} onClick={() => setActiveTab1(i)} className={`h-8 mr-2 flex items-center justify-center w-[60px] rounded-[4px] cursor-pointer ${activeTab1 ==
+
+                                    i ? 'bg-[#fff] text-[#000]' : ''}`}>{t}</div>
                             )
                         }
                     </div>
