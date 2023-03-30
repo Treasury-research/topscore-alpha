@@ -25,8 +25,9 @@ import ImgCommentsby from "../../statics/img/profileV2/commentsby.svg"
 import ImgMirrorsby from "../../statics/img/profileV2/mirrorsby.svg"
 import ImgCollections from "../../statics/img/profileV2/collections.svg"
 import ImgCollectedby from "../../statics/img/profileV2/collectedby.svg"
-import ImgLensterHead from "../../statics/img/lest-head.png";
+import ImgLensterHead from "../../statics/img/lest-head.svg";
 import ImgPremium from '../../statics/img/premium.gif'
+import SvgPremium from '../../statics/img/premium.svg'
 import api from "../../api";
 import lensApi from "../../api/lensApi";
 import domtoimage from 'dom-to-image';
@@ -156,6 +157,8 @@ const profile = () => {
 
   const [nftTotal, setNftTotal] = useState<any>(0)
 
+  const [showPremiumGif, setShowPremiumGif] = useState<boolean>(true)
+
   const router = useRouter();
 
   const [currentProfile, setCurrentProfile] =
@@ -271,15 +274,15 @@ const profile = () => {
   const getCurrentProfileByRouter = async (str: any) => {
     setLoadingRouterHandle(true)
     const res = await api.get(`/lens/handles/byHandles/${str}.lens`)
-    console.log('search.lens',res)
+    console.log('search.lens', res)
     setTimeout(() => {
       setLoadingRouterHandle(false)
-    },500)
+    }, 500)
     if (res && res.data && res.data.length > 0) {
       let list = res.data.filter((t) => {
         return t.handle === `${str}.lens`
       })
-      if(list.length > 0){
+      if (list.length > 0) {
         setCurrentProfile(list[0])
       }
     }
@@ -326,15 +329,17 @@ const profile = () => {
     //   link.href = blob;
     //   link.dispatchEvent(event);
     // });
-
-    domtoimage.toJpeg(document.getElementById('aphoto'), { quality: 0.95 })
-    .then(function (dataUrl) {
-        var link = document.createElement('a');
-        link.download = `TopScore_${currentProfile.handle}.jpg`;
-        link.href = dataUrl;
-        link.click();
-    });
-
+    setShowPremiumGif(false)
+    setTimeout(() => {
+      domtoimage.toJpeg(document.getElementById('aphoto'), { quality: 0.95 })
+        .then(function (dataUrl) {
+          setShowPremiumGif(true)
+          var link = document.createElement('a');
+          link.download = `TopScore_${currentProfile.handle}.jpg`;
+          link.href = dataUrl;
+          link.click();
+        });
+    },500)
   }
 
   useEffect(() => {
@@ -353,7 +358,7 @@ const profile = () => {
     if (router && router.query && router.query.handle) {
       setCurrentProfile({
         ...currentProfile,
-        handle:router.query.handle + '.lens'
+        handle: router.query.handle + '.lens'
       })
       getCurrentProfileByRouter(router.query.handle)
     }
@@ -367,162 +372,170 @@ const profile = () => {
         <div className="w-full overflow-y-auto h-[calc(100%-40px)] hidden-scrollbar">
           {
             !indicatorLoading && !ratingLoading && !scoreLoading && !loadingRouterHandle ? (
-              <div className="mx-auto mt-16 w-[762px]">
-                <div className="rounded-[20px] bg-[#000] h-[552px] w-[762px] flex items-center justify-center" id="aphoto">
-                <div className="h-[512px] w-[722px] mb-4 profile-bg1 flex">
-                  <div className="w-1/2 h-full">
-                    <div className="flex gap-8">
-                      <div className="relative">
-                        {
-                          currentProfile.imageURI ? (
-                            <img src={getImgUrl(currentProfile.imageURI)} className="w-[140px] h-[140px] rounded-[10px]" />
-                          ) : (
-                            <Image
-                              className="w-[140px] h-[140px] rounded-[10px]"
-                              src={ImgLensterHead}
-                              alt="" />
-                          )
-                        }
-                        <div className="h-12 w-12 absolute right-[-8px] bottom-[-8px]"><DonutChart info={{ level: creatorLevel }} showToolTip={false} background={'#1A1A1A'} /></div>
+              <div className="mx-auto mt-16 w-[800px]">
+                <div className="rounded-[20px] bg-[#000] h-[600px] w-[800px] flex items-center justify-center" id="aphoto">
+                  <div className="h-[512px] w-[722px] mb-4 profile-bg1 flex">
+                    <div className="w-1/2 h-full">
+                      <div className="flex gap-8">
+                        <div className="relative">
+                          {
+                            currentProfile.imageURI ? (
+                              <img src={getImgUrl(currentProfile.imageURI)} className="w-[140px] h-[140px] rounded-[10px]" />
+                            ) : (
+                              <Image
+                                className="w-[140px] h-[140px] rounded-[10px]"
+                                src={ImgLensterHead}
+                                alt="" />
+                            )
+                          }
+                          <div className="h-12 w-12 absolute right-[-8px] bottom-[-8px]"><DonutChart info={{ level: creatorLevel }} showToolTip={false} background={'#1A1A1A'} /></div>
 
-                      </div>
-                      <div className="pt-5">
-                        <div className="flex gap-2">
-                          <div className="text-[16px] font-bold">{currentProfile.name ? currentProfile.name : currentProfile.handle ? currentProfile.handle.split('.')[0] : ''}</div>
-                          {/* <Image
+                        </div>
+                        <div className="pt-5">
+                          <div className="flex gap-2">
+                            <div className="text-[16px] font-bold">{currentProfile.name ? currentProfile.name : currentProfile.handle ? currentProfile.handle.split('.')[0] : ''}</div>
+                            {/* <Image
                       className="rounded-[10px]"
                       src={ImgNamexp}
                       alt=""
                     /> */}
-                          {
-                            nftList.length > 0 &&
-                            <Image
-                              className="h-[20px] w-[20px] object-cover"
-                              alt=''
-                              src={ImgPremium}
-                            />
-                          }
-                        </div>
-                        <p className="text-sm text-gray mb-[10px]">@{currentProfile.handle}</p>
-                        <div className="flex gap-3 mb-[10px]">
-                          <button className="flex py-1 px-2 items-center justify-center gap-2 radius-btn-shadow rounded-[12px]" onClick={() => window.open(`https://polygonscan.com/address/${currentProfile.address}`, '_blank')}>
-                            <div className="text-gray text-[12px]">{shortenAddr(currentProfile.address)}</div>
-                            <div className="h-[14px] w-[14px] rounded-[50%] bg-[#8247E5] flex items-center justify-center hover:opacity-70">
+                            {
+                              nftList.length > 0 && showPremiumGif &&
                               <Image
-                                src={ImgPolygonpath}
-                                alt=""
+                                className="h-[20px] w-[20px] object-cover"
+                                alt=''
+                                src={ImgPremium}
                               />
-                            </div>
-                          </button>
-                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[28px] w-[28px] rounded-[50%]">
-                            <div className="h-[22px] w-[22px] rounded-[50%] bg-[#8247E5] flex items-center justify-center" onClick={() => window.open(`https://lenster.xyz/u/${currentProfile.handle}`, '_blank')}>
+                            }
+                            {
+                              nftList.length > 0 && !showPremiumGif &&
                               <Image
-                                src={ImgLenster}
-                                className="h-[14px] w-[14px] object-cover"
-                                alt=""
+                                className="h-[20px] w-[20px] object-cover"
+                                alt=''
+                                src={SvgPremium}
                               />
-                            </div>
-                          </button>
-                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[28px] w-[28px] rounded-[50%]">
-                            <div className="h-[22px] w-[22px] rounded-[50%] bg-[#2081E2] flex items-center justify-center" onClick={() => window.open(`https://opensea.io/assets/matic/0xdb46d1dc155634fbc732f92e853b10b288ad5a1d/${currentProfile.profileId}`, '_blank')}>
+                            }
+                          </div>
+                          <p className="text-sm text-gray mb-[10px]">@{currentProfile.handle}</p>
+                          <div className="flex gap-3 mb-[10px]">
+                            <button className="flex py-1 px-2 items-center justify-center gap-2 radius-btn-shadow rounded-[12px]" onClick={() => window.open(`https://polygonscan.com/address/${currentProfile.address}`, '_blank')}>
+                              <div className="text-gray text-[12px]">{shortenAddr(currentProfile.address)}</div>
+                              <div className="h-[14px] w-[14px] rounded-[50%] bg-[#8247E5] flex items-center justify-center hover:opacity-70">
+                                <Image
+                                  src={ImgPolygonpath}
+                                  alt=""
+                                />
+                              </div>
+                            </button>
+                            <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[28px] w-[28px] rounded-[50%]">
+                              <div className="h-[22px] w-[22px] rounded-[50%] bg-[#8247E5] flex items-center justify-center" onClick={() => window.open(`https://lenster.xyz/u/${currentProfile.handle}`, '_blank')}>
+                                <Image
+                                  src={ImgLenster}
+                                  className="h-[14px] w-[14px] object-cover"
+                                  alt=""
+                                />
+                              </div>
+                            </button>
+                            <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[28px] w-[28px] rounded-[50%]">
+                              <div className="h-[22px] w-[22px] rounded-[50%] bg-[#2081E2] flex items-center justify-center" onClick={() => window.open(`https://opensea.io/assets/matic/0xdb46d1dc155634fbc732f92e853b10b288ad5a1d/${currentProfile.profileId}`, '_blank')}>
+                                <Image
+                                  src={ImgOpensea}
+                                  className="h-[14px] w-[14px] object-cover ml-[1px]"
+                                  alt=""
+                                />
+                              </div>
+                            </button>
+                          </div>
+                          <div className="flex gap-3">
+                            {
+                              account && currentProfile.address !== currentLoginProfile.address &&
+                              <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]">
+                                <Follow
+                                  profileId={currentProfile.profileId}
+                                  handle={currentProfile.handle}
+                                />
+                              </button>
+                            }
+                            {
+                              currentProfile.address === currentLoginProfile.address &&
+                              <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" onClick={() => window.open(`https://www.lensfrens.xyz/${currentProfile.handle}`, '_blank')}>
+                                <Image
+                                  src={ImgEdit}
+                                  alt=""
+                                />
+                              </button>
+                            }
+                            <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]"
+                              onClick={() =>
+                                copyToClipboard(`${window.location.origin}/profile/${currentProfile.handle ? currentProfile.handle.split('.')[0] : 'stani'}`)
+                              }>
                               <Image
-                                src={ImgOpensea}
-                                className="h-[14px] w-[14px] object-cover ml-[1px]"
+                                src={ImgCopy}
                                 alt=""
-                              />
-                            </div>
-                          </button>
-                        </div>
-                        <div className="flex gap-3">
-                          {
-                            account && currentProfile.address !== currentLoginProfile.address &&
-                            <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]">
-                              <Follow
-                                profileId={currentProfile.profileId}
-                                handle={currentProfile.handle}
                               />
                             </button>
-                          }
-                          {
-                            currentProfile.address === currentLoginProfile.address &&
-                            <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" onClick={() => window.open(`https://www.lensfrens.xyz/${currentProfile.handle}`, '_blank')}>
+                            <button className="flex items-center justify-center radius-btn-shadow h-[32px] w-[32px] rounded-[50%]" onClick={() => downLoadHtml2Img()}>
                               <Image
-                                src={ImgEdit}
+                                src={ImgDownLoad}
                                 alt=""
                               />
                             </button>
-                          }
-                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]"
-                            onClick={() =>
-                              copyToClipboard(`${window.location.origin}/profile/${currentProfile.handle ? currentProfile.handle.split('.')[0] : 'stani'}`)
-                            }>
-                            <Image
-                              src={ImgCopy}
-                              alt=""
-                            />
-                          </button>
-                          <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" onClick={() => downLoadHtml2Img()}>
-                            <Image
-                              src={ImgDownLoad}
-                              alt=""
-                            />
-                          </button>
+                          </div>
                         </div>
                       </div>
+                      <div className="text-[14px] text-gray pl-8 mt-3 mb-3 h-[80px] overflow-y-auto">
+                        <p className="mt-3">{introduce}</p>
+                      </div>
+                      <div className="flex items-center w-full flex-wrap justify-between pl-8">
+                        {
+                          currentIndicators.map((t: any, i: number) => (
+                            <div key={i} className={`w-[calc(50%-10px)] mr-[10px] mb-[10px] pl-[8px] h-[40px] flex items-center gap-2 ${getBgStyle(i)} rounded-[10px]`}>
+                              <Image
+                                src={t.imgUrl}
+                                className="w-[24px] h-[24px]"
+                                alt=""
+                              />
+                              <div>
+                                <div className="text-[18px] block h-[20px]">{t.acount}</div>
+                                <div className="text-[14px] text-gray block">{t.text}</div>
+                              </div>
+                            </div>
+                          ))
+                        }
+                      </div>
                     </div>
-                    <div className="text-[14px] text-gray pl-8 mt-3 mb-3 h-[80px] overflow-y-auto">
-                      <p className="mt-3">{introduce}</p>
-                    </div>
-                    <div className="flex items-center w-full flex-wrap justify-between pl-8">
+                    <div className="w-1/2 h-full px-8 py-4">
                       {
-                        currentIndicators.map((t: any, i: number) => (
-                          <div key={i} className={`w-[calc(50%-10px)] mr-[10px] mb-[10px] pl-[8px] h-[40px] flex items-center gap-2 ${getBgStyle(i)} rounded-[10px]`}>
-                            <Image
-                              src={t.imgUrl}
-                              className="w-[24px] h-[24px]"
-                              alt=""
-                            />
-                            <div>
-                              <div className="text-[18px] block h-[20px]">{t.acount}</div>
-                              <div className="text-[14px] text-gray block">{t.text}</div>
+                        rate.map((t: any, i: number) => (
+                          <div key={i} className="w-1/2 h-[148px] float-left flex items-center justify-center"
+                            onMouseEnter={() => setRateHoveActive(i)}
+                            onMouseLeave={() => setRateHoveActive('')}>
+                            <div className="h-[90%] w-[90%]">
+                              <DonutChart info={t} showToolTip={true} />
                             </div>
                           </div>
                         ))
                       }
                     </div>
                   </div>
-                  <div className="w-1/2 h-full px-8 py-4">
-                    {
-                      rate.map((t: any, i: number) => (
-                        <div key={i} className="w-1/2 h-[148px] float-left flex items-center justify-center"
-                          onMouseEnter={() => setRateHoveActive(i)}
-                          onMouseLeave={() => setRateHoveActive('')}>
-                          <div className="h-[90%] w-[90%]">
-                            <DonutChart info={t} showToolTip={true} />
-                          </div>
-                        </div>
-                      ))
-                    }
-                  </div>
-                </div>
                 </div>
                 {
                   nftList.length > 0 &&
-                  <div className="w-[fit-content] h-[fit-content] px-4 py-2 nft-bg text-[18px] font-[600] ml-5">NFT</div>
+                  <div className="w-[fit-content] h-[fit-content] px-4 py-2 nft-bg text-[18px] font-[600] ml-10">NFT</div>
                 }
-                <div className=" w-[762px] flex items-center justify-center">
-                <div className="h-[260px] w-[722px] ml-[auto] relative profile-nft mb-16" onMouseEnter={() => setShowNftBtn(true)} onMouseLeave={() => setShowNftBtn(false)}>
-                  <Carousel dotPosition={'bottom'} ref={carouselRef}>
-                    {
-                      nftList.map((t: any, i: number) => (
-                        <div key={i}>
-                          <div className="flex items-center justify-left gap-10">
-                            {t.map((item: any, index: number) =>
-                              <div className={`hover:scale-110 transition-all relative ${index === 0 ? 'ml-[20px]' : index === 3 ? 'mr-[20px]' : ''}`} key={index}>
-                                <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item.id}.png`} className="cursor-pointer w-[150px] h-[160px] rounded-tl-[12px] rounded-tr-[12px]"
-                                  onMouseEnter={() => setActiveHoverIndex(`${i}${index}`)}
-                                />
-                                {/* {
+                <div className=" w-[800px] flex items-center justify-center">
+                  <div className="h-[260px] w-[760px] mx-[auto] relative profile-nft mb-16" onMouseEnter={() => setShowNftBtn(true)} onMouseLeave={() => setShowNftBtn(false)}>
+                    <Carousel dotPosition={'bottom'} ref={carouselRef}>
+                      {
+                        nftList.map((t: any, i: number) => (
+                          <div key={i}>
+                            <div className="flex items-center justify-left gap-10">
+                              {t.map((item: any, index: number) =>
+                                <div className={`hover:scale-110 transition-all relative ${index === 0 ? 'ml-[20px]' : index === 3 ? 'mr-[20px]' : ''}`} key={index}>
+                                  <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item.id}.png`} className="cursor-pointer w-[150px] h-[160px] rounded-tl-[12px] rounded-tr-[12px]"
+                                    onMouseEnter={() => setActiveHoverIndex(`${i}${index}`)}
+                                  />
+                                  {/* {
                                 activeHoverIndex === `${i}${index}` &&
                                 <div className="absolute left-0 top-0 w-[150px] h-[160px] bg-[rgba(0,0,0,0.4)] flex items-center justify-center" onMouseLeave={() => setActiveHoverIndex('')}>
                                   <div className="cursor-pointer">
@@ -537,37 +550,37 @@ const profile = () => {
                                   </div>
                                 </div>
                               } */}
-                                <div className="flex justify-between items-center bg-[#1A1A1A] h-[40px] px-3 rounded-bl-[12px] rounded-br-[12px]">
-                                  <div className="text-[#fff]">No.{item.id}</div>
-                                  <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
-                                    <div className="h-[18px] w-[18px] rounded-[50%] bg-[#2081E2] flex items-center justify-center" onClick={() => window.open(`https://opensea.io/assets/matic/0xa803aabd68dd0fcf9eabc25f71f155222805e9e0/${item.id}`, '_blank')}>
-                                      <Image
-                                        src={ImgOpensea}
-                                        className="h-[12px] w-[12px] object-cover"
-                                        alt=""
-                                      />
-                                    </div>
-                                  </button>
+                                  <div className="flex justify-between items-center bg-[#1A1A1A] h-[40px] px-3 rounded-bl-[12px] rounded-br-[12px]">
+                                    <div className="text-[#fff]">No.{item.id}</div>
+                                    <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
+                                      <div className="h-[18px] w-[18px] rounded-[50%] bg-[#2081E2] flex items-center justify-center" onClick={() => window.open(`https://opensea.io/assets/matic/0xa803aabd68dd0fcf9eabc25f71f155222805e9e0/${item.id}`, '_blank')}>
+                                        <Image
+                                          src={ImgOpensea}
+                                          className="h-[12px] w-[12px] object-cover"
+                                          alt=""
+                                        />
+                                      </div>
+                                    </button>
+                                  </div>
                                 </div>
-                              </div>
-                            )}
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      ))
+                        ))
+                      }
+                    </Carousel>
+                    {
+                      showNftBtn && nftTotal > 4 &&
+                      <>
+                        <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[20px] translate-x-[-24px] translate-y-[-50%]" onClick={() => carouselRef.current?.prev()}>
+                          <LeftOutlined className="text-[18px] text-[700]" />
+                        </button>
+                        <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[20px] translate-x-[24px] translate-y-[-50%]" onClick={() => carouselRef.current?.next()}>
+                          <RightOutlined className="text-[18px] text-[700]" />
+                        </button>
+                      </>
                     }
-                  </Carousel>
-                  {
-                    showNftBtn && nftTotal > 4 &&
-                    <>
-                      <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[20px] translate-x-[-24px] translate-y-[-50%]" onClick={() => carouselRef.current?.prev()}>
-                        <LeftOutlined className="text-[18px] text-[700]" />
-                      </button>
-                      <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[20px] translate-x-[24px] translate-y-[-50%]" onClick={() => carouselRef.current?.next()}>
-                        <RightOutlined className="text-[18px] text-[700]" />
-                      </button>
-                    </>
-                  }
-                </div>
+                  </div>
                 </div>
               </div>
             ) : (
