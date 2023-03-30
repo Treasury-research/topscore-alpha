@@ -474,7 +474,7 @@ const profile = () => {
                                 alt=""
                               />
                             </button>
-                            <button className="flex items-center justify-center radius-btn-shadow h-[32px] w-[32px] rounded-[50%]" onClick={() => downLoadHtml2Img()}>
+                            <button className="flex items-center justify-center visited:opacity-100 hover:opacity-70 radius-btn-shadow h-[32px] w-[32px] rounded-[50%]" onClick={() => downLoadHtml2Img()}>
                               <Image
                                 src={ImgDownLoad}
                                 alt=""
