@@ -28,9 +28,9 @@ import ChangeProfile from "./connect/ChangeProfile";
 import { ConsoleSqlOutlined, DownOutlined, LoadingOutlined } from "@ant-design/icons";
 import PermissionMsg from './connect/PermissionMsg'
 
-const noLensMsg = 'You need to hold Lens Handle, please go to Opensea to open it, all our functions can be realized.'
+const noLensMsg = 'You don‘t have your own Lens handle，you can get one on OpenSea.'
 
-const noNftMsg = 'You need Campagin NFT, please go to Opensea settings, all our functions can be achieved.'
+const noNftMsg = 'You need to hold a TopScore NFT to unlock the functions.'
 
 const lensCollectionLink = 'https://opensea.io/collection/lens-protocol-profiles'
 
