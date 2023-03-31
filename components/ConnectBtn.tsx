@@ -17,7 +17,7 @@ import {
   commendProfileListState
 } from "../store/state";
 import useWeb3Context from "../hooks/useWeb3Context";
-import { Popover, Dropdown, Space, Menu, Drawer, Input } from "antd";
+import { Popover, Dropdown, Space, Drawer, Input } from "antd";
 import { useRouter } from "next/router";
 import api from "../api";
 import LoginConnect from "./connect/LoginConnect";
@@ -381,8 +381,9 @@ const ConnectBtn = (props: any) => {
           <Dropdown
             open={openLensDrop}
             onOpenChange={(e: any) => setOpenLensDrop(e)}
+            trigger={['click']}
             overlay={
-              <Menu className="lens-switch-component">
+              <div className="lens-switch-component">
                 <div className={`py-1 mx-[5%] text-[#fff] ${props.type == 2 && !knn3TokenValid ? 'w-[200px]' : 'w-[90%]'}`}>
                   {
                     ((props.type == 2 && knn3TokenValid && account) || props.type === 1) &&
@@ -485,7 +486,7 @@ const ConnectBtn = (props: any) => {
                     </>
                   }
                 </div>
-              </Menu>
+              </div>
             }
           >
             <div onClick={(e) => e.preventDefault()} className="flex h-full">
