@@ -439,7 +439,7 @@ const ChartLine = (props: any) => {
           }
         }, {
           type: 'value',
-          name: (type === 0 || type === 1) ? 'Followers' : 'Earnings（WMATIC）',
+          name: (type === 0 || type === 1) ? 'Followers' : '',
           nameLocation: 'end',
           minInterval: 1,
           nameTextStyle: {
