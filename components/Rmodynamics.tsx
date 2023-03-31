@@ -18,6 +18,21 @@ import BN from "bignumber.js";
 
 const dys = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
+const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sept',
+    'Oct',
+    'Nov',
+    'Dec'
+]
+
 let maxRemoData: any = [0, 0, 0, 0, 0]
 
 let weekCount = 0;
@@ -382,7 +397,8 @@ const rmodynamics = () => {
         if (!e || !checked.includes(true)) return ''
         let current_hs = Number(moment(`2023/${week[0]}`).format("x"))
         let strDate = moment(current_hs + i * 24 * 60 * 60 * 1000).format(`YYYY/MM/DD`)
-        let h = idx <= 12 ? `${idx} AM` : `${idx - 12} PM`
+        // let h = idx <= 12 ? `${idx} AM` : `${idx - 12} PM`
+        let h = idx == 0 ? `12 AM` : idx < 12 ? `${idx} AM` : idx == 12 ? `12 PM` : `${idx - 12} PM`
         return (
             <div>
                 {/* {
@@ -399,7 +415,7 @@ const rmodynamics = () => {
                 } */}
 
                 <p className="text-[18px] font-[600]">
-                    {weekCount === 0 ? `${dys[i]}, ${h} UTC` : `${dys[i]} ${strDate.slice(8, 10)}, ${h} UTC`}
+                    {weekCount === 0 ? `${dys[i]}, ${h} UTC` : `${months[Number(strDate.slice(5, 7)) - 1]} ${strDate.slice(8, 10)}, ${h} UTC`}
                 </p>
                 <div>
                     {
@@ -527,11 +543,11 @@ const rmodynamics = () => {
                                     </div>
                                     <div className="text-[12px] w-full flex justify-center overflow-hidden">
                                         <div className="w-[718px] ml-[42px]">
-                                            <div className="w-[180px] float-left">0AM</div>
-                                            <div className="w-[175px] float-left">6AM</div>
                                             <div className="w-[180px] float-left">12AM</div>
+                                            <div className="w-[175px] float-left">6AM</div>
+                                            <div className="w-[180px] float-left">12PM</div>
                                             <div className="float-left">6PM</div>
-                                            <div className="float-right mr-0">12PM</div>
+                                            <div className="float-right mr-0">11PM</div>
                                         </div>
 
                                     </div>
