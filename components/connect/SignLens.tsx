@@ -24,7 +24,7 @@ const SignLens = (props: any) => {
 
     return (
         <Modal title="Basic Modal" open={true} onOk={handleOk} onCancel={handleCancel}>
-            <div className='flex items-center pb-5 border-b-[1px] border-[#4A4A4A] mb-5'>
+            <div className='flex items-center pb-3 border-b-[1px] border-[#4A4A4A] mb-2'>
                 <div className='flex items-center'>
                     <Image
                         src={Plogin}
@@ -40,7 +40,7 @@ const SignLens = (props: any) => {
             <div className="text-[16px] text-[rgba(255,255,255,0.8)]">
                 <div className="text-[#EEFBFF] text-[20px]">Connect your wallet.</div>
                 <div className="text-[#6C747D] text-[14px]">Connect with one of available wallet providers or create a new one.</div>
-                <div className="mt-5">
+                <div className="mt-4">
                     <button onClick={signin} className="bg-[#CE3900] px-[8px] py-2 rounded-[4px] font-[600] flex items-center">
                         <Image
                             src={P1}
