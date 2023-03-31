@@ -143,8 +143,8 @@ const PubCard = (props: any) => {
                 {
                   pubData.map((t: any, i: number) => (
                     <div className='bg-[#1A1A1A] rounded-[10px] mb-[10px] py-3 flex mb-4' key={i}>
-                      <div className="flex w-[60%]">
-                        <div className='w-[100px] flex items-center justify-center cursor-pointer' onClick={() => toLesnter(t)}>#{t.pubId}</div>
+                      <div className="flex w-[60%] items-center">
+                        <div className='w-[80px] h-[30px] mx-[20px] rounded-[20px] flex items-center justify-center cursor-pointer radius-btn-shadow hover:opacity-70' onClick={() => toLesnter(t)}>#{t.pubId}</div>
                         <div className='w-[calc(100%-100px)] text-[14px]'>
                           {t.content}
                         </div>

@@ -222,6 +222,7 @@ export const Web3ContextProvider = ({ children }) => {
   const doLogin = async () => {
     const challenge = (await lensApi.getChallenge(account || "")).challenge
       .text;
+      console.log(challenge)
     const signature = await signMessage(challenge);
 
     await doKnn3Login(challenge, signature, account);

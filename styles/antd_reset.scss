@@ -117,18 +117,57 @@
   color: #fff !important;
 }
 
+// .ant-switch{
+//   background: #fff !important;
+// }
+
+// .ant-switch-inner {
+//   background: #979797 !important;
+// }
+
+// .ant-switch-checked .ant-switch-inner {
+//   background: #979797 !important;
+// }
+
+// .ant-switch-checked .ant-switch-handle::before {
+//   background: #fff !important;
+//   ;
+// }
+
+
+// .ant-switch-inner {
+//   background: #979797 !important;
+// }
+
+// .ant-switch-handle::before {
+//   background: #fff !important;
+//   ;
+// }
+
+// .ant-checkbox-inner {
+//   background-color: #CE3900 !important;
+//   border-color: #CE3900 !important;
+// }
+// .ant-checkbox-checked:after{
+//   border: none !important;
+// }
+
+.ant-switch-checked{
+  background: none !important;
+}
+
 .ant-switch-checked .ant-switch-inner {
-  background: #979797 !important;
+  background: rgba(255,51,0,0.7) !important;
+  ;
 }
 
 .ant-switch-checked .ant-switch-handle::before {
   background: #fff !important;
-  ;
 }
 
 
 .ant-switch-inner {
-  background: #979797 !important;
+  background: rgba(186,186,186, 0.5) !important;
 }
 
 .ant-switch-handle::before {
@@ -140,6 +179,7 @@
   background-color: #CE3900 !important;
   border-color: #CE3900 !important;
 }
+
 .ant-checkbox-checked:after{
   border: none !important;
 }
