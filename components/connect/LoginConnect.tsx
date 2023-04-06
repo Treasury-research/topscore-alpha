@@ -69,5 +69,4 @@ const LoginConnect = (props: any) => {
     )
 }
 
-
 export default LoginConnect

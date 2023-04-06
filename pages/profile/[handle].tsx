@@ -309,26 +309,6 @@ const profile = () => {
   }
 
   const downLoadHtml2Img = () => {
-    // html2canvas(document.getElementById('aphoto'), {
-    //   allowTaint: false,
-    //   useCORS: true,
-    // }).then(canvas => {
-    //   const link = document.createElement('a');
-    //   const event = new MouseEvent('click');
-    //   link.download = `TopScore_${currentProfile.handle}.jpg`;
-    //   link.href = canvas.toDataURL();
-    //   link.dispatchEvent(event);
-    // })
-
-    // domtoimage.toBlob(document.getElementById('aphoto'))
-    // .then(function (blob) {
-    //   console.log(blob)
-    //         const link = document.createElement('a');
-    //   const event = new MouseEvent('click');
-    //   link.download = `TopScore_${currentProfile.handle}.jpg`;
-    //   link.href = blob;
-    //   link.dispatchEvent(event);
-    // });
     setShowPremiumGif(false)
     setTimeout(() => {
       domtoimage.toJpeg(document.getElementById('aphoto'), { quality: 0.95 })
@@ -351,8 +331,6 @@ const profile = () => {
       getIntroduce()
     }
   }, [currentProfile.profileId])
-
-
 
   useEffect(() => {
     if (router && router.query && router.query.handle) {

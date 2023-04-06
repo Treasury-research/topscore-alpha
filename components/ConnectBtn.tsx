@@ -369,7 +369,7 @@ const ConnectBtn = (props: any) => {
     if (account) {
       doLogin()
     } else {
-      connectWallet()
+      handleShowModal(true,0)
     }
   }
 
@@ -394,7 +394,7 @@ const ConnectBtn = (props: any) => {
                   {
                     props.type == 2 && !knn3TokenValid &&
                     <div className="w-[90%] text-center py-1 bg-[#fff] rounded-[4px] text-[#000] text-[14px] font-[600] cursor-pointer" onClick={() => connectOrLogin()}>
-                      {account ? 'Log in' : 'Connect'} to view more
+                      Log in to view more
                     </div>
                   }
 
