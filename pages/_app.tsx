@@ -3,6 +3,7 @@ import "../styles/globals.css";
 import "../styles/custom.scss";
 import { Web3ContextProvider } from "../context/Web3Context";
 import { ToastContainer } from "react-toastify";
+import trace from "../api/trace";
 // import Coming from "../components/Coming";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/antd_reset.scss";
@@ -15,6 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     // Run within useEffect to execute this code on the frontend.
     Gleap.initialize("sg1UIYFMK3J926CjXOFNUTR26T1uF6yB");
+    trace("View APP");
   }, []);
 
   return (
