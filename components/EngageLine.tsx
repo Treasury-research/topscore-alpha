@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import * as echarts from 'echarts';
+import trace from "../api/trace";
 
 const overLineColor = ['#009589', '#830000', '#001FB9']
 
@@ -474,6 +475,62 @@ const ChartLine = (props: any) => {
     const HTMLElement = document.getElementById(id) as HTMLElement;
 
     const chart = echarts.init(HTMLElement);
+
+    chart.on('legendselectchanged', (e:any) => {
+      if(e.name === 'Comments (by)'){
+        if(e.selected['Comments (by)']){
+          trace('Stack-OV-Cmtby-On')
+        }else{
+          trace('Stack-OV-Cmtby-Off')
+        }
+      }
+      if(e.name === 'Mirrors (by)'){
+        if(e.selected['Mirrors (by)']){
+          trace('Stack-OV-Mirby-On')
+        }else{
+          trace('Stack-OV-Mirby-Off')
+        }
+      }
+      if(e.name === 'Collected (by)'){
+        if(e.selected['Collected (by)']){
+          trace('Stack-OV-Colby-On')
+        }else{
+          trace('Stack-OV-Colby-Off')
+        }
+      }
+      if(type == 1){
+        if(e.name === 'Others'){
+          if(e.selected['Others']){
+            trace('Stack-EG-Others-On')
+          }else{
+            trace('Stack-EG-Others-Off')
+          }
+        }
+        if(e.name.includes('#')){
+          if(e.selected[e.name]){
+            trace('Stack-EG-Pub-On')
+          }else{
+            trace('Stack-EG-Pub-Off')
+          }
+        }
+      }
+      if(type == 2){
+        if(e.name === 'Others'){
+          if(e.selected['Others']){
+            trace('Stack-CL-Others-On')
+          }else{
+            trace('Stack-CL-Others-Off')
+          }
+        }
+        if(e.name.includes('#')){
+          if(e.selected[e.name]){
+            trace('Stack-CL-Pub-On')
+          }else{
+            trace('Stack-CL-Pub-Off')
+          }
+        }
+      }
+    })
 
     chart.setOption({ ...option });
 

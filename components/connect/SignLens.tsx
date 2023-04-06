@@ -6,6 +6,7 @@ import Plogin from '../../statics/img/login-head-icon.png'
 import P1 from '../../statics/img/Lens.svg'
 import P2 from '../../statics/img/change_wallet.svg'
 import { CloseOutlined } from "@ant-design/icons";
+import trace from "../../api/trace";
 
 const SignLens = (props: any) => {
     const { account, connectWallet, chainId, doLogin, doLogout } = useWeb3Context();
@@ -18,6 +19,7 @@ const SignLens = (props: any) => {
     };
 
     const signin = async () => {
+        trace('Login-Signin')
         await doLogin();
         handleCancel();
     }

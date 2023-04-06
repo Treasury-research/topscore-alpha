@@ -9,6 +9,7 @@ import Mirror from '../statics/img/mirror_1.svg'
 import Comment from '../statics/img/pubIcon/commentBig.svg'
 import Post from '../statics/img/post_icon.svg'
 import Image from 'next/image'
+import trace from "../api/trace";
 
 const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -82,6 +83,11 @@ const DashRmodynamics = () => {
             getTotalCommentData()
             getTotalMirrorData()
         }
+        if(activeTab == 0){
+            trace('Annual_2023')
+        }else{
+            trace('Annual_2022')
+        }
     }, [activeTab, currentProfile])
 
     useEffect(() => {
@@ -95,6 +101,37 @@ const DashRmodynamics = () => {
         }
     }, [checked, currentProfile])
 
+
+    useEffect(() => {
+        if(checked[0]){
+            trace('Annual-Posts-On')
+        }else{
+            trace('Annual-Posts-Off')
+        }
+    }, [checked[0]])
+
+    useEffect(() => {
+        if(checked[1]){
+            trace('Annual-Comments-On')
+        }else{
+            trace('Annual-Comments-Off')
+        }
+    }, [checked[1]])
+
+    useEffect(() => {
+        if(checked[2]){
+            trace('Annual-Mirrors-On')
+        }else{
+            trace('Annual-Mirrors-Off')
+        }
+    }, [checked[2]])
+
+    useEffect(() => {
+        if(checkedPub){
+            trace('Annual-Publications-On')
+        }
+    }, [checkedPub])
+    
     useEffect(() => {
         if (checkedPub) {
             setChecked([true, true, true])
@@ -529,7 +566,8 @@ const DashRmodynamics = () => {
                                                                 (
                                                                     <div key={index} className={`${getBorderStyle([i, index])} box-border h-[13px] w-[13px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
                                                                 ) : (<Popover key={index} placement="bottom" content={() => getContent(item, i, index)}>
-                                                                    <div className={`${getBorderStyle([i, index])} box-border h-[13px] w-[13px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
+                                                                    <div className={`${getBorderStyle([i, index])} box-border h-[13px] w-[13px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}
+                                                                    onMouseEnter={() => trace('Annual-Tip')}></div>
                                                                 </Popover>)
                                                             // <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
                                                         ))

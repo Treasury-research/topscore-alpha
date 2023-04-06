@@ -31,6 +31,7 @@ import SvgPremium from '../../statics/img/premium.svg'
 import api from "../../api";
 import lensApi from "../../api/lensApi";
 import domtoimage from 'dom-to-image';
+import trace from "../../api/trace";
 
 import {
   currentProfileState,
@@ -263,7 +264,6 @@ const profile = () => {
 
   const getIntroduce = async () => {
     const res = await lensApi.getProfileByHandle(currentProfile.handle);
-    console.log(res)
     if (res && res.bio) {
       setIntroduce(res.bio)
     } else {
@@ -274,7 +274,6 @@ const profile = () => {
   const getCurrentProfileByRouter = async (str: any) => {
     setLoadingRouterHandle(true)
     const res = await api.get(`/lens/handles/byHandles/${str}.lens`)
-    console.log('search.lens', res)
     setTimeout(() => {
       setLoadingRouterHandle(false)
     }, 500)
@@ -342,6 +341,12 @@ const profile = () => {
     }
   }, [router])
 
+  useEffect(() => {
+    if(rateHoveActive !== ''){
+      trace(`Card-${grades[rateHoveActive]['text']}`)
+    }
+  }, [rateHoveActive])
+  
   return (
     <div className="w-full h-full bg-[#000] flex profile-v2">
       <Navbar />
@@ -396,7 +401,8 @@ const profile = () => {
                           </div>
                           <p className="text-sm text-gray mb-[10px]">@{currentProfile.handle}</p>
                           <div className="flex gap-3 mb-[10px]">
-                            <button className="flex py-1 px-2 items-center justify-center gap-2 radius-btn-shadow rounded-[12px]" onClick={() => window.open(`https://polygonscan.com/address/${currentProfile.address}`, '_blank')}>
+                            <button className="flex py-1 px-2 items-center justify-center gap-2 radius-btn-shadow rounded-[12px]" 
+                            onClick={() => {window.open(`https://polygonscan.com/address/${currentProfile.address}`, '_blank');trace('Card-PolygonScan')}}>
                               <div className="text-gray text-[12px]">{shortenAddr(currentProfile.address)}</div>
                               <div className="h-[14px] w-[14px] rounded-[50%] bg-[#8247E5] flex items-center justify-center hover:opacity-70">
                                 <Image
@@ -406,7 +412,8 @@ const profile = () => {
                               </div>
                             </button>
                             <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[28px] w-[28px] rounded-[50%]">
-                              <div className="h-[22px] w-[22px] rounded-[50%] bg-[#8247E5] flex items-center justify-center" onClick={() => window.open(`https://lenster.xyz/u/${currentProfile.handle}`, '_blank')}>
+                              <div className="h-[22px] w-[22px] rounded-[50%] bg-[#8247E5] flex items-center justify-center" 
+                              onClick={() => {window.open(`https://lenster.xyz/u/${currentProfile.handle}`, '_blank');trace('Card-Lenster')}}>
                                 <Image
                                   src={ImgLenster}
                                   className="h-[14px] w-[14px] object-cover"
@@ -415,7 +422,8 @@ const profile = () => {
                               </div>
                             </button>
                             <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[28px] w-[28px] rounded-[50%]">
-                              <div className="h-[22px] w-[22px] rounded-[50%] bg-[#2081E2] flex items-center justify-center" onClick={() => window.open(`https://opensea.io/assets/matic/0xdb46d1dc155634fbc732f92e853b10b288ad5a1d/${currentProfile.profileId}`, '_blank')}>
+                              <div className="h-[22px] w-[22px] rounded-[50%] bg-[#2081E2] flex items-center justify-center" 
+                              onClick={() => {window.open(`https://opensea.io/assets/matic/0xdb46d1dc155634fbc732f92e853b10b288ad5a1d/${currentProfile.profileId}`, '_blank');trace('Card-Opensea')}}>
                                 <Image
                                   src={ImgOpensea}
                                   className="h-[14px] w-[14px] object-cover ml-[1px]"
@@ -436,7 +444,8 @@ const profile = () => {
                             }
                             {
                               currentProfile.address === currentLoginProfile.address &&
-                              <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" onClick={() => window.open(`https://www.lensfrens.xyz/${currentProfile.handle}`, '_blank')}>
+                              <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]" 
+                              onClick={() => {window.open(`https://www.lensfrens.xyz/${currentProfile.handle}`, '_blank');trace('Card-Edit')}}>
                                 <Image
                                   src={ImgEdit}
                                   alt=""
@@ -445,14 +454,15 @@ const profile = () => {
                             }
                             <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]"
                               onClick={() =>
-                                copyToClipboard(`${window.location.origin}/profile/${currentProfile.handle ? currentProfile.handle.split('.')[0] : 'stani'}`)
+                                {copyToClipboard(`${window.location.origin}/profile/${currentProfile.handle ? currentProfile.handle.split('.')[0] : 'stani'}`);trace('Card-Copy')}
                               }>
                               <Image
                                 src={ImgCopy}
                                 alt=""
                               />
                             </button>
-                            <button className="flex items-center justify-center visited:opacity-100 hover:opacity-70 radius-btn-shadow h-[32px] w-[32px] rounded-[50%]" onClick={() => downLoadHtml2Img()}>
+                            <button className="flex items-center justify-center visited:opacity-100 hover:opacity-70 radius-btn-shadow h-[32px] w-[32px] rounded-[50%]" 
+                            onClick={() => {downLoadHtml2Img();trace('Card-Download')}}>
                               <Image
                                 src={ImgDownLoad}
                                 alt=""
@@ -511,7 +521,7 @@ const profile = () => {
                               {t.map((item: any, index: number) =>
                                 <div className={`hover:scale-110 transition-all relative ${index === 0 ? 'ml-[20px]' : index === 3 ? 'mr-[20px]' : ''}`} key={index}>
                                   <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item.id}.png`} className="cursor-pointer w-[150px] h-[160px] rounded-tl-[12px] rounded-tr-[12px]"
-                                    onMouseEnter={() => setActiveHoverIndex(`${i}${index}`)}
+                                    onMouseEnter={() => {setActiveHoverIndex(`${i}${index}`);trace('NFT-Scale')}}
                                   />
                                   {/* {
                                 activeHoverIndex === `${i}${index}` &&
@@ -531,7 +541,8 @@ const profile = () => {
                                   <div className="flex justify-between items-center bg-[#1A1A1A] h-[40px] px-3 rounded-bl-[12px] rounded-br-[12px]">
                                     <div className="text-[#fff]">No.{item.id}</div>
                                     <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
-                                      <div className="h-[18px] w-[18px] rounded-[50%] bg-[#2081E2] flex items-center justify-center" onClick={() => window.open(`https://opensea.io/assets/matic/0xa803aabd68dd0fcf9eabc25f71f155222805e9e0/${item.id}`, '_blank')}>
+                                      <div className="h-[18px] w-[18px] rounded-[50%] bg-[#2081E2] flex items-center justify-center" 
+                                      onClick={() => {window.open(`https://opensea.io/assets/matic/0xa803aabd68dd0fcf9eabc25f71f155222805e9e0/${item.id}`, '_blank');trace('NFT-Opensea')}}>
                                         <Image
                                           src={ImgOpensea}
                                           className="h-[12px] w-[12px] object-cover"
@@ -550,10 +561,12 @@ const profile = () => {
                     {
                       showNftBtn && nftTotal > 4 &&
                       <>
-                        <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[20px] translate-x-[-24px] translate-y-[-50%]" onClick={() => carouselRef.current?.prev()}>
+                        <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[20px] translate-x-[-24px] translate-y-[-50%]" 
+                        onClick={() => {carouselRef.current?.prev();trace('NFT-Left')}}>
                           <LeftOutlined className="text-[18px] text-[700]" />
                         </button>
-                        <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[20px] translate-x-[24px] translate-y-[-50%]" onClick={() => carouselRef.current?.next()}>
+                        <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[20px] translate-x-[24px] translate-y-[-50%]"
+                         onClick={() => {carouselRef.current?.next();;trace('NFT-Right')}}>
                           <RightOutlined className="text-[18px] text-[700]" />
                         </button>
                       </>
@@ -566,9 +579,7 @@ const profile = () => {
                 <LoadingOutlined className="text-2xl block mx-auto my-4" />
               </div>
             )
-
           }
-
         </div>
       </div>
     </div >

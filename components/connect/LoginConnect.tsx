@@ -6,6 +6,7 @@ import P1 from '../../statics/img/browser.png'
 import P2 from '../../statics/img/wallect1.png'
 import useWeb3Context from "../../hooks/useWeb3Context";
 import { CloseOutlined } from "@ant-design/icons";
+import trace from "../../api/trace";
 
 const LoginConnect = (props: any) => {
     const { onConnect } = props
@@ -25,6 +26,12 @@ const LoginConnect = (props: any) => {
         if(res){
             handleCancel();
             onConnect();
+        }
+        if(walletName === 'injected'){
+            trace('Login-BrowserWallet')
+        }
+        if(walletName === 'walletconnect'){
+            trace('Login-WalletConnect')
         }
     }
 

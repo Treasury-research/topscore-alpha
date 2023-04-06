@@ -12,6 +12,7 @@ import useWeb3Context from "../../hooks/useWeb3Context";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import ImgLenster from '../../statics/img/lest-head.png'
+import trace from "../../api/trace";
 
 const ChangeProfile = (props: any) => {
     const profileList = useRecoilValue(profileListState);
@@ -19,15 +20,7 @@ const ChangeProfile = (props: any) => {
     // const [currentProfile, setCurrentProfile] = useRecoilState(currentProfileState);
     const [currentLoginProfile, setCurrentLoginProfile] =
     useRecoilState<any>(currentLoginProfileState);
-    const [canLoadAvatar, setCanLoadAvatar] = useState(true);
     const router = useRouter();
-
-    const afterChangeProfile = (profileId: number) => {
-        // 如果在 profile 页面，把 profile 也切换掉。
-        if (router.pathname === "/profile/[address]") {
-            router.push(`/profile/${account}?queryProfileId=${profileId}`);
-        }
-    };
 
     const handleOk = () => {
         props.onCancel();
@@ -57,7 +50,7 @@ const ChangeProfile = (props: any) => {
                     {profileList.map((t: any, i: number) => (
                         <div
                             key={i}
-                            onClick={() => { setCurrentLoginProfile(t);handleOk() }}
+                            onClick={() => { setCurrentLoginProfile(t);handleOk();trace('SwitchProfile') }}
                             className="cursor-pointer flex py-1 items-center px-1 rounded-[4px] hover:bg-[#555555]"
                         >
                             {

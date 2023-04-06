@@ -8,7 +8,7 @@ import useFeeFollowContract from "../../contract/useFeeFollowContract";
 import lensApi from "../../lib/lensApi";
 import ImgFollow from "../../statics/img/profileV2/follow.svg"
 import ImgUnFollow from "../../statics/img/profileV2/preson-unfollow.svg"
-
+import trace from "../../api/trace";
 import Image from "next/image";
 
 export default function Lens({ profileId, handle }: any) {
@@ -24,6 +24,7 @@ export default function Lens({ profileId, handle }: any) {
   const { account, chainId } = useWeb3Context();
 
   const doFollow = async () => {
+    trace('Card-Follow')
     const res: any = await lenshubContract.follow(profileId, feeInfo);
     if (res) {
       setFollowBalance((prev: any) => {
@@ -35,6 +36,7 @@ export default function Lens({ profileId, handle }: any) {
   };
 
   const doUnfollow = async () => {
+    trace('Card-Unfollow')
     const res: any = await erc721Contract.burn(
       profileInfo.followNftAddress,
       followBalance[0]

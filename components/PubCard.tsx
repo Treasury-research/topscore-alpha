@@ -8,6 +8,7 @@ import { ethers } from 'ethers'
 import { currentProfileState,topRecentState } from "../store/state";
 import { useRecoilState } from "recoil";
 import dayjs from 'dayjs';
+import trace from "../api/trace";
 
 const tab = [
   ['Top Engaged', 'Top Collected'],
@@ -114,6 +115,32 @@ const PubCard = (props: any) => {
     const proId = ethers.utils.hexlify(t.profileId)
     const pubId = ethers.utils.hexlify(t.pubId)
     window.open(`https://lenster.xyz/posts/${proId}-${pubId}`)
+    trace('List-Jump')
+  }
+
+  const topRecentChange = (i) => {
+    setTopRecentSwitch(i == 0 ? false : true)
+    if(i == 0){
+      if(activeLineTab == 0){
+        trace('List-OV-TopE')
+      }
+      if(activeLineTab == 1){
+        trace('List-EG-Top')
+      }
+      if(activeLineTab == 2){
+        trace('List-CL-Top')
+      }
+    }else{
+      if(activeLineTab == 0){
+        trace('List-OV-TopC')
+      }
+      if(activeLineTab == 1){
+        trace('List-EG-Rec')
+      }
+      if(activeLineTab == 2){
+        trace('List-CL-Rec')
+      }
+    }
   }
 
   return (
@@ -123,7 +150,7 @@ const PubCard = (props: any) => {
           <div className="flex w-[60%] ml-6">
             {
               tabs.map((t: any, i: number) => (
-                <div key={i} onClick={() => setTopRecentSwitch(i == 0 ? false : true)} className={`cursor-pointer w-[140px] flex items-center justify-center px-2 py-1 ${((!topRecentSwitch && i == 0) || (topRecentSwitch && i == 1)) ? 'text-[#fff] border-b-[2px] border-[#fff] text-[18px]' : 'text-[rgba(255,255,255,0.4)] text-[16px]'}`}>{t}</div>
+                <div key={i} onClick={() => topRecentChange(i)} className={`cursor-pointer w-[140px] flex items-center justify-center px-2 py-1 ${((!topRecentSwitch && i == 0) || (topRecentSwitch && i == 1)) ? 'text-[#fff] border-b-[2px] border-[#fff] text-[18px]' : 'text-[rgba(255,255,255,0.4)] text-[16px]'}`}>{t}</div>
               ))
             }
           </div>

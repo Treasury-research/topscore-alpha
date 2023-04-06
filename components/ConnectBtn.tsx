@@ -27,6 +27,7 @@ import ImgHome from "../statics/img/home.svg";
 import ChangeProfile from "./connect/ChangeProfile";
 import { ConsoleSqlOutlined, DownOutlined, LoadingOutlined } from "@ant-design/icons";
 import PermissionMsg from './connect/PermissionMsg'
+import trace from "../api/trace";
 
 const noLensMsg = 'You don‘t have your own Lens handle，you can get one on OpenSea.'
 
@@ -85,7 +86,6 @@ const ConnectBtn = (props: any) => {
   });
 
   useEffect(() => {
-    console.log(currentProfile)
     if (!account || !knn3TokenValid) {
       setInputValue('')
       setIsHaveNft(false)
@@ -99,11 +99,6 @@ const ConnectBtn = (props: any) => {
     getLensHandle();
     getAllNfts()
   }, [account, knn3TokenValid]);
-
-  useEffect(() => {
-    console.log(currentProfile)
-   
-  }, [currentProfile]);
 
   const setCurrentProfileByRouter = (t:any) => {
     setInputValue('')
@@ -253,9 +248,11 @@ const ConnectBtn = (props: any) => {
   const determineLoginModal = async () => {
     if (account) {
       handleShowModal(true, 1);
+      trace('Login')
     } else {
       // await connectWallet();
       handleShowModal(true, 0);
+      trace('ConnectWallet')
     }
   };
 
@@ -279,6 +276,7 @@ const ConnectBtn = (props: any) => {
       clearTimeout(timer);
     }
     timer = setTimeout(() => {
+      traceMethod('SearchResult')
       searchHandle(e.target.value)
     }, 1000);
   }
@@ -309,6 +307,7 @@ const ConnectBtn = (props: any) => {
       msg: noNftMsg,
       link: campignNftLink
     })
+    trace('Opensea-TopScore')
   }
 
   const showLensMsg = () => {
@@ -317,20 +316,20 @@ const ConnectBtn = (props: any) => {
       msg: noLensMsg,
       link: lensCollectionLink
     })
+    trace('Opensea-Lens')
   }
 
   const goHome = () => {
+    traceMethod('Home')
     if (props.type === 1) {
       if (isHaveLensHandle) {
         setCurrentProfileByRouter(profileList[0])
-        // setCurrentProfile(profileList[0])
       } else {
         showLensMsg()
       }
     }
     if (props.type === 2) {
       if (isHaveNft && isHaveLensHandle) {
-        // setCurrentProfile(profileList[0])
         setCurrentProfileByRouter(profileList[0])
       } else if ((isHaveNft && !isHaveLensHandle) || (!isHaveNft && !isHaveLensHandle)) {
         showLensMsg()
@@ -341,15 +340,16 @@ const ConnectBtn = (props: any) => {
   }
 
   const toSearchPermission = () => {
-    console.log(props.type)
     if (props.type === 2) {
       if (!isHaveNft) {
         showCampNftMsg()
       }
     }
+    traceMethod('Search')
   }
 
   const switchMyProfile = (item: any) => {
+    traceMethod('Yours')
     if (props.type === 2 && (isHaveLensHandle && !isHaveNft)) {
       showLensMsg()
     } else {
@@ -371,6 +371,36 @@ const ConnectBtn = (props: any) => {
     } else {
       handleShowModal(true,0)
     }
+    trace('Dashboard-Login')
+  }
+
+  const drapOpenChange = (e) => {
+    setOpenLensDrop(e)
+    if(e){
+      traceMethod('Dropdown')
+    }
+  }
+  const traceMethod = (e) => {
+    if(props.type == 1){
+      trace(`Profile-${e}`)
+    }else{
+      trace(`Dashboard-${e}`)
+    }
+  }
+
+  const recommendTrace = (i) => {
+    if(i == 0){
+      traceMethod('Stani')
+    }
+    if(i == 1){
+      traceMethod('Yoginth')
+    }
+    if(i == 2){
+      traceMethod('Lenster')
+    }
+    if(i == 3){
+      traceMethod('Lensprotocol')
+    }
   }
 
   return (
@@ -380,7 +410,7 @@ const ConnectBtn = (props: any) => {
         <div className="h-full">
           <Dropdown
             open={openLensDrop}
-            onOpenChange={(e: any) => setOpenLensDrop(e)}
+            onOpenChange={(e: any) => drapOpenChange(e)}
             trigger={['click']}
             overlay={
               <div className="lens-switch-component">
@@ -388,7 +418,6 @@ const ConnectBtn = (props: any) => {
                   {
                     ((props.type == 2 && knn3TokenValid && account) || props.type === 1) &&
                     <Input className="connect-component-input" placeholder="Search" allowClear onClick={() => { toSearchPermission() }} onChange={(e) => searchInputChange(e)} value=
-
                       {inputValue} />
                   }
                   {
@@ -430,7 +459,7 @@ const ConnectBtn = (props: any) => {
                       {
                         commendProfileList.map((t: any, i: number) => (
                           <div className="flex text-[16px] items-center gap-1 mb-2 hover:opacity-70 cursor-pointer" key={i} onClick={() => {
-                            setCurrentProfileByRouter(t); setOpenLensDrop(false)
+                            setCurrentProfileByRouter(t); setOpenLensDrop(false);recommendTrace(i)
                           }}>
                             <img
                               className="w-[26px] h-[26px] rounded-[13px] mr-2"

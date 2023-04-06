@@ -4,6 +4,7 @@ import IconKnn3 from "../../statics/socials/knn3.svg";
 import IconLenster from "../../statics/socials/lenster.svg";
 import IconTwitter from "../../statics/socials/twitter.svg";
 import IconDiscord from "../../statics/socials/discord.svg";
+import trace from "../../api/trace";
 
 const list = [
   {
@@ -24,11 +25,19 @@ const list = [
   },
 ];
 
+const traceSocial = ['KNN3-Homepage','KNN3-Lenster','KNN3-Twitter','KNN3-Discord']
+
 export default function Socials() {
+
+  const toLink = (href:any,i) => {
+    window.open(`${href}`, '_blank')
+    trace(traceSocial[i])
+  }
+
   return (
     <div className="flex items-center justify-center pb-4">
       {list.map((item: any, index: number) => (
-        <a href={item.link} target="_blank" key={index} className="hover:-translate-y-1 transition-all">
+        <a onClick={() => toLink(item.link,index)} key={index} className="hover:-translate-y-1 transition-all">
           <Image alt={item.link} src={item.icon} className="w-12" />
         </a>
       ))}

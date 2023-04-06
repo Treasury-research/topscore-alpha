@@ -21,6 +21,7 @@ import Soon from '../statics/img/Soon.svg'
 import { currentProfileState } from "../store/state";
 import { useRecoilState } from "recoil";
 import { toast } from "react-toastify";
+import trace from "../api/trace";
 
 const headerTabs = ['Profile', 'Creation', 'Gallery', 'Circle']
 
@@ -39,11 +40,10 @@ const Navbar = () => {
     const [currentProfile] = useRecoilState<any>(currentProfileState);
 
     const getAddress = (item: any) => {
-        console.log('address', item)
+        trace(item)
         if (item === 'Profile') {
-            // router.push(`/${item.toLocaleLowerCase()}/${currentProfile.address ? currentProfile.address : knn3Address}`)
             router.push(`/profile/stani`)
-        }else {
+        }else if(item === 'Creation') {
             router.push(`/${item.toLocaleLowerCase()}`)
         }
     }
@@ -77,7 +77,7 @@ const Navbar = () => {
                                     </div>
                                 </div>) :
                                 (
-                                    <div className="flex">
+                                    <div className="flex" onClick={() => getAddress(t)}>
                                         <Image
                                             className="mr-1 ml-5"
                                             src={imgNoSelectUrl[i]}

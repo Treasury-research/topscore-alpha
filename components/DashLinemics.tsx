@@ -9,6 +9,7 @@ import PubCard from './PubCard'
 import { currentProfileState, topRecentState, postSwitchState } from "../store/state";
 import { useRecoilState } from "recoil";
 import moment from 'moment'
+import trace from "../api/trace";
 
 const tabs = ['Overview', 'Engagements', 'Collections']
 
@@ -58,6 +59,78 @@ const rmodynamics = () => {
 
     const [currentProfile] = useRecoilState<any>(currentProfileState);
 
+    useEffect(() => {
+        trace(`Stack-${tabs1[activeTab1]}`)
+    }, [activeTab1])
+
+    useEffect(() => {
+        trace(`Stack-${tabs[activeTab]}`)
+    }, [activeTab])
+
+    useEffect(() => {
+        if(commentSwitch){
+            trace('Stack-EG-Cmt-On')
+        }else{
+            trace('Stack-EG-Cmt-Off')
+        }
+    }, [commentSwitch])
+
+    useEffect(() => {
+        if(mirrorSwitch){
+            trace('Stack-Mir-Cmt-On')
+        }else{
+            trace('Stack-Mir-Cmt-Off')
+        }
+    }, [mirrorSwitch])
+
+    useEffect(() => {
+        if(chargeSwitch){
+            trace('Stack-CL-COnly-On')
+        }else{
+            trace('Stack-CL-COnly-Off')
+        }
+    }, [chargeSwitch])
+
+    useEffect(() => {
+        if(!topRecentSwitch){
+            if(activeTab == 1){
+                trace('Stack-EG-Top')
+            }else{
+                trace('Stack-CL-Top')
+            }
+        }else{
+            if(activeTab == 1){
+                trace('Stack-EG-Recent')
+            }else{
+                trace('Stack-CL-Recent')
+            }
+        }
+    }, [topRecentSwitch])
+
+    useEffect(() => {
+        if(postSwitch){
+            if(activeTab == 0){
+                trace('Stack-OV-POnly-On')
+            }
+            if(activeTab == 1){
+                trace('Stack-EG-POnly-On')
+            }
+            if(activeTab == 2){
+                trace('Stack-CL-POnly-On')
+            }
+        }else{
+            if(activeTab == 0){
+                trace('Stack-OV-POnly-Off')
+            }
+            if(activeTab == 1){
+                trace('Stack-EG-POnly-Off')
+            }
+            if(activeTab == 2){
+                trace('Stack-CL-POnly-Off')
+            }
+        }
+    }, [postSwitch])
+
     const enumerateDaysBetweenDates = (startDate, endDate) => {
         let daysList = [];
         const start = moment(startDate);
@@ -80,7 +153,6 @@ const rmodynamics = () => {
         const ndyLocal = dayjs(new Date()).format('YYYYMMDD') // 当前日期
         const mdy = localToUtc(mdyLocal)
         const ndy = localToUtc(ndyLocal)
-        console.log(mdy, ndy)
         if (activeTab === 0) {
             const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=5&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
             const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
@@ -251,7 +323,6 @@ const rmodynamics = () => {
                     }
                 }
             }
-            console.log(s)
             setLindData(s)
             setSigleData(h)
             setOverviewPostData(j)

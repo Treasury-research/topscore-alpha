@@ -16,6 +16,8 @@ import { LoadingOutlined, CaretUpOutlined, CaretDownOutlined } from '@ant-design
 import useWeb3Context from "../hooks/useWeb3Context";
 import { currentProfileState, profileListState, loadingProfileListState } from "../store/state";
 import DonutChart from '../components/profile/DonutChart'
+import trace from "../api/trace";
+
 const Create = () => {
     const [scores, setScores] = useState<any>({});
     const [loadingScores, setLoadingScores] = useState<boolean>(false);
@@ -71,7 +73,8 @@ const Create = () => {
             <div className="h-[calc(100vh-60px)] overflow-x-hidden hidden-scrollbar">
                 <div className="flex mb-10 mt-[60px]">
                     {loadingScores ? <LoadingOutlined className="text-2xl block mx-auto my-4" /> : <>
-                        <div className="w-[360px] h-[164px] px-4 creation-bg text-[#fff] mr-10 rounded-[10px]">
+                        <div className="w-[360px] h-[164px] px-4 creation-bg text-[#fff] mr-10 rounded-[10px]"
+                        onMouseEnter={() => trace('Rank-Creation')}>
                             <div className="mb-2 text-[19px]">Creation</div>
                             <div className="flex justify-between gap-5 h-[120px]">
                                 <div className="w-[60%]">
@@ -112,7 +115,8 @@ const Create = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="w-[360px] h-[164px] px-4 creation-bg text-[#fff] mr-10 rounded-[10px]">
+                        <div className="w-[360px] h-[164px] px-4 creation-bg text-[#fff] mr-10 rounded-[10px]"
+                         onMouseEnter={() => trace('Rank-Engagement')}>
                             <div className="mb-2 text-[19px]">Engagement</div>
                             <div className="flex justify-between gap-5 h-[120px]">
                                 <div className="w-[60%]">
@@ -155,7 +159,8 @@ const Create = () => {
                             </div>
                         </div>
 
-                        <div className="w-[360px] h-[164px] px-4 creation-bg text-[#fff] mr-10 rounded-[10px]">
+                        <div className="w-[360px] h-[164px] px-4 creation-bg text-[#fff] mr-10 rounded-[10px]"
+                        onMouseEnter={() => trace('Rank-Campaign')}>
                             <div className="mb-2 text-[19px]">Campaign</div>
                             <div className="flex justify-between gap-5 h-[120px]">
                                 <div className="w-[60%]">

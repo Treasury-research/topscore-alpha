@@ -11,6 +11,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import { switchChain } from "../lib/tool";
 import { LoadingOutlined } from "@ant-design/icons";
 import useWeb3Modal from "../hooks/useWeb3Modal";
+import trace from "../api/trace";
 
 const actionMapping = [
   "Transaction being processed",
@@ -120,7 +121,7 @@ export const Web3ContextProvider = ({ children }) => {
       // get account, use this variable to detech if user is connected
       const accounts = await web3Raw.eth.getAccounts();
       setAccount(accounts[0]);
-
+      trace('Account')
       setAutoConnect(true);
 
       // get signer object
@@ -212,7 +213,6 @@ export const Web3ContextProvider = ({ children }) => {
       toast.error("You must have a lens handle");
       return
     }
-    console.log('rssss', res)
     localStorage.setItem("knn3Token", res.data.accessToken);
     localStorage.setItem("knn3RefreshToken", res.data.refreshToken);
     api.defaults.headers.authorization = `Bearer ${res.data.accessToken}`;
@@ -222,19 +222,18 @@ export const Web3ContextProvider = ({ children }) => {
   const doLogin = async () => {
     const challenge = (await lensApi.getChallenge(account || "")).challenge
       .text;
-      console.log(challenge)
     const signature = await signMessage(challenge);
 
     await doKnn3Login(challenge, signature, account);
 
     const token = (await lensApi.getAccessToken(account, signature))
       .authenticate;
-    console.log("token", token);
     localStorage.setItem("accessToken", token.accessToken);
     lensApi.setToken(token.accessToken);
   };
 
   const doLogout = async () => {
+    trace('Logout')
     localStorage.removeItem("accessToken");
     localStorage.removeItem("accessToken");
     localStorage.removeItem("knn3Token");

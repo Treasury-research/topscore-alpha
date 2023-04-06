@@ -11,7 +11,7 @@ import Post from '../statics/img/post_icon.svg'
 import Collect from '../statics/img/collect-line.svg'
 import ImgPublitions from "../statics/img/profileV2/remo-publication.svg"
 import Imgcommentsby from '../statics/img/commentsby.svg'
-
+import trace from "../api/trace";
 import moment from 'moment'
 
 import BN from "bignumber.js";
@@ -58,6 +58,78 @@ const rmodynamics = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const [currentProfile] = useRecoilState<any>(currentProfileState);
+
+    useEffect(() => {
+        if (activeTab == 0) {
+            trace('Weekly-Global')
+        } else {
+            trace('Weekly-Personal')
+        }
+    }, [activeTab])
+
+    useEffect(() => {
+        if (checked[0]) {
+            trace('Weekly-Posts-On')
+        } else {
+            trace('Weekly-Posts-Off')
+        }
+    }, [checked[0]])
+
+    useEffect(() => {
+        if (checked[1]) {
+            if(activeTab == 0){
+                trace('Weekly-Comments-On')
+            }else{
+                trace('Weekly-Commentsby-On')
+            }
+        } else {
+            if(activeTab == 0){
+                trace('Weekly-Comments-Off')
+            }else{
+                trace('Weekly-Commentsby-Off')
+            }
+        }
+    }, [checked[1]])
+
+    useEffect(() => {
+        if (checked[2]) {
+            if(activeTab == 0){
+                trace('Weekly-Mirrors-On')
+            }else{
+                trace('Weekly-Mirrorsby-On')
+            }
+        } else {
+            if(activeTab == 0){
+                trace('Weekly-Mirrors-Off')
+            }else{
+                trace('Weekly-Mirrorsby-Off')
+            }
+        }
+    }, [checked[2]])
+
+    useEffect(() => {
+        if (checked[3]) {
+            if(activeTab == 0){
+                trace('Weekly-Collections-On')
+            }else{
+                trace('Weekly-Collectionsby-On')
+            }
+        } else {
+            if(activeTab == 0){
+                trace('Weekly-Collections-Off')
+            }else{
+                trace('Weekly-Collectionsby-Off')
+            }
+        }
+    }, [checked[3]])
+
+    useEffect(() => {
+        if (checked[4]) {
+            trace('Weekly-Publications-On')
+        } else {
+            trace('Weekly-Publications-Off')
+        }
+    }, [checked[4]])
 
     useEffect(() => {
         if (currentDate.length !== 0) {
@@ -181,10 +253,7 @@ const rmodynamics = () => {
             }
             rem[week][Number(t.date.split('_')[1])] = [avgPostCount || 0, avgCommentCount, avgMirrorCount, avgCollectCount, avgPubCount || 0, ''];
         })
-        console.log('rem', rem)
-        console.log('totalAmount', totalAmount)
         setRemodyBaseData(rem)
-        console.log('maxRemoData', maxRemoData)
         setTotalAmount(totalAmount)
         setLoading(false);
     }
@@ -287,7 +356,7 @@ const rmodynamics = () => {
 
     const getCurrentWeek = () => {
         let weekOfDay = parseInt(moment().format('E'));
-        let last_monday = moment().startOf('day').subtract(weekOfDay + 7 * (weekCount === -1 ? 0 : weekCount) - 1, 'days').toDate(); 
+        let last_monday = moment().startOf('day').subtract(weekOfDay + 7 * (weekCount === -1 ? 0 : weekCount) - 1, 'days').toDate();
         let last_sunday = moment().startOf('day').subtract(weekOfDay + 7 * ((weekCount === -1 ? 0 : weekCount) - 1), 'days').toDate();
         setWeek([moment(last_monday).format('MM/DD'), moment(last_sunday).format('MM/DD')])
         setCurrentDate([`20${moment(last_monday).format('YYMMDD')}`, `20${moment(last_sunday).format('YYMMDD')}`])
@@ -343,6 +412,7 @@ const rmodynamics = () => {
             getCurrentWeek();
             // getGlobalHeatmapData()
         }
+        weekCountTrace()
     }
 
     const getLastWeek = () => {
@@ -350,6 +420,28 @@ const rmodynamics = () => {
             weekCount++;
             getCurrentWeek();
             // getGlobalHeatmapData()
+        }
+        weekCountTrace()
+    }
+
+    const weekCountTrace = () => {
+        if(weekCount == -1){
+            trace('Weekly-This')
+        }
+        if(weekCount == 0){
+            trace('Weekly-Avg')
+        }
+        if(weekCount == 1){
+            trace('Weekly-Last')
+        }
+        if(weekCount == 2){
+            trace('Weekly-Third')
+        }
+        if(weekCount == 3){
+            trace('Weekly-Second')
+        }
+        if(weekCount == 4){
+            trace('Weekly-First')
         }
     }
 
@@ -373,7 +465,6 @@ const rmodynamics = () => {
                 totalMount += e[i]
             }
         })
-        console.log(maxMount)
         if (totalMount === 0) return 'bg-[#232323]'
         let lv = maxMount / 5;
         if (lv === 0) {
@@ -393,7 +484,6 @@ const rmodynamics = () => {
     }
 
     const getContent = (e: any, i: number, idx) => {
-        console.log(e)
         if (!e || !checked.includes(true)) return ''
         let current_hs = Number(moment(`2023/${week[0]}`).format("x"))
         let strDate = moment(current_hs + i * 24 * 60 * 60 * 1000).format(`YYYY/MM/DD`)
@@ -531,7 +621,9 @@ const rmodynamics = () => {
                                                                     (
                                                                         <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[28px] w-[28px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
                                                                     ) : (<Popover key={index} placement="bottom" content={() => getContent(item, i, index)}>
-                                                                        <div onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[28px] w-[28px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
+                                                                        <div onClick={() => putActiveItems([i, index])}
+                                                                            onMouseEnter={() => trace('Weekly-Tip')}
+                                                                            className={`${getBorderStyle([i, index])} box-border h-[28px] w-[28px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
                                                                     </Popover>)
 
                                                             ))
