@@ -9,6 +9,7 @@ import Mirror from '../statics/img/mirror_1.svg'
 import Comment from '../statics/img/pubIcon/commentBig.svg'
 import Post from '../statics/img/post_icon.svg'
 import Image from 'next/image'
+import trace from "../api/trace";
 
 const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -82,6 +83,11 @@ const DashRmodynamics = () => {
             getTotalCommentData()
             getTotalMirrorData()
         }
+        if(activeTab == 0){
+            trace('Annual_2023')
+        }else{
+            trace('Annual_2022')
+        }
     }, [activeTab, currentProfile])
 
     useEffect(() => {
@@ -95,25 +101,55 @@ const DashRmodynamics = () => {
         }
     }, [checked, currentProfile])
 
+
+    useEffect(() => {
+        if(checked[0]){
+            trace('Annual-Posts-On')
+        }else{
+            trace('Annual-Posts-Off')
+        }
+    }, [checked[0]])
+
+    useEffect(() => {
+        if(checked[1]){
+            trace('Annual-Comments-On')
+        }else{
+            trace('Annual-Comments-Off')
+        }
+    }, [checked[1]])
+
+    useEffect(() => {
+        if(checked[2]){
+            trace('Annual-Mirrors-On')
+        }else{
+            trace('Annual-Mirrors-Off')
+        }
+    }, [checked[2]])
+
+    useEffect(() => {
+        if(checkedPub){
+            trace('Annual-Publications-On')
+        }
+    }, [checkedPub])
+    
     useEffect(() => {
         if (checkedPub) {
             setChecked([true, true, true])
         }
     }, [checkedPub])
 
-    // 判断日期属于这一周or上一周
     const judgeDatetoWeek = (dateStr: any) => {
-        let weekOfDay = parseInt(moment().format('E'));//计算今天是这周第几天
-        let current_monday = new Date(moment().startOf('day').subtract(weekOfDay - 1, 'days').toDate()).getTime();//本周周一日期毫秒
-        let current_sunday = new Date(moment().startOf('day').subtract(weekOfDay - 7, 'days').toDate()).getTime();//本周周日日期毫秒
-        let last_monday = new Date(moment().startOf('day').subtract(weekOfDay + 6, 'days').toDate()).getTime();//上周周一日期毫秒
-        let last_sunday = new Date(moment().startOf('day').subtract(weekOfDay, 'days').toDate()).getTime();//上周周日日期毫秒
+        let weekOfDay = parseInt(moment().format('E'));
+        let current_monday = new Date(moment().startOf('day').subtract(weekOfDay - 1, 'days').toDate()).getTime();
+        let current_sunday = new Date(moment().startOf('day').subtract(weekOfDay - 7, 'days').toDate()).getTime();
+        let last_monday = new Date(moment().startOf('day').subtract(weekOfDay + 6, 'days').toDate()).getTime();
+        let last_sunday = new Date(moment().startOf('day').subtract(weekOfDay, 'days').toDate()).getTime();
         let dateStrHs = new Date(dateStr).getTime()
 
         if (current_monday < dateStrHs && dateStrHs < current_sunday) {
-            return 1 // 日期属于当前周
+            return 1 
         } else if (last_monday < dateStrHs && dateStrHs < last_sunday) {
-            return 2 // 日期属于上一周
+            return 2 
         } else {
             return 3
         }
@@ -483,73 +519,77 @@ const DashRmodynamics = () => {
     };
 
     return (
-        <div className="text-[#fff]">
-            <div className="flex">
-                {
-                    tabs.map((t: any, i: number) => (
-                        <div key={i} onClick={() => setActiveTab(i)} className={`px-[30px] pb-[6px] cursor-pointer ${activeTab === i ? 'pt-[14px] bg-[#1A1A1A] rounded-tl-[4px] rounded-tr-[4px]' : 'pt-[6px] bg-[rgb(63,63,63)] h-[fit-content] mt-[10px] text-[rgba(255,255,255,0.4)]'}`}>{t}</div>
-                    ))
-                }
-            </div>
-            <div className="flex bg-[#1A1A1A] p-5 w-full">
-                <div className="w-[920px] overflow-hidden">
-                    {/* <div className="text-[18px] mb-[20px]">Overview</div> */}
-                    <div className="mb-4 mr-8 flex ml-[auto] w-[fit-content] items-center mt-[60px]">
-                        <div className="text-[12px] ml-[-4px] mr-2">Low</div>
-                        <div className="h-[16px] w-[45px] bg-[#311C17]">
-
+        <div className="text-[#fff] mb-10">
+            <div className="flex overflow-y-hidden">
+                <div className="w-[880px] mr-[10px]">
+                    <div className="flex jusitify-between h-[54px] items-center bg-[#1A1A1A] rounded-[10px] mb-[10px]">
+                        <div className="flex ml-8">
+                            {
+                                tabs.map((t: any, i: number) => (
+                                    <div key={i} onClick={() => setActiveTab(i)} className={`cursor-pointer px-2 py-1 mr-4 text-[18px] ${activeTab === i ? 'text-[#fff] border-b-[2px] border-[#fff]' : 'text-[rgba(255,255,255,0.4)]'}`}>{t}</div>
+                                ))
+                            }
                         </div>
-                        <div className="h-[16px] w-[45px] bg-[#471F14]">
+                        <div className="mr-8 flex ml-[auto] w-[fit-content] items-center">
+                            <div className="text-[12px] ml-[-4px] mr-2">Low</div>
+                            <div className="h-[16px] w-[45px] bg-[#311C17]">
 
-                        </div>
-                        <div className="h-[16px] w-[45px] bg-[#75240F]">
+                            </div>
+                            <div className="h-[16px] w-[45px] bg-[#471F14]">
 
-                        </div>
-                        <div className="h-[16px] w-[45px] bg-[#A32A0A]">
+                            </div>
+                            <div className="h-[16px] w-[45px] bg-[#75240F]">
 
-                        </div>
-                        <div className="h-[16px] w-[45px] bg-[#D13005]">
+                            </div>
+                            <div className="h-[16px] w-[45px] bg-[#A32A0A]">
 
+                            </div>
+                            <div className="h-[16px] w-[45px] bg-[#D13005]">
+
+                            </div>
+                            <div className="text-[12px] ml-2 ml-2">High</div>
                         </div>
-                        <div className="text-[12px] ml-2 ml-2">High</div>
                     </div>
-                    {
-                        loading ?
-                            <div className="h-[130px] flex items-center"><LoadingOutlined className="text-2xl block mx-auto" /></div>
-                            : <>
-                                <div>
-                                    {
-                                        remodyBaseData.map((t: any, i: number) => (
-                                            <div className="flex mb-[2px]" key={i}>
-                                                <div className="text-[10px] w-[40px] h-[14px] flex items-center day-liber">{dys[i]}</div>
-                                                {
-                                                    t.map((item: any, index: number) => (
-                                                        (!item || (!item[0] && item[0] !== 0) || item === 'hidden') ?
-                                                            (
-                                                                <div key={index} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
-                                                            ) : (<Popover key={index} placement="bottom" content={() => getContent(item, i, index)}>
-                                                                <div className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
-                                                            </Popover>)
-                                                        // <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
-                                                    ))
-                                                }
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                                <div className="flex">
-                                    {
-                                        month.map((t: any, i: number) => (
-                                            <div key={i} className="flex-1 text-[12px] flex justify-center">{t}</div>
-                                        ))
-                                    }
-                                </div>
+                    <div className="w-full overflow-hidden bg-[#1A1A1A] rounded-[10px] p-4 pt-6">
+                        {
+                            loading ?
+                                <div className="h-[122px] flex items-center w-[840px]"><LoadingOutlined className="text-2xl block mx-auto" /></div>
+                                : <>
+                                    <div>
+                                        {
+                                            remodyBaseData.map((t: any, i: number) => (
+                                                <div className="flex mb-[1px]" key={i}>
+                                                    <div className="text-[10px] w-[40px] h-[14px] flex items-center day-liber">{dys[i]}</div>
+                                                    {
+                                                        t.map((item: any, index: number) => (
+                                                            (!item || (!item[0] && item[0] !== 0) || item === 'hidden') ?
+                                                                (
+                                                                    <div key={index} className={`${getBorderStyle([i, index])} box-border h-[13px] w-[13px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
+                                                                ) : (<Popover key={index} placement="bottom" content={() => getContent(item, i, index)}>
+                                                                    <div className={`${getBorderStyle([i, index])} box-border h-[13px] w-[13px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}
+                                                                    onMouseEnter={() => trace('Annual-Tip')}></div>
+                                                                </Popover>)
+                                                            // <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[14px] w-[14px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
+                                                        ))
+                                                    }
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                    <div className="flex pl-[14px]">
+                                        {
+                                            month.map((t: any, i: number) => (
+                                                <div key={i} className="flex-1 text-[12px] flex justify-center">{t}</div>
+                                            ))
+                                        }
+                                    </div>
 
-                            </>
-                    }
+                                </>
+                        }
+                    </div>
                 </div>
-                <div className="w-[calc(100%-920px)]">
-                    <div className="px-6 py-4 pb-2 rounded-[10px] bg-[rgb(41,41,41)]">
+                <div className="w-[calc(100%-890px)] min-w-[240px]">
+                    <div className="h-full px-6 pt-7 pb-2 rounded-[10px] bg-[#1A1A1A]">
                         <div className="flex mb-2">
                             <div>
                                 {
@@ -557,6 +597,7 @@ const DashRmodynamics = () => {
                                     <div className="flex items-center h-[25px]">
                                         <div onClick={() => setChecked([true, true, true])} className="h-4 w-4 bg-[#CE3900] flex items-center justify-center rounded-[4px] mr-2 text-[18px] cursor-pointer text-[600]">-</div>
                                         <div className="text-[#fff] text-[13px]">Publications</div>
+                                        <div className="text-[#fff] text-[12px] ml-2">{activeTab === 0 ? 'in 2023' : 'in 2022'}</div>
                                     </div>
                                 }
                                 {
@@ -564,12 +605,12 @@ const DashRmodynamics = () => {
                                     <div className="flex items-center h-[25px]">
                                         <Checkbox onChange={(e: any) => onChangePub(e)} checked={checkedPub}>
                                             <span className="text-[#fff] text-[14px]">Publications</span>
+                                            <span className="text-[#fff] text-[12px] ml-2">{activeTab === 0 ? 'in 2023' : 'in 2022'}</span>
                                         </Checkbox>
                                     </div>
                                 }
                             </div>
-                            {/* <div className="ml-[auto]">{!isNaN(postTotal + commentTotal + mirrorTotal) ? postTotal + commentTotal + mirrorTotal : '-'}</div> */}
-                        </div>
+                         </div>
                         <div className="flex mb-[10px]">
                             <div className="flex items-center text-[26px] ml-[22px]">{!isNaN(postTotal + commentTotal + mirrorTotal) ? postTotal + commentTotal + mirrorTotal : '-'}</div>
                             <div className="ml-[auto] text-[14px]">
@@ -577,7 +618,7 @@ const DashRmodynamics = () => {
                                     {
                                         activeTab === 0 ?
                                             <>
-                                                {
+                                                {/* {
                                                     (weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
                                                     (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal) > 0 &&
                                                     <CaretUpOutlined className="creat-up-icon ml-[auto]" />
@@ -591,15 +632,16 @@ const DashRmodynamics = () => {
                                                     (weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
                                                     (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal) === 0 &&
                                                     <div className="mr-1 bg-[rgba(255,255,255,0.4)] h-[2px] w-[8px]"></div>
-                                                }
-                                                <span>{Math.abs((weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
+                                                } */}
+                                                {/* <span>{Math.abs((weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal) -
                                                     (weekCountChange.last.postTotal + weekCountChange.last.commentTotal + weekCountChange.last.mirrorTotal))
-                                                }</span>
+                                                }</span> */}
+                                                <span>{weekCountChange.current.postTotal + weekCountChange.current.commentTotal + weekCountChange.current.mirrorTotal}</span>
                                             </> :
                                             <span>{lastYearPost + lastYearComment + lastYearMirror}</span>
                                     }
                                 </div>
-                                <div className="text-[rgba(255,255,255,0.6)]">{activeTab === 0 ? 'this week' : 'in 2023'}</div>
+                                <div className="text-[rgba(255,255,255,0.6)]">{activeTab === 0 ? 'This week' : 'In 2023'}</div>
                             </div>
                         </div>
                         <div className="flex mb-2 ml-[20px]">
@@ -621,7 +663,7 @@ const DashRmodynamics = () => {
                                     {
                                         activeTab === 0 ?
                                             <>
-                                                {
+                                                {/* {
                                                     weekCountChange.current.postTotal - weekCountChange.last.postTotal > 0 &&
                                                     <CaretUpOutlined className="creat-up-icon ml-[auto]" />
                                                 }
@@ -632,8 +674,9 @@ const DashRmodynamics = () => {
                                                 {
                                                     weekCountChange.current.postTotal - weekCountChange.last.postTotal === 0 &&
                                                     <div className="mr-1 bg-[rgba(255,255,255,0.4)] h-[2px] w-[8px]"></div>
-                                                }
-                                                <span>{Math.abs(weekCountChange.current.postTotal - weekCountChange.last.postTotal)}</span>
+                                                } */}
+                                                {/* <span>{Math.abs(weekCountChange.current.postTotal - weekCountChange.last.postTotal)}</span> */}
+                                                <span>{weekCountChange.current.postTotal}</span>
                                             </> :
                                             <span>{lastYearPost}</span>
                                     }
@@ -659,7 +702,7 @@ const DashRmodynamics = () => {
                                     {
                                         activeTab === 0 ?
                                             <>
-                                                {
+                                                {/* {
                                                     weekCountChange.current.commentTotal - weekCountChange.last.commentTotal > 0 &&
                                                     <CaretUpOutlined className="creat-up-icon ml-[auto]" />
                                                 }
@@ -670,8 +713,9 @@ const DashRmodynamics = () => {
                                                 {
                                                     weekCountChange.current.commentTotal - weekCountChange.last.commentTotal === 0 &&
                                                     <div className="mr-1 bg-[rgba(255,255,255,0.4)] h-[2px] w-[8px]"></div>
-                                                }
-                                                <span>{Math.abs(weekCountChange.current.commentTotal - weekCountChange.last.commentTotal)}</span>
+                                                } */}
+                                                {/* <span>{Math.abs(weekCountChange.current.commentTotal - weekCountChange.last.commentTotal)}</span> */}
+                                                <span>{weekCountChange.current.commentTotal}</span>
                                             </> :
                                             <span>{lastYearComment}</span>
                                     }
@@ -697,7 +741,7 @@ const DashRmodynamics = () => {
                                     {
                                         activeTab === 0 ?
                                             <>
-                                                {
+                                                {/* {
                                                     weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal > 0 &&
                                                     <CaretUpOutlined className="creat-up-icon ml-[auto]" />
                                                 }
@@ -708,26 +752,15 @@ const DashRmodynamics = () => {
                                                 {
                                                     weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal === 0 &&
                                                     <div className="mr-1 bg-[rgba(255,255,255,0.4)] h-[2px] w-[8px]"></div>
-                                                }
-                                                <span>{Math.abs(weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal)}</span>
+                                                } */}
+                                                {/* <span>{Math.abs(weekCountChange.current.mirrorTotal - weekCountChange.last.mirrorTotal)}</span> */}
+                                                <span>{weekCountChange.current.mirrorTotal}</span>
                                             </> :
                                             <span>{lastYearMirror}</span>
                                     }
                                 </div>
                             </div>
                         </div>
-                        {/* <div className="flex mb-2 ml-[20px]">
-                            <div>
-                            </div>
-                            <div className="ml-[auto]">{commentTotal || commentTotal === 0 ? commentTotal : '-'}</div>
-                        </div>
-                        <div className="flex mb-2 ml-[20px]">
-                            <div>
-                            </div>
-                            <div className="ml-[auto]">
-                                {mirrorTotal || mirrorTotal === 0 ? mirrorTotal : '-'}
-                            </div>
-                        </div> */}
                     </div>
                 </div>
             </div>

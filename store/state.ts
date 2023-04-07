@@ -5,6 +5,19 @@ const { persistAtom } = recoilPersist();
 export const currentProfileState = atom({
   key: "currentProfile",
   default: {
+    address: '',
+    handle: '',
+    imageURI: '',
+    metadata: '',
+    profileId: '',
+    name: '',
+  },
+  // effects_UNSTABLE: [persistAtom],
+});
+
+export const currentLoginProfileState = atom({
+  key: "currentLoginProfile",
+  default: {
     address: "",
     handle: "",
     imageURI: "",
@@ -14,13 +27,23 @@ export const currentProfileState = atom({
   // effects_UNSTABLE: [persistAtom],
 });
 
+export const loadingProfileListState = atom({
+  key: "loadingProfileList",
+  default: false
+});
+
 export const profileListState = atom({
   key: "profileList",
   default: [],
 });
 
-export const loadingProfileListState = atom({
-  key: "loadingProfileList",
+export const commendProfileListState = atom({
+  key: "commendProfileList",
+  default: [],
+});
+
+export const routerHandleState = atom({
+  key: "loadingRouterHandle",
   default: false,
 });
 
@@ -29,9 +52,29 @@ export const knn3TokenValidState = atom({
   default: false,
 });
 
-
 export const autoConnectState = atom({
   key: "autoConnect",
   default: false,
   effects_UNSTABLE: [persistAtom],
 });
+
+export const isHaveNftState = atom({
+  key: "isHaveNft",
+  default: false
+});
+
+export const isHaveLensNftState = atom({
+  key: "isHaveLensNft",
+  default: false
+});
+
+export const topRecentState = atom({
+  key: "topRecent",
+  default: false
+});
+
+export const postSwitchState = atom({
+  key: "postSwitch",
+  default: false
+});
+

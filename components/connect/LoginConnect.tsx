@@ -6,6 +6,7 @@ import P1 from '../../statics/img/browser.png'
 import P2 from '../../statics/img/wallect1.png'
 import useWeb3Context from "../../hooks/useWeb3Context";
 import { CloseOutlined } from "@ant-design/icons";
+import trace from "../../api/trace";
 
 const LoginConnect = (props: any) => {
     const { onConnect } = props
@@ -26,11 +27,17 @@ const LoginConnect = (props: any) => {
             handleCancel();
             onConnect();
         }
+        if(walletName === 'injected'){
+            trace('Login-BrowserWallet')
+        }
+        if(walletName === 'walletconnect'){
+            trace('Login-WalletConnect')
+        }
     }
 
     return (
         <Modal title="Basic Modal" open={true} onOk={handleOk} onCancel={handleCancel} width={'500px'}>
-            <div className='flex items-center pb-5 border-b-[1px] border-[#4A4A4A] mb-5'>
+            <div className='flex items-center pb-3 border-b-[1px] border-[#4A4A4A] mb-2'>
                 <div className='flex items-center'>
                     <Image
                         src={Plogin}
@@ -46,7 +53,7 @@ const LoginConnect = (props: any) => {
             <div className="text-[16px] text-[rgba(255,255,255,0.8)]">
                 <div className="text-[#EEFBFF] text-[20px]">Connect your wallet.</div>
                 <div className="text-[#6C747D] text-[14px]">Connect with one of available wallet providers or create a new one.</div>
-                <div className="mt-5">
+                <div className="mt-4">
                     <div onClick={()=> connector('injected') } className="flex items-center border-[1px] border-[#4A4A4A] px-[10px] py-[8px] font-[600] rounded-[4px] mb-[10px] cursor-pointer">
                         <span>Browser Wallet</span>
                         <Image
@@ -68,6 +75,5 @@ const LoginConnect = (props: any) => {
         </Modal>
     )
 }
-
 
 export default LoginConnect

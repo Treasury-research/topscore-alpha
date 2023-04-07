@@ -2,196 +2,192 @@
 import { useEffect, useState } from 'react';
 import api from "../api";
 import Image from 'next/image'
-import Icon1 from '../statics/img/pubIcon/commentBig.svg'
-import IconNum1 from '../statics/img/pubIcon/commentSmall.svg'
-import IconNum2 from '../statics/img/pubIcon/mirror.png'
-import IconNum3 from '../statics/img/like.svg'
-import IconNum4 from '../statics/img/Paid_collect.svg'
-import IconNum5 from '../statics/img/Free_collect.svg'
-import IconNum6 from '../statics/img/post_icon.svg'
+import { postSwitchState } from "../store/state";
 import { LoadingOutlined } from '@ant-design/icons';
 import { ethers } from 'ethers'
-import moment from 'moment'
-import { currentProfileState } from "../store/state";
+import { currentProfileState,topRecentState } from "../store/state";
 import { useRecoilState } from "recoil";
+import dayjs from 'dayjs';
+import trace from "../api/trace";
 
+const tab = [
+  ['Top Engaged', 'Top Collected'],
+  ['Top Engaged', 'Recent'],
+  ['Top Collected', 'Recent']
+]
 const PubCard = (props: any) => {
   const [pubData, setPubData] = useState<any>([]);
-  const { lineData } = props;
+  const { lineData, activeLineTab } = props;
   const [loading, setLoading] = useState(false);
   const [currentProfile] = useRecoilState<any>(currentProfileState);
+  const [tabs, setTabs] = useState<any>(tab[0]);
+  const [postSwitch, setPostSwitch] = useRecoilState<any>(postSwitchState);
+  // const [activeTab, setActiveTab] = useState<any>(0);
+  const [topRecentSwitch, setTopRecentSwitch] = useRecoilState<any>(topRecentState);
 
   useEffect(() => {
-    setLoading(true)
-    if (lineData.length > 0) {
-      let legendData = [];
-      if (lineData.length == 0) return;
-      const s = lineData[lineData.length - 1];
-      for (let i = 0; i < s.length; i++) {
-        if(s[i]['pubId'] !== 0){
-          legendData.push(`${s[i]['pubId']}`)
+    if (currentProfile.profileId) {
+      setLoading(true)
+      getBaseLineData()
+    }
+  }, [activeLineTab, topRecentSwitch, currentProfile,postSwitch])
+
+  useEffect(() => {
+    setTabs(tab[activeLineTab])
+  }, [activeLineTab])
+
+  const getBaseLineData = async () => {
+    let resData = []
+    const mdy = dayjs(new Date().getTime() - 28 * 24 * 60 * 60 * 1000).format('YYYYMMDD')
+    const ndy = dayjs(new Date()).format('YYYYMMDD')
+    if (activeLineTab == 0) {
+      if (!topRecentSwitch) {
+        const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=4&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
+        if (!res || !res.data) {
+          resData = []
+          setPubData([])
+          return false;
         }
-      }
-      if (legendData.length > 0) {
-        getPubs([legendData])
+        resData = res.data;
       } else {
-        setLoading(false)
-        setPubData([])
+        const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=2&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${''}`);
+        if (!res || !res.data) {
+          resData = []
+          setPubData([])
+          return false;
+        }
+        resData = res.data;
       }
+    }
+    if (activeLineTab == 1) {
+      const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
+      if (!res || !res.data) {
+        resData = []
+        setPubData([])
+        return false;
+      }
+      resData = res.data;
+    }
+    if (activeLineTab == 2) {
+      const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 2 : 1}&type=${'Post,Comment'}&isFee=${''}`);
+      if (!res || !res.data) {
+        resData = []
+        setPubData([])
+        return false;
+      }
+      resData = res.data;
+    }
+    let pubAllData: any = []
+    if (resData.length !== 0) {
+      resData.map((t: any) => {
+        if (!pubAllData.includes(t.pubId) && t.pubId !== 0) {
+          pubAllData.push(t.pubId)
+        }
+      })
     } else {
+      setPubData([])
       setLoading(false)
     }
-  }, [lineData])
+    if (pubAllData.length > 0) {
+      getPubs(pubAllData)
+    }
+  }
 
   const getPubs = async (ids: any) => {
     const res = await api.get(`/lens/pubByLatest?profileId=${currentProfile.profileId}&pubIds=${ids.join(',')}`);
     setLoading(false)
-    if (res && res.data) {
-      let newList: any = [];
-      for (var i = 0; i < res.data.length; i += 3) {
-        newList.push(res.data.slice(i, i + 3));
-      }
-      const data: any = DivideArrayEquallyInto4Parts(res.data)
-      console.log(data)
-      setPubData(data)
+    if (res && res.data && res.data.length > 0) {
+      let pub = []
+      ids.forEach(t => {
+        res.data.forEach(tem => {
+          if(t == tem.pubId){
+            pub.push(tem)
+          }
+        });
+      });
+      setPubData(pub)
+    }else{
+      setPubData([])
     }
   };
-
-  const DivideArrayEquallyInto4Parts = (s: any) => {
-    if (s.length >= 4) {
-      let arr1, arr2, arr3, arr4;
-      arr1 = s.slice(0, Math.ceil(s.length / 4));
-      arr2 = s.slice(Math.round(s.length / 4), Math.round(s.length / 4) * 2);
-      arr3 = s.slice(Math.round(s.length / 4) * 2, Math.round(s.length / 4) * 3);
-      arr4 = s.slice(Math.round(s.length / 4) * 3);
-      return [arr4, arr3, arr2, arr1];
-    } else if (s.length == 3) {
-      return [[s[0]], [s[1]], [s[2]]];
-    }
-    else if (s.length == 2) {
-      return [[s[0]], [s[1]]];
-    }
-    else if (s.length == 1) {
-      return [[s[0]]];
-    } else {
-      return []
-    }
-  }
 
   const toLesnter = (t: any) => {
     const proId = ethers.utils.hexlify(t.profileId)
     const pubId = ethers.utils.hexlify(t.pubId)
     window.open(`https://lenster.xyz/posts/${proId}-${pubId}`)
+    trace('List-Jump')
   }
 
-  const getHours = (t: any) => {
-    let diff = new Date().getTime() - t.timestamp * 1000
-    if (diff < 60 * 60 * 1000) { // 1小时内
-      const h = Math.floor(diff / (1000 * 60));
-      return `${h} m`
-    }else if(diff > 60 * 60 * 1000 && diff < 24 * 60 * 60 * 1000){ // 1天内
-      const h = Math.floor(diff / (1000 * 60 * 60));
-      return `${h} h`
-    }else if(diff > 24 * 60 * 60 * 1000 && diff < 365 * 24 * 60 * 60 * 1000){ // 1年内
-      return `${moment(t.timestamp * 1000).format('MM/DD')}`
+  const topRecentChange = (i) => {
+    setTopRecentSwitch(i == 0 ? false : true)
+    if(i == 0){
+      if(activeLineTab == 0){
+        trace('List-OV-TopE')
+      }
+      if(activeLineTab == 1){
+        trace('List-EG-Top')
+      }
+      if(activeLineTab == 2){
+        trace('List-CL-Top')
+      }
     }else{
-      return `${moment(t.timestamp * 1000).format('YY/MM/DD')}` // 往年
+      if(activeLineTab == 0){
+        trace('List-OV-TopC')
+      }
+      if(activeLineTab == 1){
+        trace('List-EG-Rec')
+      }
+      if(activeLineTab == 2){
+        trace('List-CL-Rec')
+      }
     }
   }
 
   return (
     <div className="w-full bg-[#000] text-[#fff] p-5 my-10">
-      {
-        loading ?
-          <LoadingOutlined className="text-2xl block mx-auto my-[80px]" />
-          : (
-            <div className="flex flex-row overflow-hidden">
-              {
-                pubData.map((t: any, i: number) => (
-                  <div key={i} className={`flex flex-col ${i === 3 ? 'mr-[0px]' : 'mr-[20px]'} pub-items`}>
-                    {
-                      t.map((tem: any, index: number) => (
-                        <div key={index} className='bg-[#1A1A1A] py-[20px] px-[20px] rounded-[4px] relative my-[10px]'>
-                          <div className='flex'>
-                            <div className='text-[rgba(255,255,255,0.9)]'>Pub #{tem.pubId}</div>
-                            <div className={`cursor-pointer ml-[auto] rounded-[4px] h-[24px] w-[24px] ${tem.type === 'Post' ? 'bg-[#575BFF]' : 'bg-[#9D3611]'}`} onClick={() => toLesnter(tem)}>
-                              {
-                                tem.type === 'Post' &&
-                                <Image
-                                  className="mr-1"
-                                  src={IconNum6}
-                                  alt=""
-                                />
-
-                              }
-                              {
-                                tem.type === 'Comment' &&
-                                <Image
-                                  className="mr-1"
-                                  src={Icon1}
-                                  alt=""
-                                />
-                              }
-                            </div>
-                          </div>
-                          <div className='text-[#6C747D] text-[14px] my-[10px]'>
-                            {
-                              getHours(tem)
-                            }
-                          </div>
-                          <p className='text-[rgba(255,255,255,0.7)] text-[14px]'>
-                            {tem.content}
-                          </p>
-                          <div className='flex items-center mt-[20px]'>
-                            <div className='flex items-center mr-[20px]'>
-                              <Image
-                                className="mr-1"
-                                src={IconNum1}
-                                alt=""
-                              />
-                              <span className='text-[14px]'>{tem.commentByCount}</span>
-                            </div>
-
-                            <div className='flex items-center mr-[20px]'>
-                              <Image
-                                className="mr-1"
-                                src={IconNum2}
-                                alt=""
-                              />
-                              <span className='text-[14px]'>{tem.mirrorByCount}</span>
-                            </div>
-
-                            <div className='flex items-center mr-[20px]'>
-
-                              {
-                                tem.isFee === 0 &&
-                                <Image
-                                  className="mr-1"
-                                  src={IconNum5}
-                                  alt=""
-                                />
-                              }
-
-                              {
-                                tem.isFee === 1 &&
-                                <Image
-                                  className="mr-1"
-                                  src={IconNum6}
-                                  alt=""
-                                />
-                              }
-                              <span className='text-[14px]'>{tem.collectByCount}</span>
-                            </div>
-                          </div>
-                        </div>
-                      ))
-                    }
-                  </div>
-                ))
-              }
+      <div>
+        <div className='bg-[#1A1A1A] rounded-[10px] mb-[10px] py-3 flex mb-4'>
+          <div className="flex w-[60%] ml-6">
+            {
+              tabs.map((t: any, i: number) => (
+                <div key={i} onClick={() => topRecentChange(i)} className={`cursor-pointer w-[140px] flex items-center justify-center px-2 py-1 ${((!topRecentSwitch && i == 0) || (topRecentSwitch && i == 1)) ? 'text-[#fff] border-b-[2px] border-[#fff] text-[18px]' : 'text-[rgba(255,255,255,0.4)] text-[16px]'}`}>{t}</div>
+              ))
+            }
+          </div>
+          <div className='flex items-center text-[rgba(255,255,255,0.4)] text-[18px] w-[30%] ml-[auto]'>
+            <div className='w-[160px] flex justify-center'>Comments</div>
+            <div className='w-[160px] flex justify-center'>Mirrors</div>
+            <div className='w-[160px] flex justify-center'>Collects</div>
+          </div>
+        </div>
+        {
+          loading ?
+            <div className='h-[200px]'>
+              <LoadingOutlined className="text-2xl block mx-auto my-[80px]" />
             </div>
-          )
-      }
+            : (
+              <div className='min-h-[200px]'>
+                {
+                  pubData.map((t: any, i: number) => (
+                    <div className='bg-[#1A1A1A] rounded-[10px] mb-[10px] py-3 flex mb-4' key={i}>
+                      <div className="flex w-[60%] items-center">
+                        <div className='w-[80px] h-[30px] mx-[20px] rounded-[20px] flex items-center justify-center cursor-pointer radius-btn-shadow hover:opacity-70' onClick={() => toLesnter(t)}>#{t.pubId}</div>
+                        <div className='w-[calc(100%-100px)] text-[14px]'>
+                          {t.content}
+                        </div>
+                      </div>
+                      <div className='flex items-center text-[18px] w-[30%] flex ml-[auto]'>
+                        <div className='w-[160px] flex justify-center'>{t.commentByCount}</div>
+                        <div className='w-[160px] flex justify-center'>{t.mirrorByCount}</div>
+                        <div className='w-[160px] flex justify-center'>{t.collectByCount}</div>
+                      </div>
+                    </div>
+                  ))
+                }
+              </div>
+            )
+        }
+      </div>
     </div>
   )
 }

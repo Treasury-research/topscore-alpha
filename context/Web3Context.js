@@ -5,13 +5,13 @@ import config from "../config";
 import { ethers } from "ethers";
 import lensApi from "../api/lensApi";
 import api from "../api";
-import { knn3TokenValidState, currentProfileState, autoConnectState } from "../store/state";
+import { knn3TokenValidState, currentProfileState, autoConnectState, profileListState, currentLoginProfileState,commendProfileListState } from "../store/state";
 import { useRecoilState } from "recoil";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { switchChain } from "../lib/tool";
 import { LoadingOutlined } from "@ant-design/icons";
 import useWeb3Modal from "../hooks/useWeb3Modal";
-import { message } from "antd";
+import trace from "../api/trace";
 
 const actionMapping = [
   "Transaction being processed",
@@ -57,6 +57,10 @@ export const Web3ContextProvider = ({ children }) => {
   const [knn3TokenValid, setKnn3TokenValid] =
     useRecoilState(knn3TokenValidState);
   const [currentProfile, setCurrentProfile] = useRecoilState(currentProfileState)
+  const [profileList, setProfileList] = useRecoilState(profileListState);
+  const [currentLoginProfile, setCurrentLoginProfile] =
+    useRecoilState(currentLoginProfileState);
+  const [commendProfileList, setCommendProfileList] = useRecoilState(commendProfileListState);
 
   const listenProvider = () => {
     if (!window.ethereum) {
@@ -71,7 +75,17 @@ export const Web3ContextProvider = ({ children }) => {
       localStorage.removeItem("knn3RefreshToken");
       api.defaults.headers.authorization = "";
       setKnn3TokenValid(false);
-      setCurrentProfile('')
+      if(commendProfileList.length > 0){
+        setCurrentProfile(commendProfileList[0])
+      }
+      setProfileList([])
+      setCurrentLoginProfile({
+        address: "",
+        handle: "",
+        imageURI: "",
+        metadata: "",
+        profileId: "",
+      })
     });
     window.ethereum.on("chainChanged", (chainId) => {
       setChainId(parseInt(chainId, 16));
@@ -100,12 +114,14 @@ export const Web3ContextProvider = ({ children }) => {
         web3Raw = new Web3(window.ethereum);
       }
 
+      console.log('connected',)
+
       setWeb3(web3Raw);
 
       // get account, use this variable to detech if user is connected
       const accounts = await web3Raw.eth.getAccounts();
       setAccount(accounts[0]);
-
+      trace('Account')
       setAutoConnect(true);
 
       // get signer object
@@ -123,7 +139,8 @@ export const Web3ContextProvider = ({ children }) => {
 
       // init block number
       setBlockNumber(await web3Raw.eth.getBlockNumber());
-      
+
+
       switchChain(config.chainId);
 
       return accounts[0];
@@ -196,7 +213,6 @@ export const Web3ContextProvider = ({ children }) => {
       toast.error("You must have a lens handle");
       return
     }
-    console.log('rssss', res)
     localStorage.setItem("knn3Token", res.data.accessToken);
     localStorage.setItem("knn3RefreshToken", res.data.refreshToken);
     api.defaults.headers.authorization = `Bearer ${res.data.accessToken}`;
@@ -212,12 +228,12 @@ export const Web3ContextProvider = ({ children }) => {
 
     const token = (await lensApi.getAccessToken(account, signature))
       .authenticate;
-    console.log("token", token);
     localStorage.setItem("accessToken", token.accessToken);
     lensApi.setToken(token.accessToken);
   };
 
   const doLogout = async () => {
+    trace('Logout')
     localStorage.removeItem("accessToken");
     localStorage.removeItem("accessToken");
     localStorage.removeItem("knn3Token");
@@ -227,7 +243,17 @@ export const Web3ContextProvider = ({ children }) => {
     setKnn3TokenValid(false)
     resetWallet();
     setAutoConnect(false);
-    setCurrentProfile('')
+    if(commendProfileList.length > 0){
+      setCurrentProfile(commendProfileList[0])
+    }
+    setProfileList([])
+    setCurrentLoginProfile({
+      address: "",
+      handle: "",
+      imageURI: "",
+      metadata: "",
+      profileId: "",
+    })
   };
 
   /**

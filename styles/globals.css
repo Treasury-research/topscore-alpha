@@ -44,6 +44,18 @@
 	src: url("../accests/font/Liber/LiberationMono-Regular.ttf");
 }
 
+@layer components {
+  .radius-btn-shadow { 
+    box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.4),-2px -2px 2px 0px rgba(255,255,255,0.1)
+  }
+  .active-radius-btn-shadow {
+    box-shadow: inset 2px 2px 2px 0px rgba(0,0,0,0.4),inset -2px -2px 2px 0px rgba(255,255,255,0.1)
+  }
+  .text-gray{
+    color:#8E8E8E;
+  }
+}
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -169,4 +181,22 @@ a {
 
 .web3modal-modal-lightbox{
   z-index: 9999 !important;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+  background-color: #efeff4;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset000pxrgba(240, 240, 240, 0.5);
+  border-radius: 10px;
+  background: rgba(240, 240, 240, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset000pxrgba(240, 240, 240, 0.5);
+  background: rgba(0, 0, 0, .5);
 }

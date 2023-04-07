@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const path = require('path')
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },
@@ -9,14 +9,14 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/profile/0x09c85610154a276a71eb8a887e73c16072029b20',
+        destination: '/profile/stani',
         permanent: true,
       },
       {
-        source: '/nft',
-        destination: '/nft/0x09c85610154a276a71eb8a887e73c16072029b20?profileId=101548',
+        source: '/profile',
+        destination: '/profile/stani',
         permanent: true,
-      },
+      }
     ]
   }
 }

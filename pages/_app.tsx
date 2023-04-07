@@ -3,10 +3,9 @@ import "../styles/globals.css";
 import "../styles/custom.scss";
 import { Web3ContextProvider } from "../context/Web3Context";
 import { ToastContainer } from "react-toastify";
-import Script from "next/script";
-import trace from "../api/trace";
-import Coming from "../components/Coming";
+// import Coming from "../components/Coming";
 import "react-toastify/dist/ReactToastify.css";
+import Script from "next/script";
 import "../styles/antd_reset.scss";
 import type { AppProps } from "next/app";
 import { RecoilRoot } from "recoil";
@@ -17,7 +16,6 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     // Run within useEffect to execute this code on the frontend.
     Gleap.initialize("sg1UIYFMK3J926CjXOFNUTR26T1uF6yB");
-    trace("View APP");
   }, []);
 
   return (
@@ -48,8 +46,8 @@ export default function App({ Component, pageProps }: AppProps) {
           gtag('config', 'G-1HB357LK81');
         `}
         </Script>
-        <Coming />
-        {/* <Component {...pageProps} /> */}
+        {/* <Coming /> */}
+        <Component {...pageProps} />
         <ToastContainer position="top-right" />ƒ
       </Web3ContextProvider>
     </RecoilRoot>

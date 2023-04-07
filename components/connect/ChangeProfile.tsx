@@ -6,26 +6,21 @@ import Image from 'next/image'
 import Plogin from '../../statics/img/login-head-icon.png'
 import P1 from '../../statics/img/Lens.svg'
 import P2 from '../../statics/img/change_wallet.svg'
-import { profileListState, currentProfileState } from "../../store/state";
+import { profileListState, currentProfileState ,currentLoginProfileState} from "../../store/state";
 import { useRouter } from "next/router";
 import useWeb3Context from "../../hooks/useWeb3Context";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import ImgLenster from '../../statics/img/lest-head.png'
+import trace from "../../api/trace";
 
 const ChangeProfile = (props: any) => {
     const profileList = useRecoilValue(profileListState);
     const { account } = useWeb3Context();
-    const [currentProfile, setCurrentProfile] = useRecoilState(currentProfileState);
-    const [canLoadAvatar, setCanLoadAvatar] = useState(true);
+    // const [currentProfile, setCurrentProfile] = useRecoilState(currentProfileState);
+    const [currentLoginProfile, setCurrentLoginProfile] =
+    useRecoilState<any>(currentLoginProfileState);
     const router = useRouter();
-
-    const afterChangeProfile = (profileId: number) => {
-        // 如果在 profile 页面，把 profile 也切换掉。
-        if (router.pathname === "/profile/[address]") {
-            router.push(`/profile/${account}?queryProfileId=${profileId}`);
-        }
-    };
 
     const handleOk = () => {
         props.onCancel();
@@ -55,7 +50,7 @@ const ChangeProfile = (props: any) => {
                     {profileList.map((t: any, i: number) => (
                         <div
                             key={i}
-                            onClick={() => { setCurrentProfile(t); afterChangeProfile(t.profileId); handleOk() }}
+                            onClick={() => { setCurrentLoginProfile(t);handleOk();trace('SwitchProfile') }}
                             className="cursor-pointer flex py-1 items-center px-1 rounded-[4px] hover:bg-[#555555]"
                         >
                             {
@@ -73,7 +68,7 @@ const ChangeProfile = (props: any) => {
                                     alt="" />
                             }
                             <span>{t.handle}</span>
-                            {currentProfile.profileId === t.profileId && <CheckOutlined className="ml-[auto]" />}
+                            {currentLoginProfile.profileId === t.profileId && <CheckOutlined className="ml-[auto]" />}
                         </div>
                     ))}
                 </div>

@@ -21,15 +21,13 @@ import Soon from '../statics/img/Soon.svg'
 import { currentProfileState } from "../store/state";
 import { useRecoilState } from "recoil";
 import { toast } from "react-toastify";
+import trace from "../api/trace";
 
-const headerTabs = ['Profile', 'Creation', 'Gallery', 'Circle', 'NFT']
+const headerTabs = ['Profile', 'Creation', 'Gallery', 'Circle']
 
 const imgSelectUrl = [IconSelect1, IconSelect2, IconSelect3, IconSelect4, IconSelect5]
 
 const imgNoSelectUrl = [IconNoSelect1, IconNoSelect2, IconNoSelect3, IconNoSelect4, IconNoSelect5]
-
-const knn3Address = '0x09c85610154a276a71eb8a887e73c16072029b20'
-const knn3ProfileId = 101548
 
 const Navbar = () => {
 
@@ -42,16 +40,10 @@ const Navbar = () => {
     const [currentProfile] = useRecoilState<any>(currentProfileState);
 
     const getAddress = (item: any) => {
-        console.log('address', item)
+        trace(item)
         if (item === 'Profile') {
-            router.push(`/${item.toLocaleLowerCase()}/${currentProfile.address ? currentProfile.address : knn3Address}`)
-        } else if (item === 'NFT') {
-            if (account && currentProfile.profileId) {
-                router.push(`/${item.toLocaleLowerCase()}/${account}?profileId=${currentProfile.profileId}`)
-            } else {
-                router.push(`/${item.toLocaleLowerCase()}/${knn3Address}?profileId=${knn3ProfileId}`)
-            }
-        } else {
+            router.push(`/profile/stani`)
+        }else if(item === 'Creation') {
             router.push(`/${item.toLocaleLowerCase()}`)
         }
     }
@@ -69,7 +61,7 @@ const Navbar = () => {
             </div>
             {
                 headerTabs.map((t: string, i: number) => (
-                    <div key={i} className={`${router.pathname.includes(t.toLocaleLowerCase()) ? 'bg-[rgb(46,35,28)] text-[rgba(255,255,255,0.9)]' : 'text-[rgba(255,255,255,0.5)]'} text-[#fff] h-14 flex items-center cursor-pointer hover:bg-[rgb(46,35,28)] w-[160px]`} onClick={() => setActiveTab(i)}>
+                    <div key={i} className={`${router.pathname.includes(t.toLocaleLowerCase()) ? 'bg-[#272727] text-[rgba(255,255,255,0.9)]' : 'text-[rgba(255,255,255,0.5)]'} text-[#fff] h-12 flex items-center cursor-pointer hover:bg-[#272727] w-[160px] rounded-[6px] mb-4`} onClick={() => setActiveTab(i)}>
                         {
                             t === 'Creation' || t === 'Profile' || t === 'NFT' ? (
                                 <div className="w-full h-full flex items-center" onClick={() => getAddress(t)}>
@@ -85,7 +77,7 @@ const Navbar = () => {
                                     </div>
                                 </div>) :
                                 (
-                                    <div className="flex">
+                                    <div className="flex" onClick={() => getAddress(t)}>
                                         <Image
                                             className="mr-1 ml-5"
                                             src={imgNoSelectUrl[i]}
