@@ -5,7 +5,7 @@ import { Web3ContextProvider } from "../context/Web3Context";
 import { ToastContainer } from "react-toastify";
 import Script from "next/script";
 import trace from "../api/trace";
-// import Coming from "../components/Coming";
+import Coming from "../components/Coming";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/antd_reset.scss";
 import type { AppProps } from "next/app";
@@ -48,8 +48,8 @@ export default function App({ Component, pageProps }: AppProps) {
           gtag('config', 'G-1HB357LK81');
         `}
         </Script>
-        {/* <Coming /> */}
-        <Component {...pageProps} />
+        <Coming />
+        {/* <Component {...pageProps} /> */}
         <ToastContainer position="top-right" />ƒ
       </Web3ContextProvider>
     </RecoilRoot>
