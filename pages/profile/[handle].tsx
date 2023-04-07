@@ -32,6 +32,7 @@ import api from "../../api";
 import lensApi from "../../api/lensApi";
 import domtoimage from 'dom-to-image';
 import trace from "../../api/trace";
+import { Spin } from 'antd'
 
 import {
   currentProfileState,
@@ -576,7 +577,7 @@ const profile = () => {
               </div>
             ) : (
               <div className="h-full w-full flex items-center justify-center">
-                <LoadingOutlined className="text-2xl block mx-auto my-4" />
+                <Spin indicator={<LoadingOutlined style={{ fontSize: 36 }} spin />} />
               </div>
             )
           }
