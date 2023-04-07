@@ -6,7 +6,6 @@ import api from "../api";
 import Image from 'next/image'
 import IconUp from '../statics/img/up.svg'
 import IconDown from '../statics/img/down.svg'
-import log from "../lib/log";
 import IconError from '../statics/img/error.png'
 import IconOpensea from '../statics/img/opensea.png'
 import { useRecoilState } from "recoil";
@@ -47,7 +46,6 @@ const Create = () => {
 
     const getRating = async () => {
         const res = await api.get(`/lens/queryRating/?profileId=${currentProfile.profileId}`)
-        console.log('评级', res)
         if (res && res.data) {
             setRate({
                 creator_level: res.data.creator_level,

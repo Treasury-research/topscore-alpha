@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import useWeb3Context from "../../hooks/useWeb3Context";
 import useLenshubContract from "../../contract/useLenshubContract";
 import useErc20Contract from "../../contract/useErc20Contract";
-import log from "../../lib/log";
 import useErc721Contract from "../../contract/useErc721Contract";
 import useFeeFollowContract from "../../contract/useFeeFollowContract";
 import lensApi from "../../lib/lensApi";
@@ -31,7 +30,6 @@ export default function Lens({ profileId, handle }: any) {
         prev.push(res.events.Transfer.returnValues.tokenId);
         return [...prev];
       });
-      log("follow", account || "");
     }
   };
 

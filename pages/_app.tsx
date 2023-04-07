@@ -5,6 +5,7 @@ import { Web3ContextProvider } from "../context/Web3Context";
 import { ToastContainer } from "react-toastify";
 // import Coming from "../components/Coming";
 import "react-toastify/dist/ReactToastify.css";
+import Script from "next/script";
 import "../styles/antd_reset.scss";
 import type { AppProps } from "next/app";
 import { RecoilRoot } from "recoil";
@@ -32,6 +33,19 @@ export default function App({ Component, pageProps }: AppProps) {
           />
           <link rel="icon" href="/topIcon.png" />
         </Head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-1HB357LK81"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-1HB357LK81');
+        `}
+        </Script>
         {/* <Coming /> */}
         <Component {...pageProps} />
         <ToastContainer position="top-right" />ƒ
