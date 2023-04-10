@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import * as echarts from 'echarts';
 import trace from "../api/trace";
 
-const overLineColor = ['#009589', '#830000', '#001FB9']
+const overLineColor = ['#8BFFF8', '#AAAEFF', '#FFA881']
 
-const overAreaColor = ['#A1C3BE', '#FF3300', '#3B5CFF']
+const overAreaColor = ['#2C5D5A', '#4B4D75', '#87523A']
 
-const lineColor = ['#FF33FF', '#001FB9', '#009589', '#C70011', '#007EB8', '#932D00', '#4400D0', '#9A0040', '#00DEA8', '#FFD891', '#830000']
+const lineColor = ['#2C5D5A','#85D185', '#00FFE1',  '#AAAEFF', '#D6D7FF', '#FFA881', '#FFBFDA', '#FF9034', '#FFC89B', '#FFE2AB', '#BEADB3']
 
-const areaColor = ['#FF33CC', '#3B5CFF', '#A1C3BE', '#F95D6A', '#003F5C', '#FF7C43', '#665191', '#D45087', '#4A8073', '#FFA600', '#FF3300']
+const areaColor = ['#2C5D5A', '#228B22','#0AD6BD',  '#4B4D75', '#B1B2E8', '#87523A', '#C698AB', '#CB7126', '#BA9271', '#D0B88A', '#FF007F']
 
 const ChartLine = (props: any) => {
 
@@ -40,14 +40,14 @@ const ChartLine = (props: any) => {
         position: 'top'
       },
       areaStyle: {
-        opacity: 0.6,
+        opacity: 0.5,
         color: '#fff'
       },
       itemStyle: {
         color: '#fff'
       },
       lineStyle: {
-        width: 1
+        width: 2
       },
       data: [],
       showSymbol: false
@@ -147,14 +147,14 @@ const ChartLine = (props: any) => {
             position: 'top'
           },
           areaStyle: {
-            opacity: 0.6,
+            opacity: 0.5,
             color: overAreaColor[i]
           },
           itemStyle: {
             color: overLineColor[i]
           },
           lineStyle: {
-            width: 1
+            width: 2
           },
           data: [],
           showSymbol: false
