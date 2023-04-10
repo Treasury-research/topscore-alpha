@@ -154,7 +154,7 @@ const ChartLine = (props: any) => {
             color: overLineColor[i]
           },
           lineStyle: {
-            width: 1
+            width: 2
           },
           data: [],
           showSymbol: false
