@@ -140,6 +140,11 @@ const rmodynamics = () => {
         for (let i = 1; i < day; i++) {
             daysList.push(Number(start.add(1, "days").format("YYYYMMDD")));
         }
+        const a = localToUtcmm(dayjs(new Date().getTime()).format('YYYY-MM-DD HH:mm:ss'))
+        const b = `${a.split(' ')[0]} 04:30:00`
+        if(a < b){
+            daysList.pop()
+        }
         return daysList;
     }
 
@@ -150,13 +155,15 @@ const rmodynamics = () => {
         resAmountData = []
         resPc = []
         const mdyLocal = dayjs(new Date().getTime() - ((activeTab1 + 1) * 7) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
-        const ndyLocal = dayjs(new Date()).format('YYYYMMDD') // 当前日期
+        const ndyLocal = dayjs(new Date().getTime()).format('YYYYMMDD') // 当前日期
+        const pcLocal = dayjs(new Date().getTime() + 24 * 60 * 60 * 1000).format('YYYYMMDD') // 当前日期
         const mdy = localToUtc(mdyLocal)
         const ndy = localToUtc(ndyLocal)
+        const pcdy = localToUtc(pcLocal)
         if (activeTab === 0) {
             const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=5&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
             const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
-            const res2: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=6&type=Post,Comment`);
+            const res2: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${pcdy}&profileId=${currentProfile.profileId}&category=6&type=Post,Comment`);
             if (!res || !res.data || !res1 || !res1.data || !res2 || !res2.data) {
                 setLoading(false);
                 return false;
@@ -205,7 +212,9 @@ const rmodynamics = () => {
             setPubAll(newPubAllData);
         }
         setLoading(false);
-        // setDates(enumerateDaysBetweenDates(mdy, ndy))
+        // console.log()
+        //setDates(enumerateDaysBetweenDates(mdy, ndy))
+        // console.log(enumerateDaysBetweenDates(mdy, ndy))
         setDates(enumerateDaysBetweenDates(mdyLocal, ndyLocal))
     }
 
@@ -221,6 +230,11 @@ const rmodynamics = () => {
         }
     }
 
+
+    const localToUtcmm = (date) => {
+        const fmt = 'YYYY-MM-DD HH:mm:ss'
+        return moment(date, fmt).utc().format(fmt)
+    }
 
     const localToUtc = (date) => {
         const fmt = 'YYYYMMDD'
