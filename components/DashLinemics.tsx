@@ -131,7 +131,15 @@ const rmodynamics = () => {
         }
     }, [postSwitch])
 
+    const getUTCTime = () => {
+        let d1 = new Date();
+        let d2:any = new Date( d1.getUTCFullYear(), d1.getUTCMonth(), d1.getUTCDate(), d1.getUTCHours(), d1.getUTCMinutes(), d1.getUTCSeconds() );
+        return Date.parse(d2);
+    }
+
     const enumerateDaysBetweenDates = (startDate, endDate) => {
+        console.log('2323',getUTCTime())
+        console.log('4555',dayjs(getUTCTime()).format('YYYYMMDD'))
         let daysList = [];
         const start = moment(startDate);
         const end = moment(endDate);
@@ -144,9 +152,11 @@ const rmodynamics = () => {
         const b = `${a.split(' ')[0]} 04:30:00`
         console.log(a)
         console.log(b)
+        console.log(daysList)
         if(a < b){
             daysList.pop()
         }
+        // console.log(daysList)
         return daysList;
     }
 
@@ -156,16 +166,19 @@ const rmodynamics = () => {
         resData = []
         resAmountData = []
         resPc = []
-        const mdyLocal = dayjs(new Date().getTime() - ((activeTab1 + 1) * 7) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
-        const ndyLocal = dayjs(new Date().getTime()).format('YYYY-MM-DD HH:mm:ss') // 当前日期
-        const pcLocal = dayjs(new Date().getTime() + 24 * 60 * 60 * 1000).format('YYYYMMDD') // 当前日期
+        const mdyLocal = dayjs(getUTCTime() - ((activeTab1 + 1) * 7) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
+        const ndyLocal = dayjs(getUTCTime() + 24 * 60 * 60 * 1000).format('YYYY-MM-DD HH:mm:ss') // 当前日期
+        //const pcLocal = dayjs(getUTCTime()).format('YYYYMMDD') // 当前日期
         const mdy = localToUtc(mdyLocal)
         const ndy = localToUtc(ndyLocal)
-        const pcdy = localToUtc(pcLocal)
+        // const pcdy = localToUtc(pcLocal)
+        console.log('mdy',mdy)
+        console.log('ndy',ndy)
+        // console.log('pcdy',pcdy)
         if (activeTab === 0) {
             const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=5&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
             const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
-            const res2: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${pcdy}&profileId=${currentProfile.profileId}&category=6&type=Post,Comment`);
+            const res2: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=6&type=Post,Comment`);
             if (!res || !res.data || !res1 || !res1.data || !res2 || !res2.data) {
                 setLoading(false);
                 return false;
