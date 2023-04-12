@@ -131,7 +131,15 @@ const rmodynamics = () => {
         }
     }, [postSwitch])
 
+    const getUTCTime = () => {
+        let d1 = new Date();
+        let d2:any = new Date( d1.getUTCFullYear(), d1.getUTCMonth(), d1.getUTCDate(), d1.getUTCHours(), d1.getUTCMinutes(), d1.getUTCSeconds() );
+        return Date.parse(d2);
+    }
+
     const enumerateDaysBetweenDates = (startDate, endDate) => {
+        console.log('2323',getUTCTime())
+        console.log('4555',dayjs(getUTCTime()).format('YYYYMMDD HH:mm:ss'))
         let daysList = [];
         const start = moment(startDate);
         const end = moment(endDate);
@@ -140,6 +148,15 @@ const rmodynamics = () => {
         for (let i = 1; i < day; i++) {
             daysList.push(Number(start.add(1, "days").format("YYYYMMDD")));
         }
+        const a = localToUtcmm(dayjs(new Date().getTime()).format('YYYY-MM-DD HH:mm:ss'))
+        const b = `${a.split(' ')[0]} 04:30:00`
+        console.log(a)
+        console.log(b)
+        console.log(daysList)
+        if(a < b){
+            daysList.pop()
+        }
+        // console.log(daysList)
         return daysList;
     }
 
@@ -149,10 +166,15 @@ const rmodynamics = () => {
         resData = []
         resAmountData = []
         resPc = []
-        const mdyLocal = dayjs(new Date().getTime() - ((activeTab1 + 1) * 7) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
-        const ndyLocal = dayjs(new Date()).format('YYYYMMDD') // 当前日期
-        const mdy = localToUtc(mdyLocal)
-        const ndy = localToUtc(ndyLocal)
+        const mdyLocal = dayjs(getUTCTime() - ((activeTab1 + 1) * 7) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
+        const ndyLocal = dayjs(getUTCTime()).format('YYYYMMDD') // 当前日期
+        //const pcLocal = dayjs(getUTCTime()).format('YYYYMMDD') // 当前日期
+        const mdy = mdyLocal
+        const ndy = ndyLocal
+        // const pcdy = localToUtc(pcLocal)
+        console.log('mdy',mdy)
+        console.log('ndy',ndy)
+        // console.log('pcdy',pcdy)
         if (activeTab === 0) {
             const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=5&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
             const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
@@ -205,8 +227,10 @@ const rmodynamics = () => {
             setPubAll(newPubAllData);
         }
         setLoading(false);
-        // setDates(enumerateDaysBetweenDates(mdy, ndy))
-        setDates(enumerateDaysBetweenDates(mdyLocal, ndyLocal))
+        // console.log()
+        setDates(enumerateDaysBetweenDates(mdy, ndy))
+        // console.log(enumerateDaysBetweenDates(mdy, ndy))
+        //setDates(enumerateDaysBetweenDates(mdyLocal, ndyLocal))
     }
 
     const commentChange = (e) => {
@@ -221,6 +245,11 @@ const rmodynamics = () => {
         }
     }
 
+
+    const localToUtcmm = (date) => {
+        const fmt = 'YYYY-MM-DD HH:mm:ss'
+        return moment(date, fmt).utc().format(fmt)
+    }
 
     const localToUtc = (date) => {
         const fmt = 'YYYYMMDD'
@@ -242,13 +271,13 @@ const rmodynamics = () => {
                     let b = [];
                     for (let j = 0; j < pubAll.length; j++) {
                         let filterPub = resData.filter((t: any) => {
-                            return (pubAll[j] === t.pubId && utcToLocal(t.day) == dates[i])
+                            return (pubAll[j] === t.pubId && t.day == dates[i])
                         })
                         // && filterPub[0]['day'] === dates[i]
                         if (filterPub && filterPub.length > 0) {
                             b.push({
                                 ...filterPub[0],
-                                day: utcToLocal(filterPub[0]['day'])
+                                day: filterPub[0]['day']
                             })
                         } else {
                             let filterByID = resData.filter((t: any) => {
@@ -279,12 +308,12 @@ const rmodynamics = () => {
                 } else {
                     // line data
                     let selData = resData.filter((t) => {
-                        return utcToLocal(t.day) == dates[i]
+                        return t.day == dates[i]
                     })
                     if (selData.length > 0) {
                         s.push({
                             ...selData[0],
-                            day: utcToLocal(selData[0]['day'])
+                            day: selData[0]['day']
                         })
                     } else {
                         s.push({
@@ -298,12 +327,12 @@ const rmodynamics = () => {
 
                     // overview
                     let postData = resPc.filter((t) => {
-                        return utcToLocal(t.day) == dates[i]
+                        return t.day == dates[i]
                     })
                     if (postData.length > 0) {
                         j.push({
                             ...postData[0],
-                            day: utcToLocal(postData[0]['day'])
+                            day: postData[0]['day']
                         })
                     } else {
                         j.push({
