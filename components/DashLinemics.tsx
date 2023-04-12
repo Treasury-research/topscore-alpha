@@ -139,7 +139,7 @@ const rmodynamics = () => {
 
     const enumerateDaysBetweenDates = (startDate, endDate) => {
         console.log('2323',getUTCTime())
-        console.log('4555',dayjs(getUTCTime()).format('YYYYMMDD'))
+        console.log('4555',dayjs(getUTCTime()).format('YYYYMMDD HH:mm:ss'))
         let daysList = [];
         const start = moment(startDate);
         const end = moment(endDate);
@@ -167,10 +167,10 @@ const rmodynamics = () => {
         resAmountData = []
         resPc = []
         const mdyLocal = dayjs(getUTCTime() - ((activeTab1 + 1) * 7) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
-        const ndyLocal = dayjs(getUTCTime() + 24 * 60 * 60 * 1000).format('YYYY-MM-DD HH:mm:ss') // 当前日期
+        const ndyLocal = dayjs(getUTCTime()).format('YYYYMMDD') // 当前日期
         //const pcLocal = dayjs(getUTCTime()).format('YYYYMMDD') // 当前日期
-        const mdy = localToUtc(mdyLocal)
-        const ndy = localToUtc(ndyLocal)
+        const mdy = mdyLocal
+        const ndy = ndyLocal
         // const pcdy = localToUtc(pcLocal)
         console.log('mdy',mdy)
         console.log('ndy',ndy)
