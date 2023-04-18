@@ -9,7 +9,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/profile/stani',
+        destination: '/home',
         permanent: true,
       },
       {

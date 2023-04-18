@@ -4,7 +4,7 @@ import useWeb3Context from "../hooks/useWeb3Context";
 import ConnectBtn from "../components/ConnectBtn";
 import Create from "../components/Create";
 
-const Post = () => {
+const creation = () => {
   const { account } = useWeb3Context();
 
   return (
@@ -18,4 +18,4 @@ const Post = () => {
   );
 };
 
-export default Post;
+export default creation;

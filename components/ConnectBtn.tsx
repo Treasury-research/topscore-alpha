@@ -405,7 +405,9 @@ const ConnectBtn = (props: any) => {
 
   return (
     <div className="w-full h-10 flex gap-3 items-center">
-      <div className="h-8 flex gap-2 items-center">
+      {
+        props.type !== 3 &&
+        <div className="h-8 flex gap-2 items-center">
         <div>{props.type == 1 ? 'Profile of' : 'Dashboard of'}</div>
         <div className="h-full">
           <Dropdown
@@ -565,8 +567,7 @@ const ConnectBtn = (props: any) => {
           ></PermissionMsg>
         }
       </div>
-
-
+      }
       <div className="h-full ml-auto">
         {account && chainId && config.chainId !== chainId ? (
           <button

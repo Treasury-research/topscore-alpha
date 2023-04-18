@@ -129,7 +129,7 @@ let grades = [{
   rank: 0,
 }]
 
-const profile = () => {
+const profile = (props:any) => {
 
   const { account, chainId, doLogout } = useWeb3Context();
 
@@ -340,7 +340,7 @@ const profile = () => {
       })
       getCurrentProfileByRouter(router.query.handle)
     }
-  }, [router])
+  }, [router,props.handle])
 
   useEffect(() => {
     if(rateHoveActive !== ''){
@@ -513,7 +513,7 @@ const profile = () => {
                   <div className="w-[fit-content] h-[fit-content] px-4 py-2 nft-bg text-[18px] font-[600] ml-10">NFT</div>
                 }
                 <div className=" w-[800px] flex items-center justify-center">
-                  <div className="h-[260px] w-[760px] mx-[auto] relative profile-nft mb-16" onMouseEnter={() => setShowNftBtn(true)} onMouseLeave={() => setShowNftBtn(false)}>
+                  <div className="h-[260px] w-[760px] mx-[auto] relative profile-nft mb-16 handle-nft" onMouseEnter={() => setShowNftBtn(true)} onMouseLeave={() => setShowNftBtn(false)}>
                     <Carousel dotPosition={'bottom'} ref={carouselRef}>
                       {
                         nftList.map((t: any, i: number) => (

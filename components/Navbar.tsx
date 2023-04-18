@@ -8,7 +8,7 @@ import IconSelect1 from '../statics/img/select/icon1.svg'
 import IconSelect2 from '../statics/img/select/icon2.svg'
 import IconSelect3 from '../statics/img/select/icon3.svg'
 import IconSelect4 from '../statics/img/select/icon4.svg'
-import IconSelect5 from '../statics/img/select/icon6.svg'
+import IconSelect5 from '../statics/img/select/icon5.svg'
 
 import IconNoSelect1 from '../statics/img/noselect/icon1.svg'
 import IconNoSelect2 from '../statics/img/noselect/icon2.svg'
@@ -23,7 +23,7 @@ import { useRecoilState } from "recoil";
 import { toast } from "react-toastify";
 import trace from "../api/trace";
 
-const headerTabs = ['Profile', 'Creation', 'Gallery', 'Circle']
+const headerTabs = ['Profile', 'Creation', 'Gallery', 'Circle', 'Pass']
 
 const imgSelectUrl = [IconSelect1, IconSelect2, IconSelect3, IconSelect4, IconSelect5]
 
@@ -43,7 +43,7 @@ const Navbar = () => {
         trace(item)
         if (item === 'Profile') {
             router.push(`/profile/stani`)
-        }else if(item === 'Creation') {
+        } else {
             router.push(`/${item.toLocaleLowerCase()}`)
         }
     }
@@ -51,53 +51,52 @@ const Navbar = () => {
     return (
         <div className='h-full leading-20 pl-6 pr-6 pt-10 bg-[#1A1A1A] flex flex-col justify-between'>
             <div>
-            <div className="flex items-center mb-10 ml-[-10px]">
-                <Image
-                    className="mr-1 h-8 w-8"
-                    src={IconTop}
-                    alt=""
-                />
-                <div className="text-[rgba(255,255,255,0.8)] flex items-center">TOPSCORE<span className="text-[12px] text-[#CE3900] ml-2">ALPHA</span></div>
-            </div>
-            {
-                headerTabs.map((t: string, i: number) => (
-                    <div key={i} className={`${router.pathname.includes(t.toLocaleLowerCase()) ? 'bg-[#272727] text-[rgba(255,255,255,0.9)]' : 'text-[rgba(255,255,255,0.5)]'} text-[#fff] h-12 flex items-center cursor-pointer hover:bg-[#272727] w-[160px] rounded-[6px] mb-4`} onClick={() => setActiveTab(i)}>
-                        {
-                            t === 'Creation' || t === 'Profile' || t === 'NFT' ? (
-                                <div className="w-full h-full flex items-center" onClick={() => getAddress(t)}>
-                                    <div className="flex">
-                                        <div className="w-[40px] flex mr-1">
+                <div className="flex items-center mb-10 ml-[-10px]">
+                    <Image
+                        className="mr-1 h-8 w-8"
+                        src={IconTop}
+                        alt=""
+                    />
+                    <div className="text-[rgba(255,255,255,0.8)] flex items-center">TOPSCORE<span className="text-[12px] text-[#CE3900] ml-2">ALPHA</span></div>
+                </div>
+                {
+                    headerTabs.map((t: string, i: number) => (
+                        <div key={i} className={`${router.pathname.includes(t.toLocaleLowerCase()) ? 'bg-[#272727] text-[rgba(255,255,255,0.9)]' : 'text-[rgba(255,255,255,0.5)]'} text-[#fff] h-12 flex items-center cursor-pointer hover:bg-[#272727] w-[160px] rounded-[6px] mb-4`} onClick={() => setActiveTab(i)}>
+                            {
+                                t === 'Creation' || t === 'Profile' ? (
+                                    <div className="w-full h-full flex items-center" onClick={() => getAddress(t)}>
+                                        <div className="flex">
+                                            <div className="w-[40px] flex mr-1">
+                                                <Image
+                                                    className="ml-[auto]"
+                                                    src={router.pathname.includes(t.toLocaleLowerCase()) ? imgSelectUrl[i] : imgNoSelectUrl[i]}
+                                                    alt=""
+                                                />
+                                            </div>
+                                            <div>{t}</div>
+                                        </div>
+                                    </div>) :
+                                    (
+                                        <div className="flex" onClick={() => getAddress(t)}>
                                             <Image
-                                                className="ml-[auto]"
+                                                className="mr-1 ml-5"
                                                 src={router.pathname.includes(t.toLocaleLowerCase()) ? imgSelectUrl[i] : imgNoSelectUrl[i]}
                                                 alt=""
                                             />
+                                            <div>{t}</div>
+                                            <Image
+                                                className="ml-1 mt-[-20px]"
+                                                src={Soon}
+                                                alt=""
+                                            />
                                         </div>
-                                        <div>{t}</div>
-                                    </div>
-                                </div>) :
-                                (
-                                    <div className="flex" onClick={() => getAddress(t)}>
-                                        <Image
-                                            className="mr-1 ml-5"
-                                            src={imgNoSelectUrl[i]}
-                                            alt=""
-                                        />
-                                        <div className="text-[rgba(255,255,255,0.5)]">{t}</div>
-                                        <Image
-                                            className="ml-1 mt-[-20px]"
-                                            src={Soon}
-                                            alt=""
-                                        />
-                                    </div>
-                                )
-                        }
+                                    )
+                            }
 
-                    </div>
-                ))
-            }
+                        </div>
+                    ))
+                }
             </div>
-
             <Socials />
         </div>
     )

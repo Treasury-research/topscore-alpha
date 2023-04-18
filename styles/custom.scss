@@ -879,7 +879,7 @@
   }
 }
 
-.slick-track {
+.handle-nft .slick-track {
   height: 240px !important;
 }
 
@@ -996,9 +996,25 @@
   margin-top: 14px;
 }
 
-// .profile-fixed{
-//   top:50%;
-//   left:50%;
-//   transform: translate(-50%,-50%);
-// }
-// permission-modal-content absolute left-[50%] top-[40%] z-100 text-[#fff] bg-[#292929] w-[500px] translate-[-50%,-50%]
+.home-main {
+  background: url("../statics/img/home/bg-main.png") no-repeat;
+  background-size: cover;
+}
+
+.round1-bg{
+  background: url("../statics/img/home/round-1.svg") no-repeat center center;
+  background-size: cover;
+  background-size: 100% 100%;
+}
+
+.bg-StartBtn{
+  background: url("../statics/img/home/start-btn.svg") no-repeat center center;
+  background-size: cover;
+  background-size: 100% 100%;
+}
+
+.home-slack1{
+  background: url("../statics/img/home/slack1.png") no-repeat center center;
+  background-size: cover;
+  background-size: 100% 100%;
+}
