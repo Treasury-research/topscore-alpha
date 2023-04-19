@@ -9,13 +9,13 @@ import Titletext from "../statics/img/home/titletext.gif";
 import Round2 from "../statics/img/home/round-2.png";
 import GoBtn from "../statics/img/home/goBtn.svg";
 import Feedback from "../statics/img/home/feedback.svg";
-import Slack1 from "../statics/img/home/slack1.png";
-import Slack2 from "../statics/img/home/slack2.png";
+import Slack1 from "../statics/img/home/slack1.webp";
+import Slack2 from "../statics/img/home/slack2.webp";
 import { Carousel } from "antd";
 import WhatsText from "../statics/img/home/whatsText.svg";
-import whatNewIcon from "../statics/img/home/whatNewIcon.svg";
+import whatNewIcon from "../statics/img/home/whatNewIcon.png";
 import Gallery from "../statics/img/home/gallery.svg";
-import GalleryIcon from "../statics/img/home/galleryIcon.png";
+import GalleryIcon from "../statics/img/home/galleryIcon.webp";
 import { LeftOutlined, RightOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 
@@ -27,7 +27,6 @@ export default function Index() {
     return (
         <div className="w-full h-full text-[#fff] home-main">
             <div className='h-[calc(100%-100px)] float-left mt-[100px] overflow-auto hidden-scrollbar'>
-
                 <div className='h-[100vh] w-[100vw] flex items-center justify-center mt-[-100px] relative'>
                     <div className='flex w-[80%]'>
                         <div className='flex items-center justify-center w-[calc(100%-70px)] mr-5 relative'>
@@ -48,14 +47,15 @@ export default function Index() {
                                 alt="" />
                         </div>
                     </div>
-                    <div className='text-[50px] bold absolute bottom-0 left-[100px] w-[300px]'>
-                        <Image
-                            src={ProfileText}
-                            alt="" />
-                    </div>
-                </div>
 
-                <div className='h-[100vh] w-[100vw] flex items-center justify-center'>
+                </div>
+                <div className='text-[50px] bold w-[80%] mx-[auto] mb-8'>
+                    <Image
+                        className='w-[300px]'
+                        src={ProfileText}
+                        alt="" />
+                </div>
+                <div className='w-[100vw] flex justify-center mb-[200px]'>
                     <div className='flex w-[80%]'>
                         <div className='flex items-center justify-center w-[calc(100%-70px)] mr-5'>
                             <Image
@@ -71,13 +71,13 @@ export default function Index() {
                         </div>
                     </div>
                 </div>
-                <div className='text-[50px] bold flex justify-end w-[80%] mx-[auto]'>
+                <div className='text-[50px] bold flex justify-end w-[80%] mx-[auto] mb-8'>
                     <Image
                         className='w-[300px]'
                         src={Feedback}
                         alt="" />
                 </div>
-                <div className='h-[100vh] w-[100vw] flex items-center justify-center relative'>
+                <div className='w-[100vw] flex justify-center relative mb-[200px]'>
                     <div className='flex w-[80%] '>
                         <div className='flex items-end justify-center w-[50px] mr-5'>
                             <Image
@@ -87,25 +87,27 @@ export default function Index() {
                                 alt="" />
                         </div>
                         <div className='w-[calc(100%-70px)] relative bg-[rgba(26,26,26,1)] rounded-[20px] flex items-center justify-center'>
-                            <div className='w-[60%]'>
+                            <div className='w-[800px]'>
                                 <Carousel className='w-full' ref={carouselRef}>
-                                    <div className='w-full flex items-center justify-center'>
+                                    <div className='w-[800px] flex items-center justify-center mx-[auto]'>
                                         <Image
+                                            className="h-[534px]"
                                             src={Slack1}
                                             alt="" />
                                     </div>
-                                    <div>
+                                    <div className='w-[800px] flex items-center justify-center mx-[auto]'>
                                         <Image
+                                            className="h-[534px]"
                                             src={Slack2}
                                             alt="" />
                                     </div>
                                 </Carousel>
                             </div>
-                            <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[10%] translate-x-[-24px] translate-y-[-50%]"
+                            <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[5%] translate-x-[-24px] translate-y-[-50%]"
                                 onClick={() => { carouselRef.current?.prev(); }}>
                                 <LeftOutlined className="text-[18px] text-[700]" />
                             </button>
-                            <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[10%] translate-x-[24px] translate-y-[-50%]"
+                            <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[5%] translate-x-[24px] translate-y-[-50%]"
                                 onClick={() => { carouselRef.current?.next(); }}>
                                 <RightOutlined className="text-[18px] text-[700]" />
                             </button>
@@ -116,19 +118,19 @@ export default function Index() {
 
                 </div>
 
-                <div className='text-[50px] bold flex w-[80%] mx-[auto]'>
+                <div className='text-[50px] bold w-[80%] mx-[auto] mb-8'>
                     <Image
                         className='w-[300px]'
                         src={Gallery}
                         alt="" />
                 </div>
 
-                <div className='h-[100vh] w-[100vw] flex items-center justify-center relative'>
+                <div className='w-[100vw] flex justify-center relative mb-[200px]'>
                     <div className='flex w-[80%]'>
                         <div className='w-[calc(100%-70px)] mr-5 relative bg-[rgba(26,26,26,1)] rounded-[20px] flex items-center justify-center'>
                             <Image
                                 src={GalleryIcon}
-                                className='h-[100%]'
+                                className='h-[534px] object-contain'
                                 alt="" />
                         </div>
                         <div className='flex items-end justify-center w-[50px]'>
