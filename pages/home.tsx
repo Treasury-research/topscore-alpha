@@ -15,7 +15,7 @@ import { Carousel } from "antd";
 import WhatsText from "../statics/img/home/whatsText.svg";
 import whatNewIcon from "../statics/img/home/whatNewIcon.png";
 import Gallery from "../statics/img/home/gallery.svg";
-import GalleryIcon from "../statics/img/home/galleryIcon.webp";
+import GalleryIcon from "../statics/img/home/GalleryIcon.webp";
 import { LeftOutlined, RightOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 
