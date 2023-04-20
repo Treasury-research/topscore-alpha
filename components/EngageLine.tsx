@@ -63,7 +63,7 @@ const ChartLine = (props: any) => {
           if (flx.length == 0) {
             seriesObj.data.push({
               name: `${type}_${s[i]['type']}_comment_0`,
-              value: 0
+              value: null
             })
           } else {
             seriesObj.data.push({
@@ -76,7 +76,7 @@ const ChartLine = (props: any) => {
           if (flx.length == 0) {
             seriesObj.data.push({
               name: `${type}_${s[i]['type']}_mirror_0`,
-              value: 0
+              value: null
             })
           } else {
             seriesObj.data.push({
@@ -89,7 +89,7 @@ const ChartLine = (props: any) => {
           if (flx.length == 0) {
             seriesObj.data.push({
               name: `${type}_${s[i]['type']}_total_0_0`,
-              value: 0
+              value: null
             })
           } else {
             seriesObj.data.push({
@@ -101,14 +101,14 @@ const ChartLine = (props: any) => {
         if (!commentSwitch && !mirrorSwitch) {
           seriesObj.data.push({
             name: `${type}_total_total_0_0}`,
-            value: 0
+            value: null
           })
         }
       } else {
         if (flx.length == 0) {
           seriesObj.data.push({
             name: `${type}_${s[i]['type']}_${s[i]['isFee']}_0_0`,
-            value: 0
+            value: null
           })
         } else {
           seriesObj.data.push({
@@ -131,6 +131,7 @@ const ChartLine = (props: any) => {
         legendData.push(`${s[i]['pubId'] === 0 ? 'Others' : `#${s[i]['pubId']}`}`)
         seriesData.push(getSeriesData(s, i))
       }
+      console.log(seriesData)
     } else {
       legendData = ['Comments (by)', 'Mirrors (by)', 'Collected (by)']
       legendData.map((t, i) => {
@@ -214,6 +215,9 @@ const ChartLine = (props: any) => {
             idx = 1
           }
           params.forEach((v: any, i: number) => {
+            if(!v.value && v.value !== 0 ){
+              return
+            }
             htmlDate = `<div class="engage-head-right-date">${v.axisValue}</div>`
             if (!v.name || v.seriesName === 'amount') return false;
             if (type == 0) {
