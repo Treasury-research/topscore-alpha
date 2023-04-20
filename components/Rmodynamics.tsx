@@ -13,6 +13,7 @@ import ImgPublitions from "../statics/img/profileV2/remo-publication.svg"
 import Imgcommentsby from '../statics/img/commentsby.svg'
 import trace from "../api/trace";
 import moment from 'moment'
+import dayjs from 'dayjs';
 
 import BN from "bignumber.js";
 
@@ -289,18 +290,17 @@ const rmodynamics = () => {
             collectFee: 0,
             pubCount: 0
         }
-        let weekOfDay = parseInt(moment().format('E'));//计算今天是这周第几天
+        let weekOfDay = parseInt(moment().utc().format('E'));//计算今天是这周第几天
         let rem: any = [[], [], [], [], [], [], []]
         const dWeek = weekOfDay === 0 ? 6 : weekOfDay
-        const dHour = parseInt(moment().format('HH'))
+        // const dHour = parseInt(moment().format('HH'))
+        const dHour = parseInt(moment().utc().format('HH'))
         for (let i = 0; i < 7; i++) {
             for (let j = 0; j < 24; j++) {
-                if ((dWeek > i + 1 || (dWeek === i + 1 && dHour > j)) && weekCount === 0) {
-                    rem[i].push('noData')
-                } else if (weekCount !== 0) {
-                    rem[i].push('noData')
+                if ((dWeek < i + 1 || (dWeek === i + 1)) && weekCount === -1) {
+                    rem[i].push('futer')
                 } else {
-                    rem[i].push(null)
+                    rem[i].push('noData')
                 }
             }
         }
@@ -349,6 +349,7 @@ const rmodynamics = () => {
                 rem[week - 1][Number(timePeriod.toString().slice(8, 10))] = [t.postCount || 0, t.commentCount, t.mirrorCount, t.collectCount, t.pubCount, timePeriod];
             }
         })
+        console.log(rem)
         setRemodyBaseData(rem)
         setTotalAmount(totalAmount)
         setLoading(false);
@@ -455,7 +456,7 @@ const rmodynamics = () => {
     }
 
     const getItemStyle = (e: any) => {
-        if (!e || !checked.includes(true) || e === 'noData') return 'bg-[#232323]'
+        if (!e || !checked.includes(true) || e === 'noData' || e === 'futer') return 'bg-[#232323]'
         let maxMount = 0;
         let totalMount = 0;
         checked.forEach((t: any, i: number) => {
@@ -617,7 +618,7 @@ const rmodynamics = () => {
                                                         <div className="text-[12px] w-[40px] h-[30px] flex items-center day-liber">{dys[i]}</div>
                                                         {
                                                             t.map((item: any, index: number) => (
-                                                                (!item || !checked.includes(true)) ?
+                                                                (!item || !checked.includes(true) || item == 'futer') ?
                                                                     (
                                                                         <div key={index} onClick={() => putActiveItems([i, index])} className={`${getBorderStyle([i, index])} box-border h-[28px] w-[28px] mr-[2px] cursor-pointer ${getItemStyle(item)}`}></div>
                                                                     ) : (<Popover key={index} placement="bottom" content={() => getContent(item, i, index)}>

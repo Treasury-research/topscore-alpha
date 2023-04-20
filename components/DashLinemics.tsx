@@ -10,6 +10,7 @@ import { currentProfileState, topRecentState, postSwitchState } from "../store/s
 import { useRecoilState } from "recoil";
 import moment from 'moment'
 import trace from "../api/trace";
+import { getNextDate } from "../lib/tool";
 
 const tabs = ['Overview', 'Engagements', 'Collections']
 
@@ -68,64 +69,64 @@ const rmodynamics = () => {
     }, [activeTab])
 
     useEffect(() => {
-        if(commentSwitch){
+        if (commentSwitch) {
             trace('Stack-EG-Cmt-On')
-        }else{
+        } else {
             trace('Stack-EG-Cmt-Off')
         }
     }, [commentSwitch])
 
     useEffect(() => {
-        if(mirrorSwitch){
+        if (mirrorSwitch) {
             trace('Stack-Mir-Cmt-On')
-        }else{
+        } else {
             trace('Stack-Mir-Cmt-Off')
         }
     }, [mirrorSwitch])
 
     useEffect(() => {
-        if(chargeSwitch){
+        if (chargeSwitch) {
             trace('Stack-CL-COnly-On')
-        }else{
+        } else {
             trace('Stack-CL-COnly-Off')
         }
     }, [chargeSwitch])
 
     useEffect(() => {
-        if(!topRecentSwitch){
-            if(activeTab == 1){
+        if (!topRecentSwitch) {
+            if (activeTab == 1) {
                 trace('Stack-EG-Top')
-            }else{
+            } else {
                 trace('Stack-CL-Top')
             }
-        }else{
-            if(activeTab == 1){
+        } else {
+            if (activeTab == 1) {
                 trace('Stack-EG-Recent')
-            }else{
+            } else {
                 trace('Stack-CL-Recent')
             }
         }
     }, [topRecentSwitch])
 
     useEffect(() => {
-        if(postSwitch){
-            if(activeTab == 0){
+        if (postSwitch) {
+            if (activeTab == 0) {
                 trace('Stack-OV-POnly-On')
             }
-            if(activeTab == 1){
+            if (activeTab == 1) {
                 trace('Stack-EG-POnly-On')
             }
-            if(activeTab == 2){
+            if (activeTab == 2) {
                 trace('Stack-CL-POnly-On')
             }
-        }else{
-            if(activeTab == 0){
+        } else {
+            if (activeTab == 0) {
                 trace('Stack-OV-POnly-Off')
             }
-            if(activeTab == 1){
+            if (activeTab == 1) {
                 trace('Stack-EG-POnly-Off')
             }
-            if(activeTab == 2){
+            if (activeTab == 2) {
                 trace('Stack-CL-POnly-Off')
             }
         }
@@ -133,13 +134,11 @@ const rmodynamics = () => {
 
     const getUTCTime = () => {
         let d1 = new Date();
-        let d2:any = new Date( d1.getUTCFullYear(), d1.getUTCMonth(), d1.getUTCDate(), d1.getUTCHours(), d1.getUTCMinutes(), d1.getUTCSeconds() );
+        let d2: any = new Date(d1.getUTCFullYear(), d1.getUTCMonth(), d1.getUTCDate(), d1.getUTCHours(), d1.getUTCMinutes(), d1.getUTCSeconds());
         return Date.parse(d2);
     }
 
     const enumerateDaysBetweenDates = (startDate, endDate) => {
-        console.log('2323',getUTCTime())
-        console.log('4555',dayjs(getUTCTime()).format('YYYYMMDD HH:mm:ss'))
         let daysList = [];
         const start = moment(startDate);
         const end = moment(endDate);
@@ -153,7 +152,7 @@ const rmodynamics = () => {
         console.log(a)
         console.log(b)
         console.log(daysList)
-        if(a < b){
+        if (a < b) {
             daysList.pop()
         }
         // console.log(daysList)
@@ -168,17 +167,18 @@ const rmodynamics = () => {
         resPc = []
         const mdyLocal = dayjs(getUTCTime() - ((activeTab1 + 1) * 7) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
         const ndyLocal = dayjs(getUTCTime()).format('YYYYMMDD') // 当前日期
+        const queryLocal = dayjs(getUTCTime() + 24 * 60 * 60 * 1000).format('YYYYMMDD') // 查询日期+1
         //const pcLocal = dayjs(getUTCTime()).format('YYYYMMDD') // 当前日期
         const mdy = mdyLocal
         const ndy = ndyLocal
         // const pcdy = localToUtc(pcLocal)
-        console.log('mdy',mdy)
-        console.log('ndy',ndy)
+        console.log('mdy', mdy)
+        console.log('ndy', ndy)
         // console.log('pcdy',pcdy)
         if (activeTab === 0) {
-            const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=5&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
-            const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
-            const res2: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=6&type=Post,Comment`);
+            const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${queryLocal}&profileId=${currentProfile.profileId}&category=5&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
+            const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${queryLocal}&profileId=${currentProfile.profileId}`);
+            const res2: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${queryLocal}&profileId=${currentProfile.profileId}&category=6&type=Post,Comment`);
             if (!res || !res.data || !res1 || !res1.data || !res2 || !res2.data) {
                 setLoading(false);
                 return false;
@@ -189,8 +189,8 @@ const rmodynamics = () => {
         } else if (activeTab === 1) {
             // const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
             // const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
-            const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
-            const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
+            const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${queryLocal}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
+            const res1: any = await api.get(`/lens/followStsByDay?start=${mdy}&end=${queryLocal}&profileId=${currentProfile.profileId}`);
             if (!res || !res.data || !res1 || !res1.data) {
                 setLoading(false);
                 return false;
@@ -200,7 +200,7 @@ const rmodynamics = () => {
         } else if (activeTab === 2) {
             // const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 1 : 2}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
             // const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
-            const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 2 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
+            const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${queryLocal}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 2 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${chargeSwitch ? 1 : ''}`);
             // const res1: any = await api.get(`/lens/collectFeeStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}`);
             if (!res || !res.data) {
                 setLoading(false);
@@ -251,16 +251,6 @@ const rmodynamics = () => {
         return moment(date, fmt).utc().format(fmt)
     }
 
-    const localToUtc = (date) => {
-        const fmt = 'YYYYMMDD'
-        return moment(date, fmt).utc().format(fmt)
-    }
-
-    const utcToLocal = (date) => {
-        const fmt = 'YYYYMMDD'
-        return moment.utc(date, fmt).local().format(fmt)
-    }
-
     useEffect(() => {
         if (dates.length > 0) {
             let s: any = []; // area data
@@ -283,25 +273,37 @@ const rmodynamics = () => {
                             let filterByID = resData.filter((t: any) => {
                                 return pubAll[j] === t.pubId
                             })
+                            console.log('filterByID', filterByID)
                             if (activeTab === 1) {
-                                let obj = { ...filterByID[0] }
-                                obj.commentByCount = '0'
-                                obj.day = dates[i]
-                                obj.isFee = '0'
-                                obj.mirrorByCount = '0'
-                                obj.totalByCount = '0'
-                                b.push({
-                                    ...obj
-                                })
+                                if (filterByID && filterByID.length && filterByID[0]['day']) {
+                                    const dString = filterByID[0]['day'].toString()
+                                    const fitD = dString.slice(0, 4) + '-' + dString.slice(4, 6) + '-' + dString.slice(6, 8)
+                                    if (getNextDate(fitD,-1) == dates[i].toString() || dates[i] > filterByID[0]['day']) {
+                                        let obj = { ...filterByID[0] }
+                                        obj.commentByCount = '0'
+                                        obj.day = dates[i]
+                                        obj.isFee = '0'
+                                        obj.mirrorByCount = '0'
+                                        obj.totalByCount = '0'
+                                        b.push({
+                                            ...obj
+                                        })
+                                    }
+                                }
                             } else {
-                                let obj = { ...filterByID[0] }
-                                obj.collectByCount = '0'
-                                obj.day = dates[i]
-                                b.push({
-                                    ...obj
-                                })
+                                if (filterByID && filterByID.length && filterByID[0]['day']) {
+                                    const dString = filterByID[0]['day'].toString()
+                                    const fitD = dString.slice(0, 4) + '-' + dString.slice(4, 6) + '-' + dString.slice(6, 8)
+                                    if (getNextDate(fitD,-1) == dates[i].toString() || dates[i] > filterByID[0]['day']) {
+                                        let obj = { ...filterByID[0] }
+                                        obj.collectByCount = '0'
+                                        obj.day = dates[i]
+                                        b.push({
+                                            ...obj
+                                        })
+                                    }
+                                }
                             }
-
                         }
                     }
                     s.push(b)
@@ -352,6 +354,7 @@ const rmodynamics = () => {
                     }
                 }
             }
+            console.log(s)
             setLindData(s)
             setSigleData(h)
             setOverviewPostData(j)
