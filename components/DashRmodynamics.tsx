@@ -338,9 +338,9 @@ const DashRmodynamics = () => {
                         rem[i].push(null)
                     } else if (j < weekNum - 2) {
                         rem[i].push('noData')
-                    } else if (j == weekNum - 2 && weekOfDay < i + 1) {
+                    } else if (j == weekNum - 2 && weekOfDay <= i + 1) {
                         rem[i].push(null)
-                    } else if (j == weekNum - 2 && weekOfDay >= i + 1) {
+                    } else if (j == weekNum - 2 && weekOfDay > i + 1) {
                         rem[i].push('noData')
                     }
                 }
@@ -374,6 +374,7 @@ const DashRmodynamics = () => {
             }
 
         })
+        console.log(rem)
         setRemodyBaseData(rem)
         setLoading(false);
     }
