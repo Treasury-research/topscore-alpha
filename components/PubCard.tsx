@@ -144,17 +144,35 @@ const PubCard = (props: any) => {
   }
 
   return (
-    <div className="w-full bg-[#000] text-[#fff] p-5 my-10">
+    <div className="w-full text-[#000] dark:text-[#fff] my-10">
       <div>
-        <div className='bg-[#1A1A1A] rounded-[10px] mb-[10px] py-3 flex mb-4'>
-          <div className="flex w-[60%] ml-6">
+        <div className='dash-bg-style rounded-[10px] mb-[10px] h-[60px] flex mb-4'>
+          {/* <div className="flex w-[60%] ml-6">
             {
               tabs.map((t: any, i: number) => (
-                <div key={i} onClick={() => topRecentChange(i)} className={`cursor-pointer w-[140px] flex items-center justify-center px-2 py-1 ${((!topRecentSwitch && i == 0) || (topRecentSwitch && i == 1)) ? 'text-[#fff] border-b-[2px] border-[#fff] text-[18px]' : 'text-[rgba(255,255,255,0.4)] text-[16px]'}`}>{t}</div>
+                <div key={i} onClick={() => topRecentChange(i)} className={`cursor-pointer w-[140px] flex items-center justify-center px-2 py-1 ${((!topRecentSwitch && i == 0) || (topRecentSwitch && i == 1)) ? 'text-[#000] dark:text-[#fff] border-b-[2px] border-[#fff] text-[18px]' : 'text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)] text-[16px]'}`}>{t}</div>
               ))
             }
+          </div> */}
+          <div className="flex ml-6 h-full w-[60%]">
+              {
+                  tabs.map((t: any, i: number) => (
+                      <div className="h-full relative mr-6">
+                          <div key={i} onClick={() => topRecentChange(i)} className={`cursor-pointer ${((!topRecentSwitch && i == 0) || (topRecentSwitch && i == 1)) ? 'dark:text-[#fff]' : 'text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)]'} h-full text-[18px] font-[600] flex justify-center items-center`}>
+                              {t}
+                          </div>
+                          {
+                              ((!topRecentSwitch && i == 0) || (topRecentSwitch && i == 1)) &&
+                              <div className="h-2 w-full flex justify-center absolute bottom-0 tabs-radius">
+                                  <div className="h-1 w-[80%] bg-[#FF3300] rounded-[4px] mt-[6px]"></div>
+                              </div>
+                          }
+                      </div>
+                  ))
+              }
           </div>
-          <div className='flex items-center text-[rgba(255,255,255,0.4)] text-[18px] w-[30%] ml-[auto]'>
+
+          <div className='flex items-center text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)] text-[18px] w-[30%] ml-[auto]'>
             <div className='w-[160px] flex justify-center'>Comments</div>
             <div className='w-[160px] flex justify-center'>Mirrors</div>
             <div className='w-[160px] flex justify-center'>Collects</div>
@@ -166,10 +184,14 @@ const PubCard = (props: any) => {
               <LoadingOutlined className="text-2xl block mx-auto my-[80px]" />
             </div>
             : (
-              <div className='min-h-[200px]'>
+              <div className={`min-h-[200px] ${pubData.length == 0 ? 'dash-bg-style' : ''}`}>
+                {
+                  pubData.length == 0 && 
+                  <div className='h-[200px] w-full flex items-center justify-center text-[24px] text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)]'>No Data found</div>
+                }
                 {
                   pubData.map((t: any, i: number) => (
-                    <div className='bg-[#1A1A1A] rounded-[10px] mb-[10px] py-3 flex mb-4' key={i}>
+                    <div className='dash-bg-style rounded-[10px] mb-[10px] py-3 flex mb-4' key={i}>
                       <div className="flex w-[60%] items-center">
                         <div className='w-[80px] h-[30px] mx-[20px] rounded-[20px] flex items-center justify-center cursor-pointer radius-btn-shadow hover:opacity-70' onClick={() => toLesnter(t)}>#{t.pubId}</div>
                         <div className='w-[calc(100%-100px)] text-[14px]'>

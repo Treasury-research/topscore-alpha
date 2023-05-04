@@ -5,8 +5,8 @@ import useErc20Contract from "../../contract/useErc20Contract";
 import useErc721Contract from "../../contract/useErc721Contract";
 import useFeeFollowContract from "../../contract/useFeeFollowContract";
 import lensApi from "../../lib/lensApi";
-import ImgFollow from "../../statics/img/profileV2/follow.svg"
-import ImgUnFollow from "../../statics/img/profileV2/preson-unfollow.svg"
+import ImgFollow from "../../statics/img/profileV2/follow.icon.svg"
+import ImgUnFollow from "../../statics/img/profileV2/preson-unfollow.icon.svg"
 import trace from "../../api/trace";
 import Image from "next/image";
 
@@ -90,16 +90,18 @@ export default function Lens({ profileId, handle }: any) {
     // <div className="bg-[#4D0F00] px-4 py-2 cursor-pointer" onClick={doFollow}>
     //   Follow{` `}
     // </div>
-    <Image
-      src={ImgFollow}
-      onClick={doFollow}
-      alt=""
-    />
+    // <Image
+    //   src={ImgFollow}
+    //   onClick={doFollow}
+    //   alt=""
+    // />
+    <ImgFollow onClick={doFollow} className="theme-icon"/>
   ) : (
-    <Image
-      src={ImgUnFollow}
-      onClick={doUnfollow}
-      alt=""
-    />
+    // <Image
+    //   src={ImgUnFollow}
+    //   onClick={doUnfollow}
+    //   alt=""
+    // />
+    <ImgUnFollow onClick={doUnfollow} className="theme-icon"/>
   );
 }

@@ -7,6 +7,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Script from "next/script";
 import "../styles/antd_reset.scss";
+import "../styles/light.scss";
+import "../styles/dark.scss";
 import type { AppProps } from "next/app";
 import { RecoilRoot } from "recoil";
 import Head from "next/head";

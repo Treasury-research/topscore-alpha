@@ -1,0 +1,108 @@
+.light {
+    .selectNav {
+        background: #F6F6F9;
+        box-shadow: inset -4px -4px 6px rgba(255, 255, 255, 0.6), inset 4px 4px 10px rgba(44, 46, 55, 0.2);
+        border-radius: 60px;
+    }
+
+    .hoverNav:hover {
+        background: #F6F6F9;
+        box-shadow: inset -4px -4px 6px rgba(255, 255, 255, 0.6), inset 4px 4px 10px rgba(44, 46, 55, 0.2);
+        border-radius: 60px;
+    }
+
+    .anticon-down>svg {
+        color: #000;
+    }
+
+    .anticon-left>svg {
+        color: #000;
+    }
+
+    .anticon-loading>svg {
+        color: #67B700;
+    }
+
+    .anticon-right>svg {
+        color: #000;
+    }
+
+    .anticon-home>svg {
+        color: #000;
+    }
+
+    .profile-main-bg {
+        background: url("../statics/profile/bg-light.png") no-repeat center center;
+        background-size: cover;
+        background-size: 100% 100%;
+    }
+
+    .profile-bg1 {
+        background: url("../statics/img/bg-pro-light.png") no-repeat center center;
+        background-size: cover;
+    }
+
+    .radius-btn-shadow {
+        box-shadow: -2px -2px 6px rgba(255, 255, 255, 0.9), 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .nft-div-bg {
+        background: url("../statics/img/bg-nft-light.png") no-repeat center center;
+        background-size: 100%;
+    }
+
+    .indicatior-style {
+        box-shadow: inset -4px -4px 6px rgba(255, 255, 255, 0.5), inset 4px 4px 10px rgba(44, 46, 55, 0.1);
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    .creation-bg {
+        background: url("../statics/img/profileV2/creationBg-light.png") no-repeat center center;
+        background-size: cover;
+    }
+
+    .dash-bg-style {
+        background: rgba(248, 254, 255, 0.7);
+        /* 3d shadow */
+
+        box-shadow: -2px -2px 6px rgba(255, 255, 255, 0.9), 2px 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+    }
+
+    .tabs-radius {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 4px 4px 0px 0px;
+    }
+
+    .ant-checkbox-inner {
+        background-color: #67B700 !important;
+        border-color: #67B700 !important;
+    }
+
+    .dashline-select-tab {
+        background: #FFFFFF;
+        /* selected 3d */
+
+        box-shadow: inset -4px -4px 6px rgba(255, 255, 255, 0.6), inset 4px 4px 10px rgba(44, 46, 55, 0.2);
+    }
+
+    .line-tabs-style {
+        background: #FFFFFF;
+        box-shadow: inset -4px -4px 4px rgba(255, 255, 255, 0.9), inset 4px 4px 10px 8px rgba(44, 46, 55, 0.1);
+        border-radius: 8px;
+    }
+
+    .theme-icon path {
+        fill: #999;
+    }
+
+    .downLoad-theme-icon g path {
+        fill: #999;
+    }
+
+    .ant-switch-checked .ant-switch-inner {
+        background: #67B700 !important;
+        ;
+    }
+}

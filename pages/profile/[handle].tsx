@@ -12,9 +12,9 @@ import Image from "next/image";
 import ImgPolygonpath from "../../statics/img/profileV2/polygon-path.svg";
 import ImgLenster from "../../statics/img/profileV2/lenster.svg";
 import ImgOpensea from "../../statics/img/profileV2/opensea.svg"
-import ImgEdit from "../../statics/img/profileV2/edit.svg"
-import ImgCopy from "../../statics/img/profileV2/copy.svg"
-import ImgDownLoad from "../../statics/img/profileV2/downLoad.svg"
+import ImgEdit from "../../statics/img/profileV2/edit.icon.svg"
+import ImgCopy from "../../statics/img/profileV2/copy.icon.svg"
+import ImgDownLoad from "../../statics/img/profileV2/downLoad.icon.svg"
 import ImgPerson from "../../statics/img/profileV2/person.svg"
 import ImgFollowing from "../../statics/img/profileV2/following.svg"
 import ImgPublitions from "../../statics/img/profileV2/publitions.svg"
@@ -293,7 +293,7 @@ const profile = (props: any) => {
       (rateHoveActive === 4 && (i === 4 || i === 5)) ||
       (rateHoveActive === 5 && (i === 5))
     ) {
-      return 'bg-[#303030]'
+      return 'indicatior-style'
     }
   }
 
@@ -338,15 +338,15 @@ const profile = (props: any) => {
   }, [rateHoveActive])
 
   return (
-    <div className="w-full h-full bg-[#000] flex profile-v2">
+    <div className="w-full h-full bg-[#fff] dark:bg-[#16171B] flex profile-v2">
       <Navbar />
-      <div className='p-5 w-full text-[#fff]'>
+      <div className='py-5 pr-5 w-full text-[#000] dark:text-[#fff]'>
         <ConnectBtn type={1} />
-        <div className="w-full overflow-y-auto h-[calc(100%-40px)] hidden-scrollbar">
+        <div className="w-full overflow-y-auto h-[calc(100%-60px)] hidden-scrollbar mt-5 profile-main-bg">
           {
             !indicatorLoading && !ratingLoading && !scoreLoading && !loadingRouterHandle ? (
               <div className="mx-auto mt-16 w-[800px]">
-                <div className="rounded-[20px] bg-[#000] h-[600px] w-[800px] flex items-center justify-center" id="aphoto">
+                <div className="h-[600px] w-[800px] flex items-center justify-center" id="aphoto">
                   <div className="h-[512px] w-[722px] mb-4 profile-bg1 flex">
                     <div className="w-1/2 h-full">
                       <div className="flex gap-8">
@@ -436,37 +436,29 @@ const profile = (props: any) => {
                               currentProfile.address === currentLoginProfile.address &&
                               <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]"
                                 onClick={() => { window.open(`https://www.lensfrens.xyz/${currentProfile.handle}`, '_blank'); trace('Card-Edit') }}>
-                                <Image
-                                  src={ImgEdit}
-                                  alt=""
-                                />
+                                <ImgEdit className="theme-icon"/>
                               </button>
                             }
                             <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]"
                               onClick={() => { copyToClipboard(`${window.location.origin}/profile/${currentProfile.handle ? currentProfile.handle.split('.')[0] : 'stani'}`); trace('Card-Copy') }
                               }>
-                              <Image
-                                src={ImgCopy}
-                                alt=""
-                              />
+                              <ImgCopy className="theme-icon"/>
                             </button>
                             <button className="flex items-center justify-center visited:opacity-100 hover:opacity-70 radius-btn-shadow h-[32px] w-[32px] rounded-[50%]"
                               onClick={() => { downLoadHtml2Img(); trace('Card-Download') }}>
-                              <Image
-                                src={ImgDownLoad}
-                                alt=""
-                              />
+                              
+                              <ImgDownLoad className="downLoad-theme-icon"/>
                             </button>
                           </div>
                         </div>
                       </div>
-                      <div className="text-[14px] text-gray pl-8 mt-3 mb-3 h-[80px] overflow-y-auto">
-                        <p className="mt-3">{introduce}</p>
+                      <div className="text-[14px] text-gray pl-8 mt-3 mb-3 h-[60px] overflow-y-auto">
+                        <p className="mt-3 text-[#8E8E8E]">{introduce}</p>
                       </div>
                       <div className="flex items-center w-full flex-wrap justify-between pl-8">
                         {
                           currentIndicators.map((t: any, i: number) => (
-                            <div key={i} className={`w-[calc(50%-10px)] mr-[10px] mb-[10px] pl-[8px] h-[40px] flex items-center gap-2 ${getBgStyle(i)} rounded-[10px]`}>
+                            <div key={i} className={`w-[calc(50%-10px)] mr-[10px] mb-[10px] pl-[8px] py-2 h-11 flex items-center gap-2 ${getBgStyle(i)} rounded-[10px]`}>
                               <Image
                                 src={t.imgUrl}
                                 className="w-[24px] h-[24px]"
@@ -474,7 +466,7 @@ const profile = (props: any) => {
                               />
                               <div>
                                 <div className="text-[18px] block h-[20px]">{t.acount}</div>
-                                <div className="text-[14px] text-gray block">{t.text}</div>
+                                <div className="text-[14px] text-[#8E8E8E] block">{t.text}</div>
                               </div>
                             </div>
                           ))
@@ -496,70 +488,57 @@ const profile = (props: any) => {
                     </div>
                   </div>
                 </div>
-                {
-                  nftList.length > 0 &&
-                  <div className="w-[fit-content] h-[fit-content] px-4 py-2 nft-bg text-[18px] font-[600] ml-10">NFT</div>
-                }
-                <div className=" w-[800px] flex items-center justify-center">
-                  <div className="h-[260px] w-[760px] mx-[auto] relative profile-nft mb-16 handle-nft" onMouseEnter={() => setShowNftBtn(true)} onMouseLeave={() => setShowNftBtn(false)}>
-                    <Carousel dotPosition={'bottom'} ref={carouselRef}>
-                      {
-                        nftList.map((t: any, i: number) => (
-                          <div key={i}>
-                            <div className="flex items-center justify-left gap-10">
-                              {t.map((item: any, index: number) =>
-                                <div className={`hover:scale-110 transition-all relative ${index === 0 ? 'ml-[20px]' : index === 3 ? 'mr-[20px]' : ''}`} key={index}>
-                                  <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item}.png`} className="cursor-pointer w-[150px] h-[160px] rounded-tl-[12px] rounded-tr-[12px]"
-                                    onMouseEnter={() => { setActiveHoverIndex(`${i}${index}`); trace('NFT-Scale') }}
-                                  />
-                                  {/* {
-                                activeHoverIndex === `${i}${index}` &&
-                                <div className="absolute left-0 top-0 w-[150px] h-[160px] bg-[rgba(0,0,0,0.4)] flex items-center justify-center" onMouseLeave={() => setActiveHoverIndex('')}>
-                                  <div className="cursor-pointer">
-                                    <div className="flex items-center justify-center">
-                                      <Image
-                                        src={ImgHuman}
-                                        className="w-[40px] h-[40px]"
-                                        alt=""
-                                      />
+                <div className={`mb-16 ${nftList.length > 0 ? 'nft-div-bg' : ''} w-[730px] mx-auto`}>
+                  {
+                    nftList.length > 0 &&
+                    <div className="w-[fit-content] h-[fit-content] px-1 py-3 text-[32px] font-[600] ml-3">NFT</div>
+                  }
+                  <div className=" w-[734px] flex items-center justify-center">
+                    <div className="h-[260px] w-[760px] mx-[auto] relative profile-nft handle-nft" onMouseEnter={() => setShowNftBtn(true)} onMouseLeave={() => setShowNftBtn(false)}>
+                      <Carousel dotPosition={'bottom'} ref={carouselRef}>
+                        {
+                          nftList.map((t: any, i: number) => (
+                            <div key={i}>
+                              <div className="flex items-center justify-left gap-10">
+                                {t.map((item: any, index: number) =>
+                                  <div className={`hover:scale-110 transition-all relative ${index === 0 ? 'ml-[20px]' : index === 3 ? 'mr-[20px]' : ''}`} key={index}>
+                                    <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item}.png`} className="cursor-pointer w-[150px] h-[160px] rounded-tl-[12px] rounded-tr-[12px]"
+                                      onMouseEnter={() => { setActiveHoverIndex(`${i}${index}`); trace('NFT-Scale') }}
+                                    />
+                                    <div className="flex justify-between items-center bg-[#1A1A1A] h-[40px] px-3 rounded-bl-[12px] rounded-br-[12px]">
+                                      <div className="text-[#fff]">No.{item}</div>
+                                      <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
+                                        <div className="h-[18px] w-[18px] rounded-[50%] bg-[#2081E2] flex items-center justify-center"
+                                          onClick={() => { window.open(`https://opensea.io/assets/matic/0xa803aabd68dd0fcf9eabc25f71f155222805e9e0/${item}`, '_blank'); trace('NFT-Opensea') }}>
+                                          <Image
+                                            src={ImgOpensea}
+                                            className="h-[12px] w-[12px] object-cover"
+                                            alt=""
+                                          />
+                                        </div>
+                                      </button>
                                     </div>
-                                    <p className="text-[18px] text-[#fff]">Set as avatar</p>
                                   </div>
-                                </div>
-                              } */}
-                                  <div className="flex justify-between items-center bg-[#1A1A1A] h-[40px] px-3 rounded-bl-[12px] rounded-br-[12px]">
-                                    <div className="text-[#fff]">No.{item}</div>
-                                    <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
-                                      <div className="h-[18px] w-[18px] rounded-[50%] bg-[#2081E2] flex items-center justify-center"
-                                        onClick={() => { window.open(`https://opensea.io/assets/matic/0xa803aabd68dd0fcf9eabc25f71f155222805e9e0/${item}`, '_blank'); trace('NFT-Opensea') }}>
-                                        <Image
-                                          src={ImgOpensea}
-                                          className="h-[12px] w-[12px] object-cover"
-                                          alt=""
-                                        />
-                                      </div>
-                                    </button>
-                                  </div>
-                                </div>
-                              )}
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        ))
+                          ))
+                        }
+                      </Carousel>
+                      {
+                        showNftBtn && nftTotal > 4 &&
+                        <>
+                          <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#fff] dark:bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[20px] translate-x-[-24px] translate-y-[-50%]"
+                            onClick={() => { carouselRef.current?.prev(); trace('NFT-Left') }}>
+                            <LeftOutlined className="text-[18px] text-[700]" />
+                          </button>
+                          <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#fff] dark:bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[20px] translate-x-[24px] translate-y-[-50%]"
+                            onClick={() => { carouselRef.current?.next();; trace('NFT-Right') }}>
+                            <RightOutlined className="text-[18px] text-[700]" />
+                          </button>
+                        </>
                       }
-                    </Carousel>
-                    {
-                      showNftBtn && nftTotal > 4 &&
-                      <>
-                        <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[20px] translate-x-[-24px] translate-y-[-50%]"
-                          onClick={() => { carouselRef.current?.prev(); trace('NFT-Left') }}>
-                          <LeftOutlined className="text-[18px] text-[700]" />
-                        </button>
-                        <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[20px] translate-x-[24px] translate-y-[-50%]"
-                          onClick={() => { carouselRef.current?.next();; trace('NFT-Right') }}>
-                          <RightOutlined className="text-[18px] text-[700]" />
-                        </button>
-                      </>
-                    }
+                    </div>
                   </div>
                 </div>
               </div>

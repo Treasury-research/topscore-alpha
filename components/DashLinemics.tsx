@@ -278,7 +278,7 @@ const rmodynamics = () => {
                                 if (filterByID && filterByID.length && filterByID[0]['day']) {
                                     const dString = filterByID[0]['day'].toString()
                                     const fitD = dString.slice(0, 4) + '-' + dString.slice(4, 6) + '-' + dString.slice(6, 8)
-                                    if (getNextDate(fitD,-1) == dates[i].toString() || dates[i] > filterByID[0]['day']) {
+                                    if (getNextDate(fitD, -1) == dates[i].toString() || dates[i] > filterByID[0]['day']) {
                                         let obj = { ...filterByID[0] }
                                         obj.commentByCount = '0'
                                         obj.day = dates[i]
@@ -294,7 +294,7 @@ const rmodynamics = () => {
                                 if (filterByID && filterByID.length && filterByID[0]['day']) {
                                     const dString = filterByID[0]['day'].toString()
                                     const fitD = dString.slice(0, 4) + '-' + dString.slice(4, 6) + '-' + dString.slice(6, 8)
-                                    if (getNextDate(fitD,-1) == dates[i].toString() || dates[i] > filterByID[0]['day']) {
+                                    if (getNextDate(fitD, -1) == dates[i].toString() || dates[i] > filterByID[0]['day']) {
                                         let obj = { ...filterByID[0] }
                                         obj.collectByCount = '0'
                                         obj.day = dates[i]
@@ -379,95 +379,97 @@ const rmodynamics = () => {
 
     return (
         <>
-            <div className="text-[#fff] bg-[#1A1A1A] p-5 my-10 rounded-[10px]">
+            <div className="text-[#000] dark:text-[#fff] dash-bg-style p-5 my-10 rounded-[10px]">
                 <div className="flex">
                     <div className="flex">
                         {
                             tabs.map((t: any, i: number) =>
-                                <div key={i} onClick={() => setActiveTab(i)} className={`mr-4 box-border rounded-[20px] w-[120px] h-[40px] flex items-center justify-center text-[14px] cursor-pointer hover:opacity-70 ${activeTab == i ? 'bg-[#fff] text-[#000]' : 'radius-btn-shadow text-[#fff]'}`}>
+                                <div key={i} onClick={() => setActiveTab(i)} className={`mr-4 box-border rounded-[20px] w-[120px] h-[40px] flex items-center justify-center text-[14px] cursor-pointer hover:opacity-70 ${activeTab == i ? 'dashline-select-tab' : 'radius-btn-shadow text-[#000] dark:text-[#fff]'}`}>
                                     {t}
                                 </div>
                             )
                         }
                     </div>
-                    <div className="ml-[auto] h-12 bg-[rgb(41,41,41)] flex items-center justify-center pl-2 rounded-[4px]">
+                    <div className="ml-[auto] h-12 line-tabs-style flex items-center justify-center pl-2 rounded-[4px]">
                         {
                             tabs1.map((t: any, i: number) =>
                                 <div key={i} onClick={() => setActiveTab1(i)} className={`h-8 mr-2 flex items-center justify-center w-[60px] rounded-[4px] cursor-pointer ${activeTab1 ==
 
-                                    i ? 'bg-[#fff] text-[#000]' : ''}`}>{t}</div>
+                                    i ? 'bg-[#73ABFF] dark:bg-[#FF3300] text-[#fff]' : ''}`}>{t}</div>
                             )
                         }
                     </div>
                 </div>
-                <div className="flex mt-4">
-                    <div>
+                <div className="text-[#000] dark:text-[#fff] p-5 rounded-[20px]">
+                    <div className="flex mt-4">
+                        <div>
+                            {
+                                (activeTab == 1 || activeTab == 2) &&
+                                <div className="flex items-center justify-center mr-4">
+                                    <span className="mr-2">Top</span>
+                                    <Switch defaultChecked onChange={setTopRecentSwitch} checked={topRecentSwitch} size="small" className="mr-2" />
+                                    <span className="mr-2">Recent</span>
+                                </div>
+                            }
+                        </div>
                         {
-                            (activeTab == 1 || activeTab == 2) &&
-                            <div className="flex items-center justify-center mr-4">
-                                <span className="mr-2">Top</span>
-                                <Switch defaultChecked onChange={setTopRecentSwitch} checked={topRecentSwitch} size="small" className="mr-2" />
-                                <span className="mr-2">Recent</span>
+                            activeTab === 1 &&
+                            <div className="ml-[auto] flex">
+                                <div className="flex items-center justify-center mr-4">
+                                    <span className="mr-2">Comments (by)</span>
+                                    <Switch defaultChecked onChange={(e) => commentChange(e)} checked={commentSwitch} size="small" />
+                                </div>
+                                <div className="flex items-center justify-center">
+                                    <span className="mr-2">Mirrors (by)</span>
+                                    <Switch defaultChecked onChange={(e) => mirrorChange(e)} checked={mirrorSwitch} size="small" />
+                                </div>
                             </div>
                         }
                     </div>
-                    {
-                        activeTab === 1 &&
-                        <div className="ml-[auto] flex">
-                            <div className="flex items-center justify-center mr-4">
-                                <span className="mr-2">Comments (by)</span>
-                                <Switch defaultChecked onChange={(e) => commentChange(e)} checked={commentSwitch} size="small" />
-                            </div>
-                            <div className="flex items-center justify-center">
-                                <span className="mr-2">Mirrors (by)</span>
-                                <Switch defaultChecked onChange={(e) => mirrorChange(e)} checked={mirrorSwitch} size="small" />
-                            </div>
-                        </div>
-                    }
-                </div>
-                <div className="h-[500px] relative">
-                    {
-                        loading ? (
-                            <div className="w-full h-full flex items-center justify-center">
-                                <LoadingOutlined className="text-2xl block mx-auto my-[80px]" />
-                            </div>
-                        ) : (
-                            <>
-                                {
-                                    (pubAll.length > 0 || sigleData.length > 0) &&
-                                    <EngageLine
-                                        id={'line_1'}
-                                        dates={dates}
-                                        lineData={lindData}
-                                        commentSwitch={commentSwitch}
-                                        mirrorSwitch={mirrorSwitch}
-                                        postSwitch={postSwitch}
-                                        dayType={activeTab1}
-                                        type={activeTab}
-                                        sigleData={sigleData}
-                                        overviewPostData={overviewPostData}
-                                    />
-                                }
-                                {
-                                    pubAll.length === 0 && sigleData.length === 0 &&
-                                    <div className="h-full w-full flex items-center justify-center text-[rgba(255,255,255,0.6)] text-[20px]">No recent change</div>
-                                }
-                            </>
-                        )
-                    }
-                    <>
-                        <div className="absolute flex items-center justify-center mr-4 right-0 bottom-0">
-                            <span className="mr-2">Posts Only</span>
-                            <Switch defaultChecked onChange={setPostSwitch} checked={postSwitch} size="small" />
-                        </div>
+                    <div className="h-[500px] relative">
                         {
-                            activeTab == 2 &&
-                            <div className="absolute flex items-center justify-center mr-4 right-[120px] bottom-0">
-                                <span className="mr-2">Charged Only</span>
-                                <Switch defaultChecked onChange={setChargeSwitch} checked={chargeSwitch} size="small" />
-                            </div>
+                            loading ? (
+                                <div className="w-full h-full flex items-center justify-center">
+                                    <LoadingOutlined className="text-2xl block mx-auto my-[80px]" />
+                                </div>
+                            ) : (
+                                <>
+                                    {
+                                        (pubAll.length > 0 || sigleData.length > 0) &&
+                                        <EngageLine
+                                            id={'line_1'}
+                                            dates={dates}
+                                            lineData={lindData}
+                                            commentSwitch={commentSwitch}
+                                            mirrorSwitch={mirrorSwitch}
+                                            postSwitch={postSwitch}
+                                            dayType={activeTab1}
+                                            type={activeTab}
+                                            sigleData={sigleData}
+                                            overviewPostData={overviewPostData}
+                                        />
+                                    }
+                                    {
+                                        pubAll.length === 0 && sigleData.length === 0 &&
+                                        <div className="h-full w-full flex items-center justify-center text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)] text-[24px]">No recent change</div>
+                                    }
+                                </>
+                            )
                         }
-                    </>
+                        <>
+                            <div className="absolute flex items-center justify-center mr-4 right-0 bottom-0">
+                                <span className="mr-2">Posts Only</span>
+                                <Switch defaultChecked onChange={setPostSwitch} checked={postSwitch} size="small" />
+                            </div>
+                            {
+                                activeTab == 2 &&
+                                <div className="absolute flex items-center justify-center mr-4 right-[120px] bottom-0">
+                                    <span className="mr-2">Charged Only</span>
+                                    <Switch defaultChecked onChange={setChargeSwitch} checked={chargeSwitch} size="small" />
+                                </div>
+                            }
+                        </>
+                    </div>
                 </div>
             </div>
             <PubCard lineData={lindData} topRecentSwitch={topRecentSwitch} activeLineTab={activeTab}></PubCard>

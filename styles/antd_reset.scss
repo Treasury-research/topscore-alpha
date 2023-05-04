@@ -2,14 +2,6 @@
   display: none
 }
 
-.bestCard>div {
-  background: url("../statics/img/card_bg.svg") no-repeat center center;
-  background-size: cover;
-  width: 315px;
-  height: 138px;
-  margin-right: 40px;
-}
-
 .ant-input {
   background: #000;
   border: none;
@@ -156,11 +148,6 @@
   background: none !important;
 }
 
-.ant-switch-checked .ant-switch-inner {
-  background: rgba(255,51,0,0.7) !important;
-  ;
-}
-
 .ant-switch-checked .ant-switch-handle::before {
   background: #fff !important;
 }
@@ -173,11 +160,6 @@
 .ant-switch-handle::before {
   background: #fff !important;
   ;
-}
-
-.ant-checkbox-inner {
-  background-color: #CE3900 !important;
-  border-color: #CE3900 !important;
 }
 
 .ant-checkbox-checked:after{

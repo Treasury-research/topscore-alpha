@@ -456,7 +456,7 @@ const rmodynamics = () => {
     }
 
     const getItemStyle = (e: any) => {
-        if (!e || !checked.includes(true) || e === 'noData' || e === 'futer') return 'bg-[#232323]'
+        if (!e || !checked.includes(true) || e === 'noData' || e === 'futer') return 'bg-[#F4F6FA] dark:bg-[#232323]'
         let maxMount = 0;
         let totalMount = 0;
         checked.forEach((t: any, i: number) => {
@@ -466,21 +466,21 @@ const rmodynamics = () => {
                 totalMount += e[i]
             }
         })
-        if (totalMount === 0) return 'bg-[#232323]'
+        if (totalMount === 0) return 'bg-[#F4F6FA] dark:bg-[#232323]'
         let lv = maxMount / 5;
         if (lv === 0) {
-            return 'bg-[#232323]'
+            return 'bg-[#F4F6FA] dark:bg-[#232323]'
         }
         if (totalMount < lv) {
-            return 'bg-[#311C17]'
+            return 'bg-[#C9E6C3] dark:bg-[#311C17]'
         } else if (lv <= totalMount && totalMount < lv * 2) {
-            return 'bg-[#471F14]'
+            return 'bg-[#B1D8A4] dark:bg-[#471F14]'
         } else if (lv * 2 <= totalMount && totalMount < lv * 3) {
-            return 'bg-[#75240F]'
+            return 'bg-[#8CC63E] dark:bg-[#75240F]'
         } else if (lv * 3 <= totalMount && totalMount < lv * 4) {
-            return 'bg-[#A32A0A]'
+            return 'bg-[#67B700] dark:bg-[#A32A0A]'
         } else if (lv * 4 <= totalMount) {
-            return 'bg-[#D13005]'
+            return 'bg-[#4E8500] dark:bg-[#D13005]'
         }
     }
 
@@ -574,38 +574,48 @@ const rmodynamics = () => {
     }
 
     return (
-        <div className="text-[#fff] mb-10">
+        <div className="text-[#000] dark:text-[#fff] mb-10">
             <div className="flex mb-20 overflow-y-hidden">
-                <div className="w-[880px] mr-[10px]">
-                    <div className="flex jusitify-between h-[54px] items-center bg-[#1A1A1A] rounded-[10px] mb-[10px]">
-                        <div className="flex ml-8">
+                <div className="w-[880px] mr-[10px] p-1">
+                    <div className="flex jusitify-between h-[54px] items-center dash-bg-style dash-bg-style rounded-[10px] mb-[10px]">
+                        <div className="flex ml-8 h-full">
                             {
                                 tabs.map((t: any, i: number) => (
-                                    <div key={i} onClick={() => togglTab(i)} className={`cursor-pointer px-2 py-1 mr-4 text-[18px] ${activeTab === i ? 'text-[#fff] border-b-[2px] border-[#fff]' : 'text-[rgba(255,255,255,0.4)]'}`}>{t}</div>
+                                    <div className="h-full relative mr-6">
+                                        <div key={i} onClick={() => setActiveTab(i)} className={`cursor-pointer ${activeTab === i ? 'text-[#000] dark:text-[#fff]' : 'text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)]'} h-full text-[18px] font-[600] flex justify-center items-center`}>
+                                            {t}
+                                        </div>
+                                        {
+                                            activeTab === i &&
+                                            <div className="h-2 w-full flex justify-center absolute bottom-0 tabs-radius">
+                                                <div className="h-1 w-[80%] bg-[#73ABFF] dark:bg-[#FF3300] rounded-[4px] mt-[6px]"></div>
+                                            </div>
+                                        }
+                                    </div>
                                 ))
                             }
                         </div>
                         <div className="mr-8 flex ml-[auto] w-[fit-content] items-center">
                             <div className="text-[12px] ml-[-4px] mr-2">Low</div>
-                            <div className="h-[16px] w-[45px] bg-[#311C17]">
+                            <div className="h-[16px] w-[45px] bg-[#C9E6C3] dark:bg-[#311C17]">
 
                             </div>
-                            <div className="h-[16px] w-[45px] bg-[#471F14]">
+                            <div className="h-[16px] w-[45px] bg-[#B1D8A4] dark:bg-[#471F14]">
 
                             </div>
-                            <div className="h-[16px] w-[45px] bg-[#75240F]">
+                            <div className="h-[16px] w-[45px] bg-[#8CC63E] dark:bg-[#75240F]">
 
                             </div>
-                            <div className="h-[16px] w-[45px] bg-[#A32A0A]">
+                            <div className="h-[16px] w-[45px] bg-[#67B700] dark:bg-[#A32A0A]">
 
                             </div>
-                            <div className="h-[16px] w-[45px] bg-[#D13005]">
+                            <div className="h-[16px] w-[45px] bg-[#4E8500] dark:bg-[#D13005]">
 
                             </div>
                             <div className="text-[12px] ml-2 ml-2">High</div>
                         </div>
                     </div>
-                    <div className="w-full overflow-hidden bg-[#1A1A1A] rounded-[10px] p-4 pt-6">
+                    <div className="w-full overflow-hidden dash-bg-style rounded-[10px] p-4 pt-6">
                         {
                             loading ?
                                 <div className="h-[234px] flex items-center"><LoadingOutlined className="text-2xl block mx-auto" /></div>
@@ -648,10 +658,10 @@ const rmodynamics = () => {
                         }
                     </div>
                 </div>
-                <div className="w-[calc(100%-890px)] min-w-[280px]">
-                    <div className="flex min-w-[280px] max-w-100 mt-[26px]">
-                        <div className={`rounded-[4px] h-10 w-10 bg-[#1A1A1A] flex items-center justify-center text-[24px] ${weekCount === 4 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getLastWeek}><LeftOutlined /></div>
-                        <div className="rounded-[10px] w-[calc(100%-100px)] mx-[10px] h-10 bg-[#1A1A1A] flex items-center justify-center">
+                <div className="w-[calc(100%-890px)] min-w-[280px] p-1">
+                    <div className="flex min-w-[280px] max-w-100 mt-[78px]">
+                        <div className={`rounded-[4px] h-10 w-10 dash-bg-style flex items-center justify-center text-[24px] ${weekCount === 4 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getLastWeek}><LeftOutlined /></div>
+                        <div className="rounded-[10px] w-[calc(100%-100px)] mx-[10px] h-10 dash-bg-style flex items-center justify-center">
                             {
                                 week.length !== 0 &&
                                 <>
@@ -673,14 +683,14 @@ const rmodynamics = () => {
                                 </>
                             }
                         </div>
-                        <div className={`rounded-[4px] h-10 w-10 bg-[#1A1A1A] flex items-center justify-center text-[24px] ${weekCount == -1 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getNextWeek}><RightOutlined /></div>
+                        <div className={`rounded-[4px] h-10 w-10 dash-bg-style flex items-center justify-center text-[24px] ${weekCount == -1 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getNextWeek}><RightOutlined/></div>
                     </div>
-                    <div className="px-6 py-4 bg-[#1A1A1A] mt-[10px] rounded-[10px] h-[262px] flex items-center">
+                    <div className="px-6 py-4 dash-bg-style mt-[10px] rounded-[10px] h-[210px] flex items-center">
                         <div className="h-[fit-content] w-full">
                             {
                                 activeTab == 0 &&
                                 <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(0)}>
-                                    <div className={`${checked[0] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
+                                    <div className={`${checked[0] ? 'bg-[#67B700] dark:bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px] select-bg-style`}>
                                         <Image
                                             className="h-[fit-content] w-[16px] h-[16px]"
                                             src={Post}
@@ -695,7 +705,7 @@ const rmodynamics = () => {
                             {
                                 activeTab == 1 &&
                                 <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(4)}>
-                                    <div className={`${checked[4] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px] w-[16px] h-[16px] flex items-center justify-center`}>
+                                    <div className={`${checked[4] ? 'bg-[#67B700] dark:bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px] w-[16px] h-[16px] flex items-center justify-center select-bg-style`}>
                                         <Image
                                             className="h-[fit-content] w-[14px] h-[14px]"
                                             src={ImgPublitions}
@@ -708,7 +718,7 @@ const rmodynamics = () => {
                                 </div>
                             }
                             <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(1)}>
-                                <div className={`${checked[1] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
+                                <div className={`${checked[1] ? 'bg-[#67B700] dark:bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px] select-bg-style`}>
                                     <Image
                                         className="h-[fit-content] w-[16px] h-[16px]"
                                         src={activeTab == 0 ? Comment : Imgcommentsby}
@@ -719,7 +729,7 @@ const rmodynamics = () => {
                                 <div className="ml-[auto]">{(totalAmount && (totalAmount.commentCount || totalAmount.commentCount === 0)) ? getMount(totalAmount.commentCount) : '-'}</div>
                             </div>
                             <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(2)}>
-                                <div className={`${checked[2] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
+                                <div className={`${checked[2] ? 'bg-[#67B700] dark:bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px] select-bg-style`}>
                                     <Image
                                         className="h-[fit-content] w-[16px] h-[16px]"
                                         src={Mirror}
@@ -730,7 +740,7 @@ const rmodynamics = () => {
                                 <div className="ml-[auto]">{(totalAmount && (totalAmount.mirrorCount || totalAmount.mirrorCount === 0)) ? getMount(totalAmount.mirrorCount) : '-'}</div>
                             </div>
                             <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(3)}>
-                                <div className={`${checked[3] ? 'bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px]`}>
+                                <div className={`${checked[3] ? 'bg-[#67B700] dark:bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px] select-bg-style`}>
                                     <Image
                                         className="h-[fit-content] w-[16px] h-[16px]"
                                         src={Collect}

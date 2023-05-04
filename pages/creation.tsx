@@ -8,9 +8,9 @@ const creation = () => {
   const { account } = useWeb3Context();
 
   return (
-    <div className="w-full h-full bg-[#000] flex">
+    <div className="w-full h-full bg-[#fff] dark:bg-[#16171B] flex">
       <Navbar />
-      <div className="p-5 w-full text-[#fff] relative overflow-hidden">
+      <div className="py-5 w-full text-[#000] dark:text-[#fff] relative overflow-hidden pr-5">
         <ConnectBtn type={2}/>
         <Create></Create>
       </div>

@@ -14,7 +14,8 @@ import {
   isHaveNftState,
   isHaveLensNftState,
   loadingProfileListState,
-  commendProfileListState
+  commendProfileListState,
+  themeState
 } from "../store/state";
 import useWeb3Context from "../hooks/useWeb3Context";
 import { Popover, Dropdown, Space, Drawer, Input } from "antd";
@@ -23,9 +24,11 @@ import api from "../api";
 import LoginConnect from "./connect/LoginConnect";
 import SignLens from "./connect/SignLens";
 import ImgLenster from "../statics/img/lest-head.png";
+import ImgLight from "../statics/img/light.icon.svg";
+import ImgDark from "../statics/img/dark.icon.svg";
 import ImgHome from "../statics/img/home.svg";
 import ChangeProfile from "./connect/ChangeProfile";
-import { ConsoleSqlOutlined, DownOutlined, LoadingOutlined } from "@ant-design/icons";
+import { ConsoleSqlOutlined, DownOutlined, LoadingOutlined ,HomeOutlined} from "@ant-design/icons";
 import PermissionMsg from './connect/PermissionMsg'
 import trace from "../api/trace";
 
@@ -48,6 +51,7 @@ const ConnectBtn = (props: any) => {
     useRecoilState(knn3TokenValidState);
   const [imageURI, setImageURI] = useState("");
   const [profileList, setProfileList] = useRecoilState(profileListState);
+  const [theme, setTheme] = useRecoilState(themeState);
   const [loadingRouterHandle, setLoadingRouterHandle] = useRecoilState(
     routerHandleState
   );
@@ -61,6 +65,8 @@ const ConnectBtn = (props: any) => {
     useRecoilState<any>(currentLoginProfileState);
 
   const [searchHandles, setSearchHandles] = useState<any>([]);
+
+  const [activeMs, setActiveMs] = useState<any>(0);
 
   const [searchLoading, setSearchLoading] = useState<any>(false);
 
@@ -100,12 +106,12 @@ const ConnectBtn = (props: any) => {
     getAllNfts()
   }, [account, knn3TokenValid]);
 
-  const setCurrentProfileByRouter = (t:any) => {
+  const setCurrentProfileByRouter = (t: any) => {
     setInputValue('')
     if (props.type === 1) {
       const handle = t.handle ? t.handle.split('.')[0] : 'stani'
       router.push(`/profile/${handle}`)
-    }else{
+    } else {
       setCurrentProfile(t)
     }
   }
@@ -196,7 +202,7 @@ const ConnectBtn = (props: any) => {
         }
         setCurrentLoginProfile(res.data[0])
       } else {
-        if(commendProfileList.length > 0){
+        if (commendProfileList.length > 0) {
           setCurrentProfile(commendProfileList[0])
         }
         setIsHaveLensHandle(false)
@@ -369,210 +375,261 @@ const ConnectBtn = (props: any) => {
     if (account) {
       doLogin()
     } else {
-      handleShowModal(true,0)
+      handleShowModal(true, 0)
     }
     trace('Dashboard-Login')
   }
 
   const drapOpenChange = (e) => {
     setOpenLensDrop(e)
-    if(e){
+    if (e) {
       traceMethod('Dropdown')
     }
   }
   const traceMethod = (e) => {
-    if(props.type == 1){
+    if (props.type == 1) {
       trace(`Profile-${e}`)
-    }else{
+    } else {
       trace(`Dashboard-${e}`)
     }
   }
 
   const recommendTrace = (i) => {
-    if(i == 0){
+    if (i == 0) {
       traceMethod('Stani')
     }
-    if(i == 1){
+    if (i == 1) {
       traceMethod('Yoginth')
     }
-    if(i == 2){
+    if (i == 2) {
       traceMethod('Lenster')
     }
-    if(i == 3){
+    if (i == 3) {
       traceMethod('Lensprotocol')
     }
   }
 
+  const darkMode = () => {
+    setActiveMs(1)
+    localStorage.theme = 'dark'
+    document.documentElement.classList.remove('light')
+    document.documentElement.classList.add('dark')
+    setTheme('dark')
+  }
+
+  const lightMode = () => {
+    setActiveMs(0)
+    localStorage.theme = 'light'
+    document.documentElement.classList.remove('dark')
+    document.documentElement.classList.add('light')
+    setTheme('light')
+  }
+
+  useEffect(() => {
+    if (!localStorage.theme || localStorage.theme == 'light') {
+      localStorage.theme = 'light'
+      document.documentElement.classList.remove('dark')
+      document.documentElement.classList.add('light')
+      setActiveMs(0)
+      setTheme('light')
+    } else {
+      localStorage.theme = 'dark'
+      document.documentElement.classList.remove('light')
+      document.documentElement.classList.add('dark')
+      setActiveMs(1)
+      setTheme('dark')
+    }
+  }, [])
+
   return (
-    <div className="w-full h-10 flex gap-3 items-center">
+    <div className="w-full h-8 flex gap-3 items-center text-[#000] dark:text-[#fff]">
       {
         props.type !== 3 &&
         <div className="h-8 flex gap-2 items-center">
-        <div>{props.type == 1 ? 'Profile of' : 'Dashboard of'}</div>
-        <div className="h-full">
-          <Dropdown
-            open={openLensDrop}
-            onOpenChange={(e: any) => drapOpenChange(e)}
-            trigger={['click']}
-            overlay={
-              <div className="lens-switch-component">
-                <div className={`py-1 mx-[5%] text-[#fff] ${props.type == 2 && !knn3TokenValid ? 'w-[200px]' : 'w-[90%]'}`}>
-                  {
-                    ((props.type == 2 && knn3TokenValid && account) || props.type === 1) &&
-                    <Input className="connect-component-input" placeholder="Search" allowClear onClick={() => { toSearchPermission() }} onChange={(e) => searchInputChange(e)} value=
-                      {inputValue} />
-                  }
-                  {
-                    props.type == 2 && !knn3TokenValid &&
-                    <div className="w-[90%] text-center py-1 bg-[#fff] rounded-[4px] text-[#000] text-[14px] font-[600] cursor-pointer" onClick={() => connectOrLogin()}>
-                      Log in to view more
-                    </div>
-                  }
-
-                  {
-                    !searchLoading && !inputValue &&
-                    <>
-                      {
-                        profileList.length > 0 &&
-                        <p className="text-xl my-3">Yours</p>
-                      }
-                      {
-                        profileList.map((t: any, i: number) => (
-                          <div className="flex text-[16px] items-center gap-1 mb-2 hover:opacity-70 cursor-pointer" key={i} onClick={() => { switchMyProfile(t) }}>
-                            {
-                              t.imageURI &&
-                              <img
-                                className="w-[26px] h-[26px] rounded-[13px] mr-2"
-                                src={getImgUrl(t.imageURI)}
-                                alt="" />
-                            }
-                            {
-                              !t.imageURI &&
-                              <Image
-                                className="w-[26px] h-[26px] rounded-[13px] mr-2"
-                                src={ImgLenster}
-                                alt="" />
-                            }
-                            {t.handle}
-                          </div>
-                        ))
-                      }
-                      <p className="text-xl my-3">Recommend</p>
-                      {
-                        commendProfileList.map((t: any, i: number) => (
-                          <div className="flex text-[16px] items-center gap-1 mb-2 hover:opacity-70 cursor-pointer" key={i} onClick={() => {
-                            setCurrentProfileByRouter(t); setOpenLensDrop(false);recommendTrace(i)
-                          }}>
-                            <img
-                              className="w-[26px] h-[26px] rounded-[13px] mr-2"
-                              src={getImgUrl(t.imageURI)}
-                              alt=""
-                            />
-                            {t.handle}
-                          </div>
-                        ))
-                      }
-                    </>
-                  }
-                  {
-                    searchLoading &&
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className=" my-[80px]">
-                        <LoadingOutlined className="text-2xl block mx-auto" />
-                        <div>Searching users</div>
+          <div>{props.type == 1 ? 'Profile of' : 'Dashboard of'}</div>
+          <div className="h-full">
+            <Dropdown
+              open={openLensDrop}
+              onOpenChange={(e: any) => drapOpenChange(e)}
+              trigger={['click']}
+              overlay={
+                <div className="lens-switch-component">
+                  <div className={`py-1 mx-[5%] text-[#fff] ${props.type == 2 && !knn3TokenValid ? 'w-[200px]' : 'w-[90%]'}`}>
+                    {
+                      ((props.type == 2 && knn3TokenValid && account) || props.type === 1) &&
+                      <Input className="connect-component-input" placeholder="Search" allowClear onClick={() => { toSearchPermission() }} onChange={(e) => searchInputChange(e)} value=
+                        {inputValue} />
+                    }
+                    {
+                      props.type == 2 && !knn3TokenValid &&
+                      <div className="w-[90%] text-center py-1 bg-[#fff] rounded-[4px] text-[#000] text-[14px] font-[600] cursor-pointer" onClick={() => connectOrLogin()}>
+                        Log in to view more
                       </div>
-                    </div>
-                  }
-                  {
-                    !searchLoading && inputValue &&
-                    <>
-                      {
-                        searchHandles.map((t: any, i: number) => (
-                          <div className="flex items-center text-[16px] gap-1 mb-2 mt-2 hover:opacity-70 cursor-pointer" key={i} onClick={() => {
-                            setCurrentProfileByRouter(t); setOpenLensDrop(false)
-                          }}>
-                            {
-                              t.imageURI &&
-                              // <img
-                              //   className="w-[26px] h-[26px] rounded-[13px] mr-2"
-                              //   src={getImgUrl(t.imageURI)}
-                              //   alt="" />
+                    }
+
+                    {
+                      !searchLoading && !inputValue &&
+                      <>
+                        {
+                          profileList.length > 0 &&
+                          <p className="text-xl my-3">Yours</p>
+                        }
+                        {
+                          profileList.map((t: any, i: number) => (
+                            <div className="flex text-[16px] items-center gap-1 mb-2 hover:opacity-70 cursor-pointer" key={i} onClick={() => { switchMyProfile(t) }}>
+                              {
+                                t.imageURI &&
+                                <img
+                                  className="w-[26px] h-[26px] rounded-[13px] mr-2"
+                                  src={getImgUrl(t.imageURI)}
+                                  alt="" />
+                              }
+                              {
+                                !t.imageURI &&
+                                <Image
+                                  className="w-[26px] h-[26px] rounded-[13px] mr-2"
+                                  src={ImgLenster}
+                                  alt="" />
+                              }
+                              {t.handle}
+                            </div>
+                          ))
+                        }
+                        <p className="text-xl my-3">Recommend</p>
+                        {
+                          commendProfileList.map((t: any, i: number) => (
+                            <div className="flex text-[16px] items-center gap-1 mb-2 hover:opacity-70 cursor-pointer" key={i} onClick={() => {
+                              setCurrentProfileByRouter(t); setOpenLensDrop(false); recommendTrace(i)
+                            }}>
                               <img
-                                className="w-[26px] h-[26px] rounded-[50%] mr-2"
+                                className="w-[26px] h-[26px] rounded-[13px] mr-2"
                                 src={getImgUrl(t.imageURI)}
                                 alt=""
                               />
-                            }
-                            {
-                              !t.imageURI &&
-                              <Image
-                                className="w-[26px] h-[26px] rounded-[13px] mr-2"
-                                src={ImgLenster}
-                                alt="" />
-                            }
-                            {t.handle}
-                          </div>
-                        ))
+                              {t.handle}
+                            </div>
+                          ))
+                        }
+                      </>
+                    }
+                    {
+                      searchLoading &&
+                      <div className="w-full h-full flex items-center justify-center">
+                        <div className=" my-[80px]">
+                          <LoadingOutlined className="text-2xl block mx-auto" />
+                          <div>Searching users</div>
+                        </div>
+                      </div>
+                    }
+                    {
+                      !searchLoading && inputValue &&
+                      <>
+                        {
+                          searchHandles.map((t: any, i: number) => (
+                            <div className="flex items-center text-[16px] gap-1 mb-2 mt-2 hover:opacity-70 cursor-pointer" key={i} onClick={() => {
+                              setCurrentProfileByRouter(t); setOpenLensDrop(false)
+                            }}>
+                              {
+                                t.imageURI &&
+                                // <img
+                                //   className="w-[26px] h-[26px] rounded-[13px] mr-2"
+                                //   src={getImgUrl(t.imageURI)}
+                                //   alt="" />
+                                <img
+                                  className="w-[26px] h-[26px] rounded-[50%] mr-2"
+                                  src={getImgUrl(t.imageURI)}
+                                  alt=""
+                                />
+                              }
+                              {
+                                !t.imageURI &&
+                                <Image
+                                  className="w-[26px] h-[26px] rounded-[13px] mr-2"
+                                  src={ImgLenster}
+                                  alt="" />
+                              }
+                              {t.handle}
+                            </div>
+                          ))
+                        }
+                      </>
+                    }
+                  </div>
+                </div>
+              }
+            >
+              <div onClick={(e) => e.preventDefault()} className="flex h-full">
+                <button className="h-full px-4 flex justify-center items-center bg-[#F6F6F9] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px] min-w-[100px]">
+                  {
+                    currentProfile && currentProfile.handle &&
+                    <>
+                      {
+                        currentProfile.imageURI ? (
+                          <img
+                            className="w-[20px] h-[20px] rounded-[10px] mr-2"
+                            src={getImgUrl(currentProfile.imageURI)}
+                            alt=""
+                          />
+                        ) : (
+                          <Image
+                            className="w-[20px] h-[20px] rounded-[10px] mr-2"
+                            src={ImgLenster}
+                            alt=""
+                          />
+                        )
                       }
                     </>
                   }
-                </div>
+                  <span className="mr-3">{currentProfile?.handle}</span>
+                  <DownOutlined className='ml-auto' />
+                </button>
               </div>
-            }
-          >
-            <div onClick={(e) => e.preventDefault()} className="flex h-full">
-              <button className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] min-w-[100px]">
-                {
-                  currentProfile && currentProfile.handle &&
-                  <>
-                    {
-                      currentProfile.imageURI ? (
-                        <img
-                          className="w-[20px] h-[20px] rounded-[10px] mr-2"
-                          src={getImgUrl(currentProfile.imageURI)}
-                          alt=""
-                        />
-                      ) : (
-                        <Image
-                          className="w-[20px] h-[20px] rounded-[10px] mr-2"
-                          src={ImgLenster}
-                          alt=""
-                        />
-                      )
-                    }
-                  </>
-                }
-                <span className="mr-3">{currentProfile?.handle}</span>
-                <DownOutlined className='ml-auto' />
-              </button>
-            </div>
-          </Dropdown>
-        </div>
-        {
-          account && knn3TokenValid &&
-          <div className="flex items-center justify-center bg-[#272727] rounded-[4px] h-8 w-8 cursor-pointer" onClick={() => goHome()}>
-            <Image
-              className="w-[18px] h-[18px]"
-              src={ImgHome}
-              alt=""
-            />
+            </Dropdown>
           </div>
-        }
+          {
+            account && knn3TokenValid &&
+            <div className="flex items-center justify-center bg-[#F6F6F9] dark:bg-[#292A2E] connect-profile-shadow rounded-[50%] h-8 w-8 cursor-pointer hover:opacity-70" onClick={() => goHome()}>
+              {/* <Image
+                className="w-[18px] h-[18px]"
+                src={ImgHome}
+                alt=""
+              /> */}
+              <HomeOutlined />
+            </div>
+          }
 
-        {
-          showPermission &&
-          <PermissionMsg
-            info={msgInfo}
-            onCancel={() => setShowPermission(false)}
-          ></PermissionMsg>
-        }
-      </div>
+          {
+            showPermission &&
+            <PermissionMsg
+              info={msgInfo}
+              onCancel={() => setShowPermission(false)}
+            ></PermissionMsg>
+          }
+        </div>
       }
-      <div className="h-full ml-auto">
+      <div className="h-full ml-auto flex">
+        <div className=" bg-[#F6F6F9] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px] flex mr-5 items-center px-2">
+          <div onClick={() => lightMode()} className={`${activeMs == 0 ? 'light-style' : ''} cursor-pointer h-5 w-5 flex items-center justify-center rounded-[50%] mr-2`}>
+            {/* <Image
+              className="w-[12px] h-[12px]"
+              src={ImgLight}
+              alt=""
+            /> */}
+            <ImgLight/>
+          </div>
+          <div onClick={() => darkMode()} className={`${activeMs == 1 ? 'dark-style' : 'dark-no-select-style'} cursor-pointer h-5 w-5 flex items-center justify-center rounded-[50%]`}>
+            {/* <Image
+              className="w-[12px] h-[12px]"
+              src={ImgDark}
+              alt=""
+            /> */}
+            <ImgDark/>
+          </div>
+        </div>
         {account && chainId && config.chainId !== chainId ? (
           <button
             onClick={() => switchChain(config.chainId)}
-            className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]"
+            className="h-full px-4 flex justify-center items-center bg-[#F6F6F9] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px]"
           >
             Switch to polygon
           </button>
@@ -606,7 +663,7 @@ const ConnectBtn = (props: any) => {
                       </div>
                       <div
                         onClick={handleLogout}
-                        className="cursor-pointer flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]"
+                        className="cursor-pointer flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555] "
                       >
                         Logout
                       </div>
@@ -615,7 +672,7 @@ const ConnectBtn = (props: any) => {
                 }
                 placement="bottom"
               >
-                <button className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]">
+                <button className="h-full px-4 flex justify-center items-center bg-[#F6F6F9] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px]">
                   {
                     currentLoginProfile.handle &&
                     <>
@@ -643,52 +700,19 @@ const ConnectBtn = (props: any) => {
         {!knn3TokenValid ? (
           <button
             onClick={determineLoginModal}
-            className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]"
+            className="h-full px-4 flex justify-center items-center bg-[#F6F6F9] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px]"
           >
             {account ? "Log in" : "Connect Wallet"}
           </button>
         ) : !account && (
           <button
             onClick={determineLoginModal}
-            className="h-full px-4 flex justify-center items-center bg-[#272727] rounded-[4px] text-[#fff]"
+            className="h-full px-4 flex justify-center items-center bg-[#F6F6F9] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px]"
           >
             Connect Wallet
           </button>
         )}
       </div>
-
-
-
-      {/* {knn3TokenValid && profileList.length === 0 && (
-        <button className="h-full px-4 flex justify-center items-center bg-[#272727] text-[#fff]">
-          No profile detected
-        </button>
-      )} */}
-
-      {/* {profileList.length > 0 && currentProfile && (
-        <Dropdown
-          overlay={
-            <Menu>
-              {profileList.map((t: any, i: number) => (
-                <div
-                  className="drop-menu"
-                  key={i}
-                  onClick={() => {
-                    changeProfile(t.profileId);
-                    setCurrentProfile(t);
-                  }}
-                >
-                  {t.handle}
-                </div>
-              ))}
-            </Menu>
-          }
-        >
-          <button className="h-full px-4 flex justify-center items-center bg-[#272727] text-[#fff]">
-            {currentProfile.handle}
-          </button>
-        </Dropdown>
-      )} */}
 
       {showModal[0] && (
         <LoginConnect
