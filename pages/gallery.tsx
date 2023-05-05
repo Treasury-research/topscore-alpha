@@ -44,8 +44,8 @@ const gallery = () => {
         <ConnectBtn type={2} />
         <div className="w-full h-full profile-main-bg mt-5">
           <div className="w-full h-full relative">
-            <div className="w-[820px] h-[500px] rounded-[20px] absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
-              <div className="w-full flex items-center justify-center text-[30px] h-[80px]">
+            <div className="w-[820px] rounded-[20px] absolute left-[50%] top-[46%] translate-x-[-50%] translate-y-[-50%]">
+              <div className="w-full flex items-center justify-center text-[30px] mb-10">
                 <Image
                   src={activeIndex === 0 ? theme ==='light' ? 
                   TextLight1 : Text1 : activeIndex === 1 ? 
@@ -54,7 +54,7 @@ const gallery = () => {
                   alt="" />
               </div>
               <div className='w-full relative rounded-[20px] flex items-center justify-center'>
-                <div className='w-[688px]'>
+                <div className='w-[688px] reset-slot'>
                   <Carousel className='w-full' ref={carouselRef} afterChange={(e) => carouChange(e)}>
                     <div className='w-full flex items-center justify-center'>
                       <Image
@@ -75,14 +75,14 @@ const gallery = () => {
                 </div>
                 <button className="hover:opacity-70 h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#fff] dark:bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[48px] translate-x-[-24px] translate-y-[-50%]"
                   onClick={() => { carouselRef.current?.prev(); }}>
-                  <LeftOutlined className="text-[18px] text-[700]" />
+                  <LeftOutlined className="text-[18px] text-[700]"/>
                 </button>
                 <button className="hover:opacity-70 h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#fff] dark:bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[48px] translate-x-[24px] translate-y-[-50%]"
                   onClick={() => { carouselRef.current?.next(); }}>
                   <RightOutlined className="text-[18px] text-[700]" />
                 </button>
               </div>
-              <div className="flex justify-center mt-5">
+              <div className="flex justify-center mt-14">
                 <Image
                   src={theme === 'light' ? ComingLight : Coming}
                   alt="" />

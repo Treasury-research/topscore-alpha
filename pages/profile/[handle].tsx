@@ -16,27 +16,27 @@ import ImgEdit from "../../statics/img/profileV2/edit.icon.svg"
 import ImgCopy from "../../statics/img/profileV2/copy.icon.svg"
 import ImgDownLoad from "../../statics/img/profileV2/downLoad.icon.svg"
 
-import ImgPubLight1 from "../../statics/img/profileV2/proPub/light/1.png"
-import ImgPubLight2 from "../../statics/img/profileV2/proPub/light/2.png"
-import ImgPubLight3 from "../../statics/img/profileV2/proPub/light/3.png"
-import ImgPubLight4 from "../../statics/img/profileV2/proPub/light/4.png"
-import ImgPubLight5 from "../../statics/img/profileV2/proPub/light/5.png"
-import ImgPubLight6 from "../../statics/img/profileV2/proPub/light/6.png"
-import ImgPubLight7 from "../../statics/img/profileV2/proPub/light/7.png"
-import ImgPubLight8 from "../../statics/img/profileV2/proPub/light/8.png"
-import ImgPubLight9 from "../../statics/img/profileV2/proPub/light/9.png"
-import ImgPubLight10 from "../../statics/img/profileV2/proPub/light/10.png"
+import ImgPubLight1 from "../../statics/img/profileV2/proPub/light/1.svg"
+import ImgPubLight2 from "../../statics/img/profileV2/proPub/light/2.svg"
+import ImgPubLight3 from "../../statics/img/profileV2/proPub/light/3.svg"
+import ImgPubLight4 from "../../statics/img/profileV2/proPub/light/4.svg"
+import ImgPubLight5 from "../../statics/img/profileV2/proPub/light/5.svg"
+import ImgPubLight6 from "../../statics/img/profileV2/proPub/light/6.svg"
+import ImgPubLight7 from "../../statics/img/profileV2/proPub/light/7.svg"
+import ImgPubLight8 from "../../statics/img/profileV2/proPub/light/8.svg"
+import ImgPubLight9 from "../../statics/img/profileV2/proPub/light/9.svg"
+import ImgPubLight10 from "../../statics/img/profileV2/proPub/light/10.svg"
 
-import ImgPubDark1 from "../../statics/img/profileV2/proPub/dark/1.png"
-import ImgPubDark2 from "../../statics/img/profileV2/proPub/dark/2.png"
-import ImgPubDark3 from "../../statics/img/profileV2/proPub/dark/3.png"
-import ImgPubDark4 from "../../statics/img/profileV2/proPub/dark/4.png"
-import ImgPubDark5 from "../../statics/img/profileV2/proPub/dark/5.png"
-import ImgPubDark6 from "../../statics/img/profileV2/proPub/dark/6.png"
-import ImgPubDark7 from "../../statics/img/profileV2/proPub/dark/7.png"
-import ImgPubDark8 from "../../statics/img/profileV2/proPub/dark/8.png"
-import ImgPubDark9 from "../../statics/img/profileV2/proPub/dark/9.png"
-import ImgPubDark10 from "../../statics/img/profileV2/proPub/dark/10.png"
+import ImgPubDark1 from "../../statics/img/profileV2/proPub/dark/1.svg"
+import ImgPubDark2 from "../../statics/img/profileV2/proPub/dark/2.svg"
+import ImgPubDark3 from "../../statics/img/profileV2/proPub/dark/3.svg"
+import ImgPubDark4 from "../../statics/img/profileV2/proPub/dark/4.svg"
+import ImgPubDark5 from "../../statics/img/profileV2/proPub/dark/5.svg"
+import ImgPubDark6 from "../../statics/img/profileV2/proPub/dark/6.svg"
+import ImgPubDark7 from "../../statics/img/profileV2/proPub/dark/7.svg"
+import ImgPubDark8 from "../../statics/img/profileV2/proPub/dark/8.svg"
+import ImgPubDark9 from "../../statics/img/profileV2/proPub/dark/9.svg"
+import ImgPubDark10 from "../../statics/img/profileV2/proPub/dark/10.svg"
 
 import ImgLensterHead from "../../statics/img/lest-head.svg";
 import ImgPremium from '../../statics/img/premium.gif'
@@ -333,7 +333,12 @@ const profile = (props: any) => {
   const downLoadHtml2Img = () => {
     setShowPremiumGif(false)
     setTimeout(() => {
-      domtoimage.toJpeg(document.getElementById('aphoto'), { quality: 0.95 })
+      domtoimage.toJpeg(document.getElementById('aphoto'), { 
+        quality: 1, 
+        style: { 
+          'background': theme === 'light' ? "linear-gradient(130.49deg, #E9FBFF 0%, #FFF2F6 100%)" : "linear-gradient(130.49deg, #28383D 0%, #241F23 100%)"
+        } 
+      })
         .then(function (dataUrl) {
           setShowPremiumGif(true)
           var link = document.createElement('a');
@@ -356,11 +361,16 @@ const profile = (props: any) => {
 
   useEffect(() => {
     if (router && router.query && router.query.handle) {
-      setCurrentProfile({
-        ...currentProfile,
-        handle: router.query.handle + '.lens'
-      })
-      getCurrentProfileByRouter(router.query.handle)
+      const handle:any = router.query.handle
+      if(handle.includes('.lens')){
+        router.push(`/profile/${handle.split('.lens')[0]}`)
+      }else{
+        setCurrentProfile({
+          ...currentProfile,
+          handle: handle.includes('.lens') ? handle : handle + '.lens'
+        })
+        getCurrentProfileByRouter(handle)
+      }
     }
   }, [router, props.handle])
 
@@ -563,7 +573,7 @@ const profile = (props: any) => {
                         <>
                           <button className="h-12 w-12 radius-btn-shadow opacity-70 rounded-[50%] bg-[#fff] dark:bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[20px] translate-x-[-24px] translate-y-[-50%]"
                             onClick={() => { carouselRef.current?.prev(); trace('NFT-Left') }}>
-                            <LeftOutlined className="text-[18px] text-[700]"/>
+                            <LeftOutlined className="text-[18px] text-[700]" />
                           </button>
                           <button className="h-12 w-12 radius-btn-shadow opacity-70 rounded-[50%] bg-[#fff] dark:bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[20px] translate-x-[24px] translate-y-[-50%]"
                             onClick={() => { carouselRef.current?.next();; trace('NFT-Right') }}>

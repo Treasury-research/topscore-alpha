@@ -14,19 +14,19 @@
   }
 
   .anticon-down>svg {
-    color: #fff;
+    color: #9D9D9D;
   }
 
   .anticon-left>svg {
-    color: #fff;
+    color: #9D9D9D;
   }
 
   .anticon-right>svg {
-    color: #fff;
+    color: #9D9D9D;
   }
 
   .anticon-home>svg {
-    color: #fff;
+    color: #9D9D9D;
   }
 
   .profile-main-bg {
@@ -115,7 +115,7 @@
 
   .connect-component-input {
     background: #3C3C3C !important;
-    
+
   }
 
   ::-webkit-input-placeholder {
@@ -125,16 +125,28 @@
   .ant-popover-arrow::before {
     background: #272727 !important;
   }
-  
+
   .ant-popover-inner {
     background: #272727 !important;
   }
-  
+
   .ant-popover-inner-content {
     color: #fff !important;
   }
-  // .card-icon-pub path {
-  //   fill: #292A2E;
-  //   stroke: #292A2E;
-  // }
+
+  .ant-modal-content {
+    background: #272727 !important;
+  }
+
+  .ant-modal-body {
+    color: #fff;
+  }
+
+  .anticon-close svg {
+    color: #fff !important;
+  }
+
+  .creat-card-bg-style {
+    box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.2);
+  }
 }

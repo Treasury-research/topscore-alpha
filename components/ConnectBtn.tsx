@@ -643,7 +643,7 @@ const ConnectBtn = (props: any) => {
                 content={
                   <div>
                     <div className="text-[14px]">Address</div>
-                    <div className="text-[#CE3900] border-b-[1px] pb-[4px] border-[#4A4A4A] font-[600] text-[16px]">
+                    <div className="text-[#73ABFF] dark:text-[#CE3900] border-b-[1px] pb-[4px] border-[#ccc] dark:border-[#4A4A4A] font-[600] text-[16px]">
                       {shortenAddr(account)}
                     </div>
                     <div>

@@ -615,7 +615,7 @@ const rmodynamics = () => {
                             <div className="text-[12px] ml-2 ml-2">High</div>
                         </div>
                     </div>
-                    <div className="w-full overflow-hidden dash-bg-style rounded-[10px] p-4 pt-6">
+                    <div className="w-full overflow-hidden dash-bg-style rounded-[10px] p-4 pt-6 mb-5">
                         {
                             loading ?
                                 <div className="h-[234px] flex items-center"><LoadingOutlined className="text-2xl block mx-auto" /></div>
@@ -661,7 +661,7 @@ const rmodynamics = () => {
                 <div className="w-[calc(100%-890px)] min-w-[280px] p-1">
                     <div className="flex min-w-[280px] max-w-100 mt-[95px]">
                         <div className={`rounded-[4px] h-10 w-10 dash-bg-style flex items-center justify-center text-[24px] ${weekCount === 4 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getLastWeek}><LeftOutlined /></div>
-                        <div className="rounded-[10px] w-[calc(100%-100px)] mx-[10px] h-10 dash-bg-style flex items-center justify-center">
+                        <div className="rounded-[10px] w-[calc(100%-106px)] mx-[10px] h-10 dash-bg-style flex items-center justify-center">
                             {
                                 week.length !== 0 &&
                                 <>

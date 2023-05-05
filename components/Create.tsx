@@ -60,7 +60,7 @@ const Create = () => {
             <div className="h-[calc(100vh-60px)] overflow-x-hidden hidden-scrollbar profile-main-bg px-5 mt-5">
                 <div className="flex mb-10 mt-[60px]">
                     {loadingScores ? <LoadingOutlined className="text-2xl block mx-auto my-4" /> : <>
-                        <div className="w-[360px] h-[164px] px-4 creation-bg text-[#292A2E] dark:text-[#fff] mr-10 rounded-[10px]"
+                        <div className="w-[360px] h-[164px] px-4 creation-bg creat-card-bg-style text-[#292A2E] dark:text-[#fff] mr-4 rounded-[10px]"
                             onMouseEnter={() => trace('Rank-Creation')}>
                             <div className="mb-1 text-[18px] font-[600]">Creation</div>
                             <div className="flex justify-between gap-5 h-[120px]">
@@ -108,7 +108,7 @@ const Create = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="w-[360px] h-[164px] px-4 creation-bg text-[#292A2E] dark:text-[#fff] mr-10 rounded-[10px]"
+                        <div className="w-[360px] h-[164px] px-4 creation-bg creat-card-bg-style text-[#292A2E] dark:text-[#fff] mr-4 rounded-[10px]"
                             onMouseEnter={() => trace('Rank-Engagement')}>
                             <div className="mb-1 text-[18px] font-[600] ml-[-6px]">Engagement</div>
                             <div className="flex justify-between gap-5 h-[120px]">
@@ -158,7 +158,7 @@ const Create = () => {
                             </div>
                         </div>
 
-                        <div className="w-[360px] h-[164px] px-4 creation-bg text-[#292A2E] dark:text-[#fff] mr-10 rounded-[10px]"
+                        <div className="w-[360px] h-[164px] px-4 creation-bg creat-card-bg-style text-[#292A2E] dark:text-[#fff] mr-4 rounded-[10px]"
                             onMouseEnter={() => trace('Rank-Campaign')}>
                             <div className="mb-1 text-[18px] font-[600]">Campaign</div>
                             <div className="flex justify-between gap-5 h-[120px]">

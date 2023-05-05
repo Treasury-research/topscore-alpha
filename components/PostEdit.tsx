@@ -73,7 +73,7 @@ const PermitPopover = () => {
         <div
           key={i}
           onClick={() => setActTag(i)}
-          className="cursor-pointer flex items-center px-1 rounded-[4px] hover:bg-[#555555]"
+          className="cursor-pointer flex items-center px-1 rounded-[4px] hover:dark:bg-[#555555]"
         >
           {t}
           {actTag === i && <CheckOutlined className="ml-[auto]" />}

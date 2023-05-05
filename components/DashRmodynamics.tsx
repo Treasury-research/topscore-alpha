@@ -523,7 +523,7 @@ const DashRmodynamics = () => {
     return (
         <div className=" text-[#292A2E] dark:text-[#fff] mb-10">
             <div className="flex overflow-y-hidden">
-                <div className="w-[880px] mr-[10px] p-1">
+                <div className="w-[880px] mr-[10px] p-1 mb-5">
                     <div className="flex jusitify-between h-[54px] items-center dash-bg-style rounded-[10px] mb-[10px]">
                         <div className="flex ml-8 h-full">
                             {
@@ -600,8 +600,8 @@ const DashRmodynamics = () => {
                         }
                     </div>
                 </div>
-                <div className="w-[calc(100%-890px)] min-w-[240px] p-1">
-                    <div className="h-full px-6 pt-7 pb-2 rounded-[10px] dash-bg-style">
+                <div className="w-[calc(100%-890px)] min-w-[280px] p-1">
+                    <div className="px-6 pt-7 pb-[18px] rounded-[10px] dash-bg-style">
                         <div className="flex mb-2">
                             <div>
                                 {

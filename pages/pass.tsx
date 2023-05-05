@@ -84,8 +84,8 @@ const pass = () => {
       <Navbar />
       <div className='py-5 w-full text-[#292A2E] dark:text-[#fff]'>
         <ConnectBtn type={2} />
-        <div className="w-full h-full profile-main-bg mt-5">
-          <div className="w-[70%] max-w-[1400px] min-w-[800px] mx-[auto] overflow-y-auto h-[calc(100%-40px)] hidden-scrollbar">
+        <div className="w-full h-full profile-main-bg mt-5 overflow-y-auto">
+          <div className="w-[70%] max-w-[1400px] min-w-[800px] mx-[auto] hidden-scrollbar">
             <div className='mt-10 px-3'>
               <div className='w-full h-[160px] dash-bg-style rounded-[20px] p-8 flex items-center'>
                 <div className='w-[calc(100%-300px)] flex items-center'>
@@ -156,7 +156,7 @@ const pass = () => {
                 }
               </div>
             </div>
-            <div className='px-3'>
+            <div className='px-3 mb-20'>
               <div className='dash-bg-style py-5 mb-10 pass-bet'>
                 {
                   imgArray.map((t: any, i: number) => (

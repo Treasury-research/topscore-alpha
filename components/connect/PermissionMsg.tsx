@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Switch, Input, Select, InputNumber } from 'antd';
 import Image from 'next/image'
-import Plogin from '../../statics/img/login-head-icon.png'
-import P1 from '../../statics/img/Lens.svg'
-import P2 from '../../statics/img/change_wallet.svg'
 import { CloseOutlined } from "@ant-design/icons";
 import IconError from '../../statics/img/error.png'
 import IconOpensea from '../../statics/img/opensea.png'
@@ -33,7 +30,7 @@ const PermissionMsg = (props: any) => {
                     src={IconError}
                     alt=""
                 />
-                <div className="text-[rgba(255,255,255,0.8)]">
+                <div className="text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">
                     <p className="mt-1">{msg}</p>
                 </div>
             </div>

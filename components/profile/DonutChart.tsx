@@ -94,9 +94,9 @@ const donutConfig = [
 const getToolTipContent = (score: any, rank: any) => {
     return (
         <div>
-            <p className="text-[12px] text-[rgba(255,255,255,0.8)]">Score</p>
+            <p className="text-[12px] text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">Score</p>
             <p className="text-[16px] font-bold mb-3">{score.toFixed(2)}</p>
-            <p className="text-[12px] text-[rgba(255,255,255,0.8)]">Rank</p>
+            <p className="text-[12px] text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">Rank</p>
             <p className="text-[16px] font-bold">#{rank}</p>
         </div>
     )

@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Switch, Input, Select, InputNumber } from 'antd';
 import { formatIPFS } from "../../lib/tool";
-import lensApi from "../../api/lensApi";
 import Image from 'next/image'
-import Plogin from '../../statics/img/login-head-icon.png'
-import P1 from '../../statics/img/Lens.svg'
-import P2 from '../../statics/img/change_wallet.svg'
 import { profileListState, currentProfileState ,currentLoginProfileState} from "../../store/state";
 import { useRouter } from "next/router";
 import useWeb3Context from "../../hooks/useWeb3Context";
@@ -37,7 +33,7 @@ const ChangeProfile = (props: any) => {
 
     return (
         <Modal title="Basic Modal" open={true} onOk={handleOk} onCancel={handleCancel}>
-            <div className='flex items-center pb-5 border-b-[1px] border-[#4A4A4A] mb-5'>
+            <div className='flex items-center pb-5 border-b-[1px] border-[#ccc] dark:border-[#4A4A4A] mb-5'>
                 <div className='flex items-center'>
                     <span className='font-[600] text-[20px]'>Change Profile</span>
                 </div>
@@ -45,13 +41,13 @@ const ChangeProfile = (props: any) => {
                     <CloseOutlined className='text-[20px]' />
                 </div>
             </div>
-            <div className="text-[16px] text-[rgba(255,255,255,0.8)]">
-                <div className="text-[rgba(255,255,255,0.8)]">
+            <div className="text-[16px] text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">
+                <div className="text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">
                     {profileList.map((t: any, i: number) => (
                         <div
                             key={i}
                             onClick={() => { setCurrentLoginProfile(t);handleOk();trace('SwitchProfile') }}
-                            className="cursor-pointer flex py-1 items-center px-1 rounded-[4px] hover:bg-[#555555]"
+                            className="cursor-pointer flex py-1 items-center px-1 rounded-[4px] hover:text-[#fff] hover:bg-[rgba(115,171,255,0.5)] dark:hover:bg-[#555555]"
                         >
                             {
                                 t.imageURI &&

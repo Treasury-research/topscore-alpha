@@ -24,7 +24,7 @@ const CollectModal = (props: any) => {
 
     return (
         <Modal title="Basic Modal" open={true} onOk={handleOk} onCancel={handleCancel}>
-            <div className='flex items-center pb-5 border-b-[1px] border-[#4A4A4A] mb-5'>
+            <div className='flex items-center pb-5 border-b-[1px] border-[#ccc] dark:border-[#4A4A4A] mb-5'>
                 <div className='flex items-center'>
                     <Image
                         src={P4}
@@ -37,7 +37,7 @@ const CollectModal = (props: any) => {
                     <CloseOutlined className='text-[20px]' />
                 </div>
             </div>
-            <div className="text-[16px] text-[rgba(255,255,255,0.8)]">
+            <div className="text-[16px] text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">
                 <div>
                     <div className='flex items-center'>
                         <Switch className='mr-2' checked={isSwitch[0]} onChange={(e: any) => changeSwitch(e, 0)} size="small" />
@@ -157,8 +157,8 @@ const CollectModal = (props: any) => {
                 </div>
             </div>
             <div className="flex w-[fit-content] ml-[auto]">
-                <button onClick={handleCancel} className="w-[100px] text-[18px] font-[600] flex justify-center border-[2px] border-[#4A4A4A] mr-2 rounded-[4px]">Cancel</button>
-                <button className="w-[100px] text-[18px] font-[600] flex justify-center bg-[#CE3900] hover:opacity-[0.9] rounded-[4px]">Save</button>
+                <button onClick={handleCancel} className="w-[100px] text-[18px] font-[600] flex justify-center border-[2px] border-[#ccc] dark:border-[#4A4A4A] mr-2 rounded-[4px]">Cancel</button>
+                <button className="w-[100px] text-[18px] font-[600] flex justify-center bg-[#67B700] dark:bg-[#CE3900] hover:opacity-[0.9] rounded-[4px]">Save</button>
             </div>
         </Modal>
     )

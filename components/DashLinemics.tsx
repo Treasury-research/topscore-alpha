@@ -395,7 +395,7 @@ const rmodynamics = () => {
                             tabs1.map((t: any, i: number) =>
                                 <div key={i} onClick={() => setActiveTab1(i)} className={`h-8 mr-2 flex items-center justify-center w-[60px] rounded-[4px] cursor-pointer ${activeTab1 ==
 
-                                    i ? 'bg-[#73ABFF] dark:bg-[#FF3300] text-[#fff]' : ''}`}>{t}</div>
+                                    i ? 'bg-[#73ABFF] dark:bg-[#FF3300] text-[#fff] radius-btn-shadow' : ''}`}>{t}</div>
                             )
                         }
                     </div>

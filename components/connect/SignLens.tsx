@@ -2,14 +2,21 @@ import React, { useState } from "react";
 import { Modal, Switch, Input, Select, InputNumber } from 'antd';
 import Image from 'next/image'
 import useWeb3Context from "../../hooks/useWeb3Context";
-import Plogin from '../../statics/img/login-head-icon.png'
+import Plogin from '../../statics/img/login-head-icon.svg'
+import PloginLight from '../../statics/img/login-head-icon-light.svg'
 import P1 from '../../statics/img/Lens.svg'
-import P2 from '../../statics/img/change_wallet.svg'
 import { CloseOutlined } from "@ant-design/icons";
 import trace from "../../api/trace";
+import {
+    themeState
+  } from "../../store/state";
+  import { useRecoilState } from "recoil";
 
 const SignLens = (props: any) => {
     const { account, connectWallet, chainId, doLogin, doLogout } = useWeb3Context();
+
+    const [theme, setTheme] = useRecoilState(themeState);
+
     const handleOk = () => {
         props.onCancel();
     };
@@ -26,10 +33,10 @@ const SignLens = (props: any) => {
 
     return (
         <Modal title="Basic Modal" open={true} onOk={handleOk} onCancel={handleCancel}>
-            <div className='flex items-center pb-3 border-b-[1px] border-[#4A4A4A] mb-2'>
+            <div className='flex items-center pb-3 border-b-[1px] border-[#ccc] dark:border-[#4A4A4A] mb-2'>
                 <div className='flex items-center'>
                     <Image
-                        src={Plogin}
+                        src={theme === 'light' ? PloginLight : Plogin}
                         alt=""
                     />
                     <span className='font-[600] text-[20px]'>Login</span>
@@ -39,17 +46,17 @@ const SignLens = (props: any) => {
                     <CloseOutlined className='text-[20px]' />
                 </div>
             </div>
-            <div className="text-[16px] text-[rgba(255,255,255,0.8)]">
-                <div className="text-[#EEFBFF] text-[20px]">Connect your wallet.</div>
+            <div className="text-[16px] text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">
+                <div className="text-[#73ABFF] dark:text-[#EEFBFF] text-[20px]">Connect your wallet.</div>
                 <div className="text-[#6C747D] text-[14px]">Connect with one of available wallet providers or create a new one.</div>
                 <div className="mt-4">
-                    <button onClick={signin} className="bg-[#CE3900] px-[8px] py-2 rounded-[4px] font-[600] flex items-center">
+                    <button onClick={signin} className="bg-[#73ABFF] dark:bg-[#CE3900] py-2 rounded-[4px] font-[600] flex items-center px-4">
                         <Image
                             src={P1}
                             alt=""
                             className="mr-[10px]"
                         />
-                        <span>Sign-in with Lens</span>
+                        <span className="text-[#fff]">Sign-in with Lens</span>
                     </button>
                     {/* <div className="underline pb-[10px] cursor-pointer flex items-center mt-[10px]">
                         <Image
