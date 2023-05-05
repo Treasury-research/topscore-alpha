@@ -46,7 +46,7 @@
 }
 
 .engage-head-left-icon {
-  background: url("../statics/img/follow.png") no-repeat center center;
+  background: url("../statics/img/follow.svg") no-repeat center center;
   background-size: cover;
   height: 26px;
   width: 26px;
@@ -77,18 +77,15 @@
 
 .engage-head-left-des {
   font-size: 16px;
-  color: rgba(255, 255, 255, .8);
 }
 
 .engage-head-left-num {
   font-size: 16px;
-  color: rgba(255, 255, 255, 1);
 }
 
 .engage-head-right {
   margin-left: auto;
   font-size: 16px;
-  color: rgba(255, 255, 255, .8);
 }
 
 .engage-items {
@@ -118,7 +115,6 @@
 
 .engage-head-right-date {
   font-size: 18px;
-  color: rgb(255, 255, 255, 0.8);
 }
 
 .overflow-items {
@@ -133,26 +129,15 @@
 }
 
 .overflow-items-content {
-  color: #fff;
   margin-left: 10px;
 }
 
 .overview-border-b {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding-bottom: 10px;
 }
 
-.overflow-items-head-pubName {
-  color: rgba(255, 255, 255, 0.7);
-}
-
 .overview-des {
-  color: rgba(255, 255, 255, 0.7);
   margin-right: 10px;
-}
-
-.overview-count {
-  color: #fff;
 }
 
 .post-icon {
@@ -195,12 +180,6 @@
   margin-right: 10px;
 }
 
-.engage-items-head-pubName,
-.engage-items-comment-num,
-.engage-items-mirror-num {
-  color: rgba(255, 255, 255, .8);
-}
-
 .engage-items-content {
   display: flex;
   align-items: center;
@@ -213,7 +192,7 @@
 }
 
 .engage-items-comment-icon {
-  background: url("../statics/img/pubIcon/commentBig.svg") no-repeat center center;
+  background: url("../statics/img/pubIcon/commentGray.svg") no-repeat center center;
   background-size: cover;
   height: 24px;
   width: 24px;

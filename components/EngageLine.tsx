@@ -211,7 +211,7 @@ const ChartLine = (props: any) => {
     const option = {
       tooltip: {
         trigger: 'axis',
-        backgroundColor: '#292929',
+        backgroundColor: theme === 'dark' ? '#292929' : '#F8FEFF',
         borderWidth: 0,
         formatter: (params: any) => {
           let htmlCon = ``

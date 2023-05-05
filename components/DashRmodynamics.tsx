@@ -600,8 +600,8 @@ const DashRmodynamics = () => {
                         }
                     </div>
                 </div>
-                <div className="w-[calc(100%-890px)] min-w-[280px] p-1">
-                    <div className="px-6 pt-7 pb-[18px] rounded-[10px] dash-bg-style">
+                <div className="w-[calc(100%-890px)] min-w-[240px] p-1">
+                    <div className="px-6 min-w-[240px] pt-7 pb-[18px] rounded-[10px] dash-bg-style">
                         <div className="flex mb-2">
                             <div>
                                 {
