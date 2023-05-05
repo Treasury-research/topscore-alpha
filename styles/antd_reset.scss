@@ -12,22 +12,6 @@
   box-shadow: none !important;
 }
 
-::-webkit-input-placeholder {
-  color: rgba(255, 255, 255, 0.5) !important;
-}
-
-.ant-popover-arrow::before {
-  background: #3C3C3C !important;
-}
-
-.ant-popover-inner {
-  background: #3C3C3C !important;
-}
-
-.ant-popover-inner-content {
-  color: #fff !important;
-}
-
 .ant-modal-content {
   background: #272727 !important;
 }
@@ -51,10 +35,6 @@
 .default-input {
   border: 1px solid #4A4A4A !important;
   background: none !important;
-}
-
-.connect-component-input {
-  background: #3C3C3C !important;
 }
 
 .ant-select-selector {
@@ -196,7 +176,4 @@
 
 .connect-component-input .ant-input{
   background: none !important;
-}
-.lens-switch-component {
-  background: #272727 !important;
 }

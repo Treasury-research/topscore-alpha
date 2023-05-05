@@ -521,7 +521,7 @@ const DashRmodynamics = () => {
     };
 
     return (
-        <div className=" text-[#000] dark:text-[#fff] mb-10">
+        <div className=" text-[#292A2E] dark:text-[#fff] mb-10">
             <div className="flex overflow-y-hidden">
                 <div className="w-[880px] mr-[10px] p-1">
                     <div className="flex jusitify-between h-[54px] items-center dash-bg-style rounded-[10px] mb-[10px]">
@@ -529,7 +529,7 @@ const DashRmodynamics = () => {
                             {
                                 tabs.map((t: any, i: number) => (
                                     <div className="h-full relative">
-                                        <div key={i} onClick={() => setActiveTab(i)} className={`cursor-pointer ${activeTab === i ? ' text-[#000] dark:text-[#fff]' : 'text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)]'} px-2 h-full mr-4 text-[18px] font-[600] flex justify-center items-center`}>
+                                        <div key={i} onClick={() => setActiveTab(i)} className={`cursor-pointer ${activeTab === i ? ' text-[#292A2E] dark:text-[#fff]' : 'text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)]'} px-2 h-full mr-4 text-[18px] font-[600] flex justify-center items-center`}>
                                             {t}
                                         </div>
                                         {
@@ -608,16 +608,16 @@ const DashRmodynamics = () => {
                                     (!checked[0] || !checked[1] || !checked[2]) &&
                                     <div className="flex items-center h-[25px]">
                                         <div onClick={() => setChecked([true, true, true])} className="h-4 w-4 bg-[#67B700] dark:bg-[#CE3900] select-bg-style text-[#fff] flex items-center justify-center rounded-[4px] mr-2 text-[18px] cursor-pointer text-[600]">-</div>
-                                        <div className="text-[13px] text-[#000] dark:text-[#fff]">Publications</div>
-                                        <div className="text-[12px] text-[#000] dark:text-[#fff] ml-2">{activeTab === 0 ? 'in 2023' : 'in 2022'}</div>
+                                        <div className="text-[13px] text-[#292A2E] dark:text-[#fff]">Publications</div>
+                                        <div className="text-[12px] text-[#292A2E] dark:text-[#fff] ml-2">{activeTab === 0 ? 'in 2023' : 'in 2022'}</div>
                                     </div>
                                 }
                                 {
                                     checked[0] && checked[1] && checked[2] &&
                                     <div className="flex items-center h-[25px]">
                                         <Checkbox onChange={(e: any) => onChangePub(e)} checked={checkedPub}>
-                                            <span className="text-[14px] text-[#000] dark:text-[#fff]">Publications</span>
-                                            <span className="text-[12px] ml-2 text-[#000] dark:text-[#fff]">{activeTab === 0 ? 'in 2023' : 'in 2022'}</span>
+                                            <span className="text-[14px] text-[#292A2E] dark:text-[#fff]">Publications</span>
+                                            <span className="text-[12px] ml-2 text-[#292A2E] dark:text-[#fff]">{activeTab === 0 ? 'in 2023' : 'in 2022'}</span>
                                         </Checkbox>
                                     </div>
                                 }

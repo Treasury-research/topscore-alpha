@@ -5,7 +5,7 @@ import styles from '../styles/Home.module.css'
 import Round1 from "../statics/img/home/round-1.svg";
 import StartBtn from "../statics/img/home/start-btn.svg";
 import ProfileText from "../statics/img/home/profile-text.svg";
-import Titletext from "../statics/img/home/titletext.gif";
+import Titletext from "../statics/img/home/v2-title-text.gif";
 import Round2 from "../statics/img/home/round-2.png";
 import GoBtn from "../statics/img/home/goBtn.svg";
 import Feedback from "../statics/img/home/feedback.svg";
@@ -35,7 +35,7 @@ export default function Index() {
                                 src={Round1}
                                 alt="" />
                             <Image
-                                className='w-[80%] absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]'
+                                className='w-[80%] absolute left-[45%] top-[50%] translate-x-[-50%] translate-y-[-50%]'
                                 src={Titletext}
                                 alt="" />
                         </div>
@@ -103,11 +103,11 @@ export default function Index() {
                                     </div>
                                 </Carousel>
                             </div>
-                            <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[5%] translate-x-[-24px] translate-y-[-50%]"
+                            <button className="h-12 w-12 radius-btn-shadow opacity-70 rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[5%] translate-x-[-24px] translate-y-[-50%]"
                                 onClick={() => { carouselRef.current?.prev(); }}>
                                 <LeftOutlined className="text-[18px] text-[700]" />
                             </button>
-                            <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[5%] translate-x-[24px] translate-y-[-50%]"
+                            <button className="h-12 w-12 radius-btn-shadow opacity-70 rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[5%] translate-x-[24px] translate-y-[-50%]"
                                 onClick={() => { carouselRef.current?.next(); }}>
                                 <RightOutlined className="text-[18px] text-[700]" />
                             </button>

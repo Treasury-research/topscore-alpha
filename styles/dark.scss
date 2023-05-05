@@ -96,7 +96,45 @@
   }
 
   .ant-switch-checked .ant-switch-inner {
-    background: rgba(255,51,0,0.7) !important;
+    background: rgba(255, 51, 0, 0.7) !important;
     ;
   }
+
+  .connect-profile-shadow {
+    box-shadow: -2px -2px 4px rgba(255, 255, 255, 0.06), 2px 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  .card-icon-pub svg {
+    font-size: 24px;
+  }
+
+  .lens-switch-component {
+    background: #272727 !important;
+    border-radius: 12px;
+  }
+
+  .connect-component-input {
+    background: #3C3C3C !important;
+    
+  }
+
+  ::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  .ant-popover-arrow::before {
+    background: #272727 !important;
+  }
+  
+  .ant-popover-inner {
+    background: #272727 !important;
+  }
+  
+  .ant-popover-inner-content {
+    color: #fff !important;
+  }
+  // .card-icon-pub path {
+  //   fill: #292A2E;
+  //   stroke: #292A2E;
+  // }
 }

@@ -379,12 +379,12 @@ const rmodynamics = () => {
 
     return (
         <>
-            <div className="text-[#000] dark:text-[#fff] dash-bg-style p-5 my-10 rounded-[10px]">
+            <div className="text-[#292A2E] dark:text-[#fff] dash-bg-style p-5 my-10 rounded-[10px]">
                 <div className="flex">
                     <div className="flex">
                         {
                             tabs.map((t: any, i: number) =>
-                                <div key={i} onClick={() => setActiveTab(i)} className={`mr-4 box-border rounded-[20px] w-[120px] h-[40px] flex items-center justify-center text-[14px] cursor-pointer hover:opacity-70 ${activeTab == i ? 'dashline-select-tab' : 'radius-btn-shadow text-[#000] dark:text-[#fff]'}`}>
+                                <div key={i} onClick={() => setActiveTab(i)} className={`mr-4 box-border rounded-[20px] w-[120px] h-[40px] flex items-center justify-center text-[14px] cursor-pointer hover:opacity-70 ${activeTab == i ? 'dashline-select-tab' : 'radius-btn-shadow text-[#292A2E] dark:text-[#fff]'}`}>
                                     {t}
                                 </div>
                             )
@@ -400,7 +400,7 @@ const rmodynamics = () => {
                         }
                     </div>
                 </div>
-                <div className="text-[#000] dark:text-[#fff] p-5 rounded-[20px]">
+                <div className="text-[#292A2E] dark:text-[#fff] p-5 rounded-[20px]">
                     <div className="flex mt-4">
                         <div>
                             {

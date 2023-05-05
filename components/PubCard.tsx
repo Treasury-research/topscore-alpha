@@ -144,13 +144,13 @@ const PubCard = (props: any) => {
   }
 
   return (
-    <div className="w-full text-[#000] dark:text-[#fff] my-10">
+    <div className="w-full text-[#292A2E] dark:text-[#fff] my-10">
       <div>
         <div className='dash-bg-style rounded-[10px] mb-[10px] h-[60px] flex mb-4'>
           {/* <div className="flex w-[60%] ml-6">
             {
               tabs.map((t: any, i: number) => (
-                <div key={i} onClick={() => topRecentChange(i)} className={`cursor-pointer w-[140px] flex items-center justify-center px-2 py-1 ${((!topRecentSwitch && i == 0) || (topRecentSwitch && i == 1)) ? 'text-[#000] dark:text-[#fff] border-b-[2px] border-[#fff] text-[18px]' : 'text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)] text-[16px]'}`}>{t}</div>
+                <div key={i} onClick={() => topRecentChange(i)} className={`cursor-pointer w-[140px] flex items-center justify-center px-2 py-1 ${((!topRecentSwitch && i == 0) || (topRecentSwitch && i == 1)) ? 'text-[#292A2E] dark:text-[#fff] border-b-[2px] border-[#fff] text-[18px]' : 'text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)] text-[16px]'}`}>{t}</div>
               ))
             }
           </div> */}
@@ -164,7 +164,7 @@ const PubCard = (props: any) => {
                           {
                               ((!topRecentSwitch && i == 0) || (topRecentSwitch && i == 1)) &&
                               <div className="h-2 w-full flex justify-center absolute bottom-0 tabs-radius">
-                                  <div className="h-1 w-[80%] bg-[#FF3300] rounded-[4px] mt-[6px]"></div>
+                                  <div className="h-1 w-[80%] bg-[#73ABFF] dark:bg-[#FF3300] rounded-[4px] mt-[6px]"></div>
                               </div>
                           }
                       </div>

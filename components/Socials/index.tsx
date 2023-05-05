@@ -37,7 +37,7 @@ export default function Socials() {
   return (
     <div className="flex items-center justify-center pb-4">
       {list.map((item: any, index: number) => (
-        <a onClick={() => toLink(item.link,index)} key={index} className="hover:-translate-y-1 transition-all">
+        <a onClick={() => toLink(item.link,index)} key={index} className="hover:-translate-y-1 transition-all rounded-[50%] bg-[#73ABFF] dark:bg-[#16171B] cursor-pointer">
           <Image alt={item.link} src={item.icon} className="w-12" />
         </a>
       ))}

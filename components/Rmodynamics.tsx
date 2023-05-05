@@ -574,7 +574,7 @@ const rmodynamics = () => {
     }
 
     return (
-        <div className="text-[#000] dark:text-[#fff] mb-10">
+        <div className="text-[#292A2E] dark:text-[#fff] mb-10">
             <div className="flex mb-20 overflow-y-hidden">
                 <div className="w-[880px] mr-[10px] p-1">
                     <div className="flex jusitify-between h-[54px] items-center dash-bg-style dash-bg-style rounded-[10px] mb-[10px]">
@@ -582,7 +582,7 @@ const rmodynamics = () => {
                             {
                                 tabs.map((t: any, i: number) => (
                                     <div className="h-full relative mr-6">
-                                        <div key={i} onClick={() => setActiveTab(i)} className={`cursor-pointer ${activeTab === i ? 'text-[#000] dark:text-[#fff]' : 'text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)]'} h-full text-[18px] font-[600] flex justify-center items-center`}>
+                                        <div key={i} onClick={() => setActiveTab(i)} className={`cursor-pointer ${activeTab === i ? 'text-[#292A2E] dark:text-[#fff]' : 'text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)]'} h-full text-[18px] font-[600] flex justify-center items-center`}>
                                             {t}
                                         </div>
                                         {
@@ -659,7 +659,7 @@ const rmodynamics = () => {
                     </div>
                 </div>
                 <div className="w-[calc(100%-890px)] min-w-[280px] p-1">
-                    <div className="flex min-w-[280px] max-w-100 mt-[78px]">
+                    <div className="flex min-w-[280px] max-w-100 mt-[95px]">
                         <div className={`rounded-[4px] h-10 w-10 dash-bg-style flex items-center justify-center text-[24px] ${weekCount === 4 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getLastWeek}><LeftOutlined /></div>
                         <div className="rounded-[10px] w-[calc(100%-100px)] mx-[10px] h-10 dash-bg-style flex items-center justify-center">
                             {
@@ -685,11 +685,11 @@ const rmodynamics = () => {
                         </div>
                         <div className={`rounded-[4px] h-10 w-10 dash-bg-style flex items-center justify-center text-[24px] ${weekCount == -1 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getNextWeek}><RightOutlined/></div>
                     </div>
-                    <div className="px-6 py-4 dash-bg-style mt-[10px] rounded-[10px] h-[210px] flex items-center">
+                    <div className="px-6 py-[28px] dash-bg-style mt-[10px] rounded-[10px] flex items-center">
                         <div className="h-[fit-content] w-full">
                             {
                                 activeTab == 0 &&
-                                <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(0)}>
+                                <div className="flex items-center cursor-pointer text-[14px] mb-[18px]" onClick={() => onCheckChange(0)}>
                                     <div className={`${checked[0] ? 'bg-[#67B700] dark:bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px] select-bg-style`}>
                                         <Image
                                             className="h-[fit-content] w-[16px] h-[16px]"
@@ -704,7 +704,7 @@ const rmodynamics = () => {
                             }
                             {
                                 activeTab == 1 &&
-                                <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(4)}>
+                                <div className="flex items-center cursor-pointer text-[14px] mb-[18px]" onClick={() => onCheckChange(4)}>
                                     <div className={`${checked[4] ? 'bg-[#67B700] dark:bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px] w-[16px] h-[16px] flex items-center justify-center select-bg-style`}>
                                         <Image
                                             className="h-[fit-content] w-[14px] h-[14px]"
@@ -717,7 +717,7 @@ const rmodynamics = () => {
                                     <div className="ml-[auto]">{(totalAmount && (totalAmount.pubCount || totalAmount.pubCount === 0)) ? getMount(totalAmount.pubCount) : '-'}</div>
                                 </div>
                             }
-                            <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(1)}>
+                            <div className="flex items-center cursor-pointer text-[14px] mb-[18px]" onClick={() => onCheckChange(1)}>
                                 <div className={`${checked[1] ? 'bg-[#67B700] dark:bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px] select-bg-style`}>
                                     <Image
                                         className="h-[fit-content] w-[16px] h-[16px]"
@@ -728,7 +728,7 @@ const rmodynamics = () => {
                                 <div>{weekCount === 0 ? 'Avg. ' : ''}Comments {activeTab == 1 ? '(by)' : ''}</div>
                                 <div className="ml-[auto]">{(totalAmount && (totalAmount.commentCount || totalAmount.commentCount === 0)) ? getMount(totalAmount.commentCount) : '-'}</div>
                             </div>
-                            <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(2)}>
+                            <div className="flex items-center cursor-pointer text-[14px] mb-[18px]" onClick={() => onCheckChange(2)}>
                                 <div className={`${checked[2] ? 'bg-[#67B700] dark:bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px] select-bg-style`}>
                                     <Image
                                         className="h-[fit-content] w-[16px] h-[16px]"
@@ -739,7 +739,7 @@ const rmodynamics = () => {
                                 <div>{weekCount === 0 ? 'Avg. ' : ''}Mirrors {activeTab == 1 ? '(by)' : ''}</div>
                                 <div className="ml-[auto]">{(totalAmount && (totalAmount.mirrorCount || totalAmount.mirrorCount === 0)) ? getMount(totalAmount.mirrorCount) : '-'}</div>
                             </div>
-                            <div className="flex items-center cursor-pointer text-[14px] mb-4" onClick={() => onCheckChange(3)}>
+                            <div className="flex items-center cursor-pointer text-[14px]" onClick={() => onCheckChange(3)}>
                                 <div className={`${checked[3] ? 'bg-[#67B700] dark:bg-[#CE3900]' : 'bg-[#4F4F4F]'} mr-2 rounded-[4px] select-bg-style`}>
                                     <Image
                                         className="h-[fit-content] w-[16px] h-[16px]"

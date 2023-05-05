@@ -12,11 +12,11 @@
     }
 
     .anticon-down>svg {
-        color: #000;
+        color: #292A2E;
     }
 
     .anticon-left>svg {
-        color: #000;
+        color: #292A2E;
     }
 
     .anticon-loading>svg {
@@ -24,11 +24,11 @@
     }
 
     .anticon-right>svg {
-        color: #000;
+        color: #292A2E;
     }
 
     .anticon-home>svg {
-        color: #000;
+        color: #292A2E;
     }
 
     .profile-main-bg {
@@ -94,15 +94,58 @@
     }
 
     .theme-icon path {
-        fill: #999;
+        fill: #292A2E !important;
     }
 
     .downLoad-theme-icon g path {
-        fill: #999;
+        fill: #292A2E;
     }
 
     .ant-switch-checked .ant-switch-inner {
         background: #67B700 !important;
         ;
     }
+
+    .connect-profile-shadow {
+        box-shadow: -2px -2px 6px rgba(255, 255, 255, 0.6), 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-icon-pub svg {
+        font-size: 24px;
+    }
+
+    .lens-switch-component {
+        background: #F8FEFF !important;
+        border-radius: 12px;
+    }
+
+    .connect-component-input {
+        background: #fff !important;
+        box-shadow: -2px -2px 6px rgba(255, 255, 255, 0.9), 2px 2px 10px rgba(0, 0, 0, 0.1);
+
+        input {
+            color: #292A2E !important;
+        }
+    }
+
+    ::-webkit-input-placeholder {
+        color: rgba(0, 0, 0, 0.5) !important;
+    }
+
+    .ant-popover-arrow::before {
+        background: #F8FEFF !important;
+    }
+
+    .ant-popover-inner {
+        background: #F8FEFF !important;
+    }
+
+    .ant-popover-inner-content {
+        color: #292A2E !important;
+    }
+
+    // .card-icon-pub g path {
+    //     fill: #292A2E;
+    //     stroke: #292A2E;
+    // }
 }

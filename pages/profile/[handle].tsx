@@ -15,16 +15,29 @@ import ImgOpensea from "../../statics/img/profileV2/opensea.svg"
 import ImgEdit from "../../statics/img/profileV2/edit.icon.svg"
 import ImgCopy from "../../statics/img/profileV2/copy.icon.svg"
 import ImgDownLoad from "../../statics/img/profileV2/downLoad.icon.svg"
-import ImgPerson from "../../statics/img/profileV2/person.svg"
-import ImgFollowing from "../../statics/img/profileV2/following.svg"
-import ImgPublitions from "../../statics/img/profileV2/publitions.svg"
-import ImgPost from "../../statics/img/profileV2/post.svg"
-import ImgComments from "../../statics/img/profileV2/comments.svg"
-import ImgMirrors from "../../statics/img/profileV2/mirrors.svg"
-import ImgCommentsby from "../../statics/img/profileV2/commentsby.svg"
-import ImgMirrorsby from "../../statics/img/profileV2/mirrorsby.svg"
-import ImgCollections from "../../statics/img/profileV2/collections.svg"
-import ImgCollectedby from "../../statics/img/profileV2/collectedby.svg"
+
+import ImgPubLight1 from "../../statics/img/profileV2/proPub/light/1.png"
+import ImgPubLight2 from "../../statics/img/profileV2/proPub/light/2.png"
+import ImgPubLight3 from "../../statics/img/profileV2/proPub/light/3.png"
+import ImgPubLight4 from "../../statics/img/profileV2/proPub/light/4.png"
+import ImgPubLight5 from "../../statics/img/profileV2/proPub/light/5.png"
+import ImgPubLight6 from "../../statics/img/profileV2/proPub/light/6.png"
+import ImgPubLight7 from "../../statics/img/profileV2/proPub/light/7.png"
+import ImgPubLight8 from "../../statics/img/profileV2/proPub/light/8.png"
+import ImgPubLight9 from "../../statics/img/profileV2/proPub/light/9.png"
+import ImgPubLight10 from "../../statics/img/profileV2/proPub/light/10.png"
+
+import ImgPubDark1 from "../../statics/img/profileV2/proPub/dark/1.png"
+import ImgPubDark2 from "../../statics/img/profileV2/proPub/dark/2.png"
+import ImgPubDark3 from "../../statics/img/profileV2/proPub/dark/3.png"
+import ImgPubDark4 from "../../statics/img/profileV2/proPub/dark/4.png"
+import ImgPubDark5 from "../../statics/img/profileV2/proPub/dark/5.png"
+import ImgPubDark6 from "../../statics/img/profileV2/proPub/dark/6.png"
+import ImgPubDark7 from "../../statics/img/profileV2/proPub/dark/7.png"
+import ImgPubDark8 from "../../statics/img/profileV2/proPub/dark/8.png"
+import ImgPubDark9 from "../../statics/img/profileV2/proPub/dark/9.png"
+import ImgPubDark10 from "../../statics/img/profileV2/proPub/dark/10.png"
+
 import ImgLensterHead from "../../statics/img/lest-head.svg";
 import ImgPremium from '../../statics/img/premium.gif'
 import SvgPremium from '../../statics/img/premium.svg'
@@ -33,64 +46,82 @@ import lensApi from "../../api/lensApi";
 import domtoimage from 'dom-to-image';
 import trace from "../../api/trace";
 import { Spin } from 'antd'
+import Icon from '@ant-design/icons';
 
 import {
   currentProfileState,
   currentLoginProfileState,
-  routerHandleState
+  routerHandleState,
+  themeState
 } from "../../store/state";
 import { useRecoilState } from "recoil";
 import { shortenAddr, switchChain, copyToClipboard, downLoadImg } from "../../lib/tool";
 const baseImgInfo = [{
   text: 'Followers',
-  acount: 0,
-  imgUrl: ImgPerson
+  acount: 0
 },
 {
   text: 'Following',
-  acount: 0,
-  imgUrl: ImgFollowing
+  acount: 0
 },
 {
   text: 'Publications',
-  acount: 0,
-  imgUrl: ImgPublitions
+  acount: 0
 },
 {
   text: 'Posts',
-  acount: 0,
-  imgUrl: ImgPost
+  acount: 0
 },
 {
   text: 'Comments',
-  acount: 0,
-  imgUrl: ImgComments
+  acount: 0
 },
 {
   text: 'Mirrors',
-  acount: 0,
-  imgUrl: ImgMirrors
+  acount: 0
 },
 {
   text: 'Comments (by)',
-  acount: 0,
-  imgUrl: ImgCommentsby
+  acount: 0
 },
 {
   text: 'Mirrors (by)',
-  acount: 0,
-  imgUrl: ImgMirrorsby
+  acount: 0
 },
 {
   text: 'Collections',
-  acount: 0,
-  imgUrl: ImgCollections
+  acount: 0
 },
 {
   text: 'Collected (by)',
-  acount: 0,
-  imgUrl: ImgCollectedby
+  acount: 0
 }]
+
+const lightPubIcons = [
+  ImgPubLight1,
+  ImgPubLight2,
+  ImgPubLight3,
+  ImgPubLight4,
+  ImgPubLight5,
+  ImgPubLight6,
+  ImgPubLight7,
+  ImgPubLight8,
+  ImgPubLight9,
+  ImgPubLight10
+]
+
+const darkPubIcons = [
+  ImgPubDark1,
+  ImgPubDark2,
+  ImgPubDark3,
+  ImgPubDark4,
+  ImgPubDark5,
+  ImgPubDark6,
+  ImgPubDark7,
+  ImgPubDark8,
+  ImgPubDark9,
+  ImgPubDark10
+]
 
 let grades = [{
   level: 0,
@@ -171,6 +202,8 @@ const profile = (props: any) => {
   const [loadingRouterHandle, setLoadingRouterHandle] = useRecoilState(
     routerHandleState
   );
+
+  const [theme, setTheme] = useRecoilState(themeState);
 
   const getAllNfts = async () => {
     const res = (await api.get(`/lens/tokenIds/${currentProfile.address}`));
@@ -340,9 +373,9 @@ const profile = (props: any) => {
   return (
     <div className="w-full h-full bg-[#fff] dark:bg-[#16171B] flex profile-v2">
       <Navbar />
-      <div className='py-5 pr-5 w-full text-[#000] dark:text-[#fff]'>
+      <div className='py-5 pr-5 w-full text-[#292A2E] dark:text-[#fff]'>
         <ConnectBtn type={1} />
-        <div className="w-full overflow-y-auto h-[calc(100%-60px)] hidden-scrollbar mt-5 profile-main-bg">
+        <div className="w-full overflow-y-auto h-[calc(100vh-60px)] hidden-scrollbar mt-5 profile-main-bg">
           {
             !indicatorLoading && !ratingLoading && !scoreLoading && !loadingRouterHandle ? (
               <div className="mx-auto mt-16 w-[800px]">
@@ -350,18 +383,18 @@ const profile = (props: any) => {
                   <div className="h-[512px] w-[722px] mb-4 profile-bg1 flex">
                     <div className="w-1/2 h-full">
                       <div className="flex gap-8">
-                        <div className="relative">
+                        <div className="relative w-[140px] h-[140px] flex items-center justify-center dash-bg-style">
                           {
                             currentProfile.imageURI ? (
-                              <img src={getImgUrl(currentProfile.imageURI)} className="w-[140px] h-[140px] rounded-[10px]" />
+                              <img src={getImgUrl(currentProfile.imageURI)} className="w-[120px] h-[120px] rounded-[10px]" />
                             ) : (
                               <Image
-                                className="w-[140px] h-[140px] rounded-[10px]"
+                                className="w-[120px] h-[120px] rounded-[10px]"
                                 src={ImgLensterHead}
                                 alt="" />
                             )
                           }
-                          <div className="h-12 w-12 absolute right-[-8px] bottom-[-8px]"><DonutChart info={{ level: creatorLevel }} showToolTip={false} background={'#1A1A1A'} /></div>
+                          <div className="h-12 w-12 absolute right-[-8px] bottom-[-8px]"><DonutChart info={{ level: creatorLevel }} showToolTip={false} background={`${theme === 'dark' ? '#1A1A1A' : '#fff'}`} /></div>
 
                         </div>
                         <div className="pt-5">
@@ -436,18 +469,18 @@ const profile = (props: any) => {
                               currentProfile.address === currentLoginProfile.address &&
                               <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]"
                                 onClick={() => { window.open(`https://www.lensfrens.xyz/${currentProfile.handle}`, '_blank'); trace('Card-Edit') }}>
-                                <ImgEdit className="theme-icon"/>
+                                <ImgEdit className="theme-icon" />
                               </button>
                             }
                             <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]"
                               onClick={() => { copyToClipboard(`${window.location.origin}/profile/${currentProfile.handle ? currentProfile.handle.split('.')[0] : 'stani'}`); trace('Card-Copy') }
                               }>
-                              <ImgCopy className="theme-icon"/>
+                              <ImgCopy className="theme-icon" />
                             </button>
                             <button className="flex items-center justify-center visited:opacity-100 hover:opacity-70 radius-btn-shadow h-[32px] w-[32px] rounded-[50%]"
                               onClick={() => { downLoadHtml2Img(); trace('Card-Download') }}>
-                              
-                              <ImgDownLoad className="downLoad-theme-icon"/>
+
+                              <ImgDownLoad className="downLoad-theme-icon" />
                             </button>
                           </div>
                         </div>
@@ -458,9 +491,9 @@ const profile = (props: any) => {
                       <div className="flex items-center w-full flex-wrap justify-between pl-8">
                         {
                           currentIndicators.map((t: any, i: number) => (
-                            <div key={i} className={`w-[calc(50%-10px)] mr-[10px] mb-[10px] pl-[8px] py-2 h-11 flex items-center gap-2 ${getBgStyle(i)} rounded-[10px]`}>
+                            <div key={i} className={`w-[calc(50%-10px)] card-icon-pub mr-[10px] mb-[10px] pl-[8px] py-2 h-11 flex items-center gap-2 ${getBgStyle(i)} rounded-[10px]`}>
                               <Image
-                                src={t.imgUrl}
+                                src={theme === 'light' ? lightPubIcons[i] : darkPubIcons[i]}
                                 className="w-[24px] h-[24px]"
                                 alt=""
                               />
@@ -501,12 +534,12 @@ const profile = (props: any) => {
                             <div key={i}>
                               <div className="flex items-center justify-left gap-10">
                                 {t.map((item: any, index: number) =>
-                                  <div className={`hover:scale-110 transition-all relative ${index === 0 ? 'ml-[20px]' : index === 3 ? 'mr-[20px]' : ''}`} key={index}>
+                                  <div className={`hover:scale-110 transition-all connect-profile-shadow  relative ${index === 0 ? 'ml-[20px]' : index === 3 ? 'mr-[20px]' : ''}`} key={index}>
                                     <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item}.png`} className="cursor-pointer w-[150px] h-[160px] rounded-tl-[12px] rounded-tr-[12px]"
                                       onMouseEnter={() => { setActiveHoverIndex(`${i}${index}`); trace('NFT-Scale') }}
                                     />
-                                    <div className="flex justify-between items-center bg-[#1A1A1A] h-[40px] px-3 rounded-bl-[12px] rounded-br-[12px]">
-                                      <div className="text-[#fff]">No.{item}</div>
+                                    <div className="flex justify-between items-center bg-[#fff] dark:bg-[#1A1A1A] h-[40px] px-3 rounded-bl-[12px] rounded-br-[12px]">
+                                      <div className=" text-[#292A2E] dark:text-[#fff]">No.{item}</div>
                                       <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[26px] w-[26px] rounded-[50%]">
                                         <div className="h-[18px] w-[18px] rounded-[50%] bg-[#2081E2] flex items-center justify-center"
                                           onClick={() => { window.open(`https://opensea.io/assets/matic/0xa803aabd68dd0fcf9eabc25f71f155222805e9e0/${item}`, '_blank'); trace('NFT-Opensea') }}>
@@ -528,11 +561,11 @@ const profile = (props: any) => {
                       {
                         showNftBtn && nftTotal > 4 &&
                         <>
-                          <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#fff] dark:bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[20px] translate-x-[-24px] translate-y-[-50%]"
+                          <button className="h-12 w-12 radius-btn-shadow opacity-70 rounded-[50%] bg-[#fff] dark:bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[20px] translate-x-[-24px] translate-y-[-50%]"
                             onClick={() => { carouselRef.current?.prev(); trace('NFT-Left') }}>
-                            <LeftOutlined className="text-[18px] text-[700]" />
+                            <LeftOutlined className="text-[18px] text-[700]"/>
                           </button>
-                          <button className="h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#fff] dark:bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[20px] translate-x-[24px] translate-y-[-50%]"
+                          <button className="h-12 w-12 radius-btn-shadow opacity-70 rounded-[50%] bg-[#fff] dark:bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[20px] translate-x-[24px] translate-y-[-50%]"
                             onClick={() => { carouselRef.current?.next();; trace('NFT-Right') }}>
                             <RightOutlined className="text-[18px] text-[700]" />
                           </button>

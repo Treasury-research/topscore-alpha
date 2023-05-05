@@ -95,13 +95,13 @@ export default function Lens({ profileId, handle }: any) {
     //   onClick={doFollow}
     //   alt=""
     // />
-    <ImgFollow onClick={doFollow} className="theme-icon"/>
+    <ImgFollow onClick={doFollow} className="downLoad-theme-icon"/>
   ) : (
     // <Image
     //   src={ImgUnFollow}
     //   onClick={doUnfollow}
     //   alt=""
     // />
-    <ImgUnFollow onClick={doUnfollow} className="theme-icon"/>
+    <ImgUnFollow onClick={doUnfollow} className="downLoad-theme-icon"/>
   );
 }

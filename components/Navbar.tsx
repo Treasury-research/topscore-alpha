@@ -64,11 +64,11 @@ const Navbar = () => {
                         src={IconTop}
                         alt=""
                     />
-                    <div className="text-[#292A2E] dark:text-[rgba(255,255,255,0.8)] flex items-center">TOPSCORE<span className="text-[12px] text-[#73ABFF] dark:text-[#CE3900] ml-2">ALPHA</span></div>
+                    <div className="text-[#292A2E] dark:text-[rgba(255,255,255,0.8)] flex items-baseline">TOPSCORE<span className="text-[12px] text-[#73ABFF] dark:text-[#CE3900] ml-2">ALPHA</span></div>
                 </div>
                 {
                     headerTabs.map((t: string, i: number) => (
-                        <div key={i} className={`${router.pathname.includes(t.toLocaleLowerCase()) ? 'text-[#000] dark:text-[rgba(255,255,255,0.9)] selectNav' : 'text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.5)]'} h-12 flex items-center cursor-pointer w-[160px] rounded-[6px] mb-4 hoverNav`}>
+                        <div key={i} className={`${router.pathname.includes(t.toLocaleLowerCase()) ? 'text-[#292A2E] dark:text-[rgba(255,255,255,0.9)] selectNav' : 'text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.5)]'} h-12 flex items-center cursor-pointer w-[160px] rounded-[6px] mb-4 hoverNav`}>
                             <div className="w-full h-full flex items-center" onClick={() => getAddress(t, i)}>
                                 <div className="flex">
                                     <div className=" ml-3 mr-2 flex items-center">

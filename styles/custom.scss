@@ -4,10 +4,6 @@
   box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.4), inset -2px -2px 2px 0px rgba(255, 255, 255, 0.1)
 }
 
-.connect-profile-shadow {
-  box-shadow: -2px -2px 4px rgba(255, 255, 255, 0.06), 2px 2px 4px rgba(0, 0, 0, 0.4);
-}
-
 .light-style {
   background: #F59300;
   box-shadow: inset -4px -4px 6px rgba(255, 255, 255, 0.6), inset 4px 4px 10px rgba(44, 46, 55, 0.2);
@@ -392,14 +388,6 @@
   background-size: 100% 100%;
 }
 
-.darkProfile {
-  background: #000;
-}
-
-.lightProfile {
-  background: red;
-}
-
 .dash-bg-style {
   background: rgba(41, 41, 41, 0.5);
   /* dark mode 3d */
@@ -413,4 +401,9 @@
 
 .ant-checkbox{
   box-shadow: -2px -2px 4px rgba(255, 255, 255, 0.06), 2px 2px 4px rgba(0, 0, 0, 0.4) !important; 
+}
+
+.pass-bet:after {
+  content: "";
+  width: 20%;
 }

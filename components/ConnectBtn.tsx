@@ -26,7 +26,6 @@ import SignLens from "./connect/SignLens";
 import ImgLenster from "../statics/img/lest-head.png";
 import ImgLight from "../statics/img/light.icon.svg";
 import ImgDark from "../statics/img/dark.icon.svg";
-import ImgHome from "../statics/img/home.svg";
 import ChangeProfile from "./connect/ChangeProfile";
 import { ConsoleSqlOutlined, DownOutlined, LoadingOutlined ,HomeOutlined} from "@ant-design/icons";
 import PermissionMsg from './connect/PermissionMsg'
@@ -426,23 +425,15 @@ const ConnectBtn = (props: any) => {
   }
 
   useEffect(() => {
-    if (!localStorage.theme || localStorage.theme == 'light') {
-      localStorage.theme = 'light'
-      document.documentElement.classList.remove('dark')
-      document.documentElement.classList.add('light')
-      setActiveMs(0)
-      setTheme('light')
+    if (!localStorage.theme || localStorage.theme == 'dark') {
+      darkMode()
     } else {
-      localStorage.theme = 'dark'
-      document.documentElement.classList.remove('light')
-      document.documentElement.classList.add('dark')
-      setActiveMs(1)
-      setTheme('dark')
+      lightMode()
     }
   }, [])
 
   return (
-    <div className="w-full h-8 flex gap-3 items-center text-[#000] dark:text-[#fff]">
+    <div className="w-full h-8 flex gap-3 items-center text-[#292A2E] dark:text-[#fff]">
       {
         props.type !== 3 &&
         <div className="h-8 flex gap-2 items-center">
@@ -454,7 +445,7 @@ const ConnectBtn = (props: any) => {
               trigger={['click']}
               overlay={
                 <div className="lens-switch-component">
-                  <div className={`py-1 mx-[5%] text-[#fff] ${props.type == 2 && !knn3TokenValid ? 'w-[200px]' : 'w-[90%]'}`}>
+                  <div className={`py-4 mx-[5%] text-[#292A2E] dark:text-[#fff] ${props.type == 2 && !knn3TokenValid ? 'w-[200px]' : 'w-[90%]'}`}>
                     {
                       ((props.type == 2 && knn3TokenValid && account) || props.type === 1) &&
                       <Input className="connect-component-input" placeholder="Search" allowClear onClick={() => { toSearchPermission() }} onChange={(e) => searchInputChange(e)} value=
@@ -462,7 +453,7 @@ const ConnectBtn = (props: any) => {
                     }
                     {
                       props.type == 2 && !knn3TokenValid &&
-                      <div className="w-[90%] text-center py-1 bg-[#fff] rounded-[4px] text-[#000] text-[14px] font-[600] cursor-pointer" onClick={() => connectOrLogin()}>
+                      <div className="w-[90%] text-center py-1 bg-[#fff] rounded-[4px] text-[#292A2E] text-[14px] font-[600] cursor-pointer connect-profile-shadow" onClick={() => connectOrLogin()}>
                         Log in to view more
                       </div>
                     }
@@ -559,7 +550,7 @@ const ConnectBtn = (props: any) => {
               }
             >
               <div onClick={(e) => e.preventDefault()} className="flex h-full">
-                <button className="h-full px-4 flex justify-center items-center bg-[#F6F6F9] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px] min-w-[100px]">
+                <button className="h-full px-4 flex justify-center items-center bg-[#F8FEFF] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px] min-w-[100px]">
                   {
                     currentProfile && currentProfile.handle &&
                     <>
@@ -588,7 +579,7 @@ const ConnectBtn = (props: any) => {
           </div>
           {
             account && knn3TokenValid &&
-            <div className="flex items-center justify-center bg-[#F6F6F9] dark:bg-[#292A2E] connect-profile-shadow rounded-[50%] h-8 w-8 cursor-pointer hover:opacity-70" onClick={() => goHome()}>
+            <div className="flex items-center justify-center bg-[#F8FEFF] dark:bg-[#292A2E] connect-profile-shadow rounded-[50%] h-8 w-8 cursor-pointer hover:opacity-70" onClick={() => goHome()}>
               {/* <Image
                 className="w-[18px] h-[18px]"
                 src={ImgHome}
@@ -607,8 +598,8 @@ const ConnectBtn = (props: any) => {
           }
         </div>
       }
-      <div className="h-full ml-auto flex">
-        <div className=" bg-[#F6F6F9] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px] flex mr-5 items-center px-2">
+      <div className="h-full ml-auto flex mr-4">
+        <div className=" bg-[#F8FEFF] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px] flex mr-5 items-center px-2">
           <div onClick={() => lightMode()} className={`${activeMs == 0 ? 'light-style' : ''} cursor-pointer h-5 w-5 flex items-center justify-center rounded-[50%] mr-2`}>
             {/* <Image
               className="w-[12px] h-[12px]"
@@ -629,7 +620,7 @@ const ConnectBtn = (props: any) => {
         {account && chainId && config.chainId !== chainId ? (
           <button
             onClick={() => switchChain(config.chainId)}
-            className="h-full px-4 flex justify-center items-center bg-[#F6F6F9] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px]"
+            className="h-full px-4 flex justify-center items-center bg-[#F8FEFF] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px]"
           >
             Switch to polygon
           </button>
@@ -648,6 +639,7 @@ const ConnectBtn = (props: any) => {
                   // </button>
                 )} */}
               <Popover
+              trigger="click"
                 content={
                   <div>
                     <div className="text-[14px]">Address</div>
@@ -657,13 +649,13 @@ const ConnectBtn = (props: any) => {
                     <div>
                       <div
                         onClick={() => handleShowModal(true, 2)}
-                        className="cursor-pointer my-[10px] flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555]"
+                        className="cursor-pointer my-[10px] flex items-center px-2 py-1 rounded-[4px] hover:opacity-70"
                       >
                         Switch Profile
                       </div>
                       <div
                         onClick={handleLogout}
-                        className="cursor-pointer flex items-center px-2 py-1 rounded-[4px] hover:bg-[#555555] "
+                        className="cursor-pointer flex items-center px-2 py-1 rounded-[4px] hover:opacity-70"
                       >
                         Logout
                       </div>
@@ -672,7 +664,7 @@ const ConnectBtn = (props: any) => {
                 }
                 placement="bottom"
               >
-                <button className="h-full px-4 flex justify-center items-center bg-[#F6F6F9] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px]">
+                <button className="h-full px-4 flex justify-center items-center bg-[#F8FEFF] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px]">
                   {
                     currentLoginProfile.handle &&
                     <>
@@ -700,14 +692,14 @@ const ConnectBtn = (props: any) => {
         {!knn3TokenValid ? (
           <button
             onClick={determineLoginModal}
-            className="h-full px-4 flex justify-center items-center bg-[#F6F6F9] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px]"
+            className="h-full px-4 flex justify-center items-center bg-[#F8FEFF] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px]"
           >
             {account ? "Log in" : "Connect Wallet"}
           </button>
         ) : !account && (
           <button
             onClick={determineLoginModal}
-            className="h-full px-4 flex justify-center items-center bg-[#F6F6F9] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px]"
+            className="h-full px-4 flex justify-center items-center bg-[#F8FEFF] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px]"
           >
             Connect Wallet
           </button>

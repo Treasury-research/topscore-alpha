@@ -2,6 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import Img1 from "../statics/img/gallery/img1.png";
 import Img2 from "../statics/img/gallery/img2.png";
 import Img3 from "../statics/img/gallery/img3.png";
+
+import ImgLight1 from "../statics/img/gallery/img-light1.png";
+import ImgLight2 from "../statics/img/gallery/img-light2.png";
+import ImgLight3 from "../statics/img/gallery/img-light3.png";
+
 import Text1 from "../statics/img/gallery/text1.svg";
 import Text2 from "../statics/img/gallery/text2.svg";
 import Text3 from "../statics/img/gallery/text3.svg";
@@ -35,7 +40,7 @@ const gallery = () => {
   return (
     <div className="w-full h-full bg-[#fff] dark:bg-[#16171B] flex">
       <Navbar />
-      <div className="py-5 w-full text-[#000] dark:text-[#fff] relative overflow-hidden pr-5">
+      <div className="py-5 w-full text-[#292A2E] dark:text-[#fff] relative overflow-hidden pr-5">
         <ConnectBtn type={2} />
         <div className="w-full h-full profile-main-bg mt-5">
           <div className="w-full h-full relative">
@@ -53,17 +58,17 @@ const gallery = () => {
                   <Carousel className='w-full' ref={carouselRef} afterChange={(e) => carouChange(e)}>
                     <div className='w-full flex items-center justify-center'>
                       <Image
-                        src={Img1}
+                        src={theme === 'light' ? ImgLight1 : Img1}
                         alt="" />
                     </div>
                     <div>
                       <Image
-                        src={Img2}
+                        src={theme === 'light' ? ImgLight2 : Img2}
                         alt="" />
                     </div>
                     <div>
                       <Image
-                        src={Img3}
+                        src={theme === 'light' ? ImgLight3 : Img3}
                         alt="" />
                     </div>
                   </Carousel>
