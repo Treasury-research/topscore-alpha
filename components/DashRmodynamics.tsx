@@ -10,6 +10,7 @@ import Comment from '../statics/img/pubIcon/commentBig.svg'
 import Post from '../statics/img/post_icon.svg'
 import Image from 'next/image'
 import trace from "../api/trace";
+import { Spin } from 'antd'
 
 const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -565,7 +566,7 @@ const DashRmodynamics = () => {
                     <div className="w-full overflow-hidden dash-bg-style rounded-[10px] p-4 pt-6">
                         {
                             loading ?
-                                <div className="h-[122px] flex items-center w-[840px]"><LoadingOutlined className="text-2xl block mx-auto" /></div>
+                                <div className="h-[122px] flex items-center w-[840px]"><Spin size="large" className="mx-auto my-5"/></div>
                                 : <>
                                     <div>
                                         {

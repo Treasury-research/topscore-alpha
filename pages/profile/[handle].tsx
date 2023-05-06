@@ -393,7 +393,7 @@ const profile = (props: any) => {
                   <div className="h-[512px] w-[722px] mb-4 profile-bg1 flex">
                     <div className="w-1/2 h-full">
                       <div className="flex gap-8">
-                        <div className="relative w-[140px] h-[140px] flex items-center justify-center dash-bg-style">
+                        <div className="relative w-[140px] h-[140px] flex items-center justify-center ml-2 mt-1">
                           {
                             currentProfile.imageURI ? (
                               <img src={getImgUrl(currentProfile.imageURI)} className="w-[120px] h-[120px] rounded-[10px]" />
@@ -587,7 +587,7 @@ const profile = (props: any) => {
               </div>
             ) : (
               <div className="h-full w-full flex items-center justify-center">
-                <Spin indicator={<LoadingOutlined style={{ fontSize: 36 }} spin />} />
+                <Spin size="large" className="large-loading"/>
               </div>
             )
           }

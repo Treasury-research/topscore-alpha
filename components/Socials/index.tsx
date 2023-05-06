@@ -50,8 +50,8 @@ export default function Socials() {
   return (
     <div className="flex items-center justify-center pb-4">
       {list.map((item: any, index: number) => (
-        <a onClick={() => toLink(item.link,index)} key={index} className="hover:-translate-y-1 transition-all rounded-[50%] cursor-pointer">
-          <Image alt={item.link} src={theme === 'light' ? lightIcons[index] : darkIcons[index]} className="w-12 h-12" />
+        <a onClick={() => toLink(item.link,index)} key={index} className={`hover:-translate-y-1 transition-all rounded-[50%] cursor-pointer ${index == 3 ? 'scale-110' : ''}`}>
+          <Image alt={item.link} src={theme === 'light' ? lightIcons[index] : darkIcons[index]} className="w-8 h-8 mr-2" />
         </a>
       ))}
     </div>

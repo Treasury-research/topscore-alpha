@@ -430,7 +430,7 @@ const rmodynamics = () => {
                         {
                             loading ? (
                                 <div className="w-full h-full flex items-center justify-center">
-                                    <LoadingOutlined className="text-2xl block mx-auto my-[80px]" />
+                                    <Spin size="large" className="mx-auto my-5"/>
                                 </div>
                             ) : (
                                 <>

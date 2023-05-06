@@ -76,41 +76,6 @@
   color: #fff !important;
 }
 
-// .ant-switch{
-//   background: #fff !important;
-// }
-
-// .ant-switch-inner {
-//   background: #979797 !important;
-// }
-
-// .ant-switch-checked .ant-switch-inner {
-//   background: #979797 !important;
-// }
-
-// .ant-switch-checked .ant-switch-handle::before {
-//   background: #fff !important;
-//   ;
-// }
-
-
-// .ant-switch-inner {
-//   background: #979797 !important;
-// }
-
-// .ant-switch-handle::before {
-//   background: #fff !important;
-//   ;
-// }
-
-// .ant-checkbox-inner {
-//   background-color: #CE3900 !important;
-//   border-color: #CE3900 !important;
-// }
-// .ant-checkbox-checked:after{
-//   border: none !important;
-// }
-
 .ant-switch-checked{
   background: none !important;
 }
@@ -163,4 +128,13 @@
 
 .connect-component-input .ant-input{
   background: none !important;
+}
+
+.large-loading .ant-spin-dot-spin{
+  font-size: 70px !important;
+}
+
+.large-loading .ant-spin-dot-spin i{
+  height: 32px !important;
+  width: 32px !important;
 }

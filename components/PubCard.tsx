@@ -9,6 +9,7 @@ import { currentProfileState,topRecentState } from "../store/state";
 import { useRecoilState } from "recoil";
 import dayjs from 'dayjs';
 import trace from "../api/trace";
+import { Spin } from 'antd';
 
 const tab = [
   ['Top Engaged', 'Top Collected'],
@@ -180,8 +181,8 @@ const PubCard = (props: any) => {
         </div>
         {
           loading ?
-            <div className='h-[200px]'>
-              <LoadingOutlined className="text-2xl block mx-auto my-[80px]" />
+            <div className='h-[200px] w-full flex items-center justify-center'>
+              <Spin size="large" className="mx-auto my-5"/>
             </div>
             : (
               <div className={`min-h-[200px] ${pubData.length == 0 ? 'dash-bg-style' : ''}`}>

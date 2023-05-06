@@ -9,6 +9,7 @@ import { LoadingOutlined, CaretUpOutlined, CaretDownOutlined } from '@ant-design
 import { currentProfileState, loadingProfileListState } from "../store/state";
 import DonutChart from '../components/profile/DonutChart'
 import trace from "../api/trace";
+import { Spin } from 'antd'
 
 const Create = () => {
     const [scores, setScores] = useState<any>({});
@@ -59,7 +60,7 @@ const Create = () => {
             <div className="absolute top-[20px] text-[24px]"></div>
             <div className="h-[calc(100vh-60px)] overflow-x-hidden hidden-scrollbar profile-main-bg px-5 mt-5">
                 <div className="flex mb-10 mt-[60px]">
-                    {loadingScores ? <LoadingOutlined className="text-2xl block mx-auto my-4" /> : <>
+                    {loadingScores ? <div className="h-[164px] flex items-center w-full"><Spin size="large" className="mx-auto my-5" /></div> : <>
                         <div className="w-[360px] h-[164px] px-4 creation-bg creat-card-bg-style text-[#292A2E] dark:text-[#fff] mr-4 rounded-[10px]"
                             onMouseEnter={() => trace('Rank-Creation')}>
                             <div className="mb-1 text-[18px] font-[600]">Creation</div>

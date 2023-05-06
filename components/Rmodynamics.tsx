@@ -14,6 +14,7 @@ import Imgcommentsby from '../statics/img/commentsby.svg'
 import trace from "../api/trace";
 import moment from 'moment'
 import dayjs from 'dayjs';
+import { Spin } from 'antd'
 
 import BN from "bignumber.js";
 
@@ -618,7 +619,7 @@ const rmodynamics = () => {
                     <div className="w-full overflow-hidden dash-bg-style rounded-[10px] p-4 pt-6 mb-5">
                         {
                             loading ?
-                                <div className="h-[234px] flex items-center"><LoadingOutlined className="text-2xl block mx-auto" /></div>
+                                <div className="h-[234px] w-full flex items-center justify-center"><Spin size="large" className="mx-auto my-5"/></div>
                                 : <>
                                     <div className="mt flex justify-center w-full">
                                         <div className="w-[fit-content]">
