@@ -29,9 +29,13 @@ import ImgLight9 from "../statics/img/pass/light/9.png";
 import ImgLight10 from "../statics/img/pass/light/10.png";
 import ImgLight11 from "../statics/img/pass/light/11.png";
 import ImgLight12 from "../statics/img/pass/light/12.png";
+import lensApi from "../api/lensApi";
+import ImgLensterHead from "../statics/img/lest-head.svg";
+import { formatIPFS } from "../lib/tool";
 
 import {
-  themeState
+  themeState,
+  currentProfileState
 } from "../store/state";
 import { useRecoilState } from "recoil";
 
@@ -79,6 +83,35 @@ const pass = () => {
 
   const [theme, setTheme] = useRecoilState(themeState);
 
+  const [introduce, setIntroduce] = useState<any>('')
+
+  const [currentProfile, setCurrentProfile] =
+    useRecoilState<any>(currentProfileState);
+
+  const getIntroduce = async () => {
+    const res = await lensApi.getProfileByHandle(currentProfile.handle);
+    if (res && res.bio) {
+      setIntroduce(res.bio)
+    } else {
+      setIntroduce('')
+    }
+  }
+
+  const getImgUrl = (str: string) => {
+    const imgUrl = str.replace(
+      "https://ipfs.infura.io",
+      "https://lens.infura-ipfs.io"
+    );
+    return formatIPFS(imgUrl);
+  };
+
+  useEffect(() => {
+    if (currentProfile.handle) {
+      console.log(currentProfile)
+      getIntroduce()
+    }
+  }, [currentProfile])
+
   return (
     <div className="w-full h-full bg-[#fff] dark:bg-[#16171B] flex">
       <Navbar />
@@ -90,15 +123,24 @@ const pass = () => {
               <div className='w-full h-[160px] dash-bg-style rounded-[20px] p-8 flex items-center'>
                 <div className='w-[calc(100%-300px)] flex items-center'>
                   <div className='mr-4'>
-                    <Image
+                    {/* <Image
                       className="w-[100px] h-[100px] rounded-[50%]"
                       src={Knn3}
-                      alt="" />
+                      alt="" /> */}
+                    {
+                      currentProfile.imageURI ? (
+                        <img src={getImgUrl(currentProfile.imageURI)} className="w-[100px] h-[100px] rounded-[50%]" />
+                      ) : (
+                        <Image
+                          className="w-[100px] h-[100px] rounded-[50%]"
+                          src={ImgLensterHead}
+                          alt="" />
+                      )
+                    }
                   </div>
                   <div className='h-[fit-content] w-[calc(100%-100px)]'>
-                    <p className='font-[600] text-[18px]'>KNN3 Network<span className='text-[12px] ml-4 text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.5)] font-[500]'>knn3_network.lens</span></p>
-                    <p className='text-[14px]'>KNN3 is one-stop Web3 User-centric #DataFi solution for d/Apps and smart contracts.
-                      DC: http://discord.gg/UKzFVpHk4J  Link3: http://link3.to/knn3network</p>
+                    <p className='font-[600] text-[18px]'>{currentProfile.name ? currentProfile.name : currentProfile.handle ? currentProfile.handle.split('.')[0] : ''}<span className='text-[12px] ml-4 text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.5)] font-[500]'>@{currentProfile.handle}</span></p>
+                    <p className='text-[14px]'>{introduce}</p>
                   </div>
                 </div>
                 <div className='w-[200px] ml-[auto]'>
