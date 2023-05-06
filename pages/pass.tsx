@@ -179,7 +179,7 @@ const pass = () => {
               <div className='px-5 py-2 rounded-[6px] mr-5 cursor-pointer'>Claimed Badges</div>
               <div className='px-5 py-2 rounded-[6px] cursor-pointer'>Unclaimed Badges</div>
             </div> */}
-            <div className='px-3 mt-5 mb-8'>
+            <div className='px-3 mt-6 mb-4'>
               <div className="flex pl-8 h-[60px] dash-bg-style">
                 {
                   tabs.map((t: any, i: number) => (
