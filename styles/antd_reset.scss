@@ -2,14 +2,6 @@
   display: none
 }
 
-.bestCard>div {
-  background: url("../statics/img/card_bg.svg") no-repeat center center;
-  background-size: cover;
-  width: 315px;
-  height: 138px;
-  margin-right: 40px;
-}
-
 .ant-input {
   background: #000;
   border: none;
@@ -18,26 +10,6 @@
 
 .ant-input:focus {
   box-shadow: none !important;
-}
-
-::-webkit-input-placeholder {
-  color: rgba(255, 255, 255, 0.5) !important;
-}
-
-.ant-popover-arrow::before {
-  background: #3C3C3C !important;
-}
-
-.ant-popover-inner {
-  background: #3C3C3C !important;
-}
-
-.ant-popover-inner-content {
-  color: #fff !important;
-}
-
-.ant-modal-content {
-  background: #272727 !important;
 }
 
 .ant-modal-header {
@@ -52,17 +24,9 @@
   display: none !important;
 }
 
-.ant-modal-body {
-  color: #fff;
-}
-
 .default-input {
   border: 1px solid #4A4A4A !important;
   background: none !important;
-}
-
-.connect-component-input {
-  background: #3C3C3C !important;
 }
 
 .ant-select-selector {
@@ -95,11 +59,6 @@
   background: none !important;
 }
 
-.anticon {
-  border: none !important;
-  color: #fff !important;
-}
-
 .ant-message-notice-content .anticon{
   color: #52c41a !important;
 }
@@ -117,48 +76,8 @@
   color: #fff !important;
 }
 
-// .ant-switch{
-//   background: #fff !important;
-// }
-
-// .ant-switch-inner {
-//   background: #979797 !important;
-// }
-
-// .ant-switch-checked .ant-switch-inner {
-//   background: #979797 !important;
-// }
-
-// .ant-switch-checked .ant-switch-handle::before {
-//   background: #fff !important;
-//   ;
-// }
-
-
-// .ant-switch-inner {
-//   background: #979797 !important;
-// }
-
-// .ant-switch-handle::before {
-//   background: #fff !important;
-//   ;
-// }
-
-// .ant-checkbox-inner {
-//   background-color: #CE3900 !important;
-//   border-color: #CE3900 !important;
-// }
-// .ant-checkbox-checked:after{
-//   border: none !important;
-// }
-
 .ant-switch-checked{
   background: none !important;
-}
-
-.ant-switch-checked .ant-switch-inner {
-  background: rgba(255,51,0,0.7) !important;
-  ;
 }
 
 .ant-switch-checked .ant-switch-handle::before {
@@ -173,11 +92,6 @@
 .ant-switch-handle::before {
   background: #fff !important;
   ;
-}
-
-.ant-checkbox-inner {
-  background-color: #CE3900 !important;
-  border-color: #CE3900 !important;
 }
 
 .ant-checkbox-checked:after{
@@ -215,6 +129,12 @@
 .connect-component-input .ant-input{
   background: none !important;
 }
-.lens-switch-component {
-  background: #272727 !important;
+
+.large-loading .ant-spin-dot-spin{
+  font-size: 70px !important;
+}
+
+.large-loading .ant-spin-dot-spin i{
+  height: 32px !important;
+  width: 32px !important;
 }

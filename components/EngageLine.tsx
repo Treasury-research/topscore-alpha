@@ -1,6 +1,10 @@
 import { useEffect } from 'react';
 import * as echarts from 'echarts';
 import trace from "../api/trace";
+import {
+  themeState
+} from "../store/state";
+import { useRecoilState } from "recoil";
 
 const overLineColor = ['#8BFFF8', '#AAAEFF', '#FFA881']
 
@@ -11,6 +15,8 @@ const lineColor = ['#2C5D5A','#85D185', '#00FFE1',  '#AAAEFF', '#D6D7FF', '#FFA8
 const areaColor = ['#2C5D5A', '#228B22','#0AD6BD',  '#4B4D75', '#B1B2E8', '#87523A', '#C698AB', '#CB7126', '#BA9271', '#D0B88A', '#FF007F']
 
 const ChartLine = (props: any) => {
+
+  const [theme, ] = useRecoilState(themeState);
 
   const { id = 'default-id',
     width = '100%',
@@ -205,7 +211,7 @@ const ChartLine = (props: any) => {
     const option = {
       tooltip: {
         trigger: 'axis',
-        backgroundColor: '#292929',
+        backgroundColor: theme === 'dark' ? '#292929' : '#F8FEFF',
         borderWidth: 0,
         formatter: (params: any) => {
           let htmlCon = ``
@@ -352,7 +358,7 @@ const ChartLine = (props: any) => {
         },
         data: legendData,
         textStyle: {
-          color: 'rgba(255,255,255,0.8)'
+          color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#000'
         },
         itemWidth: 16,
         itemHeight: 16,
@@ -404,7 +410,7 @@ const ChartLine = (props: any) => {
           data: dy,
           axisLabel: {
             textStyle: {
-              color: 'rgba(255,255,255,0.8)',
+              color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#000',
               fontSize: 14
             },
           }
@@ -419,7 +425,7 @@ const ChartLine = (props: any) => {
           name: (type === 0 || type === 1) ? 'Engagements' : 'Collections',
           nameLocation: 'end',
           nameTextStyle: {
-            color: 'rgba(255,255,255,0.8)',
+            color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#000',
             padding: [0, 0, 0, -20]
           },
           minInterval: 1,
@@ -427,7 +433,7 @@ const ChartLine = (props: any) => {
           scale: true,
           splitLine: {
             lineStyle: {
-              color: 'rgba(255,255,255,0.1)'
+              color: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
             }
           },
           max: function (value: any) {//取最大值向上取整为最大刻度
@@ -438,7 +444,7 @@ const ChartLine = (props: any) => {
           },
           axisLabel: {
             textStyle: {
-              color: 'rgba(255,255,255,0.8)',
+              color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#000',
               fontSize: 14
             },
           }
@@ -448,7 +454,7 @@ const ChartLine = (props: any) => {
           nameLocation: 'end',
           minInterval: 1,
           nameTextStyle: {
-            color: 'rgba(255,255,255,0.8)',
+            color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#000',
           },
           nameGap: 20,
           position: 'right',
@@ -461,12 +467,12 @@ const ChartLine = (props: any) => {
           // scale:true,
           splitLine: {
             lineStyle: {
-              color: 'rgba(255,255,255,0.1)'
+              color: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
             }
           },
           axisLabel: {
             textStyle: {
-              color: 'rgba(255,255,255,0.8)',
+              color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#000',
               fontSize: 14
             },
           }

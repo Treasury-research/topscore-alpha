@@ -94,9 +94,9 @@ const donutConfig = [
 const getToolTipContent = (score: any, rank: any) => {
     return (
         <div>
-            <p className="text-[12px] text-[rgba(255,255,255,0.8)]">Score</p>
+            <p className="text-[12px] text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">Score</p>
             <p className="text-[16px] font-bold mb-3">{score.toFixed(2)}</p>
-            <p className="text-[12px] text-[rgba(255,255,255,0.8)]">Rank</p>
+            <p className="text-[12px] text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">Rank</p>
             <p className="text-[16px] font-bold">#{rank}</p>
         </div>
     )
@@ -117,7 +117,7 @@ const getContent = (props: any) => {
                     alt=""
                 />
             }
-            <div className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
+            <div className={`absolute left-[50%] ${text ? 'top-[58%]' : 'top-[50%]'} translate-x-[-50%] translate-y-[-50%]`}>
                 <div className="flex items-center justify-center">
                     <Image
                         className={`chartText-scale-animation ${level == 1 ? 'ml-[4px]' : ''}`}
@@ -127,7 +127,7 @@ const getContent = (props: any) => {
                 </div>
                 {
                     text &&
-                    <div className=" mt-5 h-[24px] leading-[20px] px-2 text-[12px] radius-btn-shadow rounded-[20px] cursor-pointer hover:opacity-70">{text}</div>
+                    <div className=" mt-3 h-[24px] leading-[20px] px-2 text-[12px] radius-btn-shadow rounded-[20px] cursor-pointer hover:opacity-70">{text}</div>
                 }
             </div>
         </div>

@@ -25,7 +25,7 @@ const GifModal = (props: any) => {
 
     return (
         <Modal className="default-modal" open={true} onOk={handleOk} onCancel={handleCancel}>
-            <div className='flex items-center pb-5 border-b-[1px] border-[#4A4A4A] mb-5'>
+            <div className='flex items-center pb-5 border-b-[1px] border-[#ccc] dark:border-[#4A4A4A] mb-5'>
                 <div className='flex items-center'>
                     <Image
                         src={P1}
@@ -38,12 +38,12 @@ const GifModal = (props: any) => {
                     <CloseOutlined className='text-[20px]' />
                 </div>
             </div>
-            <div className="text-[16px] text-[rgba(255,255,255,0.8)]">
+            <div className="text-[16px] text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">
                 <Input className="default-input" placeholder="Search for gifs"/>
                 <div className="h-[200px]"></div>
             </div>
             <div className="flex w-[fit-content] ml-[auto] mt-5">
-                <button onClick={handleCancel} className="w-[100px] text-[18px] font-[600] flex justify-center border-[2px] border-[#4A4A4A] mr-2 rounded-[4px]">Cancel</button>
+                <button onClick={handleCancel} className="w-[100px] text-[18px] font-[600] flex justify-center border-[2px] border-[#ccc] dark:border-[#4A4A4A] mr-2 rounded-[4px]">Cancel</button>
                 <button className="w-[100px] text-[18px] font-[600] flex justify-center bg-[#CE3900] hover:opacity-[0.9] rounded-[4px]">Save</button>
             </div>
         </Modal>

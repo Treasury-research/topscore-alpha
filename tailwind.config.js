@@ -4,7 +4,16 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: "class",
   theme: {
   },
-  plugins: [],
+  variants: {
+    extend: {
+      backgroundColor: ['dark'],
+      textColor: ['dark'],
+      borderColor: ['dark'],
+      gradientColorStops: ['dark'],
+      placeholderColor: ['dark'],
+    },
+  },
 };

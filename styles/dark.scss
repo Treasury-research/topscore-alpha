@@ -1,0 +1,206 @@
+.dark {
+  .selectNav {
+    background: #292A2E;
+    /* dark mode 3d selected */
+    box-shadow: inset -4px -4px 4px rgba(255, 255, 255, 0.1), inset 4px 4px 10px 2px rgba(0, 0, 0, 0.6);
+    border-radius: 60px;
+  }
+
+  .hoverNav:hover {
+    background: #292A2E;
+    /* dark mode 3d selected */
+    box-shadow: inset -4px -4px 4px rgba(255, 255, 255, 0.1), inset 4px 4px 10px 2px rgba(0, 0, 0, 0.6);
+    border-radius: 60px;
+  }
+
+  .anticon-down>svg {
+    color: #9D9D9D;
+  }
+
+  .anticon-left>svg {
+    color: #9D9D9D;
+  }
+
+  .anticon-right>svg {
+    color: #9D9D9D;
+  }
+
+  .anticon-home>svg {
+    color: #9D9D9D;
+  }
+
+  .profile-main-bg {
+    background: url("../statics/profile/bg.png") no-repeat center center;
+    background-size: cover;
+    background-size: 100% 100%;
+  }
+
+  .profile-bg1 {
+    background: url("../statics/img/bg-pro-dark.png") no-repeat center center;
+    background-size: cover;
+  }
+
+  .radius-btn-shadow {
+    box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.4), -2px -2px 2px 0px rgba(255, 255, 255, 0.1)
+  }
+
+  .nft-div-bg {
+    background: url("../statics/img/bg-nft-dark.png") no-repeat center center;
+    background-size: 100%;
+  }
+
+  .indicatior-style {
+    box-shadow: inset -4px -4px 4px rgba(255, 255, 255, 0.1), inset 4px 4px 10px rgba(0, 0, 0, 0.6);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .creation-bg {
+    background: url("../statics/img/profileV2/creationBg.png") no-repeat center center;
+    background-size: cover;
+  }
+
+  .dash-bg-style {
+    background: rgba(41, 41, 41, 0.5);
+    /* dark mode 3d */
+    box-shadow: -2px -2px 4px rgba(255, 255, 255, 0.06), 2px 2px 4px rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+  }
+
+  .tabs-radius {
+    background: #343434;
+    border-radius: 4px 4px 0px 0px;
+    box-shadow: inset -4px -4px 4px rgba(255, 255, 255, 0.1), inset 4px 4px 10px rgba(0, 0, 0, 0.6);
+  }
+
+  .ant-checkbox-inner {
+    background-color: #CE3900 !important;
+    border-color: #CE3900 !important;
+  }
+
+  .dashline-select-tab {
+    background: rgba(0, 0, 0, 0.0001);
+    /* dark mode 3d selected */
+
+    box-shadow: inset -4px -4px 4px rgba(255, 255, 255, 0.1), inset 4px 4px 10px 2px rgba(0, 0, 0, 0.6);
+  }
+
+  .line-tabs-style {
+    background: #292929;
+    box-shadow: inset -4px -4px 4px rgba(255, 255, 255, 0.1), inset 4px 4px 10px 2px rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+  }
+
+  .navbar-select path {
+    stroke: #fff;
+  }
+
+  .ant-switch-checked .ant-switch-inner {
+    background: rgba(255, 51, 0, 0.7) !important;
+    ;
+  }
+
+  .connect-profile-shadow {
+    box-shadow: -2px -2px 4px rgba(255, 255, 255, 0.06), 2px 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  .card-icon-pub svg {
+    font-size: 24px;
+  }
+
+  .lens-switch-component {
+    background: #272727 !important;
+    border-radius: 12px;
+  }
+
+  .connect-component-input {
+    background: #3C3C3C !important;
+
+  }
+
+  ::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  .ant-popover-arrow::before {
+    background: #272727 !important;
+  }
+
+  .ant-popover-inner {
+    background: #272727 !important;
+  }
+
+  .ant-popover-inner-content {
+    color: #fff !important;
+  }
+
+  .ant-modal-content {
+    background: #272727 !important;
+  }
+
+  .ant-modal-body {
+    color: #fff;
+  }
+
+  .anticon-close svg {
+    color: #fff !important;
+  }
+
+  .creat-card-bg-style {
+    box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.2);
+  }
+
+  .engage-head-right-date {
+    color: rgb(255, 255, 255, 0.8);
+  }
+
+  .engage-head-right-date {
+    color: rgb(255, 255, 255, 0.8);
+  }
+
+  .overflow-items-content {
+    color: rgb(255, 255, 255, 0.8);
+  }
+
+  .overview-border-b {
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+  }
+
+  .overflow-items-head-pubName {
+    color: rgb(255, 255, 255, 0.8);
+  }
+
+  .engage-items-head-pubName,
+  .engage-items-comment-num,
+  .engage-items-mirror-num {
+    color: rgba(255, 255, 255, .8);
+  }
+
+  .engage-head {
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+  }
+
+  .engage-head-left-des {
+    color: rgba(255, 255, 255, .8);
+  }
+
+  .engage-head-left-num {
+    color: rgba(255, 255, 255, 1);
+  }
+
+  .engage-head-right {
+    color: rgba(255, 255, 255, .8);
+  }
+
+  .overview-des {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .overview-count {
+    color: #fff;
+  }
+
+  .ant-spin .ant-spin-dot-item{
+    background: #FF3300;
+  }
+}

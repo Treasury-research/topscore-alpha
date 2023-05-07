@@ -4,6 +4,7 @@ import useWeb3Context from "hooks/useWeb3Context";
 import useContract from "hooks/useContract";
 import LenshubAbi from "./abi/Lenshub.json";
 import Web3 from "web3";
+
 export default function useLenshubContract() {
   const { web3, sendTx, account } = useWeb3Context();
   const contract = useContract(LenshubAbi, config.contracts.lenshub);

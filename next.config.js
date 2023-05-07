@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const path = require('path')
+const webpack = require("webpack");
 const nextConfig = {
   reactStrictMode: false,
   sassOptions: {
@@ -9,7 +10,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/profile/stani',
+        destination: '/home',
         permanent: true,
       },
       {
@@ -18,6 +19,17 @@ const nextConfig = {
         permanent: true,
       }
     ]
+  },
+  webpack(config) {
+    const fileLoaderRule = config.module.rules.find(
+      (rule) => rule.test && rule.test.test(".svg")
+    );
+    fileLoaderRule.exclude = /\.icon\.svg$/;
+    config.module.rules.push({
+      test: /\.icon\.svg$/,
+      loader: require.resolve("@svgr/webpack"),
+    });
+    return config;
   }
 }
 
