@@ -678,7 +678,14 @@ const rmodynamics = () => {
                                         weekCount !== 0 ? (
                                             <span className="text-[14px]">{week[0]}-{week[1]}</span>
                                         ) : (
-                                            <span className="text-[10px] 2xl:text-[14px]">Average of Last 28 Days</span>
+                                            <>
+                                            <span className="hidden 2xl:block">
+                                                Average of Last 28 Days
+                                            </span>
+                                            <span className="block 2xl:hidden">
+                                                Last 28-day average
+                                            </span>
+                                            </>
                                         )
                                     }
                                 </>
