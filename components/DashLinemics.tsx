@@ -472,7 +472,7 @@ const rmodynamics = () => {
                     </div>
                 </div>
             </div>
-            <PubCard lineData={lindData} topRecentSwitch={topRecentSwitch} activeLineTab={activeTab}></PubCard>
+            <PubCard lineData={lindData} topRecentSwitch={topRecentSwitch} activeLineTab={activeTab} activeTab1={activeTab1}></PubCard>
         </>
     )
 }

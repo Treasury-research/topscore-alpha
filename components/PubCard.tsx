@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { postSwitchState } from "../store/state";
 import { LoadingOutlined } from '@ant-design/icons';
 import { ethers } from 'ethers'
-import { currentProfileState,topRecentState } from "../store/state";
+import { currentProfileState, topRecentState } from "../store/state";
 import { useRecoilState } from "recoil";
 import dayjs from 'dayjs';
 import trace from "../api/trace";
@@ -18,7 +18,7 @@ const tab = [
 ]
 const PubCard = (props: any) => {
   const [pubData, setPubData] = useState<any>([]);
-  const { lineData, activeLineTab } = props;
+  const { lineData, activeLineTab, activeTab1 } = props;
   const [loading, setLoading] = useState(false);
   const [currentProfile] = useRecoilState<any>(currentProfileState);
   const [tabs, setTabs] = useState<any>(tab[0]);
@@ -31,19 +31,28 @@ const PubCard = (props: any) => {
       setLoading(true)
       getBaseLineData()
     }
-  }, [activeLineTab, topRecentSwitch, currentProfile,postSwitch])
+  }, [activeLineTab, topRecentSwitch, currentProfile, postSwitch, activeTab1])
 
   useEffect(() => {
     setTabs(tab[activeLineTab])
   }, [activeLineTab])
 
+  const getUTCTime = () => {
+    let d1 = new Date();
+    let d2: any = new Date(d1.getUTCFullYear(), d1.getUTCMonth(), d1.getUTCDate(), d1.getUTCHours(), d1.getUTCMinutes(), d1.getUTCSeconds());
+    return Date.parse(d2);
+  }
+
   const getBaseLineData = async () => {
     let resData = []
-    const mdy = dayjs(new Date().getTime() - 28 * 24 * 60 * 60 * 1000).format('YYYYMMDD')
-    const ndy = dayjs(new Date()).format('YYYYMMDD')
+    const mdyLocal = dayjs(getUTCTime() - ((activeTab1 + 1) * 7) * 24 * 60 * 60 * 1000).format('YYYYMMDD')
+    const ndyLocal = dayjs(getUTCTime()).format('YYYYMMDD') // 当前日期
+    const queryLocal = dayjs(getUTCTime() + 24 * 60 * 60 * 1000).format('YYYYMMDD') // 查询日期+1
+    const mdy = mdyLocal
+    const ndy = ndyLocal
     if (activeLineTab == 0) {
       if (!topRecentSwitch) {
-        const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=4&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
+        const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${queryLocal}&profileId=${currentProfile.profileId}&category=4&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
         if (!res || !res.data) {
           resData = []
           setPubData([])
@@ -51,7 +60,7 @@ const PubCard = (props: any) => {
         }
         resData = res.data;
       } else {
-        const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=2&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${''}`);
+        const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${queryLocal}&profileId=${currentProfile.profileId}&category=2&type=${postSwitch ? 'Post' : 'Post,Comment'}&isFee=${''}`);
         if (!res || !res.data) {
           resData = []
           setPubData([])
@@ -61,7 +70,7 @@ const PubCard = (props: any) => {
       }
     }
     if (activeLineTab == 1) {
-      const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
+      const res: any = await api.get(`/lens/publicationStsByDay?start=${mdy}&end=${queryLocal}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 4 : 1}&type=${postSwitch ? 'Post' : 'Post,Comment'}`);
       if (!res || !res.data) {
         resData = []
         setPubData([])
@@ -70,7 +79,7 @@ const PubCard = (props: any) => {
       resData = res.data;
     }
     if (activeLineTab == 2) {
-      const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${ndy}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 2 : 1}&type=${'Post,Comment'}&isFee=${''}`);
+      const res: any = await api.get(`/lens/collectStsByDay?start=${mdy}&end=${queryLocal}&profileId=${currentProfile.profileId}&category=${!topRecentSwitch ? 2 : 1}&type=${'Post,Comment'}&isFee=${''}`);
       if (!res || !res.data) {
         resData = []
         setPubData([])
@@ -101,13 +110,13 @@ const PubCard = (props: any) => {
       let pub = []
       ids.forEach(t => {
         res.data.forEach(tem => {
-          if(t == tem.pubId){
+          if (t == tem.pubId) {
             pub.push(tem)
           }
         });
       });
       setPubData(pub)
-    }else{
+    } else {
       setPubData([])
     }
   };
@@ -121,24 +130,24 @@ const PubCard = (props: any) => {
 
   const topRecentChange = (i) => {
     setTopRecentSwitch(i == 0 ? false : true)
-    if(i == 0){
-      if(activeLineTab == 0){
+    if (i == 0) {
+      if (activeLineTab == 0) {
         trace('List-OV-TopE')
       }
-      if(activeLineTab == 1){
+      if (activeLineTab == 1) {
         trace('List-EG-Top')
       }
-      if(activeLineTab == 2){
+      if (activeLineTab == 2) {
         trace('List-CL-Top')
       }
-    }else{
-      if(activeLineTab == 0){
+    } else {
+      if (activeLineTab == 0) {
         trace('List-OV-TopC')
       }
-      if(activeLineTab == 1){
+      if (activeLineTab == 1) {
         trace('List-EG-Rec')
       }
-      if(activeLineTab == 2){
+      if (activeLineTab == 2) {
         trace('List-CL-Rec')
       }
     }
@@ -156,21 +165,21 @@ const PubCard = (props: any) => {
             }
           </div> */}
           <div className="flex ml-6 h-full w-[60%]">
-              {
-                  tabs.map((t: any, i: number) => (
-                      <div className="h-full relative mr-6">
-                          <div key={i} onClick={() => topRecentChange(i)} className={`cursor-pointer ${((!topRecentSwitch && i == 0) || (topRecentSwitch && i == 1)) ? 'dark:text-[#fff]' : 'text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)]'} h-full text-[18px] font-[600] flex justify-center items-center`}>
-                              {t}
-                          </div>
-                          {
-                              ((!topRecentSwitch && i == 0) || (topRecentSwitch && i == 1)) &&
-                              <div className="h-2 w-full flex justify-center absolute bottom-0 tabs-radius">
-                                  <div className="h-1 w-[80%] bg-[#73ABFF] dark:bg-[#FF3300] rounded-[4px] mt-[6px]"></div>
-                              </div>
-                          }
-                      </div>
-                  ))
-              }
+            {
+              tabs.map((t: any, i: number) => (
+                <div className="h-full relative mr-6">
+                  <div key={i} onClick={() => topRecentChange(i)} className={`cursor-pointer ${((!topRecentSwitch && i == 0) || (topRecentSwitch && i == 1)) ? 'dark:text-[#fff]' : 'text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)]'} h-full text-[18px] font-[600] flex justify-center items-center`}>
+                    {t}
+                  </div>
+                  {
+                    ((!topRecentSwitch && i == 0) || (topRecentSwitch && i == 1)) &&
+                    <div className="h-2 w-full flex justify-center absolute bottom-0 tabs-radius">
+                      <div className="h-1 w-[80%] bg-[#73ABFF] dark:bg-[#FF3300] rounded-[4px] mt-[6px]"></div>
+                    </div>
+                  }
+                </div>
+              ))
+            }
           </div>
 
           <div className='flex items-center text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)] text-[18px] w-[30%] ml-[auto]'>
@@ -182,12 +191,12 @@ const PubCard = (props: any) => {
         {
           loading ?
             <div className='h-[200px] w-full flex items-center justify-center'>
-              <Spin size="large" className="mx-auto my-5"/>
+              <Spin size="large" className="mx-auto my-5" />
             </div>
             : (
               <div className={`min-h-[200px] ${pubData.length == 0 ? 'dash-bg-style' : ''}`}>
                 {
-                  pubData.length == 0 && 
+                  pubData.length == 0 &&
                   <div className='h-[200px] w-full flex items-center justify-center text-[24px] text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)]'>No Data found</div>
                 }
                 {
