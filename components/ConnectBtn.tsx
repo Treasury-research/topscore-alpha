@@ -133,7 +133,7 @@ const ConnectBtn = (props: any) => {
       'stani.lens',
       'yoginth.lens',
       'lenster.lens',
-      'lensprotocol.lens'
+      'lensprotocol'
     ]
 
     let clist: any = []
