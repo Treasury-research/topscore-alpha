@@ -296,13 +296,14 @@ const profile = (props: any) => {
 
   const getCurrentProfileByRouter = async (str: any) => {
     setLoadingRouterHandle(true)
-    const res = await api.get(`/lens/handles/byHandles/${str}.lens`)
+    const queryHandle = str === 'lensprotocol' ? str : `${str}.lens`
+    const res = await api.get(`/lens/handles/byHandles/${queryHandle}`)
     setTimeout(() => {
       setLoadingRouterHandle(false)
     }, 500)
     if (res && res.data && res.data.length > 0) {
       let list = res.data.filter((t) => {
-        return t.handle === `${str}.lens`
+        return t.handle === queryHandle
       })
       if (list.length > 0) {
         setCurrentProfile(list[0])
