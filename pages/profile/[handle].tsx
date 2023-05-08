@@ -496,7 +496,7 @@ const profile = (props: any) => {
                           </div>
                         </div>
                       </div>
-                      <div className="text-[14px] text-gray pl-8 mt-3 mb-3 h-[60px] overflow-y-auto">
+                      <div className="text-[14px] text-gray pl-8 mt-3 mb-3 h-[60px] overflow-y-auto hidden-scrollbar">
                         <p className="mt-3 text-[#8E8E8E]">{introduce}</p>
                       </div>
                       <div className="flex items-center w-full flex-wrap justify-between pl-8">
