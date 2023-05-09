@@ -316,7 +316,12 @@ const profile = (props: any) => {
       "https://ipfs.infura.io",
       "https://lens.infura-ipfs.io"
     );
-    return formatIPFS(imgUrl);
+    const url = formatIPFS(imgUrl)
+    if(imgUrl.includes('statics-polygon-lens')){
+      return 'https://cors-anywhere-drxp.onrender.com/' + url
+    }else{
+      return url
+    }
   };
 
   const getBgStyle = (i: number) => {
@@ -366,14 +371,17 @@ const profile = (props: any) => {
       if(handle.includes('.lens')){
         router.push(`/profile/${handle.split('.lens')[0]}`)
       }else{
-        setCurrentProfile({
-          ...currentProfile,
-          handle: handle.includes('.lens') ? handle : handle + '.lens'
-        })
-        getCurrentProfileByRouter(handle)
+        // setCurrentProfile({
+        //   ...currentProfile,
+        //   handle: handle.includes('.lens') ? handle : handle + '.lens'
+        // })
+        if(currentProfile.handle !== router.query.handle){
+          getCurrentProfileByRouter(handle)
+        }
+        
       }
     }
-  }, [router, props.handle])
+  },[router])
 
   useEffect(() => {
     if (rateHoveActive !== '') {
@@ -389,15 +397,15 @@ const profile = (props: any) => {
         <div className={`w-full overflow-y-auto h-[calc(100vh-60px)] hidden-scrollbar mt-5 profile-main-bg relative`}>
           {
             !indicatorLoading && !ratingLoading && !scoreLoading && !loadingRouterHandle ? (
-              <div className={`mx-auto w-[800px] ${nftList.length === 0 ? 'absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]' : 'mt-[60px]'}`}>
-                <div className={`w-[800px] flex items-center justify-center`} id="aphoto">
+              <div className={`mx-auto w-[800px] ${nftList.length === 0 ? 'absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]' : 'mt-[20px]'}`}>
+                <div className={`w-[800px] flex items-center justify-center py-10`} id="aphoto">
                   <div className="h-[512px] w-[722px] profile-bg1 flex">
                     <div className="w-1/2 h-full">
                       <div className="flex gap-8">
                         <div className="relative w-[140px] h-[140px] flex items-center justify-center ml-2 mt-1">
                           {
                             currentProfile.imageURI ? (
-                              <img src={getImgUrl(currentProfile.imageURI)} className="w-[120px] h-[120px] rounded-[10px]" />
+                              <img src={getImgUrl(currentProfile.imageURI)} className="w-[120px] h-[120px] rounded-[10px]" crossOrigin='anonymous'/>
                             ) : (
                               <Image
                                 className="w-[120px] h-[120px] rounded-[10px]"
@@ -532,7 +540,7 @@ const profile = (props: any) => {
                     </div>
                   </div>
                 </div>
-                <div className={`mb-16 ${nftList.length > 0 ? 'nft-div-bg block mt-4' : 'hidden'} w-[730px] mx-auto`}>
+                <div className={`mb-16 ${nftList.length > 0 ? 'nft-div-bg block' : 'hidden'} w-[730px] mx-auto`}>
                   {
                     nftList.length > 0 &&
                     <div className="w-[fit-content] h-[fit-content] px-1 py-3 text-[32px] font-[600] ml-3">NFT</div>
@@ -545,7 +553,7 @@ const profile = (props: any) => {
                             <div key={i}>
                               <div className="flex items-center justify-left gap-10">
                                 {t.map((item: any, index: number) =>
-                                  <div className={`hover:scale-110 transition-all connect-profile-shadow  relative ${index === 0 ? 'ml-[20px]' : index === 3 ? 'mr-[20px]' : ''}`} key={index}>
+                                  <div className={`hover:scale-110 transition-all relative ${index === 0 ? 'ml-[20px]' : index === 3 ? 'mr-[20px]' : ''}`} key={index}>
                                     <img src={`https://d3d8vnmck8tpd.cloudfront.net/app/img/${item}.png`} className="cursor-pointer w-[150px] h-[160px] rounded-tl-[12px] rounded-tr-[12px]"
                                       onMouseEnter={() => { setActiveHoverIndex(`${i}${index}`); trace('NFT-Scale') }}
                                     />
