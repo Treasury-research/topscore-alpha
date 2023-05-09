@@ -386,12 +386,12 @@ const profile = (props: any) => {
       <Navbar />
       <div className='py-5 pr-5 w-full text-[#292A2E] dark:text-[#fff]'>
         <ConnectBtn type={1} />
-        <div className="w-full overflow-y-auto h-[calc(100vh-60px)] hidden-scrollbar mt-5 profile-main-bg">
+        <div className={`w-full overflow-y-auto h-[calc(100vh-60px)] hidden-scrollbar mt-5 profile-main-bg relative`}>
           {
             !indicatorLoading && !ratingLoading && !scoreLoading && !loadingRouterHandle ? (
-              <div className="mx-auto mt-16 w-[800px]">
-                <div className="h-[600px] w-[800px] flex items-center justify-center" id="aphoto">
-                  <div className="h-[512px] w-[722px] mb-4 profile-bg1 flex">
+              <div className={`mx-auto w-[800px] ${nftList.length === 0 ? 'absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]' : 'mt-[60px]'}`}>
+                <div className={`w-[800px] flex items-center justify-center`} id="aphoto">
+                  <div className="h-[512px] w-[722px] profile-bg1 flex">
                     <div className="w-1/2 h-full">
                       <div className="flex gap-8">
                         <div className="relative w-[140px] h-[140px] flex items-center justify-center ml-2 mt-1">
@@ -532,7 +532,7 @@ const profile = (props: any) => {
                     </div>
                   </div>
                 </div>
-                <div className={`mb-16 ${nftList.length > 0 ? 'nft-div-bg' : ''} w-[730px] mx-auto`}>
+                <div className={`mb-16 ${nftList.length > 0 ? 'nft-div-bg block mt-4' : 'hidden'} w-[730px] mx-auto`}>
                   {
                     nftList.length > 0 &&
                     <div className="w-[fit-content] h-[fit-content] px-1 py-3 text-[32px] font-[600] ml-3">NFT</div>
