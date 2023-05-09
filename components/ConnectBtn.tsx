@@ -109,6 +109,7 @@ const ConnectBtn = (props: any) => {
     setInputValue('')
     if (props.type === 1) {
       const handle = t.handle ? t.handle.split('.')[0] : 'stani'
+      setCurrentProfile(t)
       router.push(`/profile/${handle}`)
     } else {
       setCurrentProfile(t)
