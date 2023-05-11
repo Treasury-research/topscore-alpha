@@ -43,7 +43,7 @@ const circle = () => {
     <div className="w-full h-full bg-[#fff] dark:bg-[#16171B] flex">
       <Navbar />
       <div className="py-5 w-full text-[#292A2E] dark:text-[#fff] relative overflow-hidden pr-5">
-        <ConnectBtn type={2} />
+        <ConnectBtn type={3} />
         <div className="w-full h-full profile-main-bg mt-5">
           <div className="w-full h-full relative">
             <div className="w-[820px] rounded-[20px] absolute left-[50%] top-[46%] translate-x-[-50%] translate-y-[-50%]">
