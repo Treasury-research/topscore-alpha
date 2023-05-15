@@ -303,7 +303,6 @@ const pass = () => {
 
   const getValidator = async () => {
     let validatorData: any = await proofContract.getValidator();
-    validatorData = true;
     const valiData: any = [...onChains]
     valiData.map((t, index) => {
       if (t.key === 'prof') {
