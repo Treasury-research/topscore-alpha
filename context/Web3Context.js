@@ -151,11 +151,11 @@ export const Web3ContextProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [web3Modal]);
 
-  useEffect(() => {
-    if (chainId !== config.chainId && window.ethereum) {
-      switchChain(config.chainId)
-    }
-  }, [chainId])
+  // useEffect(() => {
+  //   if (chainId !== config.chainId && window.ethereum) {
+  //     switchChain(config.chainId)
+  //   }
+  // }, [chainId])
 
   const resetWallet = useCallback(async () => {
     console.log("ready to reset", connector, wcProvider);

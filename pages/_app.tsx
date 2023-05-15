@@ -13,6 +13,7 @@ import type { AppProps } from "next/app";
 import { RecoilRoot } from "recoil";
 import Head from "next/head";
 import Gleap from "gleap";
+import { SessionProvider } from "next-auth/react"
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -49,7 +50,13 @@ export default function App({ Component, pageProps }: AppProps) {
         `}
         </Script>
         {/* <Coming /> */}
+        <SessionProvider
+          // Provider options are not required but can be useful in situations where
+          // you have a short session maxAge time. Shown here with default values.
+          session={pageProps.session}
+        >
         <Component {...pageProps} />
+        </SessionProvider>
         <ToastContainer position="top-right" />ƒ
       </Web3ContextProvider>
     </RecoilRoot>

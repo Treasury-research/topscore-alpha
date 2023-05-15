@@ -67,21 +67,35 @@ import ImgHave19 from "../statics/img/pass/have/19.png";
 import Mask1 from "../statics/img/pass/mask1.png";
 import Mask2 from "../statics/img/pass/mask2.png";
 import Mask3 from "../statics/img/pass/mask3.png";
+import Mask4 from "../statics/img/pass/mask4.png";
 
 import MaskLight1 from "../statics/img/pass/mask1-light.png";
 import MaskLight2 from "../statics/img/pass/mask2-light.png";
 import MaskLight3 from "../statics/img/pass/mask3-light.png";
+import MaskLight4 from "../statics/img/pass/mask4-light.png";
+
+import VerifileLight from "../statics/img/pass/verifile-light.png";
+import VerifileDark from "../statics/img/pass/verifile-dark.png";
+
+import VectorDark from "../statics/img/pass/vector-dark.png";
+import VectorLight from "../statics/img/pass/vector-light.png";
 
 import lensApi from "../api/lensApi";
 import ImgLensterHead from "../statics/img/lest-head.svg";
 import { formatIPFS } from "../lib/tool";
 import api from "../api";
-
+import useProofContract from "../contract/useProofContract";
+import { switchChain } from "../lib/tool";
+import useWeb3Context from "../hooks/useWeb3Context";
+import config from "../config";
+import { Popover } from 'antd';
 import {
   themeState,
   currentLoginProfileState
 } from "../store/state";
 import { useRecoilState } from "recoil";
+
+import { signIn, signOut, useSession } from "next-auth/react"
 
 const darkNotHaveImg = [Img1, Img2, Img3, Img4, Img5, Img6, Img7, Img8, Img9, Img10]
 
@@ -92,47 +106,120 @@ const haveImg = [ImgHave1, ImgHave2, ImgHave3, ImgHave4, ImgHave5, ImgHave6, Img
 const initWebInfo = [
   {
     key: 'bab',
-    score: 30
+    name:'BABT',
+    score: 30,
+    imgIdx: 0,
+    status: 'Ineligible'
   },
   {
     key: 'prof',
-    score: 30
+    name:'Humanity',
+    score: 30,
+    imgIdx: 1,
+    status: 'Verifile'
   },
   {
     key: 'lens',
-    score: 15
+    name:'LENS',
+    score: 15,
+    imgIdx: 2,
+    status: 'Ineligible'
   },
   {
     key: 'ens',
-    score: 5
-  },
-  {
-    key: 'spaceid',
-    score: 5
-  },
-  {
-    key: 'discord',
-    score: 10
+    name:'ENS',
+    score: 5,
+    imgIdx: 3,
+    status: 'Ineligible'
   },
   {
     key: 'snapshot',
-    score: 5
+    name:'Snapshot',
+    score: 5,
+    imgIdx: 6,
+    status: 'Ineligible'
   },
   {
     key: 'nft',
-    score: 5
+    name:'NFT',
+    score: 5,
+    imgIdx: 7,
+    status: 'Ineligible'
   },
   {
     key: 'poap',
-    score: 5
+    name:'POAP',
+    score: 5,
+    imgIdx: 8,
+    status: 'Ineligible'
+  },
+  {
+    key: 'spaceid',
+    name:'Space ID',
+    score: 5,
+    imgIdx: 4,
+    status: 'Ineligible'
+  },
+  {
+    key: 'discord',
+    name:'Discord',
+    score: 10,
+    imgIdx: 5,
+    status: 'Soon'
   },
   {
     key: 'gitpoap',
-    score: 0
-  }
+    name:'GitPOAP',
+    score: 0,
+    imgIdx: 9,
+    status: 'Soon'
+  },
 ]
 
+const getToolTipContent = (data: any) => {
+
+  const [theme, setTheme] = useRecoilState(themeState);
+
+  const [resData, setResData] = useState([]);
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const res = data.filter((t) => {
+        return t.status === 'Verified'
+      })
+      console.log('resData',resData)
+      setResData(res)
+    }
+  }, [data])
+
+  return (
+    <div>
+      {
+        resData.map((t, i) => (
+          <div className='flex items-center'>
+            <div className='flex items-center'>
+              <Image
+                src={theme === 'light' ? VerifileLight : VerifileDark}
+                className='mr-2 h-[10px] w-[10px]'
+                alt="" />
+            </div>
+            <span className='mr-1 text-[#656565] dark:text-[#D1D1D1] flex items-center text-[20px] font-[600]'>
+              {t.name}:
+            </span>
+            <span className='mr-1 text-[18px] font-[600] flex items-center'>+{t.score}</span>
+            <span>({t.status})</span>
+          </div>
+        ))
+      }
+    </div>
+  )
+}
+
 const pass = () => {
+
+  const { account, chainId, doLogout, doLogin, connectWallet } = useWeb3Context();
+
+  const proofContract = useProofContract();
 
   const [activeTab, setActiveTab] = useState(0)
 
@@ -144,8 +231,14 @@ const pass = () => {
 
   const [totalScroe, setTotalScroe] = useState<any>(0)
 
+  const [onChains, setOnChains] = useState<any>(initWebInfo)
+
   const [currentLoginProfile,] =
     useRecoilState<any>(currentLoginProfileState);
+
+  const { data: session, status } = useSession()
+
+  const loading = status === 'loading'
 
   const getIntroduce = async () => {
     const res = await lensApi.getProfileByHandle(currentLoginProfile.handle);
@@ -167,24 +260,96 @@ const pass = () => {
   const getUserLogin = async () => {
     const res = await api.get(`/address/authentication`)
     if (res && res.data) {
-      let score = 0;
+      // let score = 0;
+      let onChainsRes: any = [];
       for (let key in res.data) {
-        if(res.data[key]){
-          score += initWebInfo.filter((t) => {return t.key === key})[0]['score']
+        if (res.data[key]) {
+          const obj: any = initWebInfo.filter((t) => { return t.key === key })[0]
+          onChainsRes = [
+            ...onChainsRes,
+            {
+              ...obj,
+              status: 'Verified'
+            }
+          ]
+          // console.log(obj)
+          // score += obj['score']
         }
       }
-      setTotalScroe(score)
+      const keys = onChainsRes.map((t) => {
+        return t.key
+      })
+      for (let i = 0; i < initWebInfo.length; i++) {
+        if (!keys.includes(initWebInfo[i]['key'])) {
+          onChainsRes.push(initWebInfo[i])
+        }
+      }
+      setOnChains(onChainsRes)
+      // setTotalScroe(score)
       setLoginRes(res.data)
     }
   }
 
+  // const resDataSort = (res) => {
+  //   for(let i = 0;i<res.length;i++){
+  //     if(res.status == 'Verified'){
+  //       res.unshift(res.splice(i, 1)[0]);
+  //     }
+  //   }
+  //   setOnChains()
+  // }
+
+  const verifileProof = (str: any) => {
+    if (str !== 'Verifile') return false
+    switchChain(config.EthChainId)
+  }
+
+  const getValidator = async () => {
+    let validatorData: any = await proofContract.getValidator();
+    validatorData = true;
+    const valiData: any = [...onChains]
+    valiData.map((t, index) => {
+      if (t.key === 'prof') {
+        t.status = validatorData ? 'Verified' : 'Ineligible'
+        if (validatorData) {
+          valiData.unshift(valiData.splice(index, 1)[0]);
+          // setTotalScroe((prev) => {
+          //   prev += 30
+          //   return prev
+          // })
+        }
+      }
+    })
+    console.log(valiData)
+    setOnChains(valiData)
+  };
+
+  useEffect(() => {
+    let score = 0
+    for(let i = 0;i<onChains.length;i++){
+      if(onChains[i]['status'] == 'Verified'){
+        score += onChains[i]['score']
+      }
+    }
+    setTotalScroe(score)
+  }, [onChains])
+
+  useEffect(() => {
+    if (chainId == config.EthChainId) {
+      getValidator()
+    }
+  }, [chainId])
+
   useEffect(() => {
     if (currentLoginProfile.handle) {
-      console.log(currentLoginProfile)
       getIntroduce()
       getUserLogin()
     }
   }, [currentLoginProfile])
+
+  // useEffect(() => {
+  //   console.log(session)
+  // }, [session])
 
   return (
     <div className="w-full h-full bg-[#fff] dark:bg-[#16171B] flex">
@@ -192,10 +357,58 @@ const pass = () => {
       <div className='py-5 w-full text-[#292A2E] dark:text-[#fff]'>
         <ConnectBtn type={3} />
         <div className="w-full h-full profile-main-bg mt-5 overflow-y-auto">
+          {/* <a
+            onClick={(e) => {
+              e.preventDefault()
+              signIn()
+            }}
+          >
+            Sign in
+          </a> */}
+          {/* <p>
+            {!session && (
+              <>
+                <span>
+                  You are not signed in
+                </span>
+                <a
+                  href={`/api/auth/signin`}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    signIn()
+                  }}
+                >
+                  Sign in
+                </a>
+              </>
+            )}
+            {session?.user && (
+              <>
+                <span
+                  style={{ backgroundImage: `url(${session.user.image})` }}
+
+                />
+                <span>
+                  <small>Signed in as</small>
+                  <br />
+                  <strong>{session.user.email || session.user.name}</strong>
+                </span>
+                <a
+                  href={`/api/auth/signout`}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    signOut()
+                  }}
+                >
+                  Sign out
+                </a>
+              </>
+            )}
+          </p> */}
           <div className="w-[70%] max-w-[1400px] min-w-[800px] mx-[auto] hidden-scrollbar">
             <div className='mt-10 px-3'>
               <div className='w-full h-[160px] dash-bg-style rounded-[20px] p-8 flex items-center'>
-                <div className='w-full flex items-center'>
+                <div className='flex items-center'>
                   <div className='mr-4'>
                     {
                       currentLoginProfile.imageURI ? (
@@ -213,26 +426,61 @@ const pass = () => {
                     <p className='text-[14px]'>{introduce}</p>
                   </div>
                 </div>
+                <div className='ml-auto w-[200px] h-full text-center flex items-center justify-center'>
+                  <div>
+                    <div className='text-[36px] text-[600]'>{totalScroe}</div>
+                    <div className='flex jusitify-center items-center'>
+                      <Popover placement="bottom" title={''} content={getToolTipContent(onChains)} trigger="hover">
+                        <div className='flex jusitify-center items-center cursor-pointer'>
+                          <div>Uniqueness Score</div>
+                          <Image
+                            src={theme === 'light' ? VectorLight : VectorDark}
+                            className='mt-[2px] ml-1'
+                            alt="" />
+                        </div>
+                      </Popover>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className='flex gap-5 mx-3 my-4'>
-              <div className='flex justify-between pt-5 pb-3 px-3 dash-bg-style w-[50%] flex-wrap'>
-                {
-                  initWebInfo.map((tem: any, idx: number) => (
-                    <div className={`w-[20%] flex items-center mb-2`} key={idx}>
-                      <Image
-                        className='w-[90%] mx-[auto]'
-                        src={loginRes[tem.key] ? haveImg[idx] : theme === 'light' ? lightNotHaveImg[idx] : darkNotHaveImg[idx]}
-                        alt="" />
-                    </div>
-                  ))
-                }
+            <div className='px-3 my-4 flex w-full'>
+              <div className='dash-bg-style w-full'>
+                <div className='h-[72px] dash-bg-style w-full flex items-center px-3'>
+                  <div className='h-[60px] dash-bg-style w-[60px] flex items-center justify-center mr-5'>
+                    <Image
+                      src={theme === 'light' ? MaskLight4 : Mask4}
+                      alt="" />
+                  </div>
+                  <div>On-Chain Achievements </div>
+                </div>
+                <div className='w-full pt-4 overflow-hidden'>
+                  {
+                    onChains.map((tem: any, idx: number) => (
+                      <div className={`w-[12.5%] float-left items-center mb-4`} key={idx}>
+                        <Image
+                          className='w-[80%] mx-[auto]'
+                          src={tem.status === 'Verified' ? haveImg[tem.imgIdx] : theme === 'light' ? lightNotHaveImg[tem.imgIdx] : darkNotHaveImg[tem.imgIdx]}
+                          alt="" />
+                        <div className='w-[60%] text-center mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70' onClick={() => verifileProof(tem.status)}>
+                          {
+                            tem.status === 'Verified' &&
+                            <Image
+                              src={theme === 'light' ? VerifileLight : VerifileDark}
+                              className='mr-2 h-[10px] w-[10px]'
+                              alt="" />
+                          }
+                          <span>{tem.status}</span>
+                        </div>
+                      </div>
+                    ))
+                  }
+                </div>
               </div>
-              <div className='w-[50%] pass-bg relative'>
+              {/* <div className='w-[50%] pass-bg relative'>
                 <p className='text-[600] text-[20px] mt-[2%] ml-[2%]'>Uniqueness</p>
                 <div className='absolute bottom-5 left-8 flex items-baseline'>Score<span className='text-[24px] text-[600] ml-1'> {totalScroe}</span></div>
-
-              </div>
+              </div> */}
             </div>
             <div className='px-3 mb-20 flex justify-between gap-3'>
               <div className='dash-bg-style flex-1'>
@@ -248,19 +496,19 @@ const pass = () => {
                   <div className={`flex-1 flex items-center`}>
                     <Image
                       className='w-[90%] mx-[auto]'
-                      src={Img11}
+                      src={theme === 'light' ? ImgLight11 : Img11}
                       alt="" />
                   </div>
                   <div className={`flex-1 flex items-center`}>
                     <Image
                       className='w-[90%] mx-[auto]'
-                      src={Img12}
+                      src={theme === 'light' ? ImgLight12 : Img12}
                       alt="" />
                   </div>
                   <div className={`flex-1 flex items-center`}>
                     <Image
                       className='w-[90%] mx-[auto]'
-                      src={Img13}
+                      src={theme === 'light' ? ImgLight13 : Img13}
                       alt="" />
                   </div>
                 </div>
@@ -272,25 +520,25 @@ const pass = () => {
                       src={theme === 'light' ? MaskLight2 : Mask2}
                       alt="" />
                   </div>
-                  <div>Social</div>
+                  <div>Skill</div>
                 </div>
                 <div className='flex justify-between py-4 px-4'>
                   <div className={`flex-1 flex items-center`}>
                     <Image
                       className='w-[90%] mx-[auto]'
-                      src={Img14}
+                      src={theme === 'light' ? ImgLight14 : Img14}
                       alt="" />
                   </div>
                   <div className={`flex-1 flex items-center`}>
                     <Image
                       className='w-[90%] mx-[auto]'
-                      src={Img15}
+                      src={theme === 'light' ? ImgLight15 : Img15}
                       alt="" />
                   </div>
                   <div className={`flex-1 flex items-center`}>
                     <Image
                       className='w-[90%] mx-[auto]'
-                      src={Img16}
+                      src={theme === 'light' ? ImgLight16 : Img16}
                       alt="" />
                   </div>
                 </div>
@@ -299,28 +547,28 @@ const pass = () => {
                 <div className='h-[72px] dash-bg-style w-full flex items-center px-3'>
                   <div className='h-[60px] dash-bg-style w-[60px] flex items-center justify-center mr-5'>
                     <Image
-                      src={theme === 'light' ? MaskLight1 : Mask1}
+                      src={theme === 'light' ? MaskLight3 : Mask3}
                       alt="" />
                   </div>
-                  <div>Social</div>
+                  <div>OAuth</div>
                 </div>
                 <div className='flex justify-between py-4 px-4'>
                   <div className={`flex-1 flex items-center`}>
                     <Image
                       className='w-[90%] mx-[auto]'
-                      src={Img17}
+                      src={theme === 'light' ? ImgLight17 : Img17}
                       alt="" />
                   </div>
                   <div className={`flex-1 flex items-center`}>
                     <Image
                       className='w-[90%] mx-[auto]'
-                      src={Img18}
+                      src={theme === 'light' ? ImgLight18 : Img18}
                       alt="" />
                   </div>
                   <div className={`flex-1 flex items-center`}>
                     <Image
                       className='w-[90%] mx-[auto]'
-                      src={Img19}
+                      src={theme === 'light' ? ImgLight19 : Img19}
                       alt="" />
                   </div>
                 </div>
