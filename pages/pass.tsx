@@ -262,14 +262,16 @@ const pass = () => {
       let onChainsRes: any = [];
       for (let key in res.data) {
         if (res.data[key]) {
-          const obj: any = initWebInfo.filter((t) => { return t.key === key })[0]
-          onChainsRes = [
-            ...onChainsRes,
-            {
-              ...obj,
-              status: 'Verified'
-            }
-          ]
+          const obj: any = initWebInfo.filter((t) => { return t.key === key })
+          if(obj.length > 0){
+            onChainsRes = [
+              ...onChainsRes,
+              {
+                ...obj[0],
+                status: 'Verified'
+              }
+            ]
+          }
           // console.log(obj)
           // score += obj['score']
         }
