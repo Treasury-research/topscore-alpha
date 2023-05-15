@@ -77,7 +77,8 @@ import MaskLight4 from "../statics/img/pass/mask4-light.png";
 import VerifileLight from "../statics/img/pass/verifile-light.png";
 import VerifileDark from "../statics/img/pass/verifile-dark.png";
 
-import NoProfile from "../statics/img/pass/noProfile.png";
+import NoProfileDark from "../statics/img/pass/noProfile-dark.png";
+import NoProfileLight from "../statics/img/pass/noProfile-light.png";
 
 
 import VectorDark from "../statics/img/pass/vector-dark.png";
@@ -413,7 +414,7 @@ const pass = () => {
                       ) : (
                         <Image
                           className="w-[100px] h-[100px] rounded-[50%]"
-                          src={NoProfile}
+                          src={theme === 'light' ? NoProfileDark : NoProfileDark}
                           alt="" />
                       )
                     }
