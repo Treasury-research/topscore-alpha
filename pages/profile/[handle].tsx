@@ -9,6 +9,7 @@ import ConnectBtn from '../../components/ConnectBtn'
 import DonutChart from '../../components/profile/DonutChart'
 import Follow from '../../components/Follow'
 import Image from "next/image";
+
 import ImgPolygonpath from "../../statics/img/profileV2/polygon-path.svg";
 import ImgLenster from "../../statics/img/profileV2/lenster.svg";
 import ImgOpensea from "../../statics/img/profileV2/opensea.svg"

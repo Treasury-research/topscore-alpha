@@ -48,7 +48,6 @@ export default function App({ Component, pageProps }: AppProps) {
           gtag('config', 'G-1HB357LK81');
         `}
         </Script>
-        {/* <Coming /> */}
         <Component {...pageProps} />
         <ToastContainer position="top-right" />ƒ
       </Web3ContextProvider>
