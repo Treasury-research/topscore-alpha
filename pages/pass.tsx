@@ -77,6 +77,9 @@ import MaskLight4 from "../statics/img/pass/mask4-light.png";
 import VerifileLight from "../statics/img/pass/verifile-light.png";
 import VerifileDark from "../statics/img/pass/verifile-dark.png";
 
+import NoProfile from "../statics/img/pass/noProfile.png";
+
+
 import VectorDark from "../statics/img/pass/vector-dark.png";
 import VectorLight from "../statics/img/pass/vector-light.png";
 
@@ -341,6 +344,7 @@ const pass = () => {
   }, [chainId])
 
   useEffect(() => {
+    console.log(currentLoginProfile)
     if (currentLoginProfile.handle) {
       getIntroduce()
       getUserLogin()
@@ -411,24 +415,28 @@ const pass = () => {
                 <div className='flex items-center'>
                   <div className='mr-4'>
                     {
-                      currentLoginProfile.imageURI ? (
+                      currentLoginProfile.imageURI && currentLoginProfile.profileId ? (
                         <img src={getImgUrl(currentLoginProfile.imageURI)} className="w-[100px] h-[100px] rounded-[50%]" />
                       ) : (
                         <Image
                           className="w-[100px] h-[100px] rounded-[50%]"
-                          src={ImgLensterHead}
+                          src={NoProfile}
                           alt="" />
                       )
                     }
                   </div>
                   <div className='h-[fit-content]'>
-                    <p className='font-[600] text-[18px]'>{currentLoginProfile.name ? currentLoginProfile.name : currentLoginProfile.handle ? currentLoginProfile.handle.split('.')[0] : ''}<span className='text-[12px] ml-4 text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.5)] font-[500]'>@{currentLoginProfile.handle}</span></p>
+                    <p className='font-[600] text-[18px]'>{currentLoginProfile.name ? currentLoginProfile.name : currentLoginProfile.handle ? currentLoginProfile.handle.split('.')[0] : ''}
+                    <span className='text-[12px] ml-4 text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.5)] font-[500]'>
+                      {currentLoginProfile.profileId ? `@${currentLoginProfile.handle}` : 'NAN'}
+                    </span>
+                    </p>
                     <p className='text-[14px]'>{introduce}</p>
                   </div>
                 </div>
                 <div className='ml-auto w-[200px] h-full text-center flex items-center justify-center'>
                   <div>
-                    <div className='text-[36px] text-[600]'>{totalScroe}</div>
+                    <div className='text-[36px] text-[600]'>{currentLoginProfile.profileId ? totalScroe : 'NAN'}</div>
                     <div className='flex jusitify-center items-center'>
                       <Popover placement="bottom" title={''} content={getToolTipContent(onChains)} trigger="hover">
                         <div className='flex jusitify-center items-center cursor-pointer'>
