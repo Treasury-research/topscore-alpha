@@ -113,13 +113,6 @@ const initWebInfo = [
     status: 'Ineligible'
   },
   {
-    key: 'prof',
-    name:'Humanity',
-    score: 30,
-    imgIdx: 1,
-    status: 'Verifile'
-  },
-  {
     key: 'lens',
     name:'LENS',
     score: 15,
@@ -155,11 +148,18 @@ const initWebInfo = [
     status: 'Ineligible'
   },
   {
-    key: 'spaceid',
+    key: 'spaceId',
     name:'Space ID',
     score: 5,
     imgIdx: 4,
     status: 'Ineligible'
+  },
+  {
+    key: 'prof',
+    name:'Humanity',
+    score: 30,
+    imgIdx: 1,
+    status: 'Soon'
   },
   {
     key: 'discord',
@@ -204,7 +204,7 @@ const getToolTipContent = (data: any) => {
                 className='mr-2 h-[10px] w-[10px]'
                 alt="" />
             </div>
-            <span className='mr-1 text-[#656565] dark:text-[#D1D1D1] flex items-center text-[20px] font-[600]'>
+            <span className='mr-1 text-[#656565] dark:text-[#D1D1D1] flex items-center text-[18px] font-[600]'>
               {t.name}:
             </span>
             <span className='mr-1 text-[18px] font-[600] flex items-center'>+{t.score}</span>
@@ -455,10 +455,10 @@ const pass = () => {
                   </div>
                   <div>On-Chain Achievements </div>
                 </div>
-                <div className='w-full pt-4 overflow-hidden'>
+                <div className='w-full pt-4 flex justify-between flex-wrap'>
                   {
                     onChains.map((tem: any, idx: number) => (
-                      <div className={`w-[12.5%] float-left items-center mb-4`} key={idx}>
+                      <div className={`w-[14%] items-center mb-4`} key={idx}>
                         <Image
                           className='w-[80%] mx-[auto]'
                           src={tem.status === 'Verified' ? haveImg[tem.imgIdx] : theme === 'light' ? lightNotHaveImg[tem.imgIdx] : darkNotHaveImg[tem.imgIdx]}
@@ -468,14 +468,18 @@ const pass = () => {
                             tem.status === 'Verified' &&
                             <Image
                               src={theme === 'light' ? VerifileLight : VerifileDark}
-                              className='mr-2 h-[10px] w-[10px]'
+                              className='mr-1 h-[10px] w-[10px]'
                               alt="" />
                           }
-                          <span>{tem.status}</span>
+                          <span className='text-[12px]'>{tem.status}</span>
                         </div>
                       </div>
                     ))
                   }
+                  <div className='w-[14%]'></div>
+                  <div className='w-[14%]'></div>
+                  <div className='w-[14%]'></div>
+                  <div className='w-[14%]'></div>
                 </div>
               </div>
               {/* <div className='w-[50%] pass-bg relative'>
