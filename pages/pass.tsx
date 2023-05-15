@@ -98,8 +98,6 @@ import {
 } from "../store/state";
 import { useRecoilState } from "recoil";
 
-import { signIn, signOut, useSession } from "next-auth/react"
-
 const darkNotHaveImg = [Img1, Img2, Img3, Img4, Img5, Img6, Img7, Img8, Img9, Img10]
 
 const lightNotHaveImg = [ImgLight1, ImgLight2, ImgLight3, ImgLight4, ImgLight5, ImgLight6, ImgLight7, ImgLight8, ImgLight9, ImgLight10]
@@ -238,10 +236,6 @@ const pass = () => {
 
   const [currentLoginProfile,] =
     useRecoilState<any>(currentLoginProfileState);
-
-  const { data: session, status } = useSession()
-
-  const loading = status === 'loading'
 
   const getIntroduce = async () => {
     const res = await lensApi.getProfileByHandle(currentLoginProfile.handle);
