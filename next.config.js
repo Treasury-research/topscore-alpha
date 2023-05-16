@@ -17,7 +17,12 @@ const nextConfig = {
         source: '/profile',
         destination: '/profile/stani',
         permanent: true,
-      }
+      },
+      {
+        source: '/pass/succss',
+        destination: '/pass/success',
+        permanent: true,
+      },
     ]
   },
   webpack(config) {
