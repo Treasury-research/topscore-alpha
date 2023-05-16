@@ -34,12 +34,12 @@ const SignLens = (props: any) => {
     return (
         <Modal title="Basic Modal" open={true} onOk={handleOk} onCancel={handleCancel}>
             <div className='flex items-center pb-3 border-b-[1px] border-[#ccc] dark:border-[#4A4A4A] mb-2'>
-                <div className='flex items-center'>
+                <div className='flex items-center ml-[-4px]'>
                     <Image
                         src={theme === 'light' ? PloginLight : Plogin}
                         alt=""
                     />
-                    <span className='font-[600] text-[20px]'>Login</span>
+                    <span className='font-[600] text-[20px] ml-1 mt-[-6px]'>Login</span>
 
                 </div>
                 <div className='ml-[auto] cursor-pointer' onClick={() => handleCancel()}>

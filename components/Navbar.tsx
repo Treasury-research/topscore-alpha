@@ -50,13 +50,15 @@ const Navbar = () => {
         trace(item)
         if (item === 'Profile') {
             router.push(`/profile/stani`)
+        }else if(item === 'Pass'){
+            router.push(`/pass/succss`)
         } else {
             router.push(`/${item.toLocaleLowerCase()}`)
         }
     }
 
     return (
-        <div className='h-full leading-20 pl-6 pr-6 pt-10 dark:bg-[#16171B] flex flex-col justify-between'>
+        <div className='h-full leading-20 pl-6 pr-6 pt-5 dark:bg-[#16171B] flex flex-col justify-between'>
             <div>
                 <div className="flex items-center mb-10 ml-[-10px]">
                     <Image
