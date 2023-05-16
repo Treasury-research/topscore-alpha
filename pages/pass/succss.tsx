@@ -523,7 +523,7 @@ const pass = () => {
                     <Image
                       className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
                       src={loginRes.discord ? theme === 'light' ? ImgHaveLight12 : ImgHaveDark12 : theme === 'light' ? ImgLight12 : Img12}
-                      onClick={() => {if(loginRes.github) {return};window.location.href = 'https://discord.com/api/oauth2/authorize?client_id=1065158934312263780&redirect_uri=https%3A%2F%2Fknn3-gateway.knn3.xyz%2Foauth%2Fdiscord&response_type=code&scope=identify'}}
+                      onClick={() => {if(loginRes.discord) {return};window.location.href = 'https://discord.com/api/oauth2/authorize?client_id=1065158934312263780&redirect_uri=https%3A%2F%2Fknn3-gateway.knn3.xyz%2Foauth%2Fdiscord&response_type=code&scope=identify'}}
                       alt="" />
                   </div>
                   <div className={`flex-1 flex items-center`}>
