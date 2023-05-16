@@ -2,6 +2,8 @@ import envConf from "./polygon";
 
 export const baseURL = "https://lens-api.knn3.xyz/api";
 
+export const baseBindURL = "https://knn3-gateway.knn3.xyz/oauth/bind";
+
 export const lensURL = "https://api.lens.dev";
 
 export const infuraId = "997ec38ed1ff4c818b45a09f14546530";

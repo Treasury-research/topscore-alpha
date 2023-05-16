@@ -579,7 +579,7 @@ const ConnectBtn = (props: any) => {
             </Dropdown>
           </div>
           {
-            account && knn3TokenValid &&
+            account && knn3TokenValid && currentLoginProfile.profileId !== currentProfile.profileId &&
             <div className="flex items-center justify-center bg-[#F8FEFF] dark:bg-[#292A2E] connect-profile-shadow rounded-[50%] h-8 w-8 cursor-pointer hover:opacity-70" onClick={() => goHome()}>
               {/* <Image
                 className="w-[18px] h-[18px]"

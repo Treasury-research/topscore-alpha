@@ -45,13 +45,12 @@ const LoginConnect = (props: any) => {
     return (
         <Modal title="Basic Modal" open={true} onOk={handleOk} onCancel={handleCancel} width={'500px'}>
             <div className='flex items-center pb-3 border-b-[1px] border-[#ccc] dark:border-[#4A4A4A] mb-2'>
-                <div className='flex items-center'>
+                <div className='flex items-center ml-[-4px]'>
                     <Image
                         src={theme === 'light' ? PloginLight : Plogin}
                         alt=""
                     />
-                    <div className='font-[600] text-[20px] flex items-center'>Login</div>
-
+                    <div className='font-[600] text-[20px] flex items-center ml-1 mt-[-6px]'>Login</div>
                 </div>
                 <div className='ml-[auto] cursor-pointer' onClick={() => handleCancel()}>
                     <CloseOutlined className='text-[20px]' />
