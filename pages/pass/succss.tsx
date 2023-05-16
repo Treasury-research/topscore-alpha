@@ -232,6 +232,11 @@ const scoreToolConfig = [
     name: 'Github',
     score: 10,
   },
+  {
+    key: 'exchange',
+    name: 'Stack Exchange',
+    score: 10,
+  }
 ]
 
 const getToolTipContent = (data: any) => {
@@ -242,14 +247,6 @@ const getToolTipContent = (data: any) => {
 
   useEffect(() => {
     let res = []
-    // for (let key in data) {
-    //   if (data[key]) {
-    //     const b: any = scoreToolConfig.filter((t) => { return t.key === key })
-    //     if(b && b.length > 0){
-    //       res.push(b[0])
-    //     }
-    //   }
-    // }
     scoreToolConfig.map((t) => {
       if(t.key && data[t.key]){
         res.push(t)
@@ -383,7 +380,7 @@ const pass = () => {
       setShowSuccess(true)
       setLoginType(router.query.type)
       getUserLogin()
-    } else if (res && res.data.data == 'false') {
+    } else if (res && res.data.data) {
       toast.info('Already bound')
     }
   }
