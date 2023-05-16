@@ -149,6 +149,11 @@ const initWebInfo = [
     status: 'Ineligible'
   },
   {
+    key: 'spaceId',
+    imgIdx: 4,
+    status: 'Ineligible'
+  },
+  {
     key: 'snapshot',
     imgIdx: 6,
     status: 'Ineligible'
@@ -163,11 +168,7 @@ const initWebInfo = [
     imgIdx: 8,
     status: 'Ineligible'
   },
-  {
-    key: 'spaceId',
-    imgIdx: 4,
-    status: 'Ineligible'
-  },
+
   {
     key: 'prof',
     imgIdx: 1,
@@ -188,48 +189,48 @@ const initWebInfo = [
 const scoreToolConfig = [
   {
     key: 'bab',
-    name:'BABT',
+    name: 'BABT',
     score: 30,
   },
   {
-    key: 'discord',
-    name:'Discord',
-    score: 10,
-  },
-  {
-    key: 'ens',
-    name:'ENS',
-    score: 5,
-  },
-  {
-    key: 'github',
-    name:'Github',
-    score: 10,
-  },
-  {
     key: 'lens',
-    name:'LENS',
+    name: 'LENS',
     score: 15,
   },
   {
-    key: 'nft',
-    name:'NFT',
-    score: 5,
-  },
-  {
-    key: 'poap',
-    name:'POAP',
-    score: 5,
-  },
-  {
-    key: 'snapshot',
-    name:'Snapshot',
+    key: 'ens',
+    name: 'ENS',
     score: 5,
   },
   {
     key: 'spaceId',
-    name:'Space ID',
+    name: 'Space ID',
     score: 5,
+  },
+  {
+    key: 'snapshot',
+    name: 'Snapshot',
+    score: 5,
+  },
+  {
+    key: 'nft',
+    name: 'NFT',
+    score: 5,
+  },
+  {
+    key: 'poap',
+    name: 'POAP',
+    score: 5,
+  },
+  {
+    key: 'discord',
+    name: 'Discord',
+    score: 10,
+  },
+  {
+    key: 'github',
+    name: 'Github',
+    score: 10,
   },
 ]
 
@@ -241,12 +242,19 @@ const getToolTipContent = (data: any) => {
 
   useEffect(() => {
     let res = []
-    for (let key in data) {
-      if (data[key]) {
-        const b: any = scoreToolConfig.filter((t) => { return t.key === key })
-        res.push(b[0])
+    // for (let key in data) {
+    //   if (data[key]) {
+    //     const b: any = scoreToolConfig.filter((t) => { return t.key === key })
+    //     if(b && b.length > 0){
+    //       res.push(b[0])
+    //     }
+    //   }
+    // }
+    scoreToolConfig.map((t) => {
+      if(t.key && data[t.key]){
+        res.push(t)
       }
-    }
+    })
     setResData(res)
   }, [data])
 
@@ -276,11 +284,11 @@ const getToolTipContent = (data: any) => {
 const pass = () => {
   const router = useRouter();
 
-  const { chainId} = useWeb3Context();
+  const { chainId } = useWeb3Context();
 
   const proofContract = useProofContract();
 
-  const [theme, ] = useRecoilState(themeState);
+  const [theme,] = useRecoilState(themeState);
 
   const [introduce, setIntroduce] = useState<any>('')
 
@@ -292,9 +300,9 @@ const pass = () => {
 
   const [showSuccess, setShowSuccess] = useState<any>(false)
 
-  const [loginType,setLoginType] = useState<any>('')
+  const [loginType, setLoginType] = useState<any>('')
 
-  const [loginLoading,setLoginLoading] = useState<any>(false)
+  const [loginLoading, setLoginLoading] = useState<any>(false)
 
   const [currentLoginProfile,] =
     useRecoilState<any>(currentLoginProfileState);
@@ -317,37 +325,26 @@ const pass = () => {
   };
 
   const getUserLogin = async () => {
-    const res = await api.get(`/address/authentication`)
+    let res:any = await api.get(`/address/authentication`)
     if (res && res.data) {
       let score = 0;
-      let onChainsRes: any = [];
       for (let key in res.data) {
         if (res.data[key]) {
-          const s: any = initWebInfo.filter((t) => { return t.key === key })
+          initWebInfo.map((t) => {
+            if (t.key === key) {
+              t.status = 'Verified'
+            }
+          })
           const b: any = scoreToolConfig.filter((t) => { return t.key === key })
-          if(s.length > 0){
-            onChainsRes = [
-              ...onChainsRes,
-              {
-                ...s[0],
-                status: 'Verified'
-              }
-            ]
-          }
-          if(b.length > 0){
+          if (b.length > 0) {
             score += b[0]['score']
           }
         }
       }
-      const keys = onChainsRes.map((t) => {
-        return t.key
-      })
-      for (let i = 0; i < initWebInfo.length; i++) {
-        if (!keys.includes(initWebInfo[i]['key'])) {
-          onChainsRes.push(initWebInfo[i])
-        }
-      }
-      setOnChains(onChainsRes)
+      setOnChains([
+        ...initWebInfo.filter((t) => { return t.status == 'Verified' }),
+        ...initWebInfo.filter((t) => { return t.status !== 'Verified' }),
+      ])
       setTotalScroe(score)
       setLoginRes(res.data)
     }
@@ -376,17 +373,17 @@ const pass = () => {
   const postGithubCode = async () => {
     const knn3RefreshToken = localStorage.getItem("knn3Token");
     setLoginLoading(true)
-    let res:any = await bindApi.post("", {
-      code:router.query.code,
-      type:router.query.type,
+    let res: any = await bindApi.post("", {
+      code: router.query.code,
+      type: router.query.type,
       jwt: knn3RefreshToken,
     });
     setLoginLoading(false)
-    if(res && res.data && res.data.data == 'success'){
+    if (res && res.data && res.data.data == 'success') {
       setShowSuccess(true)
       setLoginType(router.query.type)
       getUserLogin()
-    }else if(res && res.data.data == 'false'){
+    } else if (res && res.data.data == 'false') {
       toast.info('Already bound')
     }
   }
@@ -405,7 +402,7 @@ const pass = () => {
   }, [currentLoginProfile])
 
   useEffect(() => {
-    if(router.query && router.query.code && router.query.type){
+    if (router.query && router.query.code && router.query.type) {
       router.push('/pass/succss')
       postGithubCode()
     }
@@ -435,9 +432,9 @@ const pass = () => {
                   </div>
                   <div className='h-[fit-content]'>
                     <p className='font-[600] text-[18px]'>{currentLoginProfile.name ? currentLoginProfile.name : currentLoginProfile.handle ? currentLoginProfile.handle.split('.')[0] : ''}
-                    <span className='text-[12px] ml-2 text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.5)] font-[500]'>
-                      {currentLoginProfile.profileId ? `@${currentLoginProfile.handle}` : 'NAN'}
-                    </span>
+                      <span className='text-[12px] ml-2 text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.5)] font-[500]'>
+                        {currentLoginProfile.profileId ? `@${currentLoginProfile.handle}` : 'NAN'}
+                      </span>
                     </p>
                     <p className='text-[14px]'>{introduce}</p>
                   </div>
@@ -523,7 +520,7 @@ const pass = () => {
                     <Image
                       className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
                       src={loginRes.discord ? theme === 'light' ? ImgHaveLight12 : ImgHaveDark12 : theme === 'light' ? ImgLight12 : Img12}
-                      onClick={() => {if(loginRes.discord) {return};window.location.href = 'https://discord.com/api/oauth2/authorize?client_id=1065158934312263780&redirect_uri=https%3A%2F%2Fknn3-gateway.knn3.xyz%2Foauth%2Fdiscord&response_type=code&scope=identify'}}
+                      onClick={() => { if (loginRes.discord) { return }; window.location.href = 'https://discord.com/api/oauth2/authorize?client_id=1065158934312263780&redirect_uri=https%3A%2F%2Fknn3-gateway.knn3.xyz%2Foauth%2Fdiscord&response_type=code&scope=identify' }}
                       alt="" />
                   </div>
                   <div className={`flex-1 flex items-center`}>
@@ -547,14 +544,15 @@ const pass = () => {
                   <div className={`flex-1 flex items-center`}>
                     <Image
                       className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
-                      src={loginRes.github ? theme === 'light' ? ImgHaveLight14 : ImgHaveDark14  : theme === 'light' ? ImgLight14 : Img14}
-                      onClick={() => {if(loginRes.github) {return};window.location.href = 'https://github.com/login/oauth/authorize?client_id=b59e578134a199905f5e&redirect_uri=https://knn3-gateway.knn3.xyz/oauth/github'}}
+                      src={loginRes.github ? theme === 'light' ? ImgHaveLight14 : ImgHaveDark14 : theme === 'light' ? ImgLight14 : Img14}
+                      onClick={() => { if (loginRes.github) { return }; window.location.href = 'https://github.com/login/oauth/authorize?client_id=b59e578134a199905f5e&redirect_uri=https://knn3-gateway.knn3.xyz/oauth/github' }}
                       alt="" />
                   </div>
                   <div className={`flex-1 flex items-center`}>
                     <Image
                       className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
-                      src={theme === 'light' ? ImgLight15 : Img15}
+                      src={loginRes.exchange ? theme === 'light' ? ImgHaveLight15 : ImgHaveDark15 : theme === 'light' ? ImgLight15 : Img15}
+                      onClick={() => {window.location.href = 'https://stackoverflow.com/oauth?client_id=25948&redirect_uri=https%3A%2F%2Fknn3-gateway.knn3.xyz%2Foauth%2Fstackoverflow&response_type=code&state=state' }}
                       alt="" />
                   </div>
                   <div className={`flex-1 flex items-center`}>
@@ -598,12 +596,12 @@ const pass = () => {
             </div>
           </div>
           {
-            showSuccess && 
-            <PassSuccess onCancel={() => setShowSuccess(false)} type={loginType}/>
+            showSuccess &&
+            <PassSuccess onCancel={() => setShowSuccess(false)} type={loginType} />
           }
           {
-            loginLoading && 
-            <PassLoading/>
+            loginLoading &&
+            <PassLoading />
           }
         </div>
       </div>
