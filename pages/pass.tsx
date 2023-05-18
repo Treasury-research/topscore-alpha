@@ -1,125 +1,125 @@
 import { useEffect, useState } from 'react';
-import Navbar from '../../components/Navbar'
-import ConnectBtn from '../../components/ConnectBtn'
-import PassSuccess from '../../components/passSuccess'
-import PassLoading from '../../components/passSuccess/loading'
+import Navbar from '../components/Navbar'
+import ConnectBtn from '../components/ConnectBtn'
+import PassSuccess from '../components/passSuccess'
+import PassLoading from '../components/passSuccess/loading'
 import Image from "next/image";
 
-import Img1 from "../../statics/img/pass/dark/1.png";
-import Img2 from "../../statics/img/pass/dark/2.png";
-import Img3 from "../../statics/img/pass/dark/3.png";
-import Img4 from "../../statics/img/pass/dark/4.png";
-import Img5 from "../../statics/img/pass/dark/5.png";
-import Img6 from "../../statics/img/pass/dark/6.png";
-import Img7 from "../../statics/img/pass/dark/7.png";
-import Img8 from "../../statics/img/pass/dark/8.png";
-import Img9 from "../../statics/img/pass/dark/9.png";
-import Img10 from "../../statics/img/pass/dark/10.png";
-import Img11 from "../../statics/img/pass/dark/11.png";
-import Img12 from "../../statics/img/pass/dark/12.png";
-import Img13 from "../../statics/img/pass/dark/13.png";
-import Img14 from "../../statics/img/pass/dark/14.png";
-import Img15 from "../../statics/img/pass/dark/15.png";
-import Img16 from "../../statics/img/pass/dark/16.png";
-import Img17 from "../../statics/img/pass/dark/17.png";
-import Img18 from "../../statics/img/pass/dark/18.png";
-import Img19 from "../../statics/img/pass/dark/19.png";
+import Img1 from "../statics/img/pass/dark/1.png";
+import Img2 from "../statics/img/pass/dark/2.png";
+import Img3 from "../statics/img/pass/dark/3.png";
+import Img4 from "../statics/img/pass/dark/4.png";
+import Img5 from "../statics/img/pass/dark/5.png";
+import Img6 from "../statics/img/pass/dark/6.png";
+import Img7 from "../statics/img/pass/dark/7.png";
+import Img8 from "../statics/img/pass/dark/8.png";
+import Img9 from "../statics/img/pass/dark/9.png";
+import Img10 from "../statics/img/pass/dark/10.png";
+import Img11 from "../statics/img/pass/dark/11.png";
+import Img12 from "../statics/img/pass/dark/12.png";
+import Img13 from "../statics/img/pass/dark/13.png";
+import Img14 from "../statics/img/pass/dark/14.png";
+import Img15 from "../statics/img/pass/dark/15.png";
+import Img16 from "../statics/img/pass/dark/16.png";
+import Img17 from "../statics/img/pass/dark/17.png";
+import Img18 from "../statics/img/pass/dark/18.png";
+import Img19 from "../statics/img/pass/dark/19.png";
 
-import ImgLight1 from "../../statics/img/pass/light/1.png";
-import ImgLight2 from "../../statics/img/pass/light/2.png";
-import ImgLight3 from "../../statics/img/pass/light/3.png";
-import ImgLight4 from "../../statics/img/pass/light/4.png";
-import ImgLight5 from "../../statics/img/pass/light/5.png";
-import ImgLight6 from "../../statics/img/pass/light/6.png";
-import ImgLight7 from "../../statics/img/pass/light/7.png";
-import ImgLight8 from "../../statics/img/pass/light/8.png";
-import ImgLight9 from "../../statics/img/pass/light/9.png";
-import ImgLight10 from "../../statics/img/pass/light/10.png";
-import ImgLight11 from "../../statics/img/pass/light/11.png";
-import ImgLight12 from "../../statics/img/pass/light/12.png";
-import ImgLight13 from "../../statics/img/pass/light/13.png";
-import ImgLight14 from "../../statics/img/pass/light/14.png";
-import ImgLight15 from "../../statics/img/pass/light/15.png";
-import ImgLight16 from "../../statics/img/pass/light/16.png";
-import ImgLight17 from "../../statics/img/pass/light/17.png";
-import ImgLight18 from "../../statics/img/pass/light/18.png";
-import ImgLight19 from "../../statics/img/pass/light/19.png";
+import ImgLight1 from "../statics/img/pass/light/1.png";
+import ImgLight2 from "../statics/img/pass/light/2.png";
+import ImgLight3 from "../statics/img/pass/light/3.png";
+import ImgLight4 from "../statics/img/pass/light/4.png";
+import ImgLight5 from "../statics/img/pass/light/5.png";
+import ImgLight6 from "../statics/img/pass/light/6.png";
+import ImgLight7 from "../statics/img/pass/light/7.png";
+import ImgLight8 from "../statics/img/pass/light/8.png";
+import ImgLight9 from "../statics/img/pass/light/9.png";
+import ImgLight10 from "../statics/img/pass/light/10.png";
+import ImgLight11 from "../statics/img/pass/light/11.png";
+import ImgLight12 from "../statics/img/pass/light/12.png";
+import ImgLight13 from "../statics/img/pass/light/13.png";
+import ImgLight14 from "../statics/img/pass/light/14.png";
+import ImgLight15 from "../statics/img/pass/light/15.png";
+import ImgLight16 from "../statics/img/pass/light/16.png";
+import ImgLight17 from "../statics/img/pass/light/17.png";
+import ImgLight18 from "../statics/img/pass/light/18.png";
+import ImgLight19 from "../statics/img/pass/light/19.png";
 
-import ImgHaveDark1 from "../../statics/img/pass/have/dark/1.png";
-import ImgHaveDark2 from "../../statics/img/pass/have/dark/2.png";
-import ImgHaveDark3 from "../../statics/img/pass/have/dark/3.png";
-import ImgHaveDark4 from "../../statics/img/pass/have/dark/4.png";
-import ImgHaveDark5 from "../../statics/img/pass/have/dark/5.png";
-import ImgHaveDark6 from "../../statics/img/pass/have/dark/6.png";
-import ImgHaveDark7 from "../../statics/img/pass/have/dark/7.png";
-import ImgHaveDark8 from "../../statics/img/pass/have/dark/8.png";
-import ImgHaveDark9 from "../../statics/img/pass/have/dark/9.png";
-import ImgHaveDark10 from "../../statics/img/pass/have/dark/10.png";
-import ImgHaveDark11 from "../../statics/img/pass/have/dark/11.png";
-import ImgHaveDark12 from "../../statics/img/pass/have/dark/12.png";
-import ImgHaveDark13 from "../../statics/img/pass/have/dark/13.png";
-import ImgHaveDark14 from "../../statics/img/pass/have/dark/14.png";
-import ImgHaveDark15 from "../../statics/img/pass/have/dark/15.png";
-import ImgHaveDark16 from "../../statics/img/pass/have/dark/16.png";
-import ImgHaveDark17 from "../../statics/img/pass/have/dark/17.png";
-import ImgHaveDark18 from "../../statics/img/pass/have/dark/18.png";
-import ImgHaveDark19 from "../../statics/img/pass/have/dark/19.png";
+import ImgHaveDark1 from "../statics/img/pass/have/dark/1.png";
+import ImgHaveDark2 from "../statics/img/pass/have/dark/2.png";
+import ImgHaveDark3 from "../statics/img/pass/have/dark/3.png";
+import ImgHaveDark4 from "../statics/img/pass/have/dark/4.png";
+import ImgHaveDark5 from "../statics/img/pass/have/dark/5.png";
+import ImgHaveDark6 from "../statics/img/pass/have/dark/6.png";
+import ImgHaveDark7 from "../statics/img/pass/have/dark/7.png";
+import ImgHaveDark8 from "../statics/img/pass/have/dark/8.png";
+import ImgHaveDark9 from "../statics/img/pass/have/dark/9.png";
+import ImgHaveDark10 from "../statics/img/pass/have/dark/10.png";
+import ImgHaveDark11 from "../statics/img/pass/have/dark/11.png";
+import ImgHaveDark12 from "../statics/img/pass/have/dark/12.png";
+import ImgHaveDark13 from "../statics/img/pass/have/dark/13.png";
+import ImgHaveDark14 from "../statics/img/pass/have/dark/14.png";
+import ImgHaveDark15 from "../statics/img/pass/have/dark/15.png";
+import ImgHaveDark16 from "../statics/img/pass/have/dark/16.png";
+import ImgHaveDark17 from "../statics/img/pass/have/dark/17.png";
+import ImgHaveDark18 from "../statics/img/pass/have/dark/18.png";
+import ImgHaveDark19 from "../statics/img/pass/have/dark/19.png";
 
-import ImgHaveLight1 from "../../statics/img/pass/have/light/1.png";
-import ImgHaveLight2 from "../../statics/img/pass/have/light/2.png";
-import ImgHaveLight3 from "../../statics/img/pass/have/light/3.png";
-import ImgHaveLight4 from "../../statics/img/pass/have/light/4.png";
-import ImgHaveLight5 from "../../statics/img/pass/have/light/5.png";
-import ImgHaveLight6 from "../../statics/img/pass/have/light/6.png";
-import ImgHaveLight7 from "../../statics/img/pass/have/light/7.png";
-import ImgHaveLight8 from "../../statics/img/pass/have/light/8.png";
-import ImgHaveLight9 from "../../statics/img/pass/have/light/9.png";
-import ImgHaveLight10 from "../../statics/img/pass/have/light/10.png";
-import ImgHaveLight11 from "../../statics/img/pass/have/light/11.png";
-import ImgHaveLight12 from "../../statics/img/pass/have/light/12.png";
-import ImgHaveLight13 from "../../statics/img/pass/have/light/13.png";
-import ImgHaveLight14 from "../../statics/img/pass/have/light/14.png";
-import ImgHaveLight15 from "../../statics/img/pass/have/light/15.png";
-import ImgHaveLight16 from "../../statics/img/pass/have/light/16.png";
-import ImgHaveLight17 from "../../statics/img/pass/have/light/17.png";
-import ImgHaveLight18 from "../../statics/img/pass/have/light/18.png";
-import ImgHaveLight19 from "../../statics/img/pass/have/light/19.png";
-
-
-import Mask1 from "../../statics/img/pass/mask1.png";
-import Mask2 from "../../statics/img/pass/mask2.png";
-import Mask3 from "../../statics/img/pass/mask3.png";
-import Mask4 from "../../statics/img/pass/mask4.png";
-
-import MaskLight1 from "../../statics/img/pass/mask1-light.png";
-import MaskLight2 from "../../statics/img/pass/mask2-light.png";
-import MaskLight3 from "../../statics/img/pass/mask3-light.png";
-import MaskLight4 from "../../statics/img/pass/mask4-light.png";
-
-import VerifileLight from "../../statics/img/pass/verifile-light.png";
-import VerifileDark from "../../statics/img/pass/verifile-dark.png";
-
-import NoProfileDark from "../../statics/img/pass/noProfile-dark.png";
-import NoProfileLight from "../../statics/img/pass/noProfile-light.png";
+import ImgHaveLight1 from "../statics/img/pass/have/light/1.png";
+import ImgHaveLight2 from "../statics/img/pass/have/light/2.png";
+import ImgHaveLight3 from "../statics/img/pass/have/light/3.png";
+import ImgHaveLight4 from "../statics/img/pass/have/light/4.png";
+import ImgHaveLight5 from "../statics/img/pass/have/light/5.png";
+import ImgHaveLight6 from "../statics/img/pass/have/light/6.png";
+import ImgHaveLight7 from "../statics/img/pass/have/light/7.png";
+import ImgHaveLight8 from "../statics/img/pass/have/light/8.png";
+import ImgHaveLight9 from "../statics/img/pass/have/light/9.png";
+import ImgHaveLight10 from "../statics/img/pass/have/light/10.png";
+import ImgHaveLight11 from "../statics/img/pass/have/light/11.png";
+import ImgHaveLight12 from "../statics/img/pass/have/light/12.png";
+import ImgHaveLight13 from "../statics/img/pass/have/light/13.png";
+import ImgHaveLight14 from "../statics/img/pass/have/light/14.png";
+import ImgHaveLight15 from "../statics/img/pass/have/light/15.png";
+import ImgHaveLight16 from "../statics/img/pass/have/light/16.png";
+import ImgHaveLight17 from "../statics/img/pass/have/light/17.png";
+import ImgHaveLight18 from "../statics/img/pass/have/light/18.png";
+import ImgHaveLight19 from "../statics/img/pass/have/light/19.png";
 
 
-import VectorDark from "../../statics/img/pass/vector-dark.png";
-import VectorLight from "../../statics/img/pass/vector-light.png";
+import Mask1 from "../statics/img/pass/mask1.png";
+import Mask2 from "../statics/img/pass/mask2.png";
+import Mask3 from "../statics/img/pass/mask3.png";
+import Mask4 from "../statics/img/pass/mask4.png";
 
-import lensApi from "../../api/lensApi";
-import ImgLensterHead from "../../statics/img/lest-head.svg";
-import { formatIPFS } from "../../lib/tool";
-import api from "../../api";
-import bindApi from "../../api/userBind";
-import useProofContract from "../../contract/useProofContract";
-import { switchChain } from "../../lib/tool";
-import useWeb3Context from "../../hooks/useWeb3Context";
-import config from "../../config";
+import MaskLight1 from "../statics/img/pass/mask1-light.png";
+import MaskLight2 from "../statics/img/pass/mask2-light.png";
+import MaskLight3 from "../statics/img/pass/mask3-light.png";
+import MaskLight4 from "../statics/img/pass/mask4-light.png";
+
+import VerifileLight from "../statics/img/pass/verifile-light.png";
+import VerifileDark from "../statics/img/pass/verifile-dark.png";
+
+import NoProfileDark from "../statics/img/pass/noProfile-dark.png";
+import NoProfileLight from "../statics/img/pass/noProfile-light.png";
+
+
+import VectorDark from "../statics/img/pass/vector-dark.png";
+import VectorLight from "../statics/img/pass/vector-light.png";
+
+import lensApi from "../api/lensApi";
+import ImgLensterHead from "../statics/img/lest-head.svg";
+import { formatIPFS } from "../lib/tool";
+import api from "../api";
+import bindApi from "../api/userBind";
+import useProofContract from "../contract/useProofContract";
+import { switchChain } from "../lib/tool";
+import useWeb3Context from "../hooks/useWeb3Context";
+import config from "../config";
 import { Popover } from 'antd';
 import {
   themeState,
   currentLoginProfileState
-} from "../../store/state";
+} from "../store/state";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
@@ -234,7 +234,7 @@ const scoreToolConfig = [
   },
   {
     key: 'exchange',
-    name: 'Stack Exchange',
+    name: 'Stack Overflow',
     score: 10,
   }
 ]

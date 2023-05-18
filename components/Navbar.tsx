@@ -50,9 +50,7 @@ const Navbar = () => {
         trace(item)
         if (item === 'Profile') {
             router.push(`/profile/stani`)
-        }else if(item === 'Pass'){
-            router.push(`/pass/succss`)
-        } else {
+        }else {
             router.push(`/${item.toLocaleLowerCase()}`)
         }
     }
