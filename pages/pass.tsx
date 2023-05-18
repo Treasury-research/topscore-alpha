@@ -248,7 +248,7 @@ const getToolTipContent = (data: any) => {
   useEffect(() => {
     let res = []
     scoreToolConfig.map((t) => {
-      if(t.key && data[t.key]){
+      if (t.key && data[t.key]) {
         res.push(t)
       }
     })
@@ -274,6 +274,27 @@ const getToolTipContent = (data: any) => {
           </div>
         ))
       }
+    </div>
+  )
+}
+
+const getSocialTooltip = (name) => {
+
+  const [theme, setTheme] = useRecoilState(themeState);
+
+  return (
+    <div>
+      <div className='flex items-center'>
+        <div className='flex items-center'>
+          <Image
+            src={theme === 'light' ? VerifileLight : VerifileDark}
+            className='mr-2 h-[10px] w-[10px]'
+            alt="" />
+        </div>
+        <span className='mr-1 text-[#656565] dark:text-[#D1D1D1] flex items-center text-[18px] font-[600]'>
+          {name}
+        </span>
+      </div>
     </div>
   )
 }
@@ -322,7 +343,7 @@ const pass = () => {
   };
 
   const getUserLogin = async () => {
-    let res:any = await api.get(`/address/authentication`)
+    let res: any = await api.get(`/address/authentication`)
     if (res && res.data) {
       let score = 0;
       for (let key in res.data) {
@@ -507,24 +528,57 @@ const pass = () => {
                   <div>Social</div>
                 </div>
                 <div className='flex justify-between py-4 px-4'>
-                  <div className={`flex-1 flex items-center`}>
-                    <Image
-                      className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
-                      src={theme === 'light' ? ImgLight11 : Img11}
-                      alt="" />
+                  <div className={`flex-1`}>
+                    <div className='flex items-center'>
+                      <Image
+                        className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
+                        src={theme === 'light' ? ImgLight11 : Img11}
+                        alt="" />
+                    </div>
+                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                      <span className='text-[12px]'>Soon</span>
+                    </div>
                   </div>
-                  <div className={`flex-1 flex items-center`}>
+
+                  <div className={`flex-1`}>
+                    <div className='flex items-center'>
+                      <Popover placement="bottom" title={''} content={getSocialTooltip(loginRes.discordName)} trigger="hover" overlayStyle={{ 'display': !loginRes.discord ? 'none' : '' }}>
+                        <Image
+                          className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
+                          src={loginRes.discord ? theme === 'light' ? ImgHaveLight12 : ImgHaveDark12 : theme === 'light' ? ImgLight12 : Img12}
+                          alt="" />
+                      </Popover>
+
+                    </div>
+                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                      {
+                        loginRes.discord &&
+                        <Image
+                          src={theme === 'light' ? VerifileLight : VerifileDark}
+                          className='mr-1 h-[12px] w-[12px]'
+                          alt="" />
+                      }
+                      <span className='text-[12px]' onClick={() => { if (loginRes.discord) { return }; window.location.href = 'https://discord.com/api/oauth2/authorize?client_id=1065158934312263780&redirect_uri=https%3A%2F%2Fknn3-gateway.knn3.xyz%2Foauth%2Fdiscord&response_type=code&scope=identify' }}>{loginRes.discord ? 'Verifiled' : 'Connect'}</span>
+                    </div>
+                  </div>
+
+                  {/* <div className={`flex-1 flex items-center`}>
                     <Image
                       className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
                       src={loginRes.discord ? theme === 'light' ? ImgHaveLight12 : ImgHaveDark12 : theme === 'light' ? ImgLight12 : Img12}
                       onClick={() => { if (loginRes.discord) { return }; window.location.href = 'https://discord.com/api/oauth2/authorize?client_id=1065158934312263780&redirect_uri=https%3A%2F%2Fknn3-gateway.knn3.xyz%2Foauth%2Fdiscord&response_type=code&scope=identify' }}
                       alt="" />
-                  </div>
-                  <div className={`flex-1 flex items-center`}>
-                    <Image
-                      className='w-[90%] mx-[auto] cursor-pointer scale-90 hover:scale-100 transition-all'
-                      src={theme === 'light' ? ImgLight13 : Img13}
-                      alt="" />
+                  </div> */}
+                  <div className={`flex-1`}>
+                    <div className='flex items-center'>
+                      <Image
+                        className='w-[90%] mx-[auto] cursor-pointer scale-90 hover:scale-100 transition-all'
+                        src={theme === 'light' ? ImgLight13 : Img13}
+                        alt="" />
+                    </div>
+                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                      <span className='text-[12px]'>Soon</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -538,25 +592,74 @@ const pass = () => {
                   <div>Skill</div>
                 </div>
                 <div className='flex justify-between py-4 px-4'>
-                  <div className={`flex-1 flex items-center`}>
+
+                  <div className={`flex-1`}>
+                    <div className='flex items-center'>
+                    <Popover placement="bottom" title={''} content={getSocialTooltip(loginRes.githubName)} trigger="hover" overlayStyle={{ 'display': !loginRes.github ? 'none' : '' }}>
+                      <Image
+                        className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
+                        src={loginRes.github ? theme === 'light' ? ImgHaveLight14 : ImgHaveDark14 : theme === 'light' ? ImgLight14 : Img14}
+                        alt="" />
+                      </Popover>
+                    </div>
+                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                      {
+                        loginRes.github &&
+                        <Image
+                          src={theme === 'light' ? VerifileLight : VerifileDark}
+                          className='mr-1 h-[12px] w-[12px]'
+                          alt="" />
+                      }
+                      <span className='text-[12px]' onClick={() => { if (loginRes.github) { return }; window.location.href = 'https://github.com/login/oauth/authorize?client_id=b59e578134a199905f5e&redirect_uri=https://knn3-gateway.knn3.xyz/oauth/github' }}>{loginRes.github ? 'Verifiled' : 'Connect'}</span>
+                    </div>
+                  </div>
+
+                  {/* <div className={`flex-1 flex items-center`}>
                     <Image
                       className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
                       src={loginRes.github ? theme === 'light' ? ImgHaveLight14 : ImgHaveDark14 : theme === 'light' ? ImgLight14 : Img14}
                       onClick={() => { if (loginRes.github) { return }; window.location.href = 'https://github.com/login/oauth/authorize?client_id=b59e578134a199905f5e&redirect_uri=https://knn3-gateway.knn3.xyz/oauth/github' }}
                       alt="" />
+                  </div> */}
+
+                  <div className={`flex-1`}>
+                    <div className='flex items-center'>
+                    <Popover placement="bottom" title={''} content={getSocialTooltip(loginRes.exchangeName)} trigger="hover" overlayStyle={{ 'display': !loginRes.exchange ? 'none' : '' }}>
+                      <Image
+                        className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
+                        src={loginRes.exchange ? theme === 'light' ? ImgHaveLight15 : ImgHaveDark15 : theme === 'light' ? ImgLight15 : Img15}
+                        alt="" />
+                    </Popover>
+                    </div>
+                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                      {
+                        loginRes.exchange &&
+                        <Image
+                          src={theme === 'light' ? VerifileLight : VerifileDark}
+                          className='mr-1 h-[12px] w-[12px]'
+                          alt="" />
+                      }
+                      <span className='text-[12px]' onClick={() => { window.location.href = 'https://stackoverflow.com/oauth?client_id=25948&redirect_uri=https%3A%2F%2Fknn3-gateway.knn3.xyz%2Foauth%2Fstackoverflow&response_type=code&state=state' }}>{loginRes.exchange ? 'Verifiled' : 'Connect'}</span>
+                    </div>
                   </div>
-                  <div className={`flex-1 flex items-center`}>
+
+                  {/* <div className={`flex-1 flex items-center`}>
                     <Image
                       className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
                       src={loginRes.exchange ? theme === 'light' ? ImgHaveLight15 : ImgHaveDark15 : theme === 'light' ? ImgLight15 : Img15}
-                      onClick={() => {window.location.href = 'https://stackoverflow.com/oauth?client_id=25948&redirect_uri=https%3A%2F%2Fknn3-gateway.knn3.xyz%2Foauth%2Fstackoverflow&response_type=code&state=state' }}
+                      onClick={() => { window.location.href = 'https://stackoverflow.com/oauth?client_id=25948&redirect_uri=https%3A%2F%2Fknn3-gateway.knn3.xyz%2Foauth%2Fstackoverflow&response_type=code&state=state' }}
                       alt="" />
-                  </div>
-                  <div className={`flex-1 flex items-center`}>
-                    <Image
-                      className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
-                      src={theme === 'light' ? ImgLight16 : Img16}
-                      alt="" />
+                  </div> */}
+                  <div className={`flex-1`}>
+                    <div className='flex items-center'>
+                      <Image
+                        className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
+                        src={theme === 'light' ? ImgLight16 : Img16}
+                        alt="" />
+                    </div>
+                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                      <span className='text-[12px]'>Soon</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -570,23 +673,38 @@ const pass = () => {
                   <div>OAuth</div>
                 </div>
                 <div className='flex justify-between py-4 px-4'>
-                  <div className={`flex-1 flex items-center`}>
-                    <Image
-                      className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
-                      src={theme === 'light' ? ImgLight17 : Img17}
-                      alt="" />
+                  <div className={`flex-1`}>
+                    <div className='flex items-center'>
+                      <Image
+                        className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
+                        src={theme === 'light' ? ImgLight17 : Img17}
+                        alt="" />
+                    </div>
+                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                      <span className='text-[12px]'>Soon</span>
+                    </div>
                   </div>
-                  <div className={`flex-1 flex items-center`}>
-                    <Image
-                      className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
-                      src={theme === 'light' ? ImgLight18 : Img18}
-                      alt="" />
+                  <div className={`flex-1`}>
+                    <div className='flex items-center'>
+                      <Image
+                        className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
+                        src={theme === 'light' ? ImgLight18 : Img18}
+                        alt="" />
+                    </div>
+                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                      <span className='text-[12px]'>Soon</span>
+                    </div>
                   </div>
-                  <div className={`flex-1 flex items-center`}>
-                    <Image
-                      className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
-                      src={theme === 'light' ? ImgLight19 : Img19}
-                      alt="" />
+                  <div className={`flex-1`}>
+                    <div className='flex items-center'>
+                      <Image
+                        className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
+                        src={theme === 'light' ? ImgLight19 : Img19}
+                        alt="" />
+                    </div>
+                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                      <span className='text-[12px]'>Soon</span>
+                    </div>
                   </div>
                 </div>
               </div>

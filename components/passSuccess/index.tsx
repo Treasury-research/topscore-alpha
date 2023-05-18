@@ -57,7 +57,7 @@ const PassSuccess = (props: any) => {
             <div className="flex items-center justify-center my-8">
                 <Image src={getImgSrc()} alt='' />
             </div>
-            <div className="dash-bg-style w-[140px] mx-[auto] flex items-center justify-center text-[18px] font-[600] h-[40px]">Done</div>
+            <div className="dash-bg-style w-[140px] mx-[auto] flex items-center justify-center text-[18px] font-[600] h-[40px] cursor-pointer" onClick={() => handleCancel()}>Done</div>
         </Modal>
     )
 }
