@@ -400,7 +400,7 @@ const pass = () => {
 
   useEffect(() => {
     if (router.query && router.query.code && router.query.type) {
-      router.push('/pass/succss')
+      router.push('/pass')
       postGithubCode()
     }
   }, [router])
