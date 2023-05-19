@@ -406,6 +406,19 @@ const pass = () => {
     }
   }
 
+  const connectSocial = (type: string) => {
+    if(!currentLoginProfile.handle) return
+    if (type === 'discord') {
+      if (loginRes.discord) { return }; window.location.href = 'https://discord.com/api/oauth2/authorize?client_id=1065158934312263780&redirect_uri=https%3A%2F%2Fknn3-gateway.knn3.xyz%2Foauth%2Fdiscord&response_type=code&scope=identify'
+    }
+    if (type === 'github') {
+      if (loginRes.github) { return }; window.location.href = 'https://github.com/login/oauth/authorize?client_id=b59e578134a199905f5e&redirect_uri=https://knn3-gateway.knn3.xyz/oauth/github'
+    }
+    if (type === 'exchange') {
+      if (loginRes.exchange) { return }; window.location.href = 'https://stackoverflow.com/oauth?client_id=25948&redirect_uri=https%3A%2F%2Fknn3-gateway.knn3.xyz%2Foauth%2Fstackoverflow&response_type=code&state=state'
+    }
+  }
+
   useEffect(() => {
     if (chainId == config.EthChainId) {
       getValidator()
@@ -413,9 +426,18 @@ const pass = () => {
   }, [chainId])
 
   useEffect(() => {
+    console.log('currentLoginProfile',currentLoginProfile)
     if (currentLoginProfile.handle) {
       getIntroduce()
       getUserLogin()
+    } else {
+      setLoginRes({})
+      initWebInfo.map((t) => {
+        if (t.status === 'Verified') {
+          t.status = 'Ineligible'
+        }
+      })
+      setOnChains([...initWebInfo])
     }
   }, [currentLoginProfile])
 
@@ -558,7 +580,7 @@ const pass = () => {
                           className='mr-1 h-[12px] w-[12px]'
                           alt="" />
                       }
-                      <span className='text-[12px]' onClick={() => { if (loginRes.discord) { return }; window.location.href = 'https://discord.com/api/oauth2/authorize?client_id=1065158934312263780&redirect_uri=https%3A%2F%2Fknn3-gateway.knn3.xyz%2Foauth%2Fdiscord&response_type=code&scope=identify' }}>{loginRes.discord ? 'Verifiled' : 'Connect'}</span>
+                      <span className='text-[12px]' onClick={() => connectSocial('discord')}>{loginRes.discord ? 'Verifiled' : 'Connect'}</span>
                     </div>
                   </div>
 
@@ -595,11 +617,11 @@ const pass = () => {
 
                   <div className={`flex-1`}>
                     <div className='flex items-center'>
-                    <Popover placement="bottom" title={''} content={getSocialTooltip(loginRes.githubName)} trigger="hover" overlayStyle={{ 'display': !loginRes.github ? 'none' : '' }}>
-                      <Image
-                        className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
-                        src={loginRes.github ? theme === 'light' ? ImgHaveLight14 : ImgHaveDark14 : theme === 'light' ? ImgLight14 : Img14}
-                        alt="" />
+                      <Popover placement="bottom" title={''} content={getSocialTooltip(loginRes.githubName)} trigger="hover" overlayStyle={{ 'display': !loginRes.github ? 'none' : '' }}>
+                        <Image
+                          className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
+                          src={loginRes.github ? theme === 'light' ? ImgHaveLight14 : ImgHaveDark14 : theme === 'light' ? ImgLight14 : Img14}
+                          alt="" />
                       </Popover>
                     </div>
                     <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
@@ -610,7 +632,7 @@ const pass = () => {
                           className='mr-1 h-[12px] w-[12px]'
                           alt="" />
                       }
-                      <span className='text-[12px]' onClick={() => { if (loginRes.github) { return }; window.location.href = 'https://github.com/login/oauth/authorize?client_id=b59e578134a199905f5e&redirect_uri=https://knn3-gateway.knn3.xyz/oauth/github' }}>{loginRes.github ? 'Verifiled' : 'Connect'}</span>
+                      <span className='text-[12px]' onClick={() => connectSocial('github')}>{loginRes.github ? 'Verifiled' : 'Connect'}</span>
                     </div>
                   </div>
 
@@ -624,12 +646,12 @@ const pass = () => {
 
                   <div className={`flex-1`}>
                     <div className='flex items-center'>
-                    <Popover placement="bottom" title={''} content={getSocialTooltip(loginRes.exchangeName)} trigger="hover" overlayStyle={{ 'display': !loginRes.exchange ? 'none' : '' }}>
-                      <Image
-                        className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
-                        src={loginRes.exchange ? theme === 'light' ? ImgHaveLight15 : ImgHaveDark15 : theme === 'light' ? ImgLight15 : Img15}
-                        alt="" />
-                    </Popover>
+                      <Popover placement="bottom" title={''} content={getSocialTooltip(loginRes.exchangeName)} trigger="hover" overlayStyle={{ 'display': !loginRes.exchange ? 'none' : '' }}>
+                        <Image
+                          className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
+                          src={loginRes.exchange ? theme === 'light' ? ImgHaveLight15 : ImgHaveDark15 : theme === 'light' ? ImgLight15 : Img15}
+                          alt="" />
+                      </Popover>
                     </div>
                     <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
                       {
@@ -639,7 +661,7 @@ const pass = () => {
                           className='mr-1 h-[12px] w-[12px]'
                           alt="" />
                       }
-                      <span className='text-[12px]' onClick={() => { window.location.href = 'https://stackoverflow.com/oauth?client_id=25948&redirect_uri=https%3A%2F%2Fknn3-gateway.knn3.xyz%2Foauth%2Fstackoverflow&response_type=code&state=state' }}>{loginRes.exchange ? 'Verifiled' : 'Connect'}</span>
+                      <span className='text-[12px]' onClick={() => connectSocial('exchange')}>{loginRes.exchange ? 'Verifiled' : 'Connect'}</span>
                     </div>
                   </div>
 
