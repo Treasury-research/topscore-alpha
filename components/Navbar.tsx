@@ -80,7 +80,7 @@ const Navbar = () => {
                                     </div>
                                     <div>{t}</div>
                                     {
-                                        t !== 'Creation' && t !== 'Profile' &&
+                                        t !== 'Creation' && t !== 'Profile' && t !== 'Pass' &&
                                         <Image
                                             className="ml-1 mt-[-20px]"
                                             src={theme === 'light' ? SoonLight : Soon}
