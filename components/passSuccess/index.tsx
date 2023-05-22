@@ -5,10 +5,12 @@ import ImgSuccessRight from "../../statics/img/pass/config-success-right.png";
 import ImgDarkDescord from "../../statics/img/pass/have/dark/12.png";
 import ImgDarkGithub from "../../statics/img/pass/have/dark/14.png";
 import ImgDarkExchange from "../../statics/img/pass/have/dark/15.png";
+import ImgDarkGmail from "../../statics/img/pass/have/dark/17.png";
 
 import ImgLightDescord from "../../statics/img/pass/have/light/12.png";
 import ImgLightGithub from "../../statics/img/pass/have/light/14.png";
 import ImgLightExchange from "../../statics/img/pass/have/light/15.png";
+import ImgLightGmail from "../../statics/img/pass/have/light/17.png";
 
 import Image from "next/image";
 import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
@@ -17,8 +19,8 @@ import {
   } from "../../store/state";
   import { useRecoilState } from "recoil";
 
-const imgsDark = [ImgDarkDescord,ImgDarkGithub,ImgDarkExchange]
-const imgsLight = [ImgLightDescord,ImgLightGithub,ImgLightExchange]
+const imgsDark = [ImgDarkDescord,ImgDarkGithub,ImgDarkExchange,ImgDarkGmail]
+const imgsLight = [ImgLightDescord,ImgLightGithub,ImgLightExchange,ImgLightGmail]
 
 const PassSuccess = (props: any) => {
 
@@ -39,6 +41,8 @@ const PassSuccess = (props: any) => {
             return theme === 'light' ? imgsLight[0] : imgsDark[0]
         }else if(props.type === 'stackexchange'){
             return theme === 'light' ? imgsLight[2] : imgsDark[2]
+        }else if(props.type === 'gmail'){
+            return theme === 'light' ? imgsLight[3] : imgsDark[3]
         }
     }
 
