@@ -417,6 +417,9 @@ const pass = () => {
     if (type === 'exchange') {
       if (loginRes.exchange) { return }; window.location.href = 'https://stackoverflow.com/oauth?client_id=25948&redirect_uri=https%3A%2F%2Fknn3-gateway.knn3.xyz%2Foauth%2Fstackoverflow&response_type=code&state=state'
     }
+    if (type === 'gmail') {
+      if (loginRes.gmail) { return }; window.location.href = 'https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=837015741227-1hp92p0sajpm2r1esbdf0lq07gmihuru.apps.googleusercontent.com&redirect_uri=https://knn3-gateway.knn3.xyz/oauth/gmail&scope=https://www.googleapis.com/auth/gmail.readonly&state=topscore'
+    }
   }
 
   useEffect(() => {
@@ -695,7 +698,7 @@ const pass = () => {
                   <div>OAuth</div>
                 </div>
                 <div className='flex justify-between py-4 px-4'>
-                  <div className={`flex-1`}>
+                  {/* <div className={`flex-1`}>
                     <div className='flex items-center'>
                       <Image
                         className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
@@ -705,7 +708,29 @@ const pass = () => {
                     <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
                       <span className='text-[12px]'>Soon</span>
                     </div>
+                  </div> */}
+
+                  <div className={`flex-1`}>
+                    <div className='flex items-center'>
+                      <Popover placement="bottom" title={''} content={getSocialTooltip(loginRes.gmailName)} trigger="hover" overlayStyle={{ 'display': !loginRes.gmail ? 'none' : '' }}>
+                        <Image
+                          className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
+                          src={loginRes.gmail ? theme === 'light' ? ImgHaveLight17 : ImgHaveDark17 : theme === 'light' ? ImgLight17 : Img17}
+                          alt="" />
+                      </Popover>
+                    </div>
+                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                      {
+                        loginRes.gmail &&
+                        <Image
+                          src={theme === 'light' ? VerifileLight : VerifileDark}
+                          className='mr-1 h-[12px] w-[12px]'
+                          alt="" />
+                      }
+                      <span className='text-[12px]' onClick={() => connectSocial('gmail')}>{loginRes.gmail ? 'Verifiled' : 'Connect'}</span>
+                    </div>
                   </div>
+
                   <div className={`flex-1`}>
                     <div className='flex items-center'>
                       <Image
