@@ -30,6 +30,7 @@ import ChangeProfile from "./connect/ChangeProfile";
 import { ConsoleSqlOutlined, DownOutlined, LoadingOutlined ,HomeOutlined} from "@ant-design/icons";
 import PermissionMsg from './connect/PermissionMsg'
 import trace from "../api/trace";
+import { TwitterShareButton } from "react-share";
 
 const noLensMsg = 'You don‘t have your own Lens handle，you can get one on OpenSea.'
 
@@ -600,6 +601,13 @@ const ConnectBtn = (props: any) => {
         </div>
       }
       <div className="h-full ml-auto flex mr-4">
+        <TwitterShareButton
+          url={`https://topscore.staging.knn3.xyz/home`}
+          hashtags={["TopScore", "Lens", "Your2022WrappedonLens"]}
+          title={`My 2022 Wrapped on Lens: https://topscore.staging.knn3.xyz/home So what are your #TopScore? What is your social personality? FreeMint #LensRainbowNFT！@knn3_network`}
+        >
+          <span className="text-[#16171B]">share</span>
+        </TwitterShareButton>
         <div className=" bg-[#F8FEFF] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px] flex mr-5 items-center px-2">
           <div onClick={() => lightMode()} className={`${activeMs == 0 ? 'light-style' : ''} cursor-pointer h-5 w-5 flex items-center justify-center rounded-[50%] mr-2`}>
             {/* <Image

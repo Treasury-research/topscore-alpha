@@ -18,6 +18,7 @@ import Gallery from "../statics/img/home/gallery.svg";
 import GalleryIcon from "../statics/img/home/galleryIcon.webp";
 import { LeftOutlined, RightOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
+import { Helmet } from "react-helmet";
 
 // const inter = Inter({ subsets: ['latin'] })
 
@@ -26,6 +27,25 @@ export default function Index() {
     const carouselRef = useRef(null)
     return (
         <div className="w-full h-full text-[#fff] home-main">
+            <Helmet>
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="Your 2022 Wrapped on Lens" />
+                <meta name="twitter:description" content="TopScore - a KNN3-powered scoring system based on Lens Protocol to evaluate this campaign." />
+                <meta
+                    property="twitter:image"
+                    content="https://img1.baidu.com/it/u=1960110688,1786190632&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1686157200&t=e3a90d623390f1c2aa4fdecd8b875d68"/>
+                <meta property="og:title" content="Your 2022 Wrapped on Lens" />
+                <meta property="og:description" content="TopScore - a KNN3-powered scoring system based on Lens Protocol to evaluate this campaign." />
+                <meta
+                    property="og:image"
+                    content="https://img1.baidu.com/it/u=1960110688,1786190632&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1686157200&t=e3a90d623390f1c2aa4fdecd8b875d68"
+                // content={`https://lens-api.knn3.xyz/api/lens/generate/shareImg/${currentProfile.profileId}`}
+                />
+                <meta property="og:locale'" content="en_US" />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://topscore.staging.knn3.xyz/home" />
+                <meta property="og:site_name" content="Topscore" />
+            </Helmet>
             <div className='h-[calc(100%-100px)] float-left mt-[100px] overflow-auto hidden-scrollbar'>
                 <div className='h-[100vh] w-[100vw] flex items-center justify-center mt-[-100px] relative'>
                     <div className='flex w-[80%]'>
