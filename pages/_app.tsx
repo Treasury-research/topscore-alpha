@@ -33,6 +33,23 @@ export default function App({ Component, pageProps }: AppProps) {
             name="description"
             content="TopScore revolutionizes Web3 social strategy by providing data-driven insights and guidance to help you create, build, and monetize more efficiently and scientifically."
           />
+          <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="Your 2022 Wrapped on Lens" />
+                <meta name="twitter:description" content="TopScore - a KNN3-powered scoring system based on Lens Protocol to evaluate this campaign." />
+                <meta
+                    property="twitter:image"
+                    content="https://img1.baidu.com/it/u=1960110688,1786190632&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1686157200&t=e3a90d623390f1c2aa4fdecd8b875d68"/>
+                <meta property="og:title" content="Your 2022 Wrapped on Lens" />
+                <meta property="og:description" content="TopScore - a KNN3-powered scoring system based on Lens Protocol to evaluate this campaign." />
+                <meta
+                    property="og:image"
+                    content="https://img1.baidu.com/it/u=1960110688,1786190632&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1686157200&t=e3a90d623390f1c2aa4fdecd8b875d68"
+                // content={`https://lens-api.knn3.xyz/api/lens/generate/shareImg/${currentProfile.profileId}`}
+                />
+                <meta property="og:locale'" content="en_US" />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://topscore.staging.knn3.xyz/home" />
+                <meta property="og:site_name" content="Topscore" />
           <link rel="icon" href="/topIcon.png" />
         </Head>
         <Script
