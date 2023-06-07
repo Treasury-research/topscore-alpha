@@ -29,12 +29,13 @@ export default function Index() {
         <div className="w-full h-full text-[#fff] home-main">
             <Helmet>
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="Your 2022 Wrapped on Lens" />
+                <meta name="twitter:title" content="Your 2022 Wrapped on Lens44444" />
                 <meta name="twitter:description" content="TopScore - a KNN3-powered scoring system based on Lens Protocol to evaluate this campaign." />
                 <meta
                     property="twitter:image"
                     content="https://pbs.twimg.com/media/FxXebUHaQAELp5H?format=jpg&name=small"/>
-                <meta property="og:title" content="Your 2022 Wrapped on Lens" />
+                
+                {/* <meta property="og:title" content="Your 2022 Wrapped on Lens55555555555" />
                 <meta property="og:description" content="TopScore - a KNN3-powered scoring system based on Lens Protocol to evaluate this campaign." />
                 <meta
                     property="og:image"
@@ -43,8 +44,9 @@ export default function Index() {
                 />
                 <meta property="og:locale'" content="en_US" />
                 <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://topscore.staging.knn3.xyz/home" />
-                <meta property="og:site_name" content="Topscore" />
+                <meta property="og:url" content="https://topscore.staging.knn3.xyz/home" /> */}
+                {/* <meta property="og:site_name" content="Topscore" /> */}
+
             </Helmet>
             {/* <Helmet>
                 <meta property="og:title" content="Your 2022 Wrapped on Lens" />
