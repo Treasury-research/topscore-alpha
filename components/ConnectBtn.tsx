@@ -435,7 +435,7 @@ const ConnectBtn = (props: any) => {
   }, [])
 
   const share = (text,url,image) => {
-    const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&media=${image}`
+    const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`
     window.open(shareUrl, '_blank')
   }
 
