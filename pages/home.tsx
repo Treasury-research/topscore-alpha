@@ -28,9 +28,9 @@ export default function Index() {
     return (
         <div className="w-full h-full text-[#fff] home-main">
             <Helmet>
-                <meta name="twitter:card" content="summary_large_image" />
+                {/* <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:title" content="Your 2022 Wrapped on Lens44444" />
-                <meta name="twitter:description" content="TopScore - a KNN3-powered scoring system based on Lens Protocol to evaluate this campaign." />
+                <meta name="twitter:description" content="TopScore - a KNN3-powered scoring system based on Lens Protocol to evaluate this campaign." /> */}
                 <meta
                     property="twitter:image"
                     content="https://pbs.twimg.com/media/FxXebUHaQAELp5H?format=jpg&name=small"/>
