@@ -606,20 +606,20 @@ const ConnectBtn = (props: any) => {
         </div>
       }
       <div className="h-full ml-auto flex mr-4">
-        <TwitterShareButton
+        {/* <TwitterShareButton
           url={`https://topscore.staging.knn3.xyz/home`}
           hashtags={["TopScore", "Lens", "Your2022WrappedonLens"]}
           title={`My 2022 Wrapped on Lens: https://topscore.staging.knn3.xyz/home So what are your #TopScore? What is your social personality? FreeMint #LensRainbowNFT！@knn3_network`}
         >
           <span className="text-[#fff] dark:text-[#16171B]">share</span>
-        </TwitterShareButton>
+        </TwitterShareButton> */}
 
         {/* <TwitterShareButton
                 url="https://topscore.staging.knn3.xyz/home"
                 title="Hello world"
                 image={''}
               > */}
-                 <span className="text-[#fff] dark:text-[#16171B]" onClick={() => share('hello','https://topscore.staging.knn3.xyz/home','https://gss0.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/3b87e950352ac65ccd60d0cbfbf2b21193138a25.jpg')}>share</span>
+                 <span className="text-[#fff] dark:text-[#16171B]" onClick={() => share('hello223','https://topscore.staging.knn3.xyz/home','https://gss0.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/3b87e950352ac65ccd60d0cbfbf2b21193138a25.jpg')}>share</span>
               {/* </TwitterShareButton> */}
 
         <div className=" bg-[#F8FEFF] dark:bg-[#292A2E] connect-profile-shadow rounded-[20px] flex mr-5 items-center px-2">
