@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import axios from "axios";
 import { baseURL } from "../config";
 import { message } from "antd";
-import { useExpireStore } from "store/expire";
+import { useExpireStore } from "store/expire.ts";
 
 const api = axios.create({
   baseURL,
