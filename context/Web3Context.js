@@ -5,13 +5,14 @@ import config from "../config";
 import { ethers } from "ethers";
 import lensApi from "../api/lensApi";
 import api from "../api";
-import { knn3TokenValidState, currentProfileState, autoConnectState, profileListState, currentLoginProfileState,commendProfileListState } from "../store/state";
+import { knn3TokenValidState, currentProfileState, autoConnectState, profileListState, currentLoginProfileState, commendProfileListState } from "../store/state";
 import { useRecoilState } from "recoil";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { switchChain } from "../lib/tool";
 import { LoadingOutlined } from "@ant-design/icons";
 import useWeb3Modal from "../hooks/useWeb3Modal";
 import trace from "../api/trace";
+import { useExpireStore } from "store/expire";
 
 const actionMapping = [
   "Transaction being processed",
@@ -61,6 +62,7 @@ export const Web3ContextProvider = ({ children }) => {
   const [currentLoginProfile, setCurrentLoginProfile] =
     useRecoilState(currentLoginProfileState);
   const [commendProfileList, setCommendProfileList] = useRecoilState(commendProfileListState);
+  const { expire, setExpire } = useExpireStore();
 
   const listenProvider = () => {
     if (!window.ethereum) {
@@ -75,7 +77,7 @@ export const Web3ContextProvider = ({ children }) => {
       localStorage.removeItem("knn3RefreshToken");
       api.defaults.headers.authorization = "";
       setKnn3TokenValid(false);
-      if(commendProfileList.length > 0){
+      if (commendProfileList.length > 0) {
         setCurrentProfile(commendProfileList[0])
       }
       setProfileList([])
@@ -228,6 +230,7 @@ export const Web3ContextProvider = ({ children }) => {
 
     const token = (await lensApi.getAccessToken(account, signature))
       .authenticate;
+    setExpire('');
     localStorage.setItem("accessToken", token.accessToken);
     lensApi.setToken(token.accessToken);
   };
@@ -243,7 +246,7 @@ export const Web3ContextProvider = ({ children }) => {
     setKnn3TokenValid(false)
     resetWallet();
     setAutoConnect(false);
-    if(commendProfileList.length > 0){
+    if (commendProfileList.length > 0) {
       setCurrentProfile(commendProfileList[0])
     }
     setProfileList([])
@@ -312,6 +315,14 @@ export const Web3ContextProvider = ({ children }) => {
       connectWallet();
     }
   }, [autoConnect]);
+
+  useEffect(() => {
+    console.log('expire',expire)
+    if (expire) {
+      doLogout()
+      toast.info('Please login again as your session has expired.');
+    }
+  }, [expire]);
 
   return (
     <Web3Context.Provider
