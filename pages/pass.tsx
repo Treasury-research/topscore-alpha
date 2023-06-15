@@ -460,8 +460,8 @@ const pass = () => {
           <div className="w-[70%] max-w-[1400px] min-w-[800px] mx-[auto] hidden-scrollbar">
             <div className='mt-10 px-3'>
               <div className='w-full h-[160px] dash-bg-style rounded-[20px] p-8 flex items-center'>
-                <div className='flex items-center'>
-                  <div className='mr-4'>
+                <div className='flex items-center w-[calc(100%-220px)]'>
+                  <div className='mr-4 w-[100px]'>
                     {
                       currentLoginProfile.imageURI && currentLoginProfile.profileId ? (
                         <img src={getImgUrl(currentLoginProfile.imageURI)} className="w-[100px] h-[100px] rounded-[50%]" />
@@ -473,7 +473,7 @@ const pass = () => {
                       )
                     }
                   </div>
-                  <div className='h-[fit-content]'>
+                  <div className='h-[fit-content] w-[calc(100%-120px)] break-words'>
                     <p className='font-[600] text-[18px]'>{currentLoginProfile.name ? currentLoginProfile.name : currentLoginProfile.handle ? currentLoginProfile.handle.split('.')[0] : ''}
                       <span className='text-[12px] ml-2 text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.5)] font-[500]'>
                         {currentLoginProfile.profileId ? `@${currentLoginProfile.handle}` : 'NAN'}
