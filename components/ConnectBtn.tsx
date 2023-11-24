@@ -508,7 +508,7 @@ const ConnectBtn = (props: any) => {
                       searchLoading &&
                       <div className="w-full h-full flex items-center justify-center">
                         <div className=" my-[80px]">
-                          <LoadingOutlined className="text-2xl block mx-auto" />
+                          {/* <LoadingOutlined className="text-2xl block mx-auto" /> */}
                           <div>Searching users</div>
                         </div>
                       </div>
