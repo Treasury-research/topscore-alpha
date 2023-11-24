@@ -573,7 +573,7 @@ const ConnectBtn = (props: any) => {
                     </>
                   }
                   <span className="mr-3">{currentProfile?.handle}</span>
-                  <DownOutlined className='ml-auto' />
+                  <DownOutlined className='ml-auto' rev={''}/>
                 </button>
               </div>
             </Dropdown>
