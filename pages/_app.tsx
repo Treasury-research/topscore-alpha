@@ -12,13 +12,13 @@ import "../styles/dark.scss";
 import type { AppProps } from "next/app";
 import { RecoilRoot } from "recoil";
 import Head from "next/head";
-import Gleap from "gleap";
+// import Gleap from "gleap";
 
 export default function App({ Component, pageProps }: AppProps) {
-  useEffect(() => {
-    // Run within useEffect to execute this code on the frontend.
-    Gleap.initialize("sg1UIYFMK3J926CjXOFNUTR26T1uF6yB");
-  }, []);
+  // useEffect(() => {
+  //   // Run within useEffect to execute this code on the frontend.
+  //   Gleap.initialize("sg1UIYFMK3J926CjXOFNUTR26T1uF6yB");
+  // }, []);
 
   return (
     <RecoilRoot>
