@@ -30,7 +30,7 @@ import { themeState } from "../store/state";
 import { useRecoilState } from "recoil";
 import trace from "../api/trace";
 
-const headerTabs = ['Profile', 'Creation', 'Gallery', 'Circle', 'Pass']
+const headerTabs = ['LENS Score', 'Pass']
 
 const activeLightIcon = [IconLight1, IconLight2, IconLight3, IconLight4, IconLight5]
 
@@ -48,7 +48,7 @@ const Navbar = () => {
 
     const getAddress = (item: any, idx: number) => {
         trace(item)
-        if (item === 'Profile') {
+        if (item === 'LENS Score') {
             router.push(`/profile/stani`)
         }else {
             router.push(`/${item.toLocaleLowerCase()}`)
@@ -68,25 +68,25 @@ const Navbar = () => {
                 </div>
                 {
                     headerTabs.map((t: string, i: number) => (
-                        <div key={i} className={`${router.pathname.includes(t.toLocaleLowerCase()) ? 'text-[#292A2E] dark:text-[rgba(255,255,255,0.9)] selectNav' : 'text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.5)]'} h-12 flex items-center cursor-pointer w-[160px] rounded-[6px] mb-4 hoverNav`}>
+                        <div key={i} className={`${((router.pathname.includes('profile') && t == 'LENS Score') || router.pathname.includes(t.toLocaleLowerCase())) ? 'text-[#292A2E] dark:text-[rgba(255,255,255,0.9)] selectNav' : 'text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.5)]'} h-12 flex items-center cursor-pointer w-[160px] rounded-[6px] mb-4 hoverNav`}>
                             <div className="w-full h-full flex items-center" onClick={() => getAddress(t, i)}>
                                 <div className="flex">
                                     <div className=" ml-3 mr-2 flex items-center">
                                         <Image
                                             className="mr-1 h-6 w-6"
-                                            src={theme === 'light' ? router.pathname.includes(t.toLocaleLowerCase()) ? activeLightIcon[i] : activeNoSelectIcon[i] : theme === 'dark' ? router.pathname.includes(t.toLocaleLowerCase()) ? activeDarkIcon[i] : activeNoSelectIcon[i] : activeNoSelectIcon[i]}
+                                            src={theme === 'light' ? ((router.pathname.includes('profile') && t == 'LENS Score') || router.pathname.includes(t.toLocaleLowerCase())) ? activeLightIcon[i] : activeNoSelectIcon[i] : theme === 'dark' ? ((router.pathname.includes('profile') && t == 'LENS Score') || router.pathname.includes(t.toLocaleLowerCase())) ? activeDarkIcon[i] : activeNoSelectIcon[i] : activeNoSelectIcon[i]}
                                             alt=""
                                         />
                                     </div>
                                     <div>{t}</div>
-                                    {
+                                    {/* {
                                         t !== 'Creation' && t !== 'Profile' && t !== 'Pass' &&
                                         <Image
                                             className="ml-1 mt-[-20px]"
                                             src={theme === 'light' ? SoonLight : Soon}
                                             alt=""
                                         />
-                                    }
+                                    } */}
 
                                 </div>
                             </div>

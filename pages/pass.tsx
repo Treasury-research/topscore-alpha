@@ -84,7 +84,7 @@ import ImgHaveLight16 from "../statics/img/pass/have/light/16.png";
 import ImgHaveLight17 from "../statics/img/pass/have/light/17.png";
 import ImgHaveLight18 from "../statics/img/pass/have/light/18.png";
 import ImgHaveLight19 from "../statics/img/pass/have/light/19.png";
-
+import { getAddr } from 'knn3-sdk';
 
 import Mask1 from "../statics/img/pass/mask1.png";
 import Mask2 from "../statics/img/pass/mask2.png";
@@ -302,7 +302,7 @@ const getSocialTooltip = (name) => {
 const pass = () => {
   const router = useRouter();
 
-  const { chainId } = useWeb3Context();
+  const { chainId,account } = useWeb3Context();
 
   const proofContract = useProofContract();
 
@@ -321,6 +321,8 @@ const pass = () => {
   const [loginType, setLoginType] = useState<any>('')
 
   const [loginLoading, setLoginLoading] = useState<any>(false)
+
+  const [ens,setEns] = useState<any>('')
 
   const [currentLoginProfile,] =
     useRecoilState<any>(currentLoginProfileState);
@@ -365,6 +367,13 @@ const pass = () => {
       ])
       setTotalScroe(score)
       setLoginRes(res.data)
+    }
+  }
+
+  const getEns = async () => {
+    let res: any = await api.get(`/lens/getEns?address=${account}`)
+    if(res && res.data && res.data.ens && res.data.ens.length > 0){
+      setEns(res.data.ens[0])
     }
   }
 
@@ -451,6 +460,10 @@ const pass = () => {
     }
   }, [router])
 
+  useEffect(() => {
+    getEns()
+  },[account])
+
   return (
     <div className="w-full h-full bg-[#fff] dark:bg-[#16171B] flex">
       <Navbar />
@@ -462,7 +475,7 @@ const pass = () => {
               <div className='w-full h-[160px] dash-bg-style rounded-[20px] p-8 flex items-center'>
                 <div className='flex items-center w-[calc(100%-220px)]'>
                   <div className='mr-4 w-[100px]'>
-                    {
+                    {/* {
                       currentLoginProfile.imageURI && currentLoginProfile.profileId ? (
                         <img src={getImgUrl(currentLoginProfile.imageURI)} className="w-[100px] h-[100px] rounded-[50%]" />
                       ) : (
@@ -471,13 +484,34 @@ const pass = () => {
                           src={theme === 'light' ? NoProfileDark : NoProfileDark}
                           alt="" />
                       )
+                    } */}
+                    {
+                      ens ? (
+                        <Image
+                          className="w-[100px] h-[100px] rounded-[50%]"
+                          src={theme === 'light' ? NoProfileDark : NoProfileDark}
+                          alt="" />
+                      ):(
+                        <>
+                          {
+                            currentLoginProfile.imageURI && currentLoginProfile.profileId ? (
+                              <img src={getImgUrl(currentLoginProfile.imageURI)} className="w-[100px] h-[100px] rounded-[50%]" />
+                            ) : (
+                              <Image
+                                className="w-[100px] h-[100px] rounded-[50%]"
+                                src={theme === 'light' ? NoProfileDark : NoProfileDark}
+                                alt="" />
+                            )
+                          }
+                        </>
+                      )
                     }
                   </div>
                   <div className='h-[fit-content] w-[calc(100%-120px)] break-words'>
-                    <p className='font-[600] text-[18px]'>{currentLoginProfile.name ? currentLoginProfile.name : currentLoginProfile.handle ? currentLoginProfile.handle.split('.')[0] : ''}
-                      <span className='text-[12px] ml-2 text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.5)] font-[500]'>
+                    <p className='font-[600] text-[18px]'>{ens ? ens : currentLoginProfile.name ? currentLoginProfile.name : currentLoginProfile.handle ? currentLoginProfile.handle : account}
+                      {/* <span className='text-[12px] ml-2 text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.5)] font-[500]'>
                         {currentLoginProfile.profileId ? `@${currentLoginProfile.handle}` : 'NAN'}
-                      </span>
+                      </span> */}
                     </p>
                     <p className='text-[14px]'>{introduce}</p>
                   </div>
@@ -567,15 +601,13 @@ const pass = () => {
 
                   <div className={`flex-1`}>
                     <div className='flex items-center'>
-                      <Popover placement="bottom" title={''} content={getSocialTooltip(loginRes.discordName)} trigger="hover" overlayStyle={{ 'display': !loginRes.discord ? 'none' : '' }}>
-                        <Image
+                    <Image
                           className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
-                          src={loginRes.discord ? theme === 'light' ? ImgHaveLight12 : ImgHaveDark12 : theme === 'light' ? ImgLight12 : Img12}
+                          src={theme === 'light' ? ImgLight12 : Img12}
                           alt="" />
-                      </Popover>
 
                     </div>
-                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                    {/* <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
                       {
                         loginRes.discord &&
                         <Image
@@ -584,6 +616,9 @@ const pass = () => {
                           alt="" />
                       }
                       <span className='text-[12px]' onClick={() => connectSocial('discord')}>{loginRes.discord ? 'Verifiled' : 'Connect'}</span>
+                    </div> */}
+                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                      <span className='text-[12px]'>Soon</span>
                     </div>
                   </div>
 
@@ -620,14 +655,12 @@ const pass = () => {
 
                   <div className={`flex-1`}>
                     <div className='flex items-center'>
-                      <Popover placement="bottom" title={''} content={getSocialTooltip(loginRes.githubName)} trigger="hover" overlayStyle={{ 'display': !loginRes.github ? 'none' : '' }}>
-                        <Image
+                    <Image
                           className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
-                          src={loginRes.github ? theme === 'light' ? ImgHaveLight14 : ImgHaveDark14 : theme === 'light' ? ImgLight14 : Img14}
+                          src={theme === 'light' ? ImgLight14 : Img14}
                           alt="" />
-                      </Popover>
                     </div>
-                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                    {/* <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
                       {
                         loginRes.github &&
                         <Image
@@ -636,6 +669,9 @@ const pass = () => {
                           alt="" />
                       }
                       <span className='text-[12px]' onClick={() => connectSocial('github')}>{loginRes.github ? 'Verifiled' : 'Connect'}</span>
+                    </div> */}
+                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                      <span className='text-[12px]'>Soon</span>
                     </div>
                   </div>
 
@@ -649,14 +685,12 @@ const pass = () => {
 
                   <div className={`flex-1`}>
                     <div className='flex items-center'>
-                      <Popover placement="bottom" title={''} content={getSocialTooltip(loginRes.exchangeName)} trigger="hover" overlayStyle={{ 'display': !loginRes.exchange ? 'none' : '' }}>
-                        <Image
+                    <Image
                           className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
-                          src={loginRes.exchange ? theme === 'light' ? ImgHaveLight15 : ImgHaveDark15 : theme === 'light' ? ImgLight15 : Img15}
+                          src={theme === 'light' ? ImgLight15 : Img15}
                           alt="" />
-                      </Popover>
                     </div>
-                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                    {/* <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
                       {
                         loginRes.exchange &&
                         <Image
@@ -665,6 +699,9 @@ const pass = () => {
                           alt="" />
                       }
                       <span className='text-[12px]' onClick={() => connectSocial('exchange')}>{loginRes.exchange ? 'Verifiled' : 'Connect'}</span>
+                    </div> */}
+                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                      <span className='text-[12px]'>Soon</span>
                     </div>
                   </div>
 
@@ -712,14 +749,12 @@ const pass = () => {
 
                   <div className={`flex-1`}>
                     <div className='flex items-center'>
-                      <Popover placement="bottom" title={''} content={getSocialTooltip(loginRes.gmailName)} trigger="hover" overlayStyle={{ 'display': !loginRes.gmail ? 'none' : '' }}>
-                        <Image
+                    <Image
                           className='w-[90%] mx-[auto] cursor-pointer hover:scale-110 transition-all'
-                          src={loginRes.gmail ? theme === 'light' ? ImgHaveLight17 : ImgHaveDark17 : theme === 'light' ? ImgLight17 : Img17}
+                          src={theme === 'light' ? ImgLight17 : Img17}
                           alt="" />
-                      </Popover>
                     </div>
-                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                    {/* <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
                       {
                         loginRes.gmail &&
                         <Image
@@ -728,6 +763,9 @@ const pass = () => {
                           alt="" />
                       }
                       <span className='text-[12px]' onClick={() => connectSocial('gmail')}>{loginRes.gmail ? 'Verifiled' : 'Connect'}</span>
+                    </div> */}
+                    <div className='w-[80%] text-center py-1 mx-[auto] dash-bg-style cursor-pointer flex items-center justify-center hover:opacity-70 mt-3'>
+                      <span className='text-[12px]'>Soon</span>
                     </div>
                   </div>
 
