@@ -586,7 +586,7 @@ const ConnectBtn = (props: any) => {
                 src={ImgHome}
                 alt=""
               /> */}
-              <HomeOutlined />
+              <HomeOutlined rev={''}/>
             </div>
           }
 

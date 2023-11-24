@@ -75,11 +75,11 @@ const gallery = () => {
                 </div>
                 <button className="hover:opacity-70 h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#fff] dark:bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[48px] translate-x-[-24px] translate-y-[-50%]"
                   onClick={() => { carouselRef.current?.prev(); }}>
-                  <LeftOutlined className="text-[18px] text-[700]"/>
+                  <LeftOutlined className="text-[18px] text-[700]" rev={''}/>
                 </button>
                 <button className="hover:opacity-70 h-12 w-12 radius-btn-shadow rounded-[50%] bg-[#fff] dark:bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[48px] translate-x-[24px] translate-y-[-50%]"
                   onClick={() => { carouselRef.current?.next(); }}>
-                  <RightOutlined className="text-[18px] text-[700]" />
+                  <RightOutlined className="text-[18px] text-[700]" rev={''} />
                 </button>
               </div>
               <div className="flex justify-center mt-14">

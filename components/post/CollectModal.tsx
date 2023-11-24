@@ -34,7 +34,7 @@ const CollectModal = (props: any) => {
 
                 </div>
                 <div className='ml-[auto] cursor-pointer' onClick={() => handleCancel()}>
-                    <CloseOutlined className='text-[20px]' />
+                    <CloseOutlined className='text-[20px]' rev={''} />
                 </div>
             </div>
             <div className="text-[16px] text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">
@@ -51,7 +51,7 @@ const CollectModal = (props: any) => {
                         <div className="my-3">
                             <div className='flex items-center'>
                                 <div className='flex items-center'>
-                                    <ClusterOutlined className="text-[18px] mr-2" />
+                                    <ClusterOutlined className="text-[18px] mr-2" rev={''} />
                                 </div>
                                 <div className="text-[18px]">
                                     Charge for collecting
@@ -87,7 +87,7 @@ const CollectModal = (props: any) => {
                     </div>
                     <div className='flex items-center mt-3 mb-2'>
                         <div className='flex items-center'>
-                            <SwapOutlined className="text-[18px] mr-2" />
+                            <SwapOutlined className="text-[18px] mr-2" rev={''}/>
                         </div>
                         <div className="text-[18px]">
                             Mirror referral reward
@@ -102,7 +102,7 @@ const CollectModal = (props: any) => {
                     <div className="my-3">
                         <div className='flex items-center'>
                             <div className='flex items-center'>
-                                <DeploymentUnitOutlined className="text-[18px] mr-2" />
+                                <DeploymentUnitOutlined className="text-[18px] mr-2" rev={''} />
                             </div>
                             <div className="text-[18px]">
                                 Limited edition
@@ -116,7 +116,7 @@ const CollectModal = (props: any) => {
                     <div className="my-3">
                         <div className='flex items-center'>
                             <div className='flex items-center'>
-                                <FieldTimeOutlined className="text-[18px] mr-2" />
+                                <FieldTimeOutlined className="text-[18px] mr-2" rev={''} />
                             </div>
                             <div className="text-[18px]">
                                 Time limit
@@ -135,7 +135,7 @@ const CollectModal = (props: any) => {
                         <div className="my-3">
                             <div className='flex items-center'>
                                 <div className='flex items-center'>
-                                    <UsergroupAddOutlined className="text-[18px] mr-2" />
+                                    <UsergroupAddOutlined className="text-[18px] mr-2" rev={''} />
                                 </div>
                                 <div className="text-[18px]">
                                     Who can collect

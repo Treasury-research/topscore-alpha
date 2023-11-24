@@ -38,7 +38,7 @@ const nft = () => {
     return (
         <div className="w-full h-full bg-[#000] flex text-[#fff]">
             <div className="h-full w-full flex items-center justify-center">
-                <Spin indicator={<LoadingOutlined style={{ fontSize: 36 }} spin />} />
+                <Spin indicator={<LoadingOutlined rev={''} style={{ fontSize: 36 }} spin />} />
             </div>
         </div>
     )

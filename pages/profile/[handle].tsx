@@ -583,11 +583,11 @@ const profile = (props: any) => {
                         <>
                           <button className="h-12 w-12 radius-btn-shadow opacity-70 rounded-[50%] bg-[#fff] dark:bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[20px] translate-x-[-24px] translate-y-[-50%]"
                             onClick={() => { carouselRef.current?.prev(); trace('NFT-Left') }}>
-                            <LeftOutlined className="text-[18px] text-[700]" />
+                            <LeftOutlined className="text-[18px] text-[700]" rev={''} />
                           </button>
                           <button className="h-12 w-12 radius-btn-shadow opacity-70 rounded-[50%] bg-[#fff] dark:bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[20px] translate-x-[24px] translate-y-[-50%]"
                             onClick={() => { carouselRef.current?.next();; trace('NFT-Right') }}>
-                            <RightOutlined className="text-[18px] text-[700]" />
+                            <RightOutlined className="text-[18px] text-[700]" rev={''} />
                           </button>
                         </>
                       }

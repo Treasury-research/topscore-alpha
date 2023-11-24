@@ -50,7 +50,7 @@ const PassSuccess = (props: any) => {
         <Modal open={true} onOk={handleOk} onCancel={handleCancel} className='w-[400px]' width={400} centered>
             <div className='flex items-center'>
                 <div className='ml-[auto] cursor-pointer' onClick={() => handleCancel()}>
-                    <CloseOutlined className='text-[20px] hover:scale-110 transition-all' />
+                    <CloseOutlined className='text-[20px] hover:scale-110 transition-all' rev={''} />
                 </div>
             </div>
             <div className="flex items-center justify-center">
