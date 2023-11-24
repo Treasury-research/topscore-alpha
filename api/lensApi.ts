@@ -1,7 +1,7 @@
 import { gql, GraphQLClient } from "graphql-request";
 import { lensURL } from "../config";
 
-let client = new GraphQLClient(lensURL, {});
+let client:any = new GraphQLClient(lensURL, {});
 
 export const setToken = async (token: string) => {
   client.setHeader('x-access-token', `Bearer ${token}`)
