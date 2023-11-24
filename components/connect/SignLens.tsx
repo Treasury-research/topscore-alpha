@@ -43,7 +43,7 @@ const SignLens = (props: any) => {
 
                 </div>
                 <div className='ml-[auto] cursor-pointer' onClick={() => handleCancel()}>
-                    <CloseOutlined className='text-[20px]' rev={''} />
+                    <CloseOutlined className='text-[20px]' />
                 </div>
             </div>
             <div className="text-[16px] text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">
@@ -51,12 +51,12 @@ const SignLens = (props: any) => {
                 <div className="text-[#6C747D] text-[14px]">Connect with one of available wallet providers or create a new one.</div>
                 <div className="mt-4">
                     <button onClick={signin} className="bg-[#73ABFF] dark:bg-[#CE3900] py-2 rounded-[4px] font-[600] flex items-center px-4">
-                        {/* <Image
+                        <Image
                             src={P1}
                             alt=""
                             className="mr-[10px]"
-                        /> */}
-                        <span className="text-[#fff]">Sign In</span>
+                        />
+                        <span className="text-[#fff]">Sign-in with Lens</span>
                     </button>
                     {/* <div className="underline pb-[10px] cursor-pointer flex items-center mt-[10px]">
                         <Image

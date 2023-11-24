@@ -21,7 +21,7 @@ const PermissionMsg = (props: any) => {
         <Modal title="Basic Modal" open={true} onOk={handleOk} onCancel={handleCancel} className='permission-msg'>
             <div className='flex items-center pb-5'>
                 <div className='ml-[auto] cursor-pointer' onClick={() => handleCancel()}>
-                    <CloseOutlined className='text-[20px]' rev={''} />
+                    <CloseOutlined className='text-[20px]' />
                 </div>
             </div>
             <div className="flex">

@@ -283,7 +283,7 @@ export const Web3ContextProvider = ({ children }) => {
         })
         .on("transactionHash", (txnHash) => {
           toast.info(actionMapping[0], {
-            icon: <LoadingOutlined rev={''}/>,
+            icon: <LoadingOutlined />,
           });
         })
         .on("receipt", async (receipt) => {

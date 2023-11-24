@@ -38,7 +38,7 @@ const ChangeProfile = (props: any) => {
                     <span className='font-[600] text-[20px]'>Change Profile</span>
                 </div>
                 <div className='ml-[auto] cursor-pointer' onClick={() => handleCancel()}>
-                    <CloseOutlined className='text-[20px]' rev={''} />
+                    <CloseOutlined className='text-[20px]' />
                 </div>
             </div>
             <div className="text-[16px] text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">
@@ -64,7 +64,7 @@ const ChangeProfile = (props: any) => {
                                     alt="" />
                             }
                             <span>{t.handle}</span>
-                            {currentLoginProfile.profileId === t.profileId && <CheckOutlined className="ml-[auto]" rev={''} />}
+                            {currentLoginProfile.profileId === t.profileId && <CheckOutlined className="ml-[auto]" />}
                         </div>
                     ))}
                 </div>

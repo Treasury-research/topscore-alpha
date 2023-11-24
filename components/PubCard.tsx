@@ -167,7 +167,7 @@ const PubCard = (props: any) => {
           <div className="flex ml-6 h-full w-[60%]">
             {
               tabs.map((t: any, i: number) => (
-                <div className="h-full relative mr-6" key={i}>
+                <div className="h-full relative mr-6">
                   <div key={i} onClick={() => topRecentChange(i)} className={`cursor-pointer ${((!topRecentSwitch && i == 0) || (topRecentSwitch && i == 1)) ? 'dark:text-[#fff]' : 'text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)]'} h-full text-[18px] font-[600] flex justify-center items-center`}>
                     {t}
                   </div>

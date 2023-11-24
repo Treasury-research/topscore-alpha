@@ -529,7 +529,7 @@ const DashRmodynamics = () => {
                         <div className="flex ml-8 h-full">
                             {
                                 tabs.map((t: any, i: number) => (
-                                    <div className="h-full relative" key={i}>
+                                    <div className="h-full relative">
                                         <div key={i} onClick={() => setActiveTab(i)} className={`cursor-pointer ${activeTab === i ? ' text-[#292A2E] dark:text-[#fff]' : 'text-[rgba(0,0,0,0.4)] dark:text-[rgba(255,255,255,0.4)]'} px-2 h-full mr-4 text-[18px] font-[600] flex justify-center items-center`}>
                                             {t}
                                         </div>

@@ -53,7 +53,7 @@ const LoginConnect = (props: any) => {
                     <div className='font-[600] text-[20px] flex items-center ml-1 mt-[-6px]'>Login</div>
                 </div>
                 <div className='ml-[auto] cursor-pointer' onClick={() => handleCancel()}>
-                    <CloseOutlined className='text-[20px]' rev={''} />
+                    <CloseOutlined className='text-[20px]' />
                 </div>
             </div>
             <div className="text-[16px] text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">

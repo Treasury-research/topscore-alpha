@@ -105,11 +105,11 @@ export default function Index() {
                             </div>
                             <button className="h-12 w-12 radius-btn-shadow opacity-70 rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] left-[5%] translate-x-[-24px] translate-y-[-50%]"
                                 onClick={() => { carouselRef.current?.prev(); }}>
-                                <LeftOutlined className="text-[18px] text-[700]" rev={''} />
+                                <LeftOutlined className="text-[18px] text-[700]" />
                             </button>
                             <button className="h-12 w-12 radius-btn-shadow opacity-70 rounded-[50%] bg-[#1C1C1E] flex items-center justify-center cursor-pointer absolute top-[50%] right-[5%] translate-x-[24px] translate-y-[-50%]"
                                 onClick={() => { carouselRef.current?.next(); }}>
-                                <RightOutlined className="text-[18px] text-[700]" rev={''} />
+                                <RightOutlined className="text-[18px] text-[700]" />
                             </button>
                         </div>
 
