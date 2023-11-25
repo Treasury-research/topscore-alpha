@@ -46,6 +46,7 @@
     "react-toastify": "^9.1.1",
     "recoil": "^0.7.6",
     "recoil-persist": "^4.2.0",
+    "knn3-sdk": "^1.1.2",
     "sass": "^1.58.0",
     "typescript": "4.9.4",
     "url-loader": "^4.1.1",

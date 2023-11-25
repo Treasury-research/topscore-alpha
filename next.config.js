@@ -9,8 +9,13 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/home',
+        destination: '/profile/stani',
+        permanent: true,
+      },
+      {
         source: '/',
-        destination: '/home',
+        destination: '/profile/stani',
         permanent: true,
       },
       {

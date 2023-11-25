@@ -11,7 +11,7 @@ import Follow from '../../components/Follow'
 import Image from "next/image";
 
 import ImgPolygonpath from "../../statics/img/profileV2/polygon-path.svg";
-import ImgLenster from "../../statics/img/profileV2/lenster.svg";
+import ImgLenster from "../../statics/img/profileV2/lens.png";
 import ImgOpensea from "../../statics/img/profileV2/opensea.svg"
 import ImgEdit from "../../statics/img/profileV2/edit.icon.svg"
 import ImgCopy from "../../statics/img/profileV2/copy.icon.svg"
@@ -456,7 +456,7 @@ const profile = (props: any) => {
                             </button>
                             <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[28px] w-[28px] rounded-[50%]">
                               <div className="h-[22px] w-[22px] rounded-[50%] bg-[#8247E5] flex items-center justify-center"
-                                onClick={() => { window.open(`https://lenster.xyz/u/${currentProfile.handle}`, '_blank'); trace('Card-Lenster') }}>
+                                onClick={() => { window.open(`https://hey.xyz/${currentProfile.handle.split('.')[0]}`, '_blank'); trace('Card-Lenster') }}>
                                 <Image
                                   src={ImgLenster}
                                   className="h-[14px] w-[14px] object-cover"
@@ -476,7 +476,7 @@ const profile = (props: any) => {
                             </button>
                           </div>
                           <div className="flex gap-3">
-                            {
+                            {/* {
                               account && currentProfile.address !== currentLoginProfile.address &&
                               <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]">
                                 <Follow
@@ -484,7 +484,7 @@ const profile = (props: any) => {
                                   handle={currentProfile.handle}
                                 />
                               </button>
-                            }
+                            } */}
                             {
                               currentProfile.address === currentLoginProfile.address &&
                               <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[32px] w-[32px] rounded-[50%]"
