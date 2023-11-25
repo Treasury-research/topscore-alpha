@@ -11,7 +11,7 @@ import Follow from '../../components/Follow'
 import Image from "next/image";
 
 import ImgPolygonpath from "../../statics/img/profileV2/polygon-path.svg";
-import ImgLenster from "../../statics/img/profileV2/lens1.png";
+import ImgLenster from "../../statics/img/profileV2/lens.png";
 import ImgOpensea from "../../statics/img/profileV2/opensea.svg"
 import ImgEdit from "../../statics/img/profileV2/edit.icon.svg"
 import ImgCopy from "../../statics/img/profileV2/copy.icon.svg"
