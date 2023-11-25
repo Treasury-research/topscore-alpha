@@ -508,7 +508,7 @@ const ConnectBtn = (props: any) => {
                       searchLoading &&
                       <div className="w-full h-full flex items-center justify-center">
                         <div className=" my-[80px]">
-                          <LoadingOutlined className="text-2xl block mx-auto" />
+                          {/* <LoadingOutlined className="text-2xl block mx-auto" /> */}
                           <div>Searching users</div>
                         </div>
                       </div>
@@ -573,7 +573,7 @@ const ConnectBtn = (props: any) => {
                     </>
                   }
                   <span className="mr-3">{currentProfile?.handle}</span>
-                  <DownOutlined className='ml-auto' />
+                  <DownOutlined className='ml-auto' rev={''}/>
                 </button>
               </div>
             </Dropdown>
@@ -586,7 +586,7 @@ const ConnectBtn = (props: any) => {
                 src={ImgHome}
                 alt=""
               /> */}
-              <HomeOutlined />
+              <HomeOutlined rev={''}/>
             </div>
           }
 

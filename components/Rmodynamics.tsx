@@ -661,7 +661,7 @@ const rmodynamics = () => {
                 </div>
                 <div className="w-[calc(100%-890px)] min-w-[260px] p-1">
                     <div className="flex min-w-[260px] max-w-100 mt-[95px]">
-                        <div className={`rounded-[4px] h-10 w-10 dash-bg-style flex items-center justify-center text-[24px] ${weekCount === 4 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getLastWeek}><LeftOutlined /></div>
+                        <div className={`rounded-[4px] h-10 w-10 dash-bg-style flex items-center justify-center text-[24px] ${weekCount === 4 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getLastWeek}><LeftOutlined rev={''}/></div>
                         <div className="rounded-[10px] w-[calc(100%-100px)] mx-[10px] h-10 dash-bg-style flex items-center justify-center">
                             {
                                 week.length !== 0 &&
@@ -691,7 +691,7 @@ const rmodynamics = () => {
                                 </>
                             }
                         </div>
-                        <div className={`rounded-[4px] h-10 w-10 dash-bg-style flex items-center justify-center text-[24px] ${weekCount == -1 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getNextWeek}><RightOutlined/></div>
+                        <div className={`rounded-[4px] h-10 w-10 dash-bg-style flex items-center justify-center text-[24px] ${weekCount == -1 ? 'cursor-[not-allowed]' : 'cursor-pointer'}`} onClick={getNextWeek}><RightOutlined rev={''}/></div>
                     </div>
                     <div className="px-6 py-[28px] dash-bg-style mt-[10px] rounded-[10px] flex items-center">
                         <div className="h-[fit-content] w-full">

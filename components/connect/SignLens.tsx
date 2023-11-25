@@ -43,7 +43,7 @@ const SignLens = (props: any) => {
 
                 </div>
                 <div className='ml-[auto] cursor-pointer' onClick={() => handleCancel()}>
-                    <CloseOutlined className='text-[20px]' />
+                    <CloseOutlined className='text-[20px]' rev={''} />
                 </div>
             </div>
             <div className="text-[16px] text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">

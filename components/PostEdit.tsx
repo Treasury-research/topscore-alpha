@@ -37,19 +37,19 @@ const UpLoadPopover = ({
     <div className="text-[rgba(255,255,255,0.8)]">
       <div className="cursor-pointer flex items-center">
         <Uploader onUploaded={onImageUploaded}>
-          <FileImageOutlined className="mr-1" />
+          <FileImageOutlined className="mr-1" rev={''} />
           <span className="text-white">Upload image(s)</span>
         </Uploader>
       </div>
       <div className="cursor-pointer flex items-center">
         <Uploader onUploaded={onVideoUploaded}>
-          <VideoCameraOutlined className="mr-1" />
+          <VideoCameraOutlined className="mr-1" rev={''} />
           <span className="text-white">Upload video</span>
         </Uploader>
       </div>
       <div className="cursor-pointer flex items-center">
         <Uploader onUploaded={onAudioUploaded}>
-          <CustomerServiceOutlined className="mr-1" />
+          <CustomerServiceOutlined className="mr-1" rev={''} />
           <span className="text-white">Upload audio</span>
         </Uploader>
       </div>
@@ -76,7 +76,7 @@ const PermitPopover = () => {
           className="cursor-pointer flex items-center px-1 rounded-[4px] hover:dark:bg-[#555555]"
         >
           {t}
-          {actTag === i && <CheckOutlined className="ml-[auto]" />}
+          {actTag === i && <CheckOutlined className="ml-[auto]" rev={''} />}
         </div>
       ))}
     </div>
