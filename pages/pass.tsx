@@ -85,7 +85,7 @@ import ImgHaveLight17 from "../statics/img/pass/have/light/17.png";
 import ImgHaveLight18 from "../statics/img/pass/have/light/18.png";
 import ImgHaveLight19 from "../statics/img/pass/have/light/19.png";
 import { getAddr } from 'knn3-sdk';
-import { shortenAddr} from "../../lib/tool";
+import { shortenAddr} from "../lib/tool";
 import Mask1 from "../statics/img/pass/mask1.png";
 import Mask2 from "../statics/img/pass/mask2.png";
 import Mask3 from "../statics/img/pass/mask3.png";
