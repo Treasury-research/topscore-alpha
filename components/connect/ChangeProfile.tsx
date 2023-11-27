@@ -35,7 +35,7 @@ const ChangeProfile = (props: any) => {
         <Modal title="Basic Modal" open={true} onOk={handleOk} onCancel={handleCancel}>
             <div className='flex items-center pb-5 border-b-[1px] border-[#ccc] dark:border-[#4A4A4A] mb-5'>
                 <div className='flex items-center'>
-                    <span className='font-[600] text-[20px]'>Change Profile</span>
+                    <span className='font-[600] text-[20px]'>Switch Profile</span>
                 </div>
                 <div className='ml-[auto] cursor-pointer' onClick={() => handleCancel()}>
                     <CloseOutlined className='text-[20px]' rev={''} />
@@ -43,7 +43,11 @@ const ChangeProfile = (props: any) => {
             </div>
             <div className="text-[16px] text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">
                 <div className="text-[#292A2E] dark:text-[rgba(255,255,255,0.8)]">
-                    {profileList.map((t: any, i: number) => (
+                    {
+                        profileList.length == 0 ? (
+                            <div>No LENS profile detected.</div>
+                        ):(<>
+                        {profileList.map((t: any, i: number) => (
                         <div
                             key={i}
                             onClick={() => { setCurrentLoginProfile(t);handleOk();trace('SwitchProfile') }}
@@ -67,6 +71,9 @@ const ChangeProfile = (props: any) => {
                             {currentLoginProfile.profileId === t.profileId && <CheckOutlined className="ml-[auto]" rev={''} />}
                         </div>
                     ))}
+                        </>)
+                    }
+                    
                 </div>
             </div>
         </Modal>

@@ -13,6 +13,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import useWeb3Modal from "../hooks/useWeb3Modal";
 import trace from "../api/trace";
 import { useExpireStore } from "store/expire";
+import Router, { useRouter } from "next/router";
 
 const actionMapping = [
   "Transaction being processed",
@@ -63,7 +64,7 @@ export const Web3ContextProvider = ({ children }) => {
     useRecoilState(currentLoginProfileState);
   const [commendProfileList, setCommendProfileList] = useRecoilState(commendProfileListState);
   const { expire, setExpire } = useExpireStore();
-
+  const router = useRouter();
   const listenProvider = () => {
     if (!window.ethereum) {
       return
@@ -88,6 +89,7 @@ export const Web3ContextProvider = ({ children }) => {
         metadata: "",
         profileId: "",
       })
+      router.push(`/profile/stani`)
     });
     window.ethereum.on("chainChanged", (chainId) => {
       setChainId(parseInt(chainId, 16));
@@ -250,6 +252,7 @@ export const Web3ContextProvider = ({ children }) => {
       setCurrentProfile(commendProfileList[0])
     }
     setProfileList([])
+    router.push(`/profile/stani`)
     setCurrentLoginProfile({
       address: "",
       handle: "",

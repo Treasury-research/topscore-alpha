@@ -79,6 +79,8 @@ const ConnectBtn = (props: any) => {
 
   const [commendProfileList, setCommendProfileList] = useRecoilState<any>(commendProfileListState);
 
+  const [visible,setVisible] = useState<any>(false);
+
   const [loadingProfileList, setLoadingProfileList] = useRecoilState(
     loadingProfileListState
   );
@@ -641,6 +643,8 @@ const ConnectBtn = (props: any) => {
                 )} */}
               <Popover
               trigger="click"
+              visible={visible}
+              onVisibleChange={(e) => {setVisible(e)}}
                 content={
                   <div>
                     <div className="text-[14px]">Address</div>
@@ -649,7 +653,7 @@ const ConnectBtn = (props: any) => {
                     </div>
                     <div>
                       <div
-                        onClick={() => handleShowModal(true, 2)}
+                        onClick={() => {handleShowModal(true, 2);setVisible(false)}}
                         className="cursor-pointer my-[10px] flex items-center px-2 py-1 rounded-[4px] hover:opacity-70"
                       >
                         Switch Profile

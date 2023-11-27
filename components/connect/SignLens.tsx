@@ -39,7 +39,7 @@ const SignLens = (props: any) => {
                         src={theme === 'light' ? PloginLight : Plogin}
                         alt=""
                     />
-                    <span className='font-[600] text-[20px] ml-1 mt-[-6px]'>Login</span>
+                    <span className='font-[600] text-[20px] ml-1 mt-[-6px]'>Sign In</span>
 
                 </div>
                 <div className='ml-[auto] cursor-pointer' onClick={() => handleCancel()}>
