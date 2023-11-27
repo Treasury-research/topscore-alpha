@@ -85,7 +85,7 @@ import ImgHaveLight17 from "../statics/img/pass/have/light/17.png";
 import ImgHaveLight18 from "../statics/img/pass/have/light/18.png";
 import ImgHaveLight19 from "../statics/img/pass/have/light/19.png";
 import { getAddr } from 'knn3-sdk';
-
+import { shortenAddr} from "../../lib/tool";
 import Mask1 from "../statics/img/pass/mask1.png";
 import Mask2 from "../statics/img/pass/mask2.png";
 import Mask3 from "../statics/img/pass/mask3.png";
@@ -508,12 +508,12 @@ const pass = () => {
                     }
                   </div>
                   <div className='h-[fit-content] w-[calc(100%-120px)] break-words'>
-                    <p className='font-[600] text-[18px]'>{ens ? ens : currentLoginProfile.name ? currentLoginProfile.name : currentLoginProfile.handle ? currentLoginProfile.handle : account}
+                    <p className='font-[600] text-[18px]'>{currentLoginProfile.name ? currentLoginProfile.name : currentLoginProfile.handle ? currentLoginProfile.handle : ens ? ens : '--'}
                       {/* <span className='text-[12px] ml-2 text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.5)] font-[500]'>
                         {currentLoginProfile.profileId ? `@${currentLoginProfile.handle}` : 'NAN'}
                       </span> */}
                     </p>
-                    <p className='text-[14px]'>{introduce}</p>
+                    <p className='text-[14px]'>{shortenAddr(account)}</p>
                   </div>
                 </div>
                 <div className='ml-auto w-[200px] h-full text-center flex items-center justify-center'>

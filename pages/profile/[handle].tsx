@@ -455,7 +455,7 @@ const profile = (props: any) => {
                               </div>
                             </button>
                             <button className="flex items-center justify-center radius-btn-shadow hover:opacity-70 h-[28px] w-[28px] rounded-[50%]">
-                              <div className="h-[22px] w-[22px] rounded-[50%] bg-[#8247E5] flex items-center justify-center"
+                              <div className="h-[22px] w-[22px] rounded-[50%] flex items-center justify-center"
                                 onClick={() => { window.open(`https://hey.xyz/${currentProfile.handle.split('.')[0]}`, '_blank'); trace('Card-Lenster') }}>
                                 <Image
                                   src={ImgLenster}
