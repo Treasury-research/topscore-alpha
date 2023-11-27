@@ -508,7 +508,7 @@ const pass = () => {
                     }
                   </div>
                   <div className='h-[fit-content] w-[calc(100%-120px)] break-words'>
-                    <p className='font-[600] text-[18px]'>{currentLoginProfile.name ? currentLoginProfile.name : currentLoginProfile.handle ? currentLoginProfile.handle : ens ? ens : '--'}
+                    <p className='font-[600] text-[18px]'>{currentLoginProfile.name ? currentLoginProfile.name : currentLoginProfile.handle ? currentLoginProfile.handle : ens ? ens : ''}
                       {/* <span className='text-[12px] ml-2 text-[rgba(0,0,0,0.5)] dark:text-[rgba(255,255,255,0.5)] font-[500]'>
                         {currentLoginProfile.profileId ? `@${currentLoginProfile.handle}` : 'NAN'}
                       </span> */}
