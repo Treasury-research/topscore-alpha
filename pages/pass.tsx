@@ -513,7 +513,7 @@ const pass = () => {
                         {currentLoginProfile.profileId ? `@${currentLoginProfile.handle}` : 'NAN'}
                       </span> */}
                     </p>
-                    <p className='text-[14px]'>{shortenAddr(account)}</p>
+                    <p className='text-[14px]'>{shortenAddr(account,5)}</p>
                   </div>
                 </div>
                 <div className='ml-auto w-[200px] h-full text-center flex items-center justify-center'>
